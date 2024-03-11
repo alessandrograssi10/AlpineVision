@@ -1,0 +1,15 @@
+{
+  "name": "alpinevision-ltw",
+  "version": "1.0.0",
+  "description": "LTW PROJECT in which our team is creating a modern Ski Mask web store  called \"Alpine Vision\".",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.3"
+  }
+}
