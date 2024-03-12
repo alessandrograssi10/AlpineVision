@@ -1,0 +1,15 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Alpine Vision TEAM",
+  "license": "ISC",
+  "dependencies": {
+    "express.js": "^1.0.0",
+    "mongodb": "^6.5.0"
+  }
+}
