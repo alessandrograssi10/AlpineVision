@@ -2,17 +2,18 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.8);
   background-color: hsl(210, 17%, 98%); /* Un colore di sfondo leggero per la navbar */
   z-index: 1100!important; /* Assicurati che sia inferiore a quello dei box ma superiore al contenuto della pagina */
-  padding: 0rem 0rem !important;
-  min-height: 56px!important; /* Imposta l'altezza della Navbar */
-  display: flex!important;
+  padding: 0rem 1rem !important;
+
+  /*min-height: 56px!important; /* Imposta l'altezza della Navbar */
+  /*display: flex!important;
   align-items: center!important; /* Centra il contenuto verticalmente */
 
 }
 
-.custom-navbar, .custom-navbar .container-fluid, .custom-navbar .navbar-collapse {
-  min-height: 56px !important;
+/*.custom-navbar, .custom-navbar .container-fluid, .custom-navbar .navbar-collapse {
+  /*min-height: 56px !important;
   height: 56px !important;
-}
+}*/
 
 .custom-navbar .navbar-nav {
   display: flex!important;
@@ -127,4 +128,9 @@
 }
 .backdrop.closing {
   animation: fadeOut 0.2s ease-out forwards;
+}
+
+.con{
+  width: 100vw !important;
+  padding: 0px !important;
 }

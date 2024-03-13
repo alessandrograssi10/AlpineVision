@@ -11,9 +11,22 @@ export const Header = () => {
   const [showAssistanceBox, setShowAssistanceBox] = useState(false);
   const [isClosing, setIsClosing] = useState(false); // Stato per gestire l'animazione di chiusura
   const [isOpening, setIsOpening] = useState(false); // Stato per gestire l'animazione di chiusura
+//
+const [isLargeScreen, setIsLargeScreen] = useState(window.innerWidth >= 992); // Bootstrap lg breakpoint
+useEffect(() => {
+  const handleResize = () => {
+    setIsLargeScreen(window.innerWidth >= 992);
+  };
 
+  window.addEventListener('resize', handleResize);
+
+  return () => {
+    window.removeEventListener('resize', handleResize);
+  };
+}, []);
  
   const toggleProductBox = () => {
+    if(!isLargeScreen) return;
     if (showProductBox) {
       //closeAllBoxes();
     } else {
@@ -24,6 +37,7 @@ export const Header = () => {
 };
 
   const toggleAssistanceBox = () => {
+    if(!isLargeScreen) return;
     if (showAssistanceBox) {
       //closeAllBoxes();
     } else {
@@ -34,6 +48,7 @@ export const Header = () => {
     }
   };
   const OpenAllBoxes = () => {
+    if(!isLargeScreen) return;
     setIsOpening(true); // Inizia l'animazione di chiusura
     setTimeout(() => { // Dà tempo all'animazione di completarsi
       setIsOpening(false); // Resetta lo stato di chiusura per future aperture
@@ -41,6 +56,7 @@ export const Header = () => {
     }, 200); // Assicurati che questo valore corrisponda alla durata dell'animazione CSS
 };
   const closeAllBoxes = () => {
+    if(!isLargeScreen) return;
       setIsClosing(true); // Inizia l'animazione di chiusura
       setTimeout(() => { // Dà tempo all'animazione di completarsi
           setIsClosing(false); // Resetta lo stato di chiusura per future aperture
@@ -67,7 +83,7 @@ export const Header = () => {
     return (
         <>
             <Navbar expand="lg" className="custom-navbar" >
-                <Container>
+             {/*<Container className='con'>*/} 
                     <Navbar.Brand href="/home" className="navbar-brand-bold">
                         <Image src={Immagine2} width="50" className="d-inline-block align-center logo" alt="Logo" />
                         ALPINE VISION
@@ -101,7 +117,7 @@ export const Header = () => {
                             <Nav.Link href="#cart"><Image src={Car} width="20" className="icon" alt="Cart" /></Nav.Link>
                         </Nav>
                     </Navbar.Collapse>
-                </Container>
+                {/*</Container>*/} 
             </Navbar>
 
             {isAnyBoxOpen && <div className={`backdrop ${isClosing ? 'closing' : 'opening'}`} onClick={closeAllBoxes}></div>
