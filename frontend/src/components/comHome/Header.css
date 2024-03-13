@@ -1,0 +1,51 @@
+.iconTab {
+    padding: 0 5px;
+}
+
+.iconImage {
+    width: 20px;
+    margin-right: 10px;
+}
+.panel {
+    background-color: rgba(0,0,0,0.5);
+    color: white;
+    padding: 20px;
+    position: fixed;
+    top: -100%; /* Posizione iniziale fuori dalla vista */
+    left: 0;
+    width: 100%;
+    transition: top 0.5s ease-in-out; /* Anima la proprietà top */
+    z-index: 1050; /* Assicurati che sia sopra la maggior parte degli elementi */
+  }
+  
+  .panel.show {
+    top: 56px; /* Posizione finale sotto la navbar */
+  }
+.prova {
+    font-size: 2vw;
+    width: 100vw; /* Imposta la larghezza a 100 pixel */
+    background-color: black; /* Imposta lo sfondo nero */
+    height: 200px;
+    color: white;
+    display: flex; /* Imposta il display flessibile per il contenitore */
+    justify-content: center; /* Centra orizzontalmente */
+    align-items: center; /* Centra verticalmente */
+
+}
+@keyframes pulse {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.1);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+  
+  
+.custom-pulse:active {
+        animation: pulse 0.4s forwards;
+    
+  }
