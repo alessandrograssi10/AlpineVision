@@ -63,7 +63,7 @@ export const Header = () => {
                 <Container>
                     <Navbar.Brand href="/home" className="navbar-brand-bold">
                         <Image src={Immagine2} width="50" className="d-inline-block align-center logo" alt="Logo" />
-                        APLINE VISION
+                        ALPINE VISION
                     </Navbar.Brand>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav" style={{height:'100%', package:'100%'}}>
