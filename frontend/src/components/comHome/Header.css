@@ -1,24 +1,48 @@
 .custom-navbar {
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  background-color: #f8f9fa; /* Un colore di sfondo leggero per la navbar */
-  z-index: 1060; /* Assicurati che sia inferiore a quello dei box ma superiore al contenuto della pagina */
-  padding: 0rem 0rem;
-  height: 56px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.8);
+  background-color: hsl(210, 17%, 98%); /* Un colore di sfondo leggero per la navbar */
+  z-index: 1100!important; /* Assicurati che sia inferiore a quello dei box ma superiore al contenuto della pagina */
+  padding: 0rem 0rem !important;
+  min-height: 56px!important; /* Imposta l'altezza della Navbar */
+  display: flex!important;
+  align-items: center!important; /* Centra il contenuto verticalmente */
+
 }
 
+.custom-navbar, .custom-navbar .container-fluid, .custom-navbar .navbar-collapse {
+  min-height: 56px !important;
+  height: 56px !important;
+}
+
+.custom-navbar .navbar-nav {
+  display: flex!important;
+  align-items: center!important;
+  height: 100%!important;
+}
+
+.custom-navbar .nav-link, .custom-navbar .navbar-brand {
+  display: flex!important;
+  align-items: center!important;
+  height: 56px !important;
+}
+/**/
 .navbar-brand-bold {
   font-weight: bold;
   font-size: larger;
+
 }
 
 .logo {
   vertical-align: middle;
   margin-right: 10px;
+  padding: 0rem 0rem;
+
 }
 
 .icon {
   vertical-align: middle;
   margin-right: 10px;
+
 }
 
 
@@ -45,20 +69,24 @@
 .info-box.closing {
   animation: slideUp 0.2s ease-out forwards;
 }
+.info-box.opening {
+  animation: slideDown 0.2s ease-out forwards;}
 .info-box {
   position: absolute;
   top: 56px; /* Adegua in base all'altezza della navbar */
   left: 0;
   width: 100%;
-  background-color: white;
+  background-color: hsl(210, 17%, 98%); /* Un colore di sfondo leggero per la navbar */
   padding: 20px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-  z-index: 1050; /* Assicura che il box appaia sopra gli altri contenuti */
-  animation: slideDown 0.2s ease-out forwards;
+  /*box-shadow: 0 2px 5px rgba(0, 0, 0, 0.8);*/
+  z-index: 1050!important; /* Assicura che il box appaia sopra gli altri contenuti */
+  /*animation: slideDown 0.2s ease-out forwards;*/
 }
 
 .info-box p {
   margin: 0;
+  padding: 0;
+
 }
 
 .info-box button {
@@ -93,9 +121,10 @@
   background: rgba(0, 0, 0, 0.5);
   backdrop-filter: blur(10px);
   z-index: 900;
+}
+.backdrop.opening {
   animation: fadeIn 0.2s ease-out forwards;
 }
-
 .backdrop.closing {
   animation: fadeOut 0.2s ease-out forwards;
 }

@@ -10,29 +10,36 @@ export const Header = () => {
   const [showProductBox, setShowProductBox] = useState(false);
   const [showAssistanceBox, setShowAssistanceBox] = useState(false);
   const [isClosing, setIsClosing] = useState(false); // Stato per gestire l'animazione di chiusura
+  const [isOpening, setIsOpening] = useState(false); // Stato per gestire l'animazione di chiusura
 
  
   const toggleProductBox = () => {
     if (showProductBox) {
-      closeAllBoxes();
+      //closeAllBoxes();
     } else {
         setShowProductBox(true);
         setShowAssistanceBox(false);
-        setIsClosing(false);
+        //setIsClosing(false);
     }
 };
 
   const toggleAssistanceBox = () => {
     if (showAssistanceBox) {
-      closeAllBoxes();
+      //closeAllBoxes();
     } else {
     
       setShowAssistanceBox(!showAssistanceBox);
       setShowProductBox(false);
-      setIsClosing(false); // Resetta lo stato di chiusura
+      //setIsClosing(false); // Resetta lo stato di chiusura
     }
   };
-
+  const OpenAllBoxes = () => {
+    setIsOpening(true); // Inizia l'animazione di chiusura
+    setTimeout(() => { // Dà tempo all'animazione di completarsi
+      setIsOpening(false); // Resetta lo stato di chiusura per future aperture
+  
+    }, 200); // Assicurati che questo valore corrisponda alla durata dell'animazione CSS
+};
   const closeAllBoxes = () => {
       setIsClosing(true); // Inizia l'animazione di chiusura
       setTimeout(() => { // Dà tempo all'animazione di completarsi
@@ -66,10 +73,28 @@ export const Header = () => {
                         ALPINE VISION
                     </Navbar.Brand>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
-                    <Navbar.Collapse id="basic-navbar-nav" style={{height:'100%', package:'100%'}}>
-                        <Nav className="me-auto">
-                            <Nav.Link href="#home" onMouseOver={toggleProductBox} onMouseLeave={toggleProductBox}>PRODUCTS</Nav.Link>
-                            <Nav.Link href="#link" onClick={toggleAssistanceBox}>ASSISTANCE</Nav.Link>
+                    <Navbar.Collapse id="basic-navbar-nav">
+                        <Nav className="me-auto"onMouseEnter={OpenAllBoxes} onMouseLeave={closeAllBoxes}>
+                          <div  onMouseEnter={toggleProductBox} onMouseLeave={toggleProductBox}>
+                            <Nav.Link href="#home" >PRODUCTS</Nav.Link>
+                                {showProductBox && (
+                                   <div className={`info-box ${isClosing ? 'closing' : isOpening ? 'opening' : ''}`} >
+
+                                   <p>Qui puoi inserire informazioni sui prodotti o un form.</p>
+                                   <button onClick={closeAllBoxes}>Chiudi</button>
+                                   </div>
+                                )}
+                            </div>
+
+                            <div  onMouseEnter={toggleAssistanceBox} onMouseLeave={toggleAssistanceBox}>
+                            <Nav.Link href="#link" >ASSISTANCE</Nav.Link>
+                            {showAssistanceBox && (
+                             <div className={`info-box ${isClosing ? 'closing' : isOpening ? 'opening' : ''}`}>
+                           <p>Haloooooooooa</p>
+                      <button onClick={closeAllBoxes}>Chiudi</button>
+                </div>
+            )}
+                            </div>
                         </Nav>
                         <Nav className="ms-auto">
                             <Nav.Link href="#search"><Image src={SearchIcon} width="20" className="icon" alt="Search" /></Nav.Link>
@@ -79,20 +104,10 @@ export const Header = () => {
                 </Container>
             </Navbar>
 
-            {isAnyBoxOpen && <div className={`backdrop ${isClosing ? 'closing' : ''}`} onClick={closeAllBoxes}></div>}
+            {isAnyBoxOpen && <div className={`backdrop ${isClosing ? 'closing' : 'opening'}`} onClick={closeAllBoxes}></div>
+}
 
-            {showProductBox && (
-                <div className={`info-box ${isClosing ? 'closing' : ''}`}>
-                    <p>Qui puoi inserire informazioni sui prodotti o un form.</p>
-                    <button onClick={closeAllBoxes}>Chiudi</button>
-                </div>
-            )}
-            {showAssistanceBox && (
-                <div className={`info-box ${isClosing ? 'closing' : ''}`}>
-                    <p>Haloooooooooa</p>
-                    <button onClick={closeAllBoxes}>Chiudi</button>
-                </div>
-            )}
+           
         </>
     );
 };
