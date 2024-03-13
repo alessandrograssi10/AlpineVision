@@ -25,9 +25,7 @@ export const Body = () => {
 
     return (
         <>
- <div className = 'prova'>
- "Why do skiers always wear masks? Because without them, they would go down in their faces!"
-        </div>
+
             <Image src={Immagine} fluid />
             <Image src={Immagine} fluid />
             <Image src={Immagine} fluid />

@@ -9,7 +9,6 @@ export const Home = () => {
    
     return (
     <div>
-      <Header/>
       <Body/>
     </div>
     );

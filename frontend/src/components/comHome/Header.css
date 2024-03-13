@@ -1,51 +1,101 @@
-.iconTab {
-    padding: 0 5px;
+.custom-navbar {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  background-color: #f8f9fa; /* Un colore di sfondo leggero per la navbar */
+  z-index: 1060; /* Assicurati che sia inferiore a quello dei box ma superiore al contenuto della pagina */
+  padding: 0rem 0rem;
+  height: 56px;
 }
 
-.iconImage {
-    width: 20px;
-    margin-right: 10px;
+.navbar-brand-bold {
+  font-weight: bold;
+  font-size: larger;
 }
-.panel {
-    background-color: rgba(0,0,0,0.5);
-    color: white;
-    padding: 20px;
-    position: fixed;
-    top: -100%; /* Posizione iniziale fuori dalla vista */
-    left: 0;
-    width: 100%;
-    transition: top 0.5s ease-in-out; /* Anima la proprietà top */
-    z-index: 1050; /* Assicurati che sia sopra la maggior parte degli elementi */
-  }
-  
-  .panel.show {
-    top: 56px; /* Posizione finale sotto la navbar */
-  }
-.prova {
-    font-size: 2vw;
-    width: 100vw; /* Imposta la larghezza a 100 pixel */
-    background-color: black; /* Imposta lo sfondo nero */
-    height: 200px;
-    color: white;
-    display: flex; /* Imposta il display flessibile per il contenitore */
-    justify-content: center; /* Centra orizzontalmente */
-    align-items: center; /* Centra verticalmente */
 
+.logo {
+  vertical-align: middle;
+  margin-right: 10px;
 }
-@keyframes pulse {
-    0% {
-      transform: scale(1);
-    }
-    50% {
-      transform: scale(1.1);
-    }
-    100% {
-      transform: scale(1);
-    }
+
+.icon {
+  vertical-align: middle;
+  margin-right: 10px;
+}
+
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
   }
-  
-  
-.custom-pulse:active {
-        animation: pulse 0.4s forwards;
-    
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
+}
+@keyframes slideUp {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+}
+.info-box.closing {
+  animation: slideUp 0.2s ease-out forwards;
+}
+.info-box {
+  position: absolute;
+  top: 56px; /* Adegua in base all'altezza della navbar */
+  left: 0;
+  width: 100%;
+  background-color: white;
+  padding: 20px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  z-index: 1050; /* Assicura che il box appaia sopra gli altri contenuti */
+  animation: slideDown 0.2s ease-out forwards;
+}
+
+.info-box p {
+  margin: 0;
+}
+
+.info-box button {
+  margin-top: 10px;
+  display: inline-block;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.info-box button:hover {
+  background-color: #0056b3;
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+.backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(10px);
+  z-index: 900;
+  animation: fadeIn 0.2s ease-out forwards;
+}
+
+.backdrop.closing {
+  animation: fadeOut 0.2s ease-out forwards;
+}
