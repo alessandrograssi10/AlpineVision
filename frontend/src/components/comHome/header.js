@@ -47,6 +47,7 @@ useEffect(() => {
       //setIsClosing(false); // Resetta lo stato di chiusura
     }
   };
+  
   const OpenAllBoxes = () => {
     if(!isLargeScreen) return;
     setIsOpening(true); // Inizia l'animazione di chiusura
@@ -84,10 +85,12 @@ useEffect(() => {
         <>
             <Navbar expand="lg" className="custom-navbar" >
              {/*<Container className='con'>*/} 
+
                     <Navbar.Brand href="/home" className="navbar-brand-bold">
                         <Image src={Immagine2} width="50" className="d-inline-block align-center logo" alt="Logo" />
                         ALPINE VISION
                     </Navbar.Brand>
+
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
                         <Nav className="me-auto"onMouseEnter={OpenAllBoxes} onMouseLeave={closeAllBoxes}>
