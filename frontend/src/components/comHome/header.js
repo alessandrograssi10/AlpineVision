@@ -97,7 +97,7 @@ useEffect(() => {
                                    <div className={`info-box ${isClosing ? 'closing' : isOpening ? 'opening' : ''}`} >
 
                                    <p>Qui puoi inserire informazioni sui prodotti o un form.</p>
-                                   <button onClick={closeAllBoxes}>Chiudi</button>
+      
                                    </div>
                                 )}
                             </div>
@@ -107,7 +107,7 @@ useEffect(() => {
                             {showAssistanceBox && (
                              <div className={`info-box ${isClosing ? 'closing' : isOpening ? 'opening' : ''}`}>
                            <p>Haloooooooooa</p>
-                      <button onClick={closeAllBoxes}>Chiudi</button>
+                      
                 </div>
             )}
                             </div>
