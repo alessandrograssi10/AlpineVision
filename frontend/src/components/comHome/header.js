@@ -3,8 +3,9 @@ import { Container, Navbar, Nav, Image } from 'react-bootstrap';
 import Immagine2 from '../../assets/Images/Asset 1.png';
 import SearchIcon from '../../assets/Images/Sicon.png';
 import Car from '../../assets/Images/shopping-cart.png';
-
 import './Header.css';
+
+
 
 export const Header = () => {
   const [showProductBox, setShowProductBox] = useState(false);
@@ -17,7 +18,7 @@ useEffect(() => {
   const handleResize = () => {
     setIsLargeScreen(window.innerWidth >= 992);
   };
-
+  
   window.addEventListener('resize', handleResize);
 
   return () => {
@@ -90,7 +91,7 @@ useEffect(() => {
                         <Image src={Immagine2} width="50" className="d-inline-block align-center logo" alt="Logo" />
                         ALPINE VISION
                     </Navbar.Brand>
-
+                    
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
                         <Nav className="me-auto"onMouseEnter={OpenAllBoxes} onMouseLeave={closeAllBoxes}>
@@ -124,9 +125,7 @@ useEffect(() => {
             </Navbar>
 
             {isAnyBoxOpen && <div className={`backdrop ${isClosing ? 'closing' : 'opening'}`} onClick={closeAllBoxes}></div>
-}
-
-           
+}    
         </>
     );
 };
