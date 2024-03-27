@@ -8,6 +8,8 @@ import { Accessories } from './pages/Accessories/Accessories.js';
 import { Blog } from './pages/Blog/Blog.js';
 import { Support } from './pages/Support/Support.js';
 import { Cart } from './pages/Cart/Cart.js'
+import { EternalAura } from './pages/Products/EternalAura/EternalAura.js'
+
 import Header from './components/Header/header.js';
 import Footer from './components/Footer/Footer.js';
 
@@ -25,6 +27,9 @@ class App extends Component {
           <Route exact path ="/Blog" Component={Blog}/>
           <Route exact path ="/Support" Component={Support}/>
           <Route exact path ="/Cart" Component={Cart}/>
+          
+          <Route exact path ="/EternalAura" Component={EternalAura}/>
+
         </Routes>
       </Router>
       <Footer/>

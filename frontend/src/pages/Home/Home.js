@@ -27,6 +27,7 @@ export const Home = () => {
             <Row className="justify-content-center bg-black m-0 ">
                 <Col xs={12} className="d-flex justify-content-center align-items-center pb-5">
                     <Button variant="outline-light" size="lg">PREORDER NOW</Button>
+                    <Button href="/EternalAura" variant="outline-light" size="lg">MORE INFO</Button>
                 </Col>
             </Row>
             <Row className="m-0 ">

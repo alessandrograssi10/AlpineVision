@@ -17,6 +17,7 @@ export const Header = () => {
   const [isOpening, setIsOpening] = useState(false); // Stato per gestire l'animazione di chiusura
 
   const isAnyBoxOpen = showBlogBox || showAccessoriesBox || showProductBox || showAssistanceBox || isClosing;
+  const [timeoutId, setTimeoutId] = useState(null);
 
 //
 const [isLargeScreen, setIsLargeScreen] = useState(window.innerWidth >= 992); // Bootstrap lg breakpoint
@@ -32,42 +33,61 @@ useEffect(() => {
   };
 }, []);
  
+const cancelToggleBox = () => {
+  clearTimeout(timeoutId);
+  // Potresti voler nascondere il box qui, o gestire l'evento in altro modo
+};
 const toggleBlogBox = () => {
   if(!isLargeScreen) return;
+  cancelToggleBox();
   if (!showBlogBox) { 
+    const id = setTimeout(() => {
       setShowBlogBox(true);
       setShowAccessoriesBox(false);
       setShowAssistanceBox(false);
       setShowProductBox(false);
+    }, 100);
+    setTimeoutId(id);
   }
 };
 const toggleAccessoriestBox = () => {
   if(!isLargeScreen) return;
   if (!showAccessoriesBox) { 
+    const id = setTimeout(() => {
       setShowAccessoriesBox(true);
       setShowAssistanceBox(false);
       setShowProductBox(false);
       setShowBlogBox(false);
+    }, 100);
+    setTimeoutId(id);
   }
 };
 
   const toggleProductBox = () => {
     if(!isLargeScreen) return;
     if (!showProductBox) {
+      const id = setTimeout(() => {
+
         setShowProductBox(true);
         setShowAssistanceBox(false);
         setShowAccessoriesBox(false);
         setShowBlogBox(false);
+      }, 100);
+      setTimeoutId(id);
       }
 };
 
   const toggleAssistanceBox = () => {
     if(!isLargeScreen) return;
     if (!showAssistanceBox) {
+      const id = setTimeout(() => {
+
       setShowAssistanceBox(!showAssistanceBox);
       setShowProductBox(false);
       setShowAccessoriesBox(false);
       setShowBlogBox(false);
+    }, 100);
+    setTimeoutId(id);
     }
   };
   
@@ -75,12 +95,13 @@ const toggleAccessoriestBox = () => {
     if(!isLargeScreen) return;
     setIsOpening(true); // Inizia l'animazione di chiusura
     setTimeout(() => { // Dà tempo all'animazione di completarsi
-      setIsOpening(false); // Resetta lo stato di chiusura per future aperture
-  
-    }, 200); // Assicurati che questo valore corrisponda alla durata dell'animazione CSS
+        setIsOpening(false); // Resetta lo stato di chiusura per future aperture
+    
+      }, 200); // Assicurati che questo valore corrisponda alla durata dell'animazione CSS
 };
   const closeAllBoxes = () => {
     if(!isLargeScreen) return;
+    if(!isAnyBoxOpen) return;
       setIsClosing(true); // Inizia l'animazione di chiusura
       setTimeout(() => { // Dà tempo all'animazione di completarsi
           setIsClosing(false); // Resetta lo stato di chiusura per future aperture
@@ -105,7 +126,7 @@ const toggleAccessoriestBox = () => {
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
                         <Nav className="me-auto"onMouseEnter={OpenAllBoxes} onMouseLeave={closeAllBoxes}>
-                          <div  onMouseEnter={toggleProductBox} onMouseLeave={toggleProductBox}>
+                          <div  onMouseEnter={toggleProductBox} onMouseLeave={cancelToggleBox}>
                             <Nav.Link href="/Products" >PRODUCTS</Nav.Link>
                                 {showProductBox && (
                                    <div className={`info-box ${isClosing ? 'closing' : isOpening ? 'opening' : ''}`} >
@@ -116,8 +137,8 @@ const toggleAccessoriestBox = () => {
                                 )}
                             </div>
 
-                            <div  onMouseEnter={toggleAccessoriestBox} onMouseLeave={toggleAccessoriestBox}>
-                            <Nav.Link href="/Accessories" >ACCESSORIES</Nav.Link>
+                            <div  onMouseEnter={toggleAccessoriestBox} onMouseLeave={cancelToggleBox}>
+                            <Nav.Link href="/Accessories">ACCESSORIES</Nav.Link>
                                 {showAccessoriesBox && (
                                    <div className={`info-box ${isClosing ? 'closing' : isOpening ? 'opening' : ''}`} >
 
@@ -127,7 +148,7 @@ const toggleAccessoriestBox = () => {
                                 )}
                             </div>
 
-                            <div  onMouseEnter={toggleBlogBox} onMouseLeave={toggleBlogBox}>
+                            <div  onMouseEnter={toggleBlogBox} onMouseLeave={cancelToggleBox}>
                             <Nav.Link href="/Blog" >BLOG</Nav.Link>
                                 {showBlogBox && (
                                    <div className={`info-box ${isClosing ? 'closing' : isOpening ? 'opening' : ''}`} >
@@ -138,7 +159,7 @@ const toggleAccessoriestBox = () => {
                                 )}
                             </div>
 
-                            <div  onMouseEnter={toggleAssistanceBox} onMouseLeave={toggleAssistanceBox}>
+                            <div  onMouseEnter={toggleAssistanceBox} onMouseLeave={cancelToggleBox}>
                             <Nav.Link href="/Support" >SUPPORT</Nav.Link>
                             {showAssistanceBox && (
                              <div className={`info-box ${isClosing ? 'closing' : isOpening ? 'opening' : ''}`}>
@@ -150,7 +171,7 @@ const toggleAccessoriestBox = () => {
                         </Nav>
                         <Nav className="ms-auto">
                             <Nav.Link href="#search"><Image src={SearchIcon} width="20" className="icon" alt="Search" /></Nav.Link>
-                            <Nav.Link href="/Cart"><Image src={Car} width="20" className="icon" alt="Cart" /></Nav.Link>
+                            <Nav.Link href="#cart"><Image src={Car} width="20" className="icon" alt="Cart" /></Nav.Link>
                         </Nav>
                     </Navbar.Collapse>
                 {/*</Container>*/} 
