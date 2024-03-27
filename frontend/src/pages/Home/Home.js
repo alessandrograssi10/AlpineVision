@@ -1,7 +1,7 @@
 import React from 'react';
-import Immagine from '../assets/Images/mask.png';
-import Immagine2 from '../assets/Images/maskL.png';
-import Immagine3 from '../assets/Images/col2.png';
+import Immagine from '../../assets/Images/mask.png';
+import Immagine2 from '../../assets/Images/maskL.png';
+import Immagine3 from '../../assets/Images/col2.png';
 
 import { Container,Card, Row, Col, Button, Image } from 'react-bootstrap';
 import './Home.css';

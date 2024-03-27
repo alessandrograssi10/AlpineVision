@@ -10,8 +10,14 @@ import './Header.css';
 export const Header = () => {
   const [showProductBox, setShowProductBox] = useState(false);
   const [showAssistanceBox, setShowAssistanceBox] = useState(false);
+  const [showAccessoriesBox, setShowAccessoriesBox] = useState(false);
+  const [showBlogBox, setShowBlogBox] = useState(false);
+
   const [isClosing, setIsClosing] = useState(false); // Stato per gestire l'animazione di chiusura
   const [isOpening, setIsOpening] = useState(false); // Stato per gestire l'animazione di chiusura
+
+  const isAnyBoxOpen = showBlogBox || showAccessoriesBox || showProductBox || showAssistanceBox || isClosing;
+
 //
 const [isLargeScreen, setIsLargeScreen] = useState(window.innerWidth >= 992); // Bootstrap lg breakpoint
 useEffect(() => {
@@ -26,26 +32,42 @@ useEffect(() => {
   };
 }, []);
  
+const toggleBlogBox = () => {
+  if(!isLargeScreen) return;
+  if (!showBlogBox) { 
+      setShowBlogBox(true);
+      setShowAccessoriesBox(false);
+      setShowAssistanceBox(false);
+      setShowProductBox(false);
+  }
+};
+const toggleAccessoriestBox = () => {
+  if(!isLargeScreen) return;
+  if (!showAccessoriesBox) { 
+      setShowAccessoriesBox(true);
+      setShowAssistanceBox(false);
+      setShowProductBox(false);
+      setShowBlogBox(false);
+  }
+};
+
   const toggleProductBox = () => {
     if(!isLargeScreen) return;
-    if (showProductBox) {
-      //closeAllBoxes();
-    } else {
+    if (!showProductBox) {
         setShowProductBox(true);
         setShowAssistanceBox(false);
-        //setIsClosing(false);
-    }
+        setShowAccessoriesBox(false);
+        setShowBlogBox(false);
+      }
 };
 
   const toggleAssistanceBox = () => {
     if(!isLargeScreen) return;
-    if (showAssistanceBox) {
-      //closeAllBoxes();
-    } else {
-    
+    if (!showAssistanceBox) {
       setShowAssistanceBox(!showAssistanceBox);
       setShowProductBox(false);
-      //setIsClosing(false); // Resetta lo stato di chiusura
+      setShowAccessoriesBox(false);
+      setShowBlogBox(false);
     }
   };
   
@@ -64,23 +86,11 @@ useEffect(() => {
           setIsClosing(false); // Resetta lo stato di chiusura per future aperture
           setShowProductBox(false);
           setShowAssistanceBox(false);
-    
+          setShowAccessoriesBox(false);
+          setShowBlogBox(false);
+
       }, 200); // Assicurati che questo valore corrisponda alla durata dell'animazione CSS
   };
-
-  useEffect(() => {
-      const closeAllBoxOnScroll = () => {
-          if(showProductBox || showAssistanceBox) {
-              closeAllBoxes();
-          }
-      };
-
-      window.addEventListener('scroll', closeAllBoxOnScroll);
-      return () => window.removeEventListener('scroll', closeAllBoxOnScroll);
-  }, [showProductBox, showAssistanceBox]); // Aggiornato per includere le dipendenze
-
-  const isAnyBoxOpen = showProductBox || showAssistanceBox || isClosing;
-
 
     return (
         <>
@@ -96,7 +106,7 @@ useEffect(() => {
                     <Navbar.Collapse id="basic-navbar-nav">
                         <Nav className="me-auto"onMouseEnter={OpenAllBoxes} onMouseLeave={closeAllBoxes}>
                           <div  onMouseEnter={toggleProductBox} onMouseLeave={toggleProductBox}>
-                            <Nav.Link href="#home" >PRODUCTS</Nav.Link>
+                            <Nav.Link href="/Products" >PRODUCTS</Nav.Link>
                                 {showProductBox && (
                                    <div className={`info-box ${isClosing ? 'closing' : isOpening ? 'opening' : ''}`} >
 
@@ -106,8 +116,30 @@ useEffect(() => {
                                 )}
                             </div>
 
+                            <div  onMouseEnter={toggleAccessoriestBox} onMouseLeave={toggleAccessoriestBox}>
+                            <Nav.Link href="/Accessories" >ACCESSORIES</Nav.Link>
+                                {showAccessoriesBox && (
+                                   <div className={`info-box ${isClosing ? 'closing' : isOpening ? 'opening' : ''}`} >
+
+                                   <p>accessori vari.</p>
+      
+                                   </div>
+                                )}
+                            </div>
+
+                            <div  onMouseEnter={toggleBlogBox} onMouseLeave={toggleBlogBox}>
+                            <Nav.Link href="/Blog" >BLOG</Nav.Link>
+                                {showBlogBox && (
+                                   <div className={`info-box ${isClosing ? 'closing' : isOpening ? 'opening' : ''}`} >
+
+                                   <p>blog vari.</p>
+      
+                                   </div>
+                                )}
+                            </div>
+
                             <div  onMouseEnter={toggleAssistanceBox} onMouseLeave={toggleAssistanceBox}>
-                            <Nav.Link href="#link" >ASSISTANCE</Nav.Link>
+                            <Nav.Link href="/Support" >SUPPORT</Nav.Link>
                             {showAssistanceBox && (
                              <div className={`info-box ${isClosing ? 'closing' : isOpening ? 'opening' : ''}`}>
                            <p>Haloooooooooa</p>
