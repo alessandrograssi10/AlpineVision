@@ -150,7 +150,7 @@ const toggleAccessoriestBox = () => {
                         </Nav>
                         <Nav className="ms-auto">
                             <Nav.Link href="#search"><Image src={SearchIcon} width="20" className="icon" alt="Search" /></Nav.Link>
-                            <Nav.Link href="#cart"><Image src={Car} width="20" className="icon" alt="Cart" /></Nav.Link>
+                            <Nav.Link href="/Cart"><Image src={Car} width="20" className="icon" alt="Cart" /></Nav.Link>
                         </Nav>
                     </Navbar.Collapse>
                 {/*</Container>*/} 
