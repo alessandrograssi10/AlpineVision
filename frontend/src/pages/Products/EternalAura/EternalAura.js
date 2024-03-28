@@ -1,94 +1,72 @@
-import React, { useRef, useEffect } from 'react';
-import * as THREE from 'three';
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
+import React, { useState } from 'react';
+import { Container, Row, Form, Col, Carousel, Button } from 'react-bootstrap';
+import Immagine3 from '../../../assets/Images/maskL.png';
+import './EternalAura.css';
 
 export const EternalAura = () => {
-    const mountRef = useRef(null);
-    const modelRef = useRef(); // Riferimento al modello per la rotazione
-    let isDragging = false;
-    let previousMousePosition = {
-        x: 0,
-        y: 0
-    };
+    const [selectedImage, setSelectedImage] = useState('');
 
-    useEffect(() => {
-        const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        const renderer = new THREE.WebGLRenderer({ antialias: true });
-        renderer.setClearColor("#000");
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        mountRef.current.appendChild(renderer.domElement);
-
-        const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
-        scene.add(ambientLight);
-
-        const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
-        directionalLight.position.set(0, 1, 1);
-        scene.add(directionalLight);
-
-        camera.position.z = 5;
-
-        const loader = new GLTFLoader();
-        loader.load(
-            process.env.PUBLIC_URL + '/3d-objects/ProjMask.glb',
-            (gltf) => {
-                modelRef.current = gltf.scene;
-                scene.add(gltf.scene);
-                animate();
-            },
-            undefined,
-            (error) => {
-                console.error('Errore nel caricamento del modello:', error);
-            }
-        );
-
-        const animate = () => {
-            requestAnimationFrame(animate);
-            renderer.render(scene, camera);
-        };
-
-        const onDocumentMouseDown = (event) => {
-            isDragging = true;
-        };
-
-        const onDocumentMouseMove = (event) => {
-            if (isDragging) {
-                const deltaMove = {
-                    x: event.clientX - previousMousePosition.x,
-                    y: event.clientY - previousMousePosition.y
-                };
-
-                const rotationSpeed = 0.005;
-
-                if (modelRef.current) {
-                    modelRef.current.rotation.y += deltaMove.x * rotationSpeed;
-                    modelRef.current.rotation.x += deltaMove.y * rotationSpeed;
-                }
-
-                previousMousePosition = {
-                    x: event.clientX,
-                    y: event.clientY
-                };
-            }
-        };
-
-        const onDocumentMouseUp = () => {
-            isDragging = false;
-        };
-
-        document.addEventListener('mousedown', onDocumentMouseDown, false);
-        document.addEventListener('mousemove', onDocumentMouseMove, false);
-        document.addEventListener('mouseup', onDocumentMouseUp, false);
-
-        return () => {
-            if (mountRef.current && renderer.domElement) { 
-                mountRef.current.removeChild(renderer.domElement);
-            }
-            document.removeEventListener('mousedown', onDocumentMouseDown, false);
-            document.removeEventListener('mousemove', onDocumentMouseMove, false);
-            document.removeEventListener('mouseup', onDocumentMouseUp, false);
-        };
-    }, []);
-
-    return <div ref={mountRef} style={{ width: '100vw', height: '100vh' }} />;
+    return (
+        <Container fluid className="p-0">
+            <Row className="d-flex align-items-stretch pt-5">
+                <Col md={6} className="d-flex flex-column">
+                    <Carousel className='carfix'>
+                        <Carousel.Item>
+                            <img
+                                className="d-block w-100"
+                                src={Immagine3}
+                                alt="Prima immagine"
+                            />
+                        </Carousel.Item>
+                        <Carousel.Item>
+                            <img
+                                className="d-block w-100"
+                                src={Immagine3}
+                                alt="Seconda immagine"
+                            />
+                        </Carousel.Item>
+                    </Carousel>
+                </Col>
+                <Col md={6} className="white-panel d-flex flex-column justify-content-center">
+                    <div className="shadow-box mx-auto">
+                        <Row><h2 className="text-left text-black">ETERNAL AURA</h2></Row>
+                        <Row><h4 className="text-left text-black">black</h4></Row>
+                        <Row>
+                            <div className="d-flex align-items-center">
+                                {[Immagine3, Immagine3].map((imageSrc, index) => (
+                                    <Form.Check 
+                                        key={index}
+                                        type="radio"
+                                        id={`radio-${index}`}
+                                        name="image-radio"
+                                        className="image-radio-button"
+                                        onChange={() => setSelectedImage(`radio-${index}`)}
+                                        checked={selectedImage === `radio-${index}`}
+                                        label=""
+                                    >
+                                        <label htmlFor={`radio-${index}`} className={`image-radio-label ${selectedImage === `radio-${index}` ? 'selected' : ''}`} style={{ backgroundImage: `url(${imageSrc})` }}></label>
+                                    </Form.Check>
+                                ))}
+                            </div>
+                        </Row>
+                        <Row className="justify-content-center m-0">
+                            <Col xs={12} className="d-flex justify-content-left align-items-center pb-5">
+                                <Button variant="outline-dark" size="lg">Aggiungi al carrello</Button>
+                                <div style={{ width: '10px' }}></div>
+                                <Button href="/EternalAura" variant="outline-dark" size="lg">Compra ora</Button>
+                            </Col>
+                        </Row>
+                    </div>
+                </Col>
+            </Row>
+            <div style={{ backgroundColor: 'white', height: '50px' }}></div>
+            <Row className="m-0 no-space-row">
+                <div style={{ backgroundColor: 'black', height: '50px' }}></div>
+                <Col className="text-center bg-black text-white p-3">
+                    <h2>Dai un occhiata da vicino.</h2>
+                    <div style={{ backgroundColor: 'black', height: '50px' }}></div>
+                </Col>
+            </Row>
+        </Container>
+    );
 };

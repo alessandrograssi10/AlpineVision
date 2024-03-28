@@ -1,0 +1,75 @@
+.horizontal-scroll {
+    display: flex;
+    overflow-x: auto;
+    white-space: nowrap;
+    align-items: center; /* Centra le immagini verticalmente se desiderato */
+    padding: 20px 0;
+}
+
+.horizontal-scroll .small-img {
+    flex: 0 0 auto; /* Impedisce alle immagini di restringersi */
+    width: auto; /* Mantiene il rapporto dell'immagine */
+    height: 150px; /* Imposta un'altezza fissa per tutte le immagini */
+    margin-right: 10px;
+}
+
+.white-panel {
+    background-color: white;
+    padding: 20px;
+    height: 100%;
+}
+.carfix {
+    min-height: 60vh;
+
+}
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    filter: invert(100%);
+}
+.white-panel {
+    position: relative;
+    padding: 20px;
+    min-height: 60vh;
+
+}
+
+.shadow-box {
+    position: absolute;
+    padding: 20px; /* Aggiungi un padding per assicurare spazio intorno al contenuto */
+    overflow: hidden; 
+    left: 10px;
+    right: 10px;
+    bottom: 10px;
+    min-height: 100%;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 6px 20px rgba(0, 0, 0, 0.19);
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Centra il contenuto verticalmente */
+}
+.image-radio {
+    width: 30px; /* Imposta la larghezza dell'immagine più piccola */
+    height: auto; /* Mantiene le proporzioni dell'immagine */
+    cursor: pointer;
+    border: 2px solid transparent; /* Bordi trasparenti per non-selezionati */
+    margin-right: 10px; /* Aggiunge un po' di spazio tra un'immagine e l'altra */
+}
+
+.image-radio.selected {
+    border-color: rgb(6, 233, 195); /* o qualsiasi colore preferisci per indicare la selezione */
+}.image-radio-label {
+    display: inline-block;
+    width: 50px; /* o la dimensione desiderata per le tue immagini */
+    height: 50px; /* mantiene le proporzioni quadrate */
+    border-radius: 50%; /* rende l'etichetta completamente rotonda */
+    background-size: cover; /* assicura che l'immagine copra l'intera etichetta */
+    cursor: pointer;
+    border: 2px solid transparent; /* bordo trasparente quando non selezionato */
+    background-position: center; /* centra l'immagine di sfondo */
+    margin: 10px;
+}
+
+.image-radio-button input[type="radio"]:checked + .image-radio-label {
+    border-color: #007bff; /* Cambia il colore del bordo quando selezionato */
+}
