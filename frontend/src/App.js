@@ -27,7 +27,6 @@ class App extends Component {
           <Route exact path ="/Blog" Component={Blog}/>
           <Route exact path ="/Support" Component={Support}/>
           <Route exact path ="/Cart" Component={Cart}/>
-          
           <Route exact path ="/EternalAura" Component={EternalAura}/>
 
         </Routes>
