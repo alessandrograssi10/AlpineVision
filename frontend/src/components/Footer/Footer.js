@@ -7,23 +7,24 @@ const Footer = () => {
       <Container>
         <Row>
           <Col md={4} sm={12}>
-            <h5>Chi Siamo</h5>
-            <p>Siamo un team di appassionati di sci.
+            <h5>CHI SIAMO</h5>
+            <p>Siamo un team di appassionati di Sci.
               Puoi trovarci sulle nostre pagine social:
-              Alessandro Grassi, Gianluca De Mare, Alessio Cecere, Matteo Giuliani.
+              Alessandro Grassi, Gianluca De Mare, Alessio Cece, Matteo Giuliani.
             </p>
           </Col>
           <Col md={4} sm={12}>
-            <h5>Link Utili</h5>
+            <h5>LINKS</h5>
             <ul className="list-unstyled">
-              <li><a href="#" className="text-light">Home</a></li>
-              <li><a href="#" className="text-light">Prodotti</a></li>
-              <li><a href="#" className="text-light">Blog</a></li>
-              <li><a href="#" className="text-light">Contatti</a></li>
+              <li><a href="/home" className="text-light">Home</a></li>
+              <li><a href="/Products" className="text-light">Products</a></li>
+              <li><a href="/Accessories" className="text-light">Accessories</a></li>
+              <li><a href="/Blog" className="text-light">Blog</a></li>
+              <li><a href="/Support" className="text-light">Support</a></li>
             </ul>
           </Col>
           <Col md={4} sm={12}>
-            <h5>Contattaci</h5>
+            <h5>CONTACT US</h5>
             <p>Sapienza Università di Roma</p>
             <p>Email: emails</p>
             <p>Telefono: +39 012 3456789</p>

@@ -163,7 +163,7 @@ const toggleAccessoriestBox = () => {
                             <Nav.Link href="/Support" >SUPPORT</Nav.Link>
                             {showAssistanceBox && (
                              <div className={`info-box ${isClosing ? 'closing' : isOpening ? 'opening' : ''}`}>
-                           <p>Haloooooooooa</p>
+                           <p></p>
                       
                 </div>
             )}
@@ -171,7 +171,7 @@ const toggleAccessoriestBox = () => {
                         </Nav>
                         <Nav className="ms-auto">
                             <Nav.Link href="#search"><Image src={SearchIcon} width="20" className="icon" alt="Search" /></Nav.Link>
-                            <Nav.Link href="#cart"><Image src={Car} width="20" className="icon" alt="Cart" /></Nav.Link>
+                            <Nav.Link href="/Cart"><Image src={Car} width="20" className="icon" alt="Cart" /></Nav.Link>
                         </Nav>
                     </Navbar.Collapse>
                 {/*</Container>*/} 
