@@ -126,7 +126,6 @@ export const Home = () => {
                 <Button variant="primary">Go somewhere</Button>
               </Card.Body>
             </Card>
-            }
                   </Container>
                 </Row>
                 <div style={{ backgroundColor: 'white', height: '100px' }}></div>
