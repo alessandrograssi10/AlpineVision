@@ -48,28 +48,21 @@
     flex-direction: column;
     justify-content: center; /* Centra il contenuto verticalmente */
 }
-.image-radio {
-    width: 30px; /* Imposta la larghezza dell'immagine più piccola */
-    height: auto; /* Mantiene le proporzioni dell'immagine */
-    cursor: pointer;
-    border: 2px solid transparent; /* Bordi trasparenti per non-selezionati */
-    margin-right: 10px; /* Aggiunge un po' di spazio tra un'immagine e l'altra */
-}
-
-.image-radio.selected {
-    border-color: rgb(6, 233, 195); /* o qualsiasi colore preferisci per indicare la selezione */
-}.image-radio-label {
+.image-radio-label {
     display: inline-block;
-    width: 50px; /* o la dimensione desiderata per le tue immagini */
-    height: 50px; /* mantiene le proporzioni quadrate */
-    border-radius: 50%; /* rende l'etichetta completamente rotonda */
-    background-size: cover; /* assicura che l'immagine copra l'intera etichetta */
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-size: cover;
     cursor: pointer;
-    border: 2px solid transparent; /* bordo trasparente quando non selezionato */
-    background-position: center; /* centra l'immagine di sfondo */
+    border: 2px solid transparent;
+    background-position: center;
     margin: 10px;
 }
 
-.image-radio-button input[type="radio"]:checked + .image-radio-label {
-    border-color: #007bff; /* Cambia il colore del bordo quando selezionato */
+.image-radio-label.selected {
+    border-color: #000000; /* Colore del bordo per il pulsante selezionato */
+}
+.image-radio-button input[type="radio"] {
+    display: none; /* Nasconde visivamente l'input radio ma lo mantiene nel DOM */
 }
