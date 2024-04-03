@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Navbar, Nav, Image } from 'react-bootstrap';
+import { Container, Navbar, Nav, Image ,Row,Col} from 'react-bootstrap';
 import Immagine2 from '../../assets/Images/Asset 1.png';
 import SearchIcon from '../../assets/Images/Sicon.png';
 import Car from '../../assets/Images/shopping-cart.png';
@@ -125,20 +125,29 @@ const toggleAccessoriestBox = () => {
                     
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
-                        <Nav className="me-auto"onMouseEnter={OpenAllBoxes} onMouseLeave={closeAllBoxes}>
+                        <Nav className="me-auto bold"onMouseEnter={OpenAllBoxes} onMouseLeave={closeAllBoxes}>
                           <div  onMouseEnter={toggleProductBox} onMouseLeave={cancelToggleBox}>
-                            <Nav.Link href="/Products" >PRODUCTS</Nav.Link>
+                            <Nav.Link className="bold" href="/Products" >PRODUCTS</Nav.Link>
                                 {showProductBox && (
                                    <div className={`info-box ${isClosing ? 'closing' : isOpening ? 'opening' : ''}`} >
-
-                                   <p>Qui puoi inserire informazioni sui prodotti o un form.</p>
-      
+                                    <Row>
+                                      <Col md={4} className="d-flex flex-column">
+                                      <p>MASCHERE</p>
+                                      <p>-Eternal Aura</p>
+                                      <p>-Ethereal Spirit</p>
+                                      </Col>
+                                      <Col md={4} className="d-flex flex-column">
+                                      <p>OCCHIALI</p>
+                                      <p>-Clarity Peaks</p>
+                                      <p>-Horizon Gaze</p>
+                                      </Col>
+                                    </Row>
                                    </div>
                                 )}
                             </div>
 
                             <div  onMouseEnter={toggleAccessoriestBox} onMouseLeave={cancelToggleBox}>
-                            <Nav.Link href="/Accessories">ACCESSORIES</Nav.Link>
+                            <Nav.Link className="bold" href="/Accessories">ACCESSORIES</Nav.Link>
                                 {showAccessoriesBox && (
                                    <div className={`info-box ${isClosing ? 'closing' : isOpening ? 'opening' : ''}`} >
 
@@ -149,7 +158,7 @@ const toggleAccessoriestBox = () => {
                             </div>
 
                             <div  onMouseEnter={toggleBlogBox} onMouseLeave={cancelToggleBox}>
-                            <Nav.Link href="/Blog" >BLOG</Nav.Link>
+                            <Nav.Link className="bold" href="/Blog" >BLOG</Nav.Link>
                                 {showBlogBox && (
                                    <div className={`info-box ${isClosing ? 'closing' : isOpening ? 'opening' : ''}`} >
 
@@ -160,7 +169,7 @@ const toggleAccessoriestBox = () => {
                             </div>
 
                             <div  onMouseEnter={toggleAssistanceBox} onMouseLeave={cancelToggleBox}>
-                            <Nav.Link href="/Support" >SUPPORT</Nav.Link>
+                            <Nav.Link className="bold" href="/Support" >SUPPORT</Nav.Link>
                             {showAssistanceBox && (
                              <div className={`info-box ${isClosing ? 'closing' : isOpening ? 'opening' : ''}`}>
                            <p></p>

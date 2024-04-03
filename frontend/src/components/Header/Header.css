@@ -23,6 +23,14 @@
   font-size: larger;
 
 }
+.bold {
+  font-weight: bold;
+  color: black !important; /* This will make the text color black */
+
+}
+.bold:hover {
+  /*text-decoration: underline; /* Adds an underline on hover */
+}
 
 .logo {
   vertical-align: middle;
