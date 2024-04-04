@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Navbar, Nav, Image ,Row,Col} from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 import Immagine2 from '../../assets/Images/Asset 1.png';
 import SearchIcon from '../../assets/Images/Sicon.png';
 import Car from '../../assets/Images/shopping-cart.png';
@@ -33,9 +34,13 @@ useEffect(() => {
   };
 }, []);
  
+const handleLinkClick = (linkName) => {
+  closeAllBoxes();
+};
+
 const cancelToggleBox = () => {
+  if(!isLargeScreen) return;
   clearTimeout(timeoutId);
-  // Potresti voler nascondere il box qui, o gestire l'evento in altro modo
 };
 const toggleBlogBox = () => {
   if(!isLargeScreen) return;
@@ -46,6 +51,7 @@ const toggleBlogBox = () => {
       setShowAccessoriesBox(false);
       setShowAssistanceBox(false);
       setShowProductBox(false);
+
     }, 100);
     setTimeoutId(id);
   }
@@ -109,7 +115,6 @@ const toggleAccessoriestBox = () => {
           setShowAssistanceBox(false);
           setShowAccessoriesBox(false);
           setShowBlogBox(false);
-
       }, 200); // Assicurati che questo valore corrisponda alla durata dell'animazione CSS
   };
 
@@ -118,16 +123,17 @@ const toggleAccessoriestBox = () => {
             <Navbar expand="lg" className="custom-navbar" >
              {/*<Container className='con'>*/} 
 
-                    <Navbar.Brand href="/home" className="navbar-brand-bold">
+                    <Navbar.Brand as={Link} to="/home" className="navbar-brand-bold">
                         <Image src={Immagine2} width="50" className="d-inline-block align-center logo" alt="Logo" />
                         ALPINE VISION
                     </Navbar.Brand>
                     
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
-                        <Nav className="me-auto bold"onMouseEnter={OpenAllBoxes} onMouseLeave={closeAllBoxes}>
-                          <div  onMouseEnter={toggleProductBox} onMouseLeave={cancelToggleBox}>
-                            <Nav.Link className="bold" href="/Products" >PRODUCTS</Nav.Link>
+                      
+                        <Nav to="/Blog" className="me-auto"onMouseEnter={OpenAllBoxes} onMouseLeave={closeAllBoxes}>
+                          <div onMouseEnter={toggleProductBox} onMouseLeave={cancelToggleBox}>
+                            <Nav.Link as={Link} to="/Products" onClick={() => handleLinkClick('Products')} className={`bold ${showProductBox ? 'hovered' : ''}`}>PRODUCTS</Nav.Link>
                                 {showProductBox && (
                                    <div className={`info-box ${isClosing ? 'closing' : isOpening ? 'opening' : ''}`} >
                                     <Row>
@@ -147,7 +153,7 @@ const toggleAccessoriestBox = () => {
                             </div>
 
                             <div  onMouseEnter={toggleAccessoriestBox} onMouseLeave={cancelToggleBox}>
-                            <Nav.Link className="bold" href="/Accessories">ACCESSORIES</Nav.Link>
+                            <Nav.Link as={Link} to="/Accessories" onClick={() => handleLinkClick('Accessories')} className={`bold ${showAccessoriesBox ? 'hovered' : ''}`}>ACCESSORIES</Nav.Link>
                                 {showAccessoriesBox && (
                                    <div className={`info-box ${isClosing ? 'closing' : isOpening ? 'opening' : ''}`} >
 
@@ -158,7 +164,7 @@ const toggleAccessoriestBox = () => {
                             </div>
 
                             <div  onMouseEnter={toggleBlogBox} onMouseLeave={cancelToggleBox}>
-                            <Nav.Link className="bold" href="/Blog" >BLOG</Nav.Link>
+                            <Nav.Link as={Link} to="/Blog" onClick={() => handleLinkClick('Blog')} className={`bold ${showBlogBox ? 'hovered' : ''}`}  >BLOG</Nav.Link>
                                 {showBlogBox && (
                                    <div className={`info-box ${isClosing ? 'closing' : isOpening ? 'opening' : ''}`} >
 
@@ -169,7 +175,7 @@ const toggleAccessoriestBox = () => {
                             </div>
 
                             <div  onMouseEnter={toggleAssistanceBox} onMouseLeave={cancelToggleBox}>
-                            <Nav.Link className="bold" href="/Support" >SUPPORT</Nav.Link>
+                            <Nav.Link as={Link} to="/Support" onClick={() => handleLinkClick('Support')} className={`bold ${showAssistanceBox ? 'hovered' : ''}`}>SUPPORT</Nav.Link>
                             {showAssistanceBox && (
                              <div className={`info-box ${isClosing ? 'closing' : isOpening ? 'opening' : ''}`}>
                            <p></p>

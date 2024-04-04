@@ -24,12 +24,12 @@
 
 }
 .bold {
-  font-weight: bold;
-  color: black !important; /* This will make the text color black */
-
+  color: #1A1B25 !important; /* This will make the text color black */
 }
-.bold:hover {
-  /*text-decoration: underline; /* Adds an underline on hover */
+.bold:hover,
+.bold.hovered {
+  font-weight: bold!important;
+  text-decoration: underline !important;
 }
 
 .logo {

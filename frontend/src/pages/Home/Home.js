@@ -2,23 +2,33 @@ import React from 'react';
 import Immagine from '../../assets/Images/mask.png';
 import Immagine2 from '../../assets/Images/maskL.png';
 import Immagine3 from '../../assets/Images/col2.png';
+import Immagine4 from '../../assets/Images/Bg.png';
 
 import { Container,Card, Row, Col, Button, Image } from 'react-bootstrap';
 import './Home.css';
+//            <h2>La vetta è solo l'inizio.</h2>
 
 export const Home = () => {
     return (
       <Container fluid className="p-0 m-0 ">
+        <Row className="ml-0 mr-0 no-space-row">
+        <div style={{ backgroundColor: 'white', height: '50px' }}></div>
+
+        <Col className="text-center bg-white text-black p-3">
+            <h3>Ogni discesa racconta una nuova storia.</h3>
+          </Col>
+        <Image src={Immagine4} className="img-fluid-no-space" />
+
+        </Row>
         <Row className="m-0 no-space-row">
           <div style={{ backgroundColor: 'black', height: '50px' }}></div>
 
           <Col className="text-center bg-black text-white p-3">
-            <h2>La vetta è solo l'inizio.</h2>
-            <h3>Ogni discesa racconta una nuova storia.</h3>
             <div style={{ backgroundColor: 'black', height: '50px' }}></div>
             <h1 className="custom-h1">Eternal Aura</h1>
           </Col>
         </Row>
+        
         <Row className="m-0 no-space-row">
           <Col className="p-0 m-0">
             <Image src={Immagine} className="img-fluid-no-space" />

@@ -1,7 +1,7 @@
 import logo from './assets/Images/logo.svg';
 import './App.css';
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { Home } from './pages/Home/Home.js';
 import { Products } from './pages/Products/Products.js';
 import { Accessories } from './pages/Accessories/Accessories.js';
@@ -17,9 +17,10 @@ class App extends Component {
   render(){
   return (
     <React.Fragment>
-      <Header/>
       <Router>
-        <Routes>
+      <Header/>
+      
+      <Routes>
           <Route exact path ="/" Component={Home}/>
           <Route exact path ="/Home" Component={Home}/>
           <Route exact path ="/Products" Component={Products}/>
@@ -29,9 +30,11 @@ class App extends Component {
           <Route exact path ="/Cart" Component={Cart}/>
           <Route exact path ="/EternalAura" Component={EternalAura}/>
 
-        </Routes>
-      </Router>
+          </Routes>
+
       <Footer/>
+      </Router>
+
     </React.Fragment>
   );
   }
