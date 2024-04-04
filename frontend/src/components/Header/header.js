@@ -153,7 +153,7 @@ const toggleAccessoriestBox = () => {
                             </div>
 
                             <div  onMouseEnter={toggleAccessoriestBox} onMouseLeave={cancelToggleBox}>
-                            <Nav.Link as={Link} to="/Accessories" onClick={() => handleLinkClick('Accessories')} className={`bold ${showAccessoriesBox ? 'hovered' : ''}`}>ACCESSORIES</Nav.Link>
+                            <Nav.Link as={Link} to="/Accessories" onClick={() => handleLinkClick('Accessories')} class="hover-3" className={`bold ${showAccessoriesBox ? 'hovered' : ''}`}>ACCESSORIES</Nav.Link>
                                 {showAccessoriesBox && (
                                    <div className={`info-box ${isClosing ? 'closing' : isOpening ? 'opening' : ''}`} >
 

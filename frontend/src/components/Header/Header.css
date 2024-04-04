@@ -25,12 +25,15 @@
 }
 .bold {
   color: #1A1B25 !important; /* This will make the text color black */
+  position: relative;
+
 }
 .bold:hover,
 .bold.hovered {
   font-weight: bold!important;
   text-decoration: underline !important;
 }
+
 
 .logo {
   vertical-align: middle;
@@ -131,3 +134,5 @@
   width: 100vw !important;
   padding: 0px !important;
 }
+
+
