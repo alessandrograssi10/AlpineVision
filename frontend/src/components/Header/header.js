@@ -121,7 +121,7 @@ const toggleAccessoriestBox = () => {
 
     return (
         <>
-            <Navbar expand="lg" className="custom-navbar" >
+            <Navbar id="top" expand="lg" className="custom-navbar" >
              {/*<Container className='con'>*/} 
 
                     <Navbar.Brand as={Link} to="/home" className="navbar-brand-bold">

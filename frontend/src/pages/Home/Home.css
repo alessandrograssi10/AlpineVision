@@ -2,20 +2,32 @@
     font-size: 50px; /* Imposta la dimensione del font a 32px, modificabile in base alle tue esigenze */
     font-weight: bold; /* Rende il testo in grassetto */
   }
-  .no-space {
-    margin: 0 !important;
-    padding: 0 !important;
-  }
+
+#explore-btn{
+  width:15vw;
+  height:8vh;
+
+}
+
+#explore-text{
+  font-size:1.5em;
+  margin-top: 5px;
+}
+
+.no-space {
+  margin: 0 !important;
+  padding: 0 !important;
+}
   
-  .no-space-row > [class^="col"] {
-    padding-right: 0 !important;
-    padding-left: 0 !important;
-  }
+.no-space-row > [class^="col"] {
+  padding-right: 0 !important;
+  padding-left: 0 !important;
+}
   
-  .img-fluid-no-space {
-    display: block;
-    max-width: 100%;
-    height: auto;
-    margin: 0 auto;
-  }
+.img-fluid-no-space {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 0 auto;
+}
   

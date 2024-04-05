@@ -2,12 +2,12 @@ import logo from './assets/Images/logo.svg';
 import './App.css';
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import { Home } from './pages/Home/Home.js';
-import { Products } from './pages/Products/Products.js';
-import { Accessories } from './pages/Accessories/Accessories.js';
-import { Blog } from './pages/Blog/Blog.js';
-import { Support } from './pages/Support/Support.js';
-import { Cart } from './pages/Cart/Cart.js'
+import { Home } from './pages/Home/Home.jsx';
+import { Products } from './pages/Products/Products.jsx';
+import { Accessories } from './pages/Accessories/Accessories.jsx';
+import { Blog } from './pages/Blog/Blog.jsx';
+import { Support } from './pages/Support/Support.jsx';
+import { Cart } from './pages/Cart/Cart.jsx'
 import { EternalAura } from './pages/Products/EternalAura/EternalAura.js'
 
 import Header from './components/Header/header.js';

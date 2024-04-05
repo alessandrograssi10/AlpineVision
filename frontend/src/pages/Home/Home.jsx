@@ -5,8 +5,10 @@ import Immagine3 from '../../assets/Images/col2.png';
 import Immagine4 from '../../assets/Images/Bg.png';
 import Immagine5 from '../../assets/Images/m.png';
 import Immagine6 from '../../assets/Images/mc.png';
-
+import { Link } from 'react-router-dom';
+import {HashLink} from 'react-router-hash-link';
 import { Container,Card, Row, Col, Button, Image } from 'react-bootstrap';
+
 import './Home.css';
 //            <h2>La vetta è solo l'inizio.</h2>
 
@@ -36,11 +38,13 @@ export const Home = () => {
             <Image src={Immagine} className="img-fluid-no-space" />
           </Col>
         </Row>
-        <Row className="justify-content-center bg-black m-0 ">
+        <Row className="justify-content-center  bg-black m-0 ">
           <Col xs={12} className="d-flex justify-content-center align-items-center pb-5">
-            <Button variant="outline-light" size="lg">PREORDER NOW</Button>
-            <div style={{ width: '10px' }}></div>
-            <Button href="/EternalAura" variant="outline-light" size="lg">EXPLORE</Button>
+          <Button id="explore-btn" as={HashLink} to="/EternalAura#top" className="btn">
+            <div id="explore-text">Explore</div>
+            </Button>
+
+  
           </Col>
         </Row>
         <Row>       

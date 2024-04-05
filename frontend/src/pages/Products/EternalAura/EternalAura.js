@@ -26,7 +26,7 @@ export const EternalAura = () => {
 
     return (
         <Container fluid className="p-0">
-            <Row className="d-flex align-items-stretch pt-5">
+            <Row  className="d-flex align-items-stretch pt-5">
                 <Col md={6} className="d-flex flex-column">
                     <Carousel activeIndex={activeIndex} onSelect={(selectedIndex, e) => setActiveIndex(selectedIndex)}>
                         {imageSets[selectedSetIndex].map((imageSrc, idx) => (
