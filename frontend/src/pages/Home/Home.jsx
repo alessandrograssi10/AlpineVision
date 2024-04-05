@@ -3,7 +3,7 @@ import Immagine from '../../assets/Images/mask.png';
 import Immagine2 from '../../assets/Images/maskL.png';
 import Immagine3 from '../../assets/Images/col2.png';
 import Immagine4 from '../../assets/Images/Bg.png';
-import Immagine5 from '../../assets/Images/m.png';
+import Immagine5 from '../../assets/Images/m3.png';
 import Immagine6 from '../../assets/Images/mc.png';
 import { Link } from 'react-router-dom';
 import {HashLink} from 'react-router-hash-link';
@@ -18,14 +18,14 @@ export const Home = () => {
         <Row className="ml-0 mr-0 no-space-row">
         <div style={{ backgroundColor: 'white', height: '50px' }}></div>
 
-        <Col className="text-center bg-white text-black p-3">
-            <h3>Ogni discesa racconta una nuova storia.</h3>
+        <Col style={{ position: "absolute" }}className="text-left m-0 bg-white text-black p-3">
+            <h3 className='motto'>Ogni discesa racconta una nuova storia.</h3>
           </Col>
         <Image src={Immagine4} className="img-fluid-no-space" />
 
         </Row>
         <Row className="m-0 no-space-row">
-          <div style={{ backgroundColor: 'black', height: '50px' }}></div>
+          <div style={{ backgroundColor: 'black', height: '5px' }}></div>
 
           <Col className="text-center bg-black text-white p-3">
             <div style={{ backgroundColor: 'black', height: '50px' }}></div>
@@ -40,9 +40,9 @@ export const Home = () => {
         </Row>
         <Row className="justify-content-center  bg-black m-0 ">
           <Col xs={12} className="d-flex justify-content-center align-items-center pb-5">
-          <Button id="explore-btn" as={HashLink} to="/EternalAura#top" className="btn">
-            <div id="explore-text">Explore</div>
-            </Button>
+          <Button id="explore-btn" as={HashLink} to="/EternalAura#top" className="btn btn-outline-light btn-lg mt-5">
+    <div id="explore-text">Acquista ora</div>
+</Button>
 
   
           </Col>
