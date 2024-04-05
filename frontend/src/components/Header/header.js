@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Container, Navbar, Nav, Image ,Row,Col} from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import Immagine2 from '../../assets/Images/Asset 1.png';
+import Immagine3 from '../../assets/Images/maskL.png';
 import SearchIcon from '../../assets/Images/Sicon.png';
 import Car from '../../assets/Images/shopping-cart.png';
 import './Header.css';
@@ -139,6 +140,7 @@ const toggleAccessoriestBox = () => {
                                     <Row>
                                       <Col md={4} className="d-flex flex-column">
                                       <p>MASCHERE</p>
+                                      <Image src={Immagine3} width="100" className="d-inline-block align-center logo mt-2 mb-3" alt="Logo" />
                                       <p>-Eternal Aura</p>
                                       <p>-Ethereal Spirit</p>
                                       </Col>

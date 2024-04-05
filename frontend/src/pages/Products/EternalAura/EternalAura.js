@@ -49,14 +49,14 @@ export const EternalAura = () => {
                             <h4 className="text-left text-black">black</h4>
                         </Row>
                         <Row>
-                            <div className="d-flex align-items-center">
+                            <div className="d-flex align-items-left m-0 p-0">
                                 {[Immagine3, Immagine3].map((_, index) => (
                                     <Form.Check 
                                         key={index}
                                         type="radio"
                                         id={`radio-${index}`}
                                         name="image-radio"
-                                        className="image-radio-button"
+                                        className="image-radio-button m-0 p-0"
                                         onChange={handleRadioChange}
                                         checked={selectedSetIndex === index}
                                         value={index}

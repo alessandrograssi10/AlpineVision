@@ -3,6 +3,8 @@ import Immagine from '../../assets/Images/mask.png';
 import Immagine2 from '../../assets/Images/maskL.png';
 import Immagine3 from '../../assets/Images/col2.png';
 import Immagine4 from '../../assets/Images/Bg.png';
+import Immagine5 from '../../assets/Images/m.png';
+import Immagine6 from '../../assets/Images/mc.png';
 
 import { Container,Card, Row, Col, Button, Image } from 'react-bootstrap';
 import './Home.css';
@@ -41,6 +43,10 @@ export const Home = () => {
             <Button href="/EternalAura" variant="outline-light" size="lg">EXPLORE</Button>
           </Col>
         </Row>
+        <Row>       
+           <Image src={Immagine5} className="img-fluid-no-space w-100 h-100" />
+        </Row>
+
         <Row className="m-0 ">
           <div style={{ backgroundColor: 'white', height: '50px' }}></div>
 
@@ -61,7 +67,9 @@ export const Home = () => {
         </Row>
         <div style={{ backgroundColor: 'white', height: '100px' }}></div>
 
-
+        <Row>       
+           <Image src={Immagine6} className="img-fluid-no-space w-100 h-100" />
+        </Row>
         <Row className="m-0 ">
           <div style={{ backgroundColor: 'black', height: '50px' }}></div>
 
@@ -71,6 +79,7 @@ export const Home = () => {
           <div style={{ backgroundColor: 'black', height: '25px' }}></div>
 
         </Row>
+        
         <Row className="align-items-center text-white  bg-black">
           <Col md={4} className="text-center px-5  ">
             <h4>Le nostre lenti sono dotate di una gamma di colori vivaci e selettivi, ottimizzate per migliorare il contrasto e la percezione della profondità in varie condizioni di luce. Questa tecnologia cromatica avanzata assicura una visione chiara e dettagliata, permettendo agli sciatori di leggere il terreno con precisione e sicurezza.</h4>
@@ -81,6 +90,9 @@ export const Home = () => {
 
         </Row>
         <div style={{ backgroundColor: 'black', height: '100px' }}></div>
+        <Row>       
+           <Image src={Immagine5} className="img-fluid-no-space w-100 h-100" />
+        </Row>
         <Row className="m-0 ">
           <div style={{ backgroundColor: 'white', height: '50px' }}></div>
 
