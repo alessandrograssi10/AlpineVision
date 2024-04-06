@@ -13,11 +13,25 @@ import { EternalAura } from './pages/Products/EternalAura/EternalAura.js'
 import Header from './components/Header/header.js';
 import Footer from './components/Footer/Footer.js';
 
+import { useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
+
+function ScrollToTop() {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  return null;
+}
+ 
 class App extends Component {
   render(){
   return (
     <React.Fragment>
       <Router>
+      <ScrollToTop />
       <Header/>
       
       <Routes>

@@ -6,7 +6,6 @@ import Immagine4 from '../../assets/Images/Bg.png';
 import Immagine5 from '../../assets/Images/m3.png';
 import Immagine6 from '../../assets/Images/mc.png';
 import { Link } from 'react-router-dom';
-import {HashLink} from 'react-router-hash-link';
 import { Container,Card, Row, Col, Button, Image } from 'react-bootstrap';
 
 import './Home.css';
@@ -40,7 +39,7 @@ export const Home = () => {
         </Row>
         <Row className="justify-content-center  bg-black m-0 ">
           <Col xs={12} className="d-flex justify-content-center align-items-center pb-5">
-          <Button id="explore-btn" as={HashLink} to="/EternalAura#top" className="btn btn-outline-light btn-lg mt-5">
+          <Button id="explore-btn" as={Link} to="/EternalAura" className="btn btn-outline-light btn-lg mt-5">
     <div id="explore-text">Acquista ora</div>
 </Button>
 
