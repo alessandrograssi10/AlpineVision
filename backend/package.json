@@ -9,6 +9,7 @@
   "author": "Alpine Vision TEAM",
   "license": "ISC",
   "dependencies": {
+    "cors": "^2.8.5",
     "express.js": "^1.0.0",
     "mongodb": "^6.5.0"
   }
