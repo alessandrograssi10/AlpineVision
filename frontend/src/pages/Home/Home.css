@@ -2,20 +2,58 @@
     font-size: 50px; /* Imposta la dimensione del font a 32px, modificabile in base alle tue esigenze */
     font-weight: bold; /* Rende il testo in grassetto */
   }
-  .no-space {
-    margin: 0 !important;
-    padding: 0 !important;
+
+  #explore-btn {
+    width: 15vw;
+    height: 8vh;
+    font-size: 1.1vw;
+    border: 2px solid white; /* Outline bianco */
+    background-color: transparent; /* Sfondo trasparente */
+    color: white; /* Colore del testo */
+    font-weight: bold; /* Rende il testo in grassetto */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background-color 0.3s ease, color 0.3s ease; /* Transizione morbida per hover */
   }
   
-  .no-space-row > [class^="col"] {
-    padding-right: 0 !important;
-    padding-left: 0 !important;
+  #explore-btn:hover, #explore-btn:focus {
+    background-color: white; /* Cambia lo sfondo al passaggio del mouse o focus */
+    color: #000000; /* Cambia il colore del testo per contrastare con lo sfondo */
   }
   
-  .img-fluid-no-space {
-    display: block;
-    max-width: 100%;
-    height: auto;
-    margin: 0 auto;
+  #explore-text {
+    pointer-events: none; /* Impedisce l'interazione diretta con il testo, se necessario */
   }
+
+#explore-text{
+  font-size:1.5em;
+  margin-top: 5px;
+}
+
+.no-space {
+  margin: 0 !important;
+  padding: 0 !important;
+}
   
+.no-space-row > [class^="col"] {
+  padding-right: 0 !important;
+  padding-left: 0 !important;
+}
+  
+.img-fluid-no-space {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 0 auto;
+}
+  
+.motto {
+  font-weight: bold; /* Rende il testo in grassetto */
+  position: absolute;
+  font-style: italic; /* Rende il testo in corsivo */
+  left: 15vw;
+  margin-top: 1.5em;
+  color: #46626e;
+  font-size: 2vw;
+}

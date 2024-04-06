@@ -1,19 +1,10 @@
 .custom-navbar {
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.8);
-  background-color: hsl(210, 17%, 98%); /* Un colore di sfondo leggero per la navbar */
-  z-index: 1100!important; /* Assicurati che sia inferiore a quello dei box ma superiore al contenuto della pagina */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  background-color: hsl(210, 17%, 98%); 
+  z-index: 1100!important; 
   padding: 0rem 1rem !important;
-
-  /*min-height: 56px!important; /* Imposta l'altezza della Navbar */
-  /*display: flex!important;
-  align-items: center!important; /* Centra il contenuto verticalmente */
-
 }
 
-/*.custom-navbar, .custom-navbar .container-fluid, .custom-navbar .navbar-collapse {
-  /*min-height: 56px !important;
-  height: 56px !important;
-}*/
 
 .custom-navbar .navbar-nav {
   display: flex!important;
@@ -32,6 +23,17 @@
   font-size: larger;
 
 }
+.bold {
+  color: #1A1B25 !important; /* This will make the text color black */
+  position: relative;
+
+}
+.bold:hover,
+.bold.hovered {
+  font-weight: bold!important;
+  text-decoration: underline !important;
+}
+
 
 .logo {
   vertical-align: middle;
@@ -45,7 +47,6 @@
   margin-right: 10px;
 
 }
-
 
 @keyframes slideDown {
   from {
@@ -74,14 +75,13 @@
   animation: slideDown 0.2s ease-out forwards;}
 .info-box {
   position: absolute;
-  top: 56px; /* Adegua in base all'altezza della navbar */
+  top: 56px; 
   left: 0;
   width: 100%;
-  background-color: hsl(210, 17%, 98%); /* Un colore di sfondo leggero per la navbar */
+  background-color: hsl(210, 17%, 98%); 
   padding: 20px;
-  /*box-shadow: 0 2px 5px rgba(0, 0, 0, 0.8);*/
-  z-index: 1050!important; /* Assicura che il box appaia sopra gli altri contenuti */
-  /*animation: slideDown 0.2s ease-out forwards;*/
+  
+  z-index: 1050!important; 
 }
 
 .info-box p {
@@ -134,3 +134,5 @@
   width: 100vw !important;
   padding: 0px !important;
 }
+
+

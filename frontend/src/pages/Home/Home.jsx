@@ -2,35 +2,54 @@ import React from 'react';
 import Immagine from '../../assets/Images/mask.png';
 import Immagine2 from '../../assets/Images/maskL.png';
 import Immagine3 from '../../assets/Images/col2.png';
-
+import Immagine4 from '../../assets/Images/Bg.png';
+import Immagine5 from '../../assets/Images/m3.png';
+import Immagine6 from '../../assets/Images/mc.png';
+import { Link } from 'react-router-dom';
 import { Container,Card, Row, Col, Button, Image } from 'react-bootstrap';
+
 import './Home.css';
+//            <h2>La vetta è solo l'inizio.</h2>
 
 export const Home = () => {
     return (
       <Container fluid className="p-0 m-0 ">
+        <Row className="ml-0 mr-0 no-space-row">
+        <div style={{ backgroundColor: 'white', height: '50px' }}></div>
+
+        <Col style={{ position: "absolute" }}className="text-left m-0 bg-white text-black p-3">
+            <h3 className='motto'>Ogni discesa racconta una nuova storia.</h3>
+          </Col>
+        <Image src={Immagine4} className="img-fluid-no-space" />
+
+        </Row>
         <Row className="m-0 no-space-row">
-          <div style={{ backgroundColor: 'black', height: '50px' }}></div>
+          <div style={{ backgroundColor: 'black', height: '5px' }}></div>
 
           <Col className="text-center bg-black text-white p-3">
-            <h2>La vetta è solo l'inizio.</h2>
-            <h3>Ogni discesa racconta una nuova storia.</h3>
             <div style={{ backgroundColor: 'black', height: '50px' }}></div>
             <h1 className="custom-h1">Eternal Aura</h1>
           </Col>
         </Row>
+        
         <Row className="m-0 no-space-row">
           <Col className="p-0 m-0">
             <Image src={Immagine} className="img-fluid-no-space" />
           </Col>
         </Row>
-        <Row className="justify-content-center bg-black m-0 ">
+        <Row className="justify-content-center  bg-black m-0 ">
           <Col xs={12} className="d-flex justify-content-center align-items-center pb-5">
-            <Button variant="outline-light" size="lg">PREORDER NOW</Button>
-            <div style={{ width: '10px' }}></div>
-            <Button href="/EternalAura" variant="outline-light" size="lg">EXPLORE</Button>
+          <Button id="explore-btn" as={Link} to="/EternalAura" className="btn btn-outline-light btn-lg mt-5">
+    <div id="explore-text">Acquista ora</div>
+</Button>
+
+  
           </Col>
         </Row>
+        <Row>       
+           <Image src={Immagine5} className="img-fluid-no-space w-100 h-100" />
+        </Row>
+
         <Row className="m-0 ">
           <div style={{ backgroundColor: 'white', height: '50px' }}></div>
 
@@ -51,7 +70,9 @@ export const Home = () => {
         </Row>
         <div style={{ backgroundColor: 'white', height: '100px' }}></div>
 
-
+        <Row>       
+           <Image src={Immagine6} className="img-fluid-no-space w-100 h-100" />
+        </Row>
         <Row className="m-0 ">
           <div style={{ backgroundColor: 'black', height: '50px' }}></div>
 
@@ -61,6 +82,7 @@ export const Home = () => {
           <div style={{ backgroundColor: 'black', height: '25px' }}></div>
 
         </Row>
+        
         <Row className="align-items-center text-white  bg-black">
           <Col md={4} className="text-center px-5  ">
             <h4>Le nostre lenti sono dotate di una gamma di colori vivaci e selettivi, ottimizzate per migliorare il contrasto e la percezione della profondità in varie condizioni di luce. Questa tecnologia cromatica avanzata assicura una visione chiara e dettagliata, permettendo agli sciatori di leggere il terreno con precisione e sicurezza.</h4>
@@ -71,6 +93,9 @@ export const Home = () => {
 
         </Row>
         <div style={{ backgroundColor: 'black', height: '100px' }}></div>
+        <Row>       
+           <Image src={Immagine5} className="img-fluid-no-space w-100 h-100" />
+        </Row>
         <Row className="m-0 ">
           <div style={{ backgroundColor: 'white', height: '50px' }}></div>
 
