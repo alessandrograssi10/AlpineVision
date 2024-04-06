@@ -1,0 +1,9 @@
+.motto2 {
+    font-weight: bold; /* Rende il testo in grassetto */
+    position: absolute;
+    font-style: italic; /* Rende il testo in corsivo */
+    left: 40vw;
+    margin-top: 0.5em;
+    color: #046586;
+    font-size: 5vw;
+  }
