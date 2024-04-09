@@ -39,7 +39,7 @@ export const Home = () => {
         </Row>
         <Row className="justify-content-center  bg-black m-0 ">
           <Col xs={12} className="d-flex justify-content-center align-items-center pb-5">
-          <Button id="explore-btn" as={Link} to="/EternalAura" className="btn btn-outline-light btn-lg mt-5">
+          <Button id="explore-btn" as={Link} to="/EternalAura" className=" button btn-outline-light btn-lg mt-5">
     <div id="explore-text">Acquista ora</div>
 </Button>
 

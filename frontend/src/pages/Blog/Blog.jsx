@@ -41,13 +41,8 @@ export const Blog = () => {
                       <Card.Body>
                         <Card.Title>{post.title}</Card.Title>
                         <Card.Text>{post.description}</Card.Text>
-                        <Link to={`/BlogArticle/${post.id}`}>Leggi di più</Link>
-                      </Card.Body>
-                      <Card.Footer>
-                        <small className="text-muted">
-                          By {post.author} | {post.date}
-                        </small>
-                      </Card.Footer>
+                        <Button as={Link} to={`/BlogArticle/${post.id}`}variant="primary" className="mt-3">Leggi di più</Button>
+                      </Card.Body>         
                     </Col>
                   </Row>
                 </Card>
