@@ -42,7 +42,7 @@ const blogPosts = [
   {
     id: 'SKd',
 
-      title: 'Tips for Beginners: Learning to Ski',
+      title: 'Tips for Intermedium: Learning to Ski',
       image: 'http://localhost:3020/images/img1.webp',
       description: 'If you are new to skiing, check out these helpful tips to get started on the slopes.',
       author: 'Jane Smith',
@@ -50,7 +50,7 @@ const blogPosts = [
   },
   {
     id: 'SKbn',
-      title: 'Tips for Beginners: Learning to Ski',
+      title: 'Tips for Advanced: Learning to Ski',
       image: 'http://localhost:3020/images/img1.webp',
       description: 'If you are new to skiing, check out these helpful tips to get started on the slopes.',
       author: 'Jane Smith',

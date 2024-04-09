@@ -26,7 +26,7 @@ export const Blog = () => {
 
     return (
         <Container>
-      <Row>
+      <Row className='mt-4'>
         {blogPosts.map((post, index) => {
           if (index === 0) {
             // Primo post, occupa tutta la larghezza
