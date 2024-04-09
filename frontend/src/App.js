@@ -7,6 +7,8 @@ import { Home } from './pages/Home/Home.jsx';
 import { Products } from './pages/Products/Products.jsx';
 import { Accessories } from './pages/Accessories/Accessories.jsx';
 import { Blog } from './pages/Blog/Blog.jsx';
+import BlogArticle from './pages/Blog/BlogArticle.jsx';
+
 import { Support } from './pages/Support/Support.jsx';
 import { Cart } from './pages/Cart/Cart.jsx'
 import { EternalAura } from './pages/Products/EternalAura/EternalAura.js'
@@ -63,6 +65,8 @@ class App extends Component {
           <Route exact path ="/Products" Component={Products}/>
           <Route exact path ="/Accessories" Component={Accessories}/>
           <Route exact path ="/Blog" Component={Blog}/>
+          <Route  path="/BlogArticle/:id" component={BlogArticle} />
+
           <Route exact path ="/Support" Component={Support}/>
           <Route exact path ="/Cart" Component={Cart}/>
           <Route exact path ="/EternalAura" Component={EternalAura}/>
