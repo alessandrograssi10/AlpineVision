@@ -24,11 +24,19 @@ export const BlogEdit = () => {
     fileInputRef.current.click(); // Simula il click sull'input file quando il pulsante viene premuto
   };
 
-  const handleFileChange = (event) => {
+  const handleFileChange = (event, index) => {
     const file = event.target.files[0];
     if (file) {
-      // Puoi aggiungere qui la logica per gestire l'upload del file
-      console.log("File caricato:", file);
+      const updatedPosts = [...blogPosts];
+    // Verifica se l'elemento all'indice specificato esiste
+    if (updatedPosts[index]) {
+      // Aggiorna l'immagine del post relativo all'indice con la nuova immagine
+      updatedPosts[index].image = URL.createObjectURL(file);;
+      // Aggiorna lo stato con i post aggiornati
+      setBlogPosts(updatedPosts);
+    } else {
+      console.error("Elemento non trovato all'indice specificato:", index);
+    }
     }
   };
 
@@ -51,7 +59,7 @@ export const BlogEdit = () => {
                       <input
                         type="file"
                         ref={fileInputRef}
-                        onChange={handleFileChange}
+                        onChange={(event) => handleFileChange(event, index)}
                         style={{ display: 'none' }}
                         accept="image/*" 
                       />
