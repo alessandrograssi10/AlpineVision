@@ -2,9 +2,13 @@ import React, { useEffect, useState, useRef } from 'react';
 import { Container, Card, Row, Col, Button, Alert, Form } from 'react-bootstrap';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import Img from '../../../assets/Images/notfound.png';
 
 export const BlogEdit = () => {
   const [blogPosts, setBlogPosts] = useState([]);
+  const [blogPostsCopy, setBlogPostsCopy] = useState(false);
+  const [blogPostsVerify, setBlogPostsVerify] = useState(false);
+
   const fileInputRef = useRef(null);
 
   useEffect(() => {
@@ -12,6 +16,7 @@ export const BlogEdit = () => {
       try {
         const response = await axios.get('http://localhost:3020/blog-posts');
         setBlogPosts(response.data);
+        setBlogPostsCopy(response.data);
       } catch (error) {
         console.error("Errore nel recuperare i post del blog:", error);
       }
@@ -23,6 +28,7 @@ export const BlogEdit = () => {
   
 
   const handleFileChange = (event, index) => {
+    setBlogPostsVerify(true);
     const file = event.target.files[0];
     if (file) {
       const updatedPosts = [...blogPosts];
@@ -36,23 +42,27 @@ export const BlogEdit = () => {
   };
 
   const handleTitleChange = (event, index) => {
+    setBlogPostsVerify(true);
     const updatedPosts = [...blogPosts];
     updatedPosts[index].title = event.target.value;
     setBlogPosts(updatedPosts);
   };
   
   const handleDescriptionChange = (event, index) => {
+    setBlogPostsVerify(true);
     const updatedPosts = [...blogPosts];
     updatedPosts[index].description = event.target.value;
     setBlogPosts(updatedPosts);
   };
 
   const handleDeleteClick = (index) => {
+    setBlogPostsVerify(true);
     const updatedPosts = [...blogPosts];
     updatedPosts.splice(index, 1); // Rimuovi l'elemento dall'array
     setBlogPosts(updatedPosts);
   };
   const handleMoveUpClick = (index) => {
+    setBlogPostsVerify(true);
     if (index > 0) { // Verifica se l'elemento è già il primo nella lista
       const updatedPosts = [...blogPosts];
       const temp = updatedPosts[index];
@@ -63,6 +73,7 @@ export const BlogEdit = () => {
   };
   
   const handleMoveDownClick = (index) => {
+    setBlogPostsVerify(true);
     if (index < blogPosts.length - 1) { // Verifica se l'elemento è già l'ultimo nella lista
       const updatedPosts = [...blogPosts];
       const temp = updatedPosts[index];
@@ -71,13 +82,50 @@ export const BlogEdit = () => {
       setBlogPosts(updatedPosts);
     }
   };
+  const handleAddArticleClick = () => {
+    setBlogPostsVerify(true);
+    const newArticle = {
+      id: Math.random().toString(36).substr(2, 9), // Genera un ID univoco per il nuovo post
+      title: '', // Titolo vuoto, da compilare dall'utente
+      description: '', // Descrizione vuota, da compilare dall'utente
+      image: Img, // Nessuna immagine di default, l'utente può caricarne una successivamente
+      author: '', // Autore vuoto o un valore predefinito
+      date: new Date().toISOString().slice(0, 10) // Data attuale come stringa YYYY-MM-DD
+    };
+    
+    setBlogPosts([newArticle, ...blogPosts]); // Aggiungi il nuovo articolo all'inizio dell'array
+  };
+  const handleDeleteChanges = () => {
+    setBlogPostsVerify(false);
+    setBlogPosts(blogPostsCopy);
+  };
 
   return (
     <Container>
-      <Alert variant={'warning'} className='mt-3'>
+      <Alert variant={'warning'} className='m-3 mt-4'>
         YOU ARE IN EDIT MODE!!!!!
       </Alert>
-      
+      {blogPostsVerify && (
+        <Alert variant={'danger'} className='m-3 mt-4 d-flex align-items-center justify-content-between'>
+          DO YOU WANNA SAVE YOUR CHANGES?
+          <Button onClick={() => handleDeleteChanges()}className="float-end  " variant="outline-danger">
+            DISCARD
+          </Button>
+          <Button className="float-end " variant="outline-success">
+            SAVE
+          </Button>
+        </Alert>
+      )}
+
+
+      <Button 
+                        variant="success"
+                        className='m-3'
+                        onClick={handleAddArticleClick} // Aggiungi l'evento onClick qui
+
+                      >
+                        Add Article
+                      </Button>
       <Row>
         {blogPosts.map((post, index) => {
           if (index === 0) {
@@ -132,10 +180,10 @@ export const BlogEdit = () => {
                     <Col md={8}>
                       <Card.Body>
                         <Form.Group className="mb-3">
-                          <Form.Control type="text" value={post.title} onChange={(event) => handleTitleChange(event, index)} />
+                          <Form.Control type="text" value={post.title} placeholder="Title" onChange={(event) => handleTitleChange(event, index)} />
                         </Form.Group>
                         <Form.Group className="mb-1">
-                          <Form.Control as="textarea" rows={3} value={post.description} style={{ resize: 'none' }} onChange={(event) => handleDescriptionChange(event, index)} />
+                          <Form.Control as="textarea" rows={3} value={post.description} placeholder="Short description"style={{ resize: 'none' }} onChange={(event) => handleDescriptionChange(event, index)} />
                         </Form.Group>
                         <Button as={Link} to={`/BlogArticle/${post.id}`} variant="primary" className="mt-3">
                           Leggi di più
@@ -173,10 +221,10 @@ export const BlogEdit = () => {
                         Upload
                       </Button>
                   <Form.Group className="mb-3">
-                          <Form.Control type="text" value={post.title} onChange={(event) => handleTitleChange(event, index)} />
+                          <Form.Control type="text" value={post.title} placeholder="Title"onChange={(event) => handleTitleChange(event, index)} />
                         </Form.Group>
                         <Form.Group className="mb-1">
-                          <Form.Control as="textarea" rows={3} value={post.description} style={{ resize: 'none' }} onChange={(event) => handleDescriptionChange(event, index)} />
+                          <Form.Control as="textarea" rows={3} value={post.description} placeholder="Short description"style={{ resize: 'none' }} onChange={(event) => handleDescriptionChange(event, index)} />
                         </Form.Group>
                     <Link to={`/BlogArticle/${post.id}`}>Leggi di più</Link>
                     
