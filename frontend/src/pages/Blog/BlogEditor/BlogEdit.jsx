@@ -185,7 +185,7 @@ export const BlogEdit = () => {
                         <Form.Group className="mb-1">
                           <Form.Control as="textarea" rows={3} value={post.description} placeholder="Short description"style={{ resize: 'none' }} onChange={(event) => handleDescriptionChange(event, index)} />
                         </Form.Group>
-                        <Button as={Link} to={`/BlogArticle/${post.id}`} variant="primary" className="mt-3">
+                        <Button as={Link} to={`/BlogArticleEdit/${post.id}`} variant="primary" className="mt-3">
                           Leggi di più
                         </Button>                
                       </Card.Body>         
@@ -226,7 +226,7 @@ export const BlogEdit = () => {
                         <Form.Group className="mb-1">
                           <Form.Control as="textarea" rows={3} value={post.description} placeholder="Short description"style={{ resize: 'none' }} onChange={(event) => handleDescriptionChange(event, index)} />
                         </Form.Group>
-                    <Link to={`/BlogArticle/${post.id}`}>Leggi di più</Link>
+                    <Link to={`/BlogArticleEdit/${post.id}`}>Leggi di più</Link>
                     
                   </Card.Body>
                   <Card.Footer>
