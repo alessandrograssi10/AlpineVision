@@ -1,42 +1,78 @@
 const { ObjectId } = require('mongodb');
-const { db } = require('../config/database');
+const { getDb } = require('../config/database');
 
 const collectionName = 'Products';
 
-async function createProduct(productData) {
-    const collection = db.collection(collectionName);
-    const result = await collection.insertOne(productData);
-    return result.insertedId;
+async function createProduct(codice, nome, prezzo, categoria,descrizione, colore = null) {
+    try {
+        const db = getDb();
+        const productsCollection = db.collection('Products');
+        const productData = { codice, nome, prezzo,descrizione };
+        if (categoria !== null) {
+            productData.categoria = categoria;
+        }
+        if (colore !== null) {
+            productData.colore = colore;
+        }
+        const result = await productsCollection.insertOne(productData);
+        return result.insertedId;
+    } catch (error) {
+        console.error("Errore nella creazione del prodotto:", error);
+        throw error;
+    }
 }
 
-async function getProductById(productId) {
-    const collection = db.collection(collectionName);
-    const product = await collection.findOne({ _id: ObjectId(productId) });
-    return product;
-}
 
-async function updateProduct(productId, updateData) {
-    const collection = db.collection(collectionName);
-    const result = await collection.updateOne({ _id: ObjectId(productId) }, { $set: updateData });
-    return result.modifiedCount;
-}
+
+
 
 async function deleteProduct(productId) {
-    const collection = db.collection(collectionName);
-    const result = await collection.deleteOne({ _id: ObjectId(productId) });
-    return result.deletedCount;
+    try {
+        const db = getDb();
+        const productsCollection = db.collection(collectionName);  // Assicurati che 'collectionName' sia 'Products'
+        // Usa 'new' per creare una nuova istanza di ObjectId
+        const result = await productsCollection.deleteOne({ _id: new ObjectId(productId) });
+        return result;
+    } catch (error) {
+        console.error("Errore nell'eliminazione del prodotto:", error);
+        throw error;
+    }
 }
 
-async function listProducts() {
-    const collection = db.collection(collectionName);
-    const products = await collection.find({}).toArray();
-    return products;
+async function updateProductPrice(productId, newPrice) {
+    try {
+        const db = getDb();
+        const productsCollection = db.collection(collectionName);
+        const result = await productsCollection.updateOne(
+            { _id: new ObjectId(productId) },
+            { $set: { prezzo: newPrice } }
+        );
+        return result;
+    } catch (error) {
+        console.error("Errore nell'aggiornamento del prezzo del prodotto:", error);
+        throw error;
+    }
 }
+
+async function updateProductDescription(productId, newDescription) {
+    try {
+        const db = getDb();
+        const productsCollection = db.collection(collectionName);
+        const result = await productsCollection.updateOne(
+            { _id: new ObjectId(productId) },
+            { $set: { descrizione: newDescription } }
+        );
+        return result;
+    } catch (error) {
+        console.error("Errore nell'aggiornamento della descrizione del prodotto:", error);
+        throw error;
+    }
+}
+
 
 module.exports = {
     createProduct,
-    getProductById,
-    updateProduct,
     deleteProduct,
-    listProducts,
+    updateProductPrice,
+    updateProductDescription
 };
