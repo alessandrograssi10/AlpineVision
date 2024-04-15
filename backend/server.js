@@ -1,30 +1,18 @@
 const express = require('express');
-const cors = require('cors');
+const { connectToDatabase } = require('./config/database');
+const userRoutes = require('./routes/userRoutes');
+const productRoutes=require('./routes/productRoutes');
+
 const app = express();
+const PORT = process.env.PORT || 3000;
 
-app.use(cors()); // Questo abilita CORS per tutte le routes
+app.use(express.json());
 
-const port = 3020;
+connectToDatabase().then(() => {
+    app.use('/api/users', userRoutes);
+    app.use('/api/products', productRoutes);
 
-// Lista di nomi
-const products = [
-  'Alessandro',
-  'Beatrice',
-  'Carlo',
-  'Diana',
-  'Emanuele'
-];
-
-app.get('/', (req, res) => {
-  res.send('Hello World from Backend!');
-});
-
-// Nuovo endpoint per ottenere la lista di nomi
-app.get('/products', (req, res) => {
-  res.json(products); // Invia la lista di nomi come JSON
-});
-
-
-app.listen(port, () => {
-  console.log(`Backend listening at http://localhost:${port}`);
+    app.listen(PORT, () => {
+        console.log(`Server in ascolto sulla porta ${PORT}`);
+    });
 });
