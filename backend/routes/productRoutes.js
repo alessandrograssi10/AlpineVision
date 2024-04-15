@@ -37,7 +37,7 @@ router.get('/photo', (req, res) => {
 //crea prodotto
 router.post('/', async (req, res) => {
     try {
-        console.log(req.body);
+       
         const {codice, nome, prezzo, categoria,descrizione, colore}=req.body;
         const productId = await createProduct(codice, nome, prezzo, categoria,descrizione, colore);
         res.status(201).json({ _id: productId });
