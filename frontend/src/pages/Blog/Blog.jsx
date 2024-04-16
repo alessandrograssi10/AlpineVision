@@ -13,7 +13,8 @@ export const Blog = () => {
     useEffect(() => {
         const fetchBlogPosts = async () => {
             try {
-                const response = await axios.get('http://localhost:3020/blog-posts');
+                const response = await axios.get('http://localhost:3000/api/posts/getAllPosts');
+                console.log(response);
                 setBlogPosts(response.data);
             } catch (error) {
                 console.error("Errore nel recuperare i post del blog:", error);
