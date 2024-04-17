@@ -31,8 +31,8 @@ export const BlogArticleEdit = () => {
   const handleChange = (event,parte) => {
     setPostVerify(true);
     const updatedPost = {
-      ...post, // Copia tutte le proprietà esistenti del post
-      [parte]: event.target.value, // Aggiorna solo il titolo
+      ...post,
+      [parte]: event.target.value,
     };
     setPost(updatedPost);
   };

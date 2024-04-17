@@ -12,11 +12,12 @@ import {BlogArticleEdit} from './pages/Blog/BlogEditor/BlogArticleEdit.jsx';
 
 import { Support } from './pages/Support/Support.jsx';
 import { Cart } from './pages/Cart/Cart.jsx'
-import { EternalAura } from './pages/Products/EternalAura/EternalAura.jsx'
+import { Product } from './pages/Products/Product.jsx'
 import Header from './components/Header/header.js';
 import Footer from './components/Footer/Footer.js';
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
+import Login_Signin from './pages/Login_SignUp/Login_Signin';
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -48,7 +49,8 @@ class App extends Component {
 
           <Route exact path ="/Support" Component={Support}/>
           <Route exact path ="/Cart" Component={Cart}/>
-          <Route exact path ="/EternalAura" Component={EternalAura}/>
+          <Route exact path ="/product/:id" element={<Product/>}/>
+          <Route exact path="/Login" Component={Login_Signin}/>
 
           </Routes>
 

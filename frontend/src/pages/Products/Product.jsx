@@ -1,26 +1,25 @@
 import React, { useEffect, useState } from 'react';
 import { Container, Row, Form, Col, Carousel, Button } from 'react-bootstrap';
-import './EternalAura.css';
-import { Visualizzazione3D } from './Modello3D.js';
 import { useParams } from 'react-router-dom';
+import './Product.css';
 
-import Immagine3 from '../../../assets/Images/maskL.png';
+import Immagine3 from '../../assets/Images/maskL.png';
 
 const importAll = (r) => r.keys().map(r);
 
 // Importa immagini dai set specificati
-const imagesSet1 = importAll(require.context('../../../assets/Images/products/EternalAura/color1', false, /\.(png|jpe?g|svg)$/));
-const imagesSet2 = importAll(require.context('../../../assets/Images/products/EternalAura/color2', false, /\.(png|jpe?g|svg)$/));
+const imagesSet1 = importAll(require.context('../../assets/Images/products/EternalAura/color1', false, /\.(png|jpe?g|svg)$/));
+const imagesSet2 = importAll(require.context('../../assets/Images/products/EternalAura/color2', false, /\.(png|jpe?g|svg)$/));
 
-export const EternalAura = () => {
+export const Product = () => {
     const { id } = useParams();
-    const [Product, setProduct] = useState(null);
+    const [product, setProduct] = useState({});
 
     const [activeIndex, setActiveIndex] = useState(0);  // Indice per il carosello
     const [selectedSetIndex, setSelectedSetIndex] = useState(0);  // Indice per selezionare il set di immagini
 
     useEffect(() => {
-        console.log(`Caricamento dei dettagli per il post con ID: ${id}`); // Verifica l'ID
+        console.log(`Caricamento dei dettagli per il post con ID: ${id}`);
       
         fetch(`http://localhost:3020/api/products/${id}`)
           .then(response => {
@@ -30,7 +29,7 @@ export const EternalAura = () => {
             return response.json();
           })
           .then(data => {
-            console.log('Post ricevuto:', data); // Verifica i dati ricevuti
+            console.log('Post ricevuto:', data);
             setProduct(data);
           })
           .catch(error => {
@@ -48,14 +47,14 @@ export const EternalAura = () => {
 
     return (
         <Container fluid className="p-0">
-            <Row  className="d-flex align-items-stretch pt-5">
+            <Row className="d-flex align-items-stretch pt-5">
                 <Col md={6} className="d-flex flex-column">
                     <Carousel activeIndex={activeIndex} onSelect={(selectedIndex, e) => setActiveIndex(selectedIndex)}>
                         {imageSets[selectedSetIndex].map((imageSrc, idx) => (
                             <Carousel.Item key={idx}>
                                 <img
                                     className="d-block w-100"
-                                    src={imageSrc.default || imageSrc}  // Gestisce sia il caso modulo che non modulo
+                                    src={imageSrc.default || imageSrc}
                                     alt={`Set ${selectedSetIndex + 1} - Immagine ${idx + 1}`}
                                 />
                             </Carousel.Item>
@@ -65,10 +64,13 @@ export const EternalAura = () => {
                 <Col md={6} className="white-panel d-flex flex-column justify-content-center">
                     <div className="shadow-box mx-auto">
                         <Row>
-                            <h2 className="text-left text-black">ETERNAL AURA</h2>
+                            <h2 className="text-left text-black">{product.nome}</h2>
                         </Row>
                         <Row>
-                            <h4 className="text-left text-black">black</h4>
+                            <h4 className="text-left text-black">{product.colore}</h4>
+                        </Row>
+                        <Row>
+                            <p className="text-left text-black">{product.descrizione || 'Descrizione prodotto'}</p>
                         </Row>
                         <Row>
                             <div className="d-flex align-items-left m-0 p-0">
@@ -102,7 +104,6 @@ export const EternalAura = () => {
                 <div style={{ backgroundColor: 'black', height: '50px' }}></div>
                 <Col className="text-center bg-black text-white p-3">
                     <h2>Dai un'occhiata da vicino.</h2>
-                    <Visualizzazione3D modelPath={process.env.PUBLIC_URL + '/3d-objects/ProjMask.glb'} />
 
                     <div style={{ backgroundColor: 'black', height: '50px' }}></div>
                 </Col>

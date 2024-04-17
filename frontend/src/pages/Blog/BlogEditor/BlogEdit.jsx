@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { Container, Card, Row, Col, Button, Alert, Form } from 'react-bootstrap';
-import axios from 'axios';
 import { Link } from 'react-router-dom';
 import Img from '../../../assets/Images/notfound.png';
 
@@ -8,32 +7,35 @@ export const BlogEdit = () => {
   const [blogPosts, setBlogPosts] = useState([]);
   const [blogPostsCopy, setBlogPostsCopy] = useState(false);
   const [blogPostsVerify, setBlogPostsVerify] = useState(false);
+  const [Images, setBlogPostsVerify] = useState([]);
 
   const fileInputRef = useRef(null);
 
   useEffect(() => {
     const fetchBlogPosts = async () => {
       try {
-        const response = await axios.get('http://localhost:3020/blog-posts');
-        setBlogPosts(response.data);
-        setBlogPostsCopy(response.data);
+        const response = await fetch('http://localhost:3000/api/posts/getAllPosts');
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+        setBlogPosts(data);
+        setBlogPostsCopy(data);
       } catch (error) {
         console.error("Errore nel recuperare i post del blog:", error);
       }
     };
-
     fetchBlogPosts();
   }, []);
 
   
-
   const handleFileChange = (event, index) => {
     setBlogPostsVerify(true);
     const file = event.target.files[0];
     if (file) {
       const updatedPosts = [...blogPosts];
       if (updatedPosts[index]) {
-        updatedPosts[index].image = URL.createObjectURL(file);
+        updatedPosts[index].ImgCopertina = URL.createObjectURL(file);
         setBlogPosts(updatedPosts);
       } else {
         console.error("Elemento non trovato all'indice specificato:", index);
@@ -127,7 +129,7 @@ export const BlogEdit = () => {
                         Add Article
                       </Button>
       <Row>
-        {blogPosts.map((post, index) => {
+         {blogPosts.sort((a, b) => a.index - b.index).map((post, index) => {
           if (index === 0) {
             // Primo post, occupa tutta la larghezza
             return (
@@ -135,7 +137,7 @@ export const BlogEdit = () => {
                 <Card className='m-3'>
                   <Row noGutters>
                     <Col md={4}>
-                      <Card.Img src={post.image} style={{ width: '100%', height: 'auto' }} />
+                      <Card.Img src={post.ImgCopertina} />
                       <input
                 type="file"
                 onChange={(event) => handleFileChange(event, index)}
@@ -199,7 +201,7 @@ export const BlogEdit = () => {
             return (
               <Col key={index} md={4}>
                 <Card className='m-3'>
-                  <Card.Img variant="top" src={post.image} />
+                  <Card.Img variant="top" src={post.ImgCopertina} />
                   
                   <Card.Body>
                   <input
