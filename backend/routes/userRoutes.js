@@ -25,13 +25,29 @@ router.get('/', async (req, res) => {
 // } e selezionare il formato json invece che text/plain
 router.post('/addUser', async (req, res) => {
     console.log(req.body);
-    const { username,email, password } = req.body;
+    const { username, email, password } = req.body;
     try {
-        const result = await createUser(username,email, password);
-        res.status(201).json({ message: "Utente creato con successo", userId: result.insertedId });
+        const result = await createUser(username, email, password);
+        console.log(result.userId);
+        // Genera il token JWT
+        const token = jwt.sign(
+            { userId: result.userId, email: email },
+              process.env.JWT_SECRET,  // Utilizza la chiave segreta dall'environment
+            { expiresIn: '1h' }  // Imposta una scadenza per il token
+        );
+
+        res.status(201).json({
+            message: "Utente creato con successo",
+            userId: result.userId,
+            token: token
+        });
     } catch (error) {
         console.error("Errore nella creazione dell'utente:", error);
-        res.status(500).json({ error: "Errore nella creazione dell'utente" });
+        if (error.message === 'Esiste già un utente con questa email') {
+            res.status(409).json({ error: error.message });  // 409 Conflict
+        } else {
+            res.status(500).json({ error: "Errore nella creazione dell'utente" });
+        }
     }
 });
 
@@ -118,7 +134,7 @@ router.post('/login', async (req, res) => {
         // Genera il JWT
         const token = jwt.sign(
             { userId: user._id }, // Payload
-            'your_secret_key',   // Segreto per firmare il token
+            process.env.JWT_SECRET,   // Segreto per firmare il token
             { expiresIn: '1h' }  // Opzioni: token valido per 1 ora
         );
         // Invia il token al client
