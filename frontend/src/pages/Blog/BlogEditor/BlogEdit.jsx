@@ -1,54 +1,27 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { Container, Card, Row, Col, Button, Alert, Form } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import { fetchBlogPosts, updateImageUrlById, handleSessionStorage, getSessionStorageOrDefault, generateNewArticle, fetchBlobFromUrl } from './BlogEditLogic';
+
 import Img from '../../../assets/Images/notfound.png';
 
 export const BlogEdit = () => {
-  const [blogPosts, setBlogPosts] = useState(() => {
-    const savedPosts = sessionStorage.getItem('blogPosts');
-    console.log(savedPosts);
-    return savedPosts ? JSON.parse(savedPosts) : [];
-  });
-  const [blogPostsCopy, setBlogPostsCopy] = useState(() => {
-    const savedPosts = sessionStorage.getItem('blogPostsCopy');
-    return savedPosts ? JSON.parse(savedPosts) : [];
-  });
-
-
-  const [blogPostsVerify, setBlogPostsVerify] = useState(() => {
-    const savedVerify = sessionStorage.getItem('blogPostsVerify');
-    return savedVerify ? JSON.parse(savedVerify) : false;
-  });
-    const [Images, setImages] =  useState(() => {
-    const savedImages = sessionStorage.getItem('blogImages');
-    console.log(savedImages);
-    return savedImages ? JSON.parse(savedImages) : [];
-  });
-  const [ImagesCopy, setImagesCopy] =  useState(() => {
-    const savedImages = sessionStorage.getItem('blogImagesCopy');
-    return savedImages ? JSON.parse(savedImages) : [];
-  });
+  const [blogPosts, setBlogPosts] = useState(() => getSessionStorageOrDefault('blogPosts', []));
+  const [blogPostsCopy, setBlogPostsCopy] = useState(() => getSessionStorageOrDefault('blogPostsCopy', []));
+  const [blogPostsVerify, setBlogPostsVerify] = useState(() => getSessionStorageOrDefault('blogPostsVerify', false));
+  const [Images, setImages] = useState(() => getSessionStorageOrDefault('blogImages', []));
+  const [ImagesCopy, setImagesCopy] = useState(() => getSessionStorageOrDefault('blogImagesCopy', []));
   const [imagesLoaded, setImagesLoaded] = useState(false);
+
 
   useEffect(() => {
     if (blogPosts.length === 0) {
-    const fetchBlogPosts = async () => {
-      try {
-        const response = await fetch('http://localhost:3000/api/posts/getAllPosts');
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        const data = await response.json();
-        setBlogPosts(JSON.parse(JSON.stringify(data)));
-        setBlogPostsCopy(JSON.parse(JSON.stringify(data)));
-        console.log(data);
-      } catch (error) {
-        console.error("Errore nel recuperare i post del blog:", error);
-      }
-    };
-    fetchBlogPosts();
-  }
-  }, []);
+      fetchBlogPosts().then(data => {
+        setBlogPosts(data);
+        setBlogPostsCopy(data);
+      }).catch(error => console.error("Failed to fetch posts:", error));
+    }
+  }, [blogPosts.length]);
 
   useEffect(() => {
     if (!Images.length) {
@@ -71,71 +44,16 @@ export const BlogEdit = () => {
     }
   }
   },[blogPosts, imagesLoaded]);
-  function deepEqual(obj1, obj2) {
-    if (obj1 === obj2) {
-        return true;
-    }
-    if (typeof obj1 !== 'object' || obj1 === null || typeof obj2 !== 'object' || obj2 === null) {
-        return false;
-    }
-    const keys1 = Object.keys(obj1);
-    const keys2 = Object.keys(obj2);
-    if (keys1.length !== keys2.length) {
-        return false;
-    }
-    for (const key of keys1) {
-        if (!keys2.includes(key) || !deepEqual(obj1[key], obj2[key])) {
-            return false;
-        }
-    }
-    return true;
-}
-  /*useEffect(() => {
-    const checkDifferences = () => {
-        const isDifferent = blogPosts.some((post, position) => {
-            if (!blogPostsCopy[position]) return true; // New post
-            const hasDifferentMetadata = post._id !== blogPostsCopy[position]._id ||
-                                         post.title !== blogPostsCopy[position].title ||
-                                         !deepEqual(post.content, blogPostsCopy[position].content) ||
-                                         post.description !== blogPostsCopy[position].description;
-
-            const currentImage = Images.find(img => img.id === post._id);
-            const oldImage = Images.find(img => img.id === blogPostsCopy[position]._id);
-            const hasDifferentImages = !currentImage || !oldImage ||
-                                       currentImage.copertina !== oldImage.copertina ||
-                                       currentImage.contenuto !== oldImage.contenuto;
-            console.log(hasDifferentMetadata || hasDifferentImages);
-            console.log(blogPosts);
-            console.log(blogPostsCopy);
-
-            return hasDifferentMetadata || hasDifferentImages;
-        });
-
-        setBlogPostsVerify(isDifferent || blogPosts.length !== blogPostsCopy.length);
-    };
-
-    checkDifferences();
-}, [blogPosts, blogPostsCopy, Images]);*/
-useEffect(() => {
-  sessionStorage.setItem('blogPostsVerify', JSON.stringify(blogPostsVerify));
-}, [blogPostsVerify]);
-  useEffect(() => {
+  
+  useEffect(() => {    
+    sessionStorage.setItem('blogPostsVerify', JSON.stringify(blogPostsVerify));
     sessionStorage.setItem('blogPosts', JSON.stringify(blogPosts));
     sessionStorage.setItem('blogPostsCopy', JSON.stringify(blogPostsCopy));
-
-  }, [blogPosts]);
-  useEffect(() => {
-    sessionStorage.setItem('blogPostsCopy', JSON.stringify(blogPostsCopy));
-
-  }, [blogPostsCopy]);
-  useEffect(() => {
     sessionStorage.setItem('blogImages', JSON.stringify(Images));
-
-  }, [Images]);
+  }, [blogPostsVerify, blogPosts, blogPostsCopy, Images]); 
 
   const getImageById = (id) => {
     const image = Images.find(image => image.id === id);
-    //console.log(image.copertina.toString());
     return image ? image.copertina : 'No image found with such ID';
 };
     
@@ -272,20 +190,6 @@ const updateImageUrlById = (id, newUrl, file) => {
 };
 
 
-const fetchBlobFromUrl = async (blobUrl) => {
-  try {
-    const response = await fetch(blobUrl);
-    const blob = await response.blob();
-
-    // Creating a file from blob, assuming you need file properties like name
-    const file = new File([blob], "uploaded_image.jpg", { type: blob.type });
-    return file;
-  } catch (error) {
-    console.error('Error retrieving file from blob URL:', error);
-    return null;
-  }
-};
-
 async function handleSaveChanges() {
   const existingPostIds = new Set(blogPostsCopy.map(post => post._id));
   const currentPostIds = new Set(blogPosts.map(post => post._id));
@@ -404,7 +308,6 @@ console.log(updatedBlogPosts);
       alert("Failed to process changes. Please try again.");
   }
 }
-
 
 async function uploadImage(postId, file, uploadUrl) {
   const formData = new FormData();
