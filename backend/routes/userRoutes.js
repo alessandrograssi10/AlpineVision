@@ -3,9 +3,17 @@ const router = express.Router();
 const { getDb } = require('../config/database');
 const { createUser, deleteUser, updateUserPassword, setPhone, setAddress, findUserByEmail } = require('../models/user');
 const jwt = require('jsonwebtoken');
+const { ObjectId } = require('mongodb');
+
+
+/*
+
+GET
+
+*/
 
 //rotta per mostrare gli users
-router.get('/', async (req, res) => {
+router.get('/', async (req, res) => { //funziona
     try {
         const db = getDb();
         const usersCollection = db.collection('Users');
@@ -17,23 +25,67 @@ router.get('/', async (req, res) => {
     }
 });
 
-// Route per creare un nuovo utente caricare nella richiesta mettere in body:
-//{
-//     "username": "..",
-//     "email": ".."
-//     "password": ".."
-// } e selezionare il formato json invece che text/plain
-router.post('/addUser', async (req, res) => {
-    console.log(req.body);
-    const { username, email, password } = req.body;
+
+// Rotta per ottenere i dati di un singolo utente tramite ID
+router.get('/:userId', async (req, res) => { //funziona
+    const { userId } = req.params;  
     try {
-        const result = await createUser(username, email, password);
+        const db = getDb();
+        const usersCollection = db.collection('Users');
+        const user = await usersCollection.findOne({ _id: new ObjectId(userId) }); 
+
+        if (!user) {
+            res.status(404).json({ error: "Utente non trovato" });  
+        } else {
+            res.status(200).json(user);  
+        }
+    } catch (error) {
+        console.error("Errore nel recupero dell'utente:", error);
+        res.status(500).json({ error: "Errore interno del server" });
+    }
+});
+
+// Ottieni tutti gli ordini per un utente
+router.get('/orders/:userId', async (req, res) => { //ancora devo fare ordini
+    const { userId } = req.params;
+    try {
+        const db = getDb();
+        const orders = await db.collection('Orders').find({ customerId: new ObjectId(userId) }).toArray();
+        if (orders.length > 0) {
+            res.status(200).json(orders);
+        } else {
+            res.status(404).json({ message: "No orders found for this user" });
+        }
+    } catch (error) {
+        console.error("Error retrieving orders for user:", error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+});
+
+
+
+
+/*
+
+
+POST
+
+
+*/
+
+
+
+router.post('/addUser', async (req, res) => { //funziona
+    console.log(req.body);
+    const { nome,cognome, email, password,dataNascita} = req.body;
+    try {
+        const result = await createUser(nome,cognome, email, password,dataNascita);
         console.log(result.userId);
-        // Genera il token JWT
+
         const token = jwt.sign(
             { userId: result.userId, email: email },
-              process.env.JWT_SECRET,  // Utilizza la chiave segreta dall'environment
-            { expiresIn: '1h' }  // Imposta una scadenza per il token
+              process.env.JWT_SECRET,
+            { expiresIn: '1h' }  
         );
 
         res.status(201).json({
@@ -51,74 +103,7 @@ router.post('/addUser', async (req, res) => {
     }
 });
 
-// Route per eliminare un utente 
-router.delete('/:userId', async (req, res) => {
 
-    const userId = req.params.userId;
-    try {
-        const result = await deleteUser(userId);
-        if (result.deletedCount === 1) {
-            res.status(200).json({ message: "Utente eliminato con successo" });
-        } else {
-            res.status(404).json({ error: "Utente non trovato" });
-        }
-    } catch (error) {
-        console.error("Errore nell'eliminazione dell'utente:", error);
-        res.status(500).json({ error: "Errore nell'eliminazione dell'utente" });
-    }
-});
-
-// Route per modificare la password di un utente
-// la password va nel body in formato json come detto per create user
-router.patch('/:userId/password', async (req, res) => {
-    const userId = req.params.userId;
-    const { newPassword } = req.body;
-    try {
-        const result = await updateUserPassword(userId, newPassword);
-        if (result.matchedCount === 1) {
-            res.status(200).json({ message: "Password aggiornata con successo" });
-        } else {
-            res.status(404).json({ error: "Utente non trovato" });
-        }
-    } catch (error) {
-        console.error("Errore nell'aggiornamento della password dell'utente:", error);
-        res.status(500).json({ error: "Errore nell'aggiornamento della password dell'utente" });
-    }
-});
-
-// Rotta per aggiornare il numero di telefono di un utente
-router.put('/setPhone/:userId', async (req, res) => {
-    const { userId } = req.params;
-    const { newPhone } = req.body;
-    try {
-        const result = await setPhone(userId, newPhone);
-        if (result.modifiedCount === 1) {
-            res.status(200).json({ message: "Numero di telefono aggiornato con successo" });
-        } else {
-            res.status(404).json({ message: "Nessun utente trovato con l'ID fornito" });
-        }
-    } catch (error) {
-        console.error("Errore nell'aggiornamento del numero di telefono:", error);
-        res.status(500).json({ error: "Errore nell'aggiornamento del numero di telefono" });
-    }
-});
-
-// Rotta per aggiornare l'indirizzo di un utente
-router.put('/setAddress/:userId', async (req, res) => {
-    const { userId } = req.params;
-    const { newAddress } = req.body;
-    try {
-        const result = await setAddress(userId, newAddress);
-        if (result.modifiedCount === 1) {
-            res.status(200).json({ message: "Indirizzo aggiornato con successo" });
-        } else {
-            res.status(404).json({ message: "Nessun utente trovato con l'ID fornito" });
-        }
-    } catch (error) {
-        console.error("Errore nell'aggiornamento dell'indirizzo:", error);
-        res.status(500).json({ error: "Errore nell'aggiornamento dell'indirizzo" });
-    }
-});
 
 // Rotta di login
 router.post('/login', async (req, res) => {
@@ -144,6 +129,98 @@ router.post('/login', async (req, res) => {
         res.status(500).json({ error: "Errore nel processo di login" });
     }
 });
+
+
+/*
+
+DELETE
+
+*/
+
+// Route per eliminare un utente 
+router.delete('/:userId', async (req, res) => { //funziona
+
+    const userId = req.params.userId;
+    try {
+        const result = await deleteUser(userId);
+        if (result.deletedCount === 1) {
+            res.status(200).json({ message: "Utente eliminato con successo" });
+        } else {
+            res.status(404).json({ error: "Utente non trovato" });
+        }
+    } catch (error) {
+        console.error("Errore nell'eliminazione dell'utente:", error);
+        res.status(500).json({ error: "Errore nell'eliminazione dell'utente" });
+    }
+});
+
+
+
+/*
+
+PATCH
+
+*/
+
+// Route per modificare la password di un utente
+router.patch('/:userId/password', async (req, res) => {//funziona
+    const userId = req.params.userId;
+    const { newPassword } = req.body;
+    try {
+        const result = await updateUserPassword(userId, newPassword);
+        if (result.matchedCount === 1) {
+            res.status(200).json({ message: "Password aggiornata con successo" });
+        } else {
+            res.status(404).json({ error: "Utente non trovato" });
+        }
+    } catch (error) {
+        console.error("Errore nell'aggiornamento della password dell'utente:", error);
+        res.status(500).json({ error: "Errore nell'aggiornamento della password dell'utente" });
+    }
+});
+
+
+/*
+
+PUT
+
+*/
+// Rotta per aggiornare il numero di telefono di un utente o crearlo se non c'è
+router.put('/setPhone/:userId', async (req, res) => { //funziona
+    const { userId } = req.params;
+    const { newPhone } = req.body;
+    try {
+        const result = await setPhone(userId, newPhone);
+        if (result.modifiedCount === 1) {
+            res.status(200).json({ message: "Numero di telefono aggiornato con successo" });
+        } else {
+            res.status(404).json({ message: "Nessun utente trovato con l'ID fornito" });
+        }
+    } catch (error) {
+        console.error("Errore nell'aggiornamento del numero di telefono:", error);
+        res.status(500).json({ error: "Errore nell'aggiornamento del numero di telefono" });
+    }
+});
+
+// Rotta per aggiornare l'indirizzo di un utente o crearlo se non c'è
+router.put('/setAddress/:userId', async (req, res) => { //funziona
+    const { userId } = req.params;
+    const { newAddress } = req.body;
+    try {
+        const result = await setAddress(userId, newAddress);
+        if (result.modifiedCount === 1) {
+            res.status(200).json({ message: "Indirizzo aggiornato con successo" });
+        } else {
+            res.status(404).json({ message: "Nessun utente trovato con l'ID fornito" });
+        }
+    } catch (error) {
+        console.error("Errore nell'aggiornamento dell'indirizzo:", error);
+        res.status(500).json({ error: "Errore nell'aggiornamento dell'indirizzo" });
+    }
+});
+
+
+
 
 
 

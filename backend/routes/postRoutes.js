@@ -1,31 +1,17 @@
 const express = require('express');
 const router = express.Router();
-const { createPost, getAllPosts, editPost } = require('../models/post'); // Aggiorna il percorso se necessario
+const { createPost, getAllPosts, editPost , deletePost} = require('../models/post'); // Aggiorna il percorso se necessario
 const path = require('path');
 const multer = require('multer');
 const fs = require('fs'); // Import fs for callback-based operations
 const fsp = fs.promises;
 
-// Route per creare un post
-router.post('/createPost', async (req, res) => {
-    try {
-        const postId = await createPost(req.body);
-        res.status(201).json({ message: "Post creato con successo", postId });
-    } catch (error) {
-        console.error("Errore nella creazione del post:", error);
-        res.status(500).json({ error: "Errore interno del server" });
-    }
-});
+/*
 
-router.post('/editPost/:id', async (req, res) => {
-    try {
-        const result = await editPost(req.params.id, req.body);
-        res.status(200).json({ message: "Post modificato con successo", result });
-    } catch (error) {
-        console.error("Errore nella modifica del post:", error);
-        res.status(500).json({ error: "Errore interno del server" });
-    }
-});
+GET
+
+*/
+
 
 // Route per ottenere tutti i post
 router.get('/getAllPosts', async (req, res) => {
@@ -38,6 +24,7 @@ router.get('/getAllPosts', async (req, res) => {
     }
 });
 
+//endpoint per foto conenuto
 router.get('/photo-contenuto', (req, res) => {
     const {id} = req.query;
     const dirPath = path.join(__dirname, '..', 'images', 'posts', id, 'contenuto');
@@ -80,10 +67,50 @@ router.get('/photo-copertina', (req, res) => {
 });
 
 
+/*
+
+POST
+
+*/
 
 
 
 
+// Route per creare un post
+router.post('/createPost', async (req, res) => {
+    try {
+        const postId = await createPost(req.body);
+        res.status(201).json({ message: "Post creato con successo", postId });
+    } catch (error) {
+        console.error("Errore nella creazione del post:", error);
+        res.status(500).json({ error: "Errore interno del server" });
+    }
+});
+
+//Route per editare un Post
+router.post('/editPost/:id', async (req, res) => {
+    try {
+        const result = await editPost(req.params.id, req.body);
+        res.status(200).json({ message: "Post modificato con successo", result });
+    } catch (error) {
+        console.error("Errore nella modifica del post:", error);
+        res.status(500).json({ error: "Errore interno del server" });
+    }
+});
+
+
+
+
+
+
+
+/*
+
+
+Funzioni
+
+
+*/
 
 // Assicurati che la directory esista o creala
 const ensureDirectoryExists = (folderPath) => {
@@ -115,6 +142,14 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
+/*
+
+POST
+IMMAGINI
+
+
+*/
+
 // Endpoint per caricare un'immagine nella cartella 'copertina'
 router.post('/upload/copertina/:id', upload.single('file'), (req, res) => {
     if (req.file) {
@@ -133,6 +168,12 @@ router.post('/upload/contenuto/:id', upload.single('file'), (req, res) => {
     }
 });
 
+
+/*
+
+Funzioni
+
+*/
 
 
 const clearDirectory = async (dirPath) => {
@@ -162,6 +203,15 @@ async function clearDirMiddleware(req, res, next) {
     }
 }
 
+
+
+/*
+
+AGGIORNARE FOTO
+
+*/
+
+
 // Endpoint per aggiornare un'immagine nella cartella 'copertina'
 router.post('/update/copertina/:id', clearDirMiddleware, upload.single('file'), (req, res) => {
     if (req.file) {
@@ -181,6 +231,36 @@ router.post('/update/contenuto/:id', clearDirMiddleware, upload.single('file'), 
 });
 
 
+
+
+/*
+
+DELETE
+
+*/
+
+
+
+// Route per eliminare un post 
+router.delete('/:postId', async (req, res) => {
+    console.log(req.params.postId);
+    const postId = req.params.postId;
+    try {
+        const result = await deletePost(postId);
+        if (result.deletedCount === 1) {
+            const directoryPath = path.join(__dirname, '..', 'images', 'posts', postId);
+            // Elimina la cartella e tutto il suo contenuto
+            console.log(directoryPath);
+            await fsp.rm(directoryPath, { recursive: true });
+            res.status(200).json({ message: "Post eliminato con successo" });
+        } else {
+            res.status(404).json({ error: "Post non trovato" });
+        }
+    } catch (error) {
+        console.error("Errore nell'eliminazione del post:", error);
+        res.status(500).json({ error: "Errore nell'eliminazione del post" });
+    }
+});
 
 
 

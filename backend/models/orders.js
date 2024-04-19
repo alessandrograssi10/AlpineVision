@@ -1,46 +1,36 @@
 const { ObjectId } = require('mongodb');
-const { db } = require('../config/database');
-
-const collectionName = 'Orders';
+const { getDb } = require('../config/database');
 
 async function createOrder(orderData) {
-    // Imposta la data di ordine a oggi + 3 giorni
-    orderData.data = new Date();
-    orderData.data.setDate(orderData.data.getDate() + 3);
-
-    const collection = db.collection(collectionName);
-    const result = await collection.insertOne(orderData);
+    const db = getDb();
+    const result = await db.collection('Orders').insertOne(orderData);
     return result.insertedId;
 }
 
 async function getOrderById(orderId) {
-    const collection = db.collection(collectionName);
-    const order = await collection.findOne({ _id: ObjectId(orderId) });
+    const db = getDb();
+    const order = await db.collection('Orders').findOne({ _id: new ObjectId(orderId) });
     return order;
 }
 
 async function updateOrder(orderId, updateData) {
-    const collection = db.collection(collectionName);
-    const result = await collection.updateOne({ _id: ObjectId(orderId) }, { $set: updateData });
-    return result.modifiedCount;
+    const db = getDb();
+    const result = await db.collection('Orders').updateOne(
+        { _id: new ObjectId(orderId) },
+        { $set: updateData }
+    );
+    return result;
 }
 
 async function deleteOrder(orderId) {
-    const collection = db.collection(collectionName);
-    const result = await collection.deleteOne({ _id: ObjectId(orderId) });
+    const db = getDb();
+    const result = await db.collection('Orders').deleteOne({ _id: new ObjectId(orderId) });
     return result.deletedCount;
-}
-
-async function listOrders() {
-    const collection = db.collection(collectionName);
-    const orders = await collection.find({}).toArray();
-    return orders;
 }
 
 module.exports = {
     createOrder,
     getOrderById,
     updateOrder,
-    deleteOrder,
-    listOrders,
+    deleteOrder
 };

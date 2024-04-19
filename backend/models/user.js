@@ -1,7 +1,7 @@
 const { ObjectId } = require('mongodb');
 const { getDb } = require('../config/database');
 
-async function createUser(username, email, password) {
+async function createUser(nome,cognome, email, password,dataNascita) { 
     try {
         const db = getDb();
         const usersCollection = db.collection('Users');
@@ -12,10 +12,13 @@ async function createUser(username, email, password) {
             throw new Error('Esiste già un utente con questa email');
         }
         // Inserisci il nuovo utente con il ruolo di default 'user'
+        const dataNascitaObj = new Date(dataNascita);
         const result = await usersCollection.insertOne({
-            username,
+            nome,
+            cognome,
             email,
             password,
+            dataNascitaObj,
             ruolo: 'user' // Aggiunta del campo ruolo con valore default
         });
 
