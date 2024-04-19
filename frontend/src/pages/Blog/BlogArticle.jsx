@@ -8,17 +8,30 @@ export const BlogArticle = () => {
   const { id } = useParams();
   const [post, setPost] = useState(null);
 
+  const getImageById = (id) => {
+    return `http://localhost:3000/api/posts/photo-contenuto?id=${id}`;
+  };
+
   useEffect(() => {
     console.log(`Caricamento dei dettagli per il post con ID: ${id}`); // Verifica l'ID
-    axios.get(`http://localhost:3020/blog-posts/${id}`)
+
+    fetch(`http://localhost:3000/api/posts/getAllPosts`)
       .then(response => {
-        console.log('Post ricevuto:', response.data); // Verifica i dati ricevuti
-        setPost(response.data);
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then(data => {
+        // Filtriamo i dati ricevuti per trovare il post con l'ID corretto
+        const postFound = data.find(post => post._id === id);
+        console.log('Post ricevuto:', postFound); // Verifica i dati del post trovato
+        setPost(postFound); // Salviamo il post trovato
       })
       .catch(error => {
         console.error("Errore nel recupero dell'articolo:", error);
       });
-  }, [id]);
+  }, [id]); // Dipendenza di useEffect
 
   if (!post) {
     console.log('Caricamento o nessun post trovato');
@@ -35,27 +48,25 @@ export const BlogArticle = () => {
 
       </Row>
       <Row className="my-2 mt-4 justify-content-center">
-      <p className="text-muted text-center">{post.Art_p1}</p>
+      <p className="text-muted text-center">{post.content.part1}</p>
 
       </Row>
       <Row className="my-2 justify-content-center">
         <Col lg={6}>
-          {post.image && (
-            <Image src={post.image} alt={post.title} fluid className="mb-3" />
-          )}
+          <Image src={getImageById(post._id)} alt={post.title} fluid className="mb-3" />
         </Col>
         <Col lg={6}>
-          <Row><h3>{post.Art_p2_title}</h3></Row>
+          <Row><h3>{post.content.part2.title}</h3></Row>
           <Row>
-          <p className="text-muted">{post.Art_p2}</p>
+          <p className="text-muted">{post.content.part2.body}</p>
          </Row>
         </Col>
       </Row>
       <Row className="my-2 justify-content-center">
         <Col lg={12}>
-        <Row><h3 className=' text-left mt-3'>{post.Art_p3_title}</h3></Row>
+        <Row><h3 className=' text-left mt-3'>{post.content.part3.title}</h3></Row>
           <Row>
-          <p className="text-muted">{post.Art_p3}</p>
+          <p className="text-muted">{post.content.part2.body}</p>
          </Row>
          
         </Col>

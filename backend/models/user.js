@@ -1,13 +1,32 @@
 const { ObjectId } = require('mongodb');
 const { getDb } = require('../config/database');
 
-
-async function createUser(username,email, password) {
+async function createUser(nome,cognome, email, password,dataNascita) { 
     try {
         const db = getDb();
         const usersCollection = db.collection('Users');
-        const result = await usersCollection.insertOne({username, email, password });
-        return result;
+
+        // Controlla se esiste già un utente con la stessa email
+        const existingUser = await usersCollection.findOne({ email: email });
+        if (existingUser) {
+            throw new Error('Esiste già un utente con questa email');
+        }
+        // Inserisci il nuovo utente con il ruolo di default 'user'
+        const dataNascitaObj = new Date(dataNascita);
+        const result = await usersCollection.insertOne({
+            nome,
+            cognome,
+            email,
+            password,
+            dataNascitaObj,
+            ruolo: 'user' // Aggiunta del campo ruolo con valore default
+        });
+
+        // Restituisce il risultato e l'ID dell'utente inserito
+        return {
+            result: result,
+            userId: result.insertedId  // Includi l'ID dell'utente inserito
+        };
     } catch (error) {
         console.error("Errore nella creazione dell'utente:", error);
         throw error;
