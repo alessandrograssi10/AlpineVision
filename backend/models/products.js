@@ -15,7 +15,7 @@ async function createProduct( nome, prezzo, descrizione) {
 
         // Crea la cartella principale del prodotto
         const productDirectory = path.join(__dirname, '..', 'images','products', result.insertedId.toString());
-        await fs.mkdir(productDirectory, { recursive: true });
+        await fsp.mkdir(productDirectory, { recursive: true });
 
         return result.insertedId;
     } catch (error) {
@@ -31,9 +31,9 @@ async function createVariant(productId, colore, quantita) {
         const result = await db.collection(variantsCollectionName).insertOne(variantData);
 
         // Crea la sottocartella per la variante specifica del colore
-        const variantDirectory = path.join(__dirname, '..', 'images', 'products',productId.toString(), colore);
-        console.log(variantDirectory);
-        await fs.mkdir(variantDirectory, { recursive: true });
+        const baseDir = path.join(__dirname, '..','images','products', productId);
+        console.log(baseDir);
+        await fsp.mkdir(path.join(baseDir, colore), { recursive: true });
 
         return result.insertedId;
     } catch (error) {
