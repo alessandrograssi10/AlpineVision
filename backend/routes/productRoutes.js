@@ -1,111 +1,157 @@
 const express = require('express');
 const router = express.Router();
-const { getDb } = require('../config/database');
-const path = require('path');
-const fs = require('fs');
-const { createProduct, deleteProduct,updateProductPrice,updateProductDescription } = require('../models/products');
+const { createProduct, createVariant, getVariantsByProductId, getAllProducts, deleteProduct, decrementVariantQuantity } = require('../models/products');
+const multer = require('multer');
+const fs = require('fs'); 
+const fsp = fs.promises;
+const path = require('path'); 
 
-//ottieni lista prodotti
-router.get('/', async (req, res) => {
+
+
+router.get('/:productId/variants', async (req, res) => {
+    const { productId } = req.params;
     try {
-        const db = getDb();
-        const productsCollection = db.collection('Products');
-        const products = await productsCollection.find({}).toArray();
+        const variants = await getVariantsByProductId(productId);
+        if (variants.length > 0) {
+            res.status(200).json(variants);
+        } else {
+            res.status(404).json({ message: "Nessuna variante trovata per questo prodotto" });
+        }
+    } catch (error) {
+        console.error("Errore nel recupero delle varianti:", error);
+        res.status(500).json({ error: "Errore interno del server" });
+    }
+});
+
+router.get('/', async (req, res) => { //funziona
+    try {
+        const products = await getAllProducts();
         res.status(200).json(products);
     } catch (error) {
-        console.error("Errore nel recupero degli utenti:", error);
-        res.status(500).json({ error: "Errore nel recupero degli utenti" });
+        console.error("Errore nel recupero dei prodotti:", error);
+        res.status(500).json({ error: "Errore interno del server" });
     }
 });
 
-//ottieni foto specificando codice prodotto e colore
-router.get('/photo', (req, res) => {
-    const { codice, colore } = req.query;
-    // Costruisci il percorso dell'immagine
-    
-    const imagePath = path.join(__dirname,'..', 'images', `${codice}`, `${codice}_${colore}.jpeg`);
-    // Controlla se l'immagine esiste
-    if (fs.existsSync(imagePath)) {
-        // Se l'immagine esiste, inviala come risposta
-        res.sendFile(imagePath);
-    } else {
-        // Se l'immagine non esiste, restituisci un errore 404
-        res.status(404).json({ error: 'Immagine non trovata' });
-    }
-});
 
-//crea prodotto
-router.post('/', async (req, res) => {
+
+
+
+// Elimina prodotto e tutte le sue varianti
+router.delete('/:prodId', async (req, res) => {
+    console.log(req.params.prod);
+    const prodId = req.params.prodId;
     try {
-       
-        const {codice, nome, prezzo, categoria,descrizione, colore}=req.body;
-        const productId = await createProduct(codice, nome, prezzo, categoria,descrizione, colore);
-        res.status(201).json({ _id: productId });
-    } catch (error) {
-        console.error("Error creating product:", error);
-        res.status(500).json({ error: "Error creating product" });
-    }
-});
-
-//elimina prodotto
-router.delete('/:productId', async (req, res) => {
-    try {
-        const productId = req.params.productId;
-        const result = await deleteProduct(productId);
+        const result = await deleteProduct(prodId);
         if (result.deletedCount === 1) {
+            const directoryPath = path.join(__dirname, '..', 'images', 'products', prodId);
+            // Elimina la cartella e tutto il suo contenuto
+            console.log(directoryPath);
+            await fsp.rm(directoryPath, { recursive: true });
             res.status(200).json({ message: "Prodotto eliminato con successo" });
         } else {
             res.status(404).json({ error: "Prodotto non trovato" });
         }
     } catch (error) {
         console.error("Errore nell'eliminazione del prodotto:", error);
-        res.status(500).json({ error: "Errore interno del server" });
+        res.status(500).json({ error: "Errore nell'eliminazione del prodotto" });
     }
 });
 
-//aggiornare prezzo prodotto
-router.put('/price/:productId', async (req, res) => {
-    const { productId } = req.params;
-    const { newPrice } = req.body;
 
-    if (isNaN(newPrice) || newPrice <= 0) {
-        return res.status(400).json({ error: "Il nuovo prezzo deve essere un numero positivo" });
+
+
+
+// Decrementa la quantità di una variante di prodotto
+router.patch('/:productId/:colore/decrement', async (req, res) => {
+    const { productId, colore } = req.params;
+    const { decrement } = req.body;  // Assumiamo che il decremento venga inviato nel corpo della richiesta
+
+    if (decrement <= 0) {
+        return res.status(400).json({ error: "Il valore di decremento deve essere maggiore di zero" });
     }
 
     try {
-        const result = await updateProductPrice(productId, newPrice);
+        const result = await decrementVariantQuantity(productId, colore, decrement);
         if (result.modifiedCount === 1) {
-            res.status(200).json({ message: "Prezzo del prodotto aggiornato con successo" });
+            res.status(200).json({ message: "Quantità decrementata con successo" });
         } else {
-            res.status(404).json({ message: "Prodotto non trovato" });
+            res.status(404).json({ error: "Prodotto o variante non trovata, o quantità non sufficiente" });
         }
     } catch (error) {
-        console.error("Errore nell'aggiornamento del prezzo del prodotto:", error);
+        console.error("Errore nella gestione della richiesta:", error);
         res.status(500).json({ error: "Errore interno del server" });
     }
 });
 
-//aggiornare descrizione prodotto
-router.put('/description/:productId', async (req, res) => {
-    const { productId } = req.params;
-    const { newDescription } = req.body;
 
-    if (!newDescription || newDescription.trim() === "") {
-        return res.status(400).json({ error: "La nuova descrizione non può essere vuota" });
-    }
 
+
+
+// Crea prodotto
+router.post('/', async (req, res) => { //funziona
+    const {nome, prezzo, descrizione } = req.body;
     try {
-        const result = await updateProductDescription(productId, newDescription);
-        if (result.modifiedCount === 1) {
-            res.status(200).json({ message: "Descrizione del prodotto aggiornata con successo" });
-        } else {
-            res.status(404).json({ message: "Prodotto non trovato" });
-        }
+        const productId = await createProduct(nome, prezzo, descrizione);
+        res.status(201).json({ _id: productId });
     } catch (error) {
-        console.error("Errore nell'aggiornamento della descrizione del prodotto:", error);
-        res.status(500).json({ error: "Errore interno del server" });
+        console.error("Errore nella creazione del prodotto:", error);
+        res.status(500).json({ error: "Errore nella creazione del prodotto" });
     }
 });
+
+// Crea variante per prodotto
+router.post('/:productId/variants', async (req, res) => { //funziona
+    const { colore, quantita } = req.body;
+    const { productId } = req.params;
+    try {
+        const variantId = await createVariant(productId, colore, quantita);
+        res.status(201).json({ _id: variantId });
+    } catch (error) {
+        console.error("Errore nella creazione della variante:", error);
+        res.status(500).json({ error: "Errore nella creazione della variante" });
+    }
+});
+
+
+
+
+
+
+
+
+// Configura Multer per il caricamento dei file
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        const { idProd, colore } = req.params;  // Correggi l'accesso ai parametri
+        const folderPath = path.join(__dirname, '..', 'images', 'products', idProd, colore);
+        ensureDirectoryExists(folderPath);
+        cb(null, folderPath);
+    },
+    filename: function (req, file, cb) {
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+        cb(null, file.fieldname + '-' + uniqueSuffix + path.extname(file.originalname));
+    }
+});
+
+const upload = multer({ storage: storage });
+
+// Endpoint per caricare un'immagine per una variante specifica del prodotto
+router.post('/upload/:idProd/:colore', upload.single('file'), (req, res) => {
+    if (req.file) {
+        res.status(201).json({ message: 'File caricato con successo', filePath: req.file.path });
+    } else {
+        res.status(400).json({ error: 'Nessun file caricato' });
+    }
+});
+
+// Assicurati che la directory esista o creala
+const ensureDirectoryExists = folderPath => {
+    if (!fs.existsSync(folderPath)){
+        fs.mkdirSync(folderPath, { recursive: true });
+    }
+};
+
 
 
 

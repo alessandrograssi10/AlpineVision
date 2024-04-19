@@ -70,9 +70,29 @@ async function getAllPosts() {
     const db = getDb();
     return await db.collection('Posts').find({}).toArray();
 }
+async function deletePost(postId) {
+    try {
+        const db = getDb();
+        const postsCollection = db.collection('Posts');
+        // Usa 'new' per creare una nuova istanza di ObjectId
+        const result = await postsCollection.deleteOne({ _id: new ObjectId(postId) });
+        return result;
+    } catch (error) {
+        console.error("Errore nell'eliminazione del post:", error);
+        throw error;
+    }
+}
+
+
+
+
+
+
+
 
 module.exports = {
     createPost,
     getAllPosts,
-    editPost
+    editPost,
+    deletePost
 };
