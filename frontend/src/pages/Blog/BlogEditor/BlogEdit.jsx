@@ -21,7 +21,7 @@ export const BlogEdit = () => {
         setBlogPostsCopy(data);
       }).catch(error => console.error("Failed to fetch posts:", error));
     }
-  }, [blogPosts.length]);
+  }, []); //blogPosts.length
 
   useEffect(() => {
     if (!Images.length) {
@@ -95,6 +95,7 @@ const updateImageUrlById = (id, newUrl, file) => {
     setBlogPostsVerify(true);
     const updatedPosts = [...blogPosts];
     updatedPosts.splice(position, 1);
+    
     setBlogPosts(updatedPosts);
   };
   const handleMoveUpClick = (position) => {
@@ -227,9 +228,9 @@ async function handleSaveChanges() {
       "art_p3": post.content?.part3?.body,
       "author": post.author,
       "_id": post._id,
+      "date": post.date,
     };
 
-    console.log("New Post Data:", newPostData);
       if (existingPostIds.has(post._id)) {
           // Update existing post
           updatePromises.push(
@@ -261,7 +262,6 @@ async function handleSaveChanges() {
 
                       updatedBlogPosts[index]._id = data.postId;
                       existingPostIds.add(data.postId); // Add new ID to the set of existing IDs
-                      console.log(newPostData);
                   }
                   return updatedBlogPosts[index]; // Return the updated post
               })
@@ -272,7 +272,6 @@ console.log(updatedBlogPosts);
   try {
       await Promise.all(updatePromises);
       await Promise.all(createPromises);
-      console.log(Images);
 
       // Prepare to upload images for all posts (both updated and newly created)
       const imageUploadPromises = updatedBlogPosts.map(async post => {
@@ -302,7 +301,6 @@ console.log(updatedBlogPosts);
       setBlogPostsCopy([...updatedBlogPosts]);  // Keep a copy for reference
       setBlogPostsVerify(false);
       alert("Changes saved successfully!");
-      console.log(tempImages);
   } catch (error) {
       console.error("Error processing changes:", error);
       alert("Failed to process changes. Please try again.");
@@ -328,175 +326,171 @@ async function uploadImage(postId, file, uploadUrl) {
 
 
 
-  return (
-    <Container>
-      <Alert variant={'warning'} className='m-3 mt-4'>
-        YOU ARE IN EDIT MODE!!!!!
+return (
+  <Container>
+    {/* Alert per avvertire che si è in modalità editing */}
+    <Alert variant={'warning'} className='m-3 mt-4'>
+      STAI IN MODALITA EDITING
+    </Alert>
+
+    {/* Alert per chiedere conferma salvataggio modifiche */}
+    {blogPostsVerify && (
+      <Alert variant={'danger'} className='m-3 mt-4 d-flex align-items-center justify-content-between'>
+        VUOI SALVARE LE MODIFICHE?
+        {/* Pulsanti per eliminare o salvare modifiche */}
+        <div className="d-flex">
+          <Button onClick={() => handleDeleteChanges()} variant="outline-danger" className="me-2">
+            ELIMINA
+          </Button>
+          <Button onClick={() => handleSaveChanges()} variant="outline-success">
+            SALVA
+          </Button>
+        </div>
       </Alert>
-      {blogPostsVerify && (
-        <Alert variant={'danger'} className='m-3 mt-4 d-flex align-items-center justify-content-between'>
-          DO YOU WANNA SAVE YOUR CHANGES?
-          <Button onClick={() => handleDeleteChanges()}className="float-end  " variant="outline-danger">
-            DISCARD
-          </Button>
-          <Button onClick={() => handleSaveChanges()} className="float-end " variant="outline-success">
-            SAVE
-          </Button>
-        </Alert>
-      )}
+    )}
 
+    {/* Pulsante per aggiungere un nuovo articolo */}
+    <Button 
+      variant="success"
+      className='m-3'
+      onClick={handleAddArticleClick} // Aggiungi l'evento onClick qui
+    >
+      Aggiungi articolo
+    </Button>
 
-      <Button 
-                        variant="success"
-                        className='m-3'
-                        onClick={handleAddArticleClick} // Aggiungi l'evento onClick qui
-
-                      >
-                        Add Article
-                      </Button>
-      <Row>
-         {blogPosts.sort((a, b) => a.position - b.position).map((post, position) => {
-          if (position === 0) {
-            // Primo post, occupa tutta la larghezza
-            return (
-              <Col key={post._id} md={12}>
-                <Card className='m-3'>
-                  <Row noGutters>
-                    <Col md={4}>
-                      <Card.Img  key={post._id} src={getImageById(post._id)} />
-                      <input
-                type="file"
-                onChange={(event) => handleFileChange(event, position)}
-                style={{ display: 'none' }}
-                accept="image/*"
-                id={`file-input-copertina-${post._id}`}  // Ensure this is unique
-                />
-                      <Button 
-                        style={{ 
-                          position: 'absolute', 
-                          top: '10px', 
-                          left: '10px' 
-                        }}
-                        onClick={() => document.getElementById(`file-input-copertina-${post._id}`).click()}
-                        variant="primary"
-                      >
-                        Upload
-                      </Button>
-                    
-                    <Button onClick={() => handleMoveDownClick(position)} // Passa l'indice correntevariant="primary"
-                        style={{ 
-                          position: 'absolute', 
-                          bottom: '10px', 
-                          right: '100px' 
-                        }}
-                      >
-                        Sposta in basso
-                      </Button>
-                
-                      <Button 
-                        style={{ 
-                          position: 'absolute', 
-                          bottom: '10px', 
-                          right: '10px' 
-                        }}
-                        onClick={() => handleDeleteClick(position)} // Passa l'indice corrente
-                        variant="danger"
-                      >
-                        Elimina
-                      </Button>
-                    </Col>
-                    <Col md={8}>
-                      <Card.Body>
-                        <Form.Group className="mb-3">
-                          <Form.Control type="text" value={post.title} placeholder="Title" onChange={(event) => handleTitleChange(event, position)} />
-                        </Form.Group>
-                        <Form.Group className="mb-1">
-                          <Form.Control as="textarea" rows={3} value={post.description} placeholder="Short description"style={{ resize: 'none' }} onChange={(event) => handleDescriptionChange(event, position)} />
-                        </Form.Group>
-                        <Button as={Link} to={`/BlogArticleEdit/${post._id}`} variant="primary" className="mt-3">
-                          Leggi di più
-                        </Button>                
-                      </Card.Body>         
-                    </Col>
-                  </Row>
-                </Card>
-              </Col>
-            );
-          } else {
-            // Altri post, disposti in colonne di un terzo della larghezza
-            return (
-              <Col key={position} md={4}>
-                <Card className='m-3'>
-                  <Card.Img variant="top" key={post._id} src={getImageById(post._id)} />
-                  
-                  <Card.Body>
+    {/* Griglia per visualizzare gli articoli */}
+    <Row>
+      {blogPosts.sort((a, b) => a.position - b.position).map((post, position) => {
+        if (position === 0) {
+          // Primo post, occupa tutta la larghezza
+          return (
+            <Col key={post._id} md={12}>
+              <Card className='m-3'>
+                <Row noGutters>
+                  <Col md={4}>
+                    {/* Immagine del post */}
+                    <Card.Img key={post._id} src={getImageById(post._id)} />
+                    {/* Input per caricare un'immagine */}
+                    <input
+                      type="file"
+                      onChange={(event) => handleFileChange(event, position)}
+                      style={{ display: 'none' }}
+                      accept="image/*"
+                      id={`file-input-copertina-${post._id}`} // Ensure this is unique
+                    />
+                    <Button 
+                      style={{ position: 'absolute', top: '10px', left: '10px' }}
+                      onClick={() => document.getElementById(`file-input-copertina-${post._id}`).click()}
+                      variant="primary"
+                    >
+                      Carica
+                    </Button>
+                    {/* Pulsanti per spostare o eliminare il post */}
+                    <Button 
+                      onClick={() => handleMoveDownClick(position)} // Passa l'indice corrente
+                      variant="primary"
+                      style={{ position: 'absolute', bottom: '10px', right: '100px' }}
+                    >
+                      Sposta in basso
+                    </Button>
+                    <Button 
+                      style={{ position: 'absolute', bottom: '10px', right: '10px' }}
+                      onClick={() => handleDeleteClick(position)} // Passa l'indice corrente
+                      variant="danger"
+                    >
+                      Elimina
+                    </Button>
+                  </Col>
+                  <Col md={8}>
+                    {/* Dettagli del post */}
+                    <Card.Body>
+                      <Form.Group className="mb-3">
+                        <Form.Control type="text" value={post.title} placeholder="Title" onChange={(event) => handleTitleChange(event, position)} />
+                      </Form.Group>
+                      <Form.Group className="mb-1">
+                        <Form.Control as="textarea" rows={3} value={post.description} placeholder="Short description" style={{ resize: 'none' }} onChange={(event) => handleDescriptionChange(event, position)} />
+                      </Form.Group>
+                      <Button as={Link} to={`/BlogArticleEdit/${post._id}`} variant="primary" className="mt-3">
+                        Apri articolo
+                      </Button>                
+                    </Card.Body>         
+                  </Col>
+                </Row>
+              </Card>
+            </Col>
+          );
+        } else {
+          // Altri post, disposti in colonne di un terzo della larghezza
+          return (
+            <Col key={position} md={4}>
+              <Card className='m-3'>
+                <Card.Img variant="top" key={post._id} src={getImageById(post._id)} />
+                <Card.Body>
+                  {/* Input per caricare un'immagine */}
                   <input
-                type="file"
-                onChange={(event) => handleFileChange(event, position)}
-                style={{ display: 'none' }}
-                accept="image/*"
-                id={`file-input-copertina-${post._id}`}  // Ensure this is unique
-              />
-                      <Button 
-                        style={{ 
-                          position: 'absolute', 
-                          top: '10px', 
-                          left: '10px' 
-                        }}
-                        onClick={() => document.getElementById(`file-input-copertina-${post._id}`).click()}
-                        variant="primary"
-                      >
-                        Upload
-                      </Button>
-                  <Form.Group className="mb-3">
-                          <Form.Control type="text" value={post.title} placeholder="Title"onChange={(event) => handleTitleChange(event, position)} />
-                        </Form.Group>
-                        <Form.Group className="mb-1">
-                          <Form.Control as="textarea" rows={3} value={post.description} placeholder="Short description"style={{ resize: 'none' }} onChange={(event) => handleDescriptionChange(event, position)} />
-                        </Form.Group>
-                    <Link to={`/BlogArticleEdit/${post._id}`}>Leggi di più</Link>
-                    
-                  </Card.Body>
-                  <Card.Footer>
-                    <small className="text-muted">
-                      By {post.author} | {post.date}
-                    </small>     
-                  </Card.Footer>
-                  <Row>
-                    <Col md={6} className="d-flex justify-content-center align-items-center">
-                    <Button 
-    onClick={() => handleMoveUpClick(position)} // Passa l'indice corrente
-    variant="primary"
-                        className='m-2 d-inline-block w-100' 
-                      >
-                        Sposta in alto
-                      </Button>
-                    </Col>
-                    <Col md={6} className="d-flex justify-content-center align-items-center">
-                    <Button 
-    onClick={() => handleMoveDownClick(position)} // Passa l'indice corrente
-    variant="primary"
-                        className='m-2 d-inline-block w-100' 
-                      >
-                        Sposta in basso
-                      </Button>
-                    </Col>
-               
-                  </Row>
-                  
+                    type="file"
+                    onChange={(event) => handleFileChange(event, position)}
+                    style={{ display: 'none' }}
+                    accept="image/*"
+                    id={`file-input-copertina-${post._id}`} // Ensure this is unique
+                  />
                   <Button 
-                        onClick={() => handleDeleteClick(position)} // Passa l'indice corrente
-                        variant="danger"
-                        className='m-2'
-                      >
-                        Delete
-                      </Button>
-                </Card>
-              </Col>
-            );
-          }
-        })}
-      </Row>
-    </Container>
-  );
+                    style={{ position: 'absolute', top: '10px', left: '10px' }}
+                    onClick={() => document.getElementById(`file-input-copertina-${post._id}`).click()}
+                    variant="primary"
+                  >
+                    Carica
+                  </Button>
+                  {/* Dettagli del post */}
+                  <Form.Group className="mb-3">
+                    <Form.Control type="text" value={post.title} placeholder="Title" onChange={(event) => handleTitleChange(event, position)} />
+                  </Form.Group>
+                  <Form.Group className="mb-1">
+                    <Form.Control as="textarea" rows={3} value={post.description} placeholder="Short description" style={{ resize: 'none' }} onChange={(event) => handleDescriptionChange(event, position)} />
+                  </Form.Group>
+                  <Link to={`/BlogArticleEdit/${post._id}`}>Apri articolo</Link>
+                </Card.Body>
+                <Card.Footer>
+                  {/* Informazioni sul post */}
+                  <small className="text-muted">
+                    Scritto da {post.author} | {post.date}
+                  </small>     
+                </Card.Footer>
+                <Row>
+                  {/* Pulsanti per spostare il post */}
+                  <Col md={6} className="d-flex justify-content-center align-items-center">
+                    <Button 
+                      onClick={() => handleMoveUpClick(position)} // Passa l'indice corrente
+                      variant="primary"
+                      className='m-2 d-inline-block w-100' 
+                    >
+                      Sposta in alto
+                    </Button>
+                  </Col>
+                  <Col md={6} className="d-flex justify-content-center align-items-center">
+                    <Button 
+                      onClick={() => handleMoveDownClick(position)} // Passa l'indice corrente
+                      variant="primary"
+                      className='m-2 d-inline-block w-100' 
+                    >
+                      Sposta in basso
+                    </Button>
+                  </Col>
+                </Row>
+                {/* Pulsante per eliminare il post */}
+                <Button 
+                  onClick={() => handleDeleteClick(position)} // Passa l'indice corrente
+                  variant="danger"
+                  className='m-2'
+                >
+                  Elimina
+                </Button>
+              </Card>
+            </Col>
+          );
+        }
+      })}
+    </Row>
+  </Container>
+);
 };

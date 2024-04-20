@@ -104,7 +104,6 @@ export const Product = () => {
                 <div style={{ backgroundColor: 'black', height: '50px' }}></div>
                 <Col className="text-center bg-black text-white p-3">
                     <h2>Dai un'occhiata da vicino.</h2>
-
                     <div style={{ backgroundColor: 'black', height: '50px' }}></div>
                 </Col>
             </Row>
