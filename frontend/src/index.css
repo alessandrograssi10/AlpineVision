@@ -13,7 +13,9 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
-
+html, body {
+  overflow-x: hidden !important;
+}
 *{
   font-family: "Zilla Slab", serif;
 }

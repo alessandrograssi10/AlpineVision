@@ -11,10 +11,13 @@
     filter: brightness(35%);
 }
 .no-space-rowBg {
-  position: relative;
+  display: flex;
+  align-items: center; /* Allinea verticalmente */
+  justify-content: center; /* Allinea orizzontalmente */
   width: 100%;
   margin: 0;
   padding: 0;
+  position: relative; /* Posizione relativa per il contenimento del testo assoluto */
 }
 
 .centered-text {
@@ -50,17 +53,12 @@
 
 .darknesss {
   position: relative;
+  background-size: cover;
+  background-position: center;
+
 }
 
-.darknesss::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 100px; /* Altezza della zona di transizione, regola a piacere */
-  background: linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.5)); /* Gradient per la dissolvenza */
-}
+
 
 
 
@@ -68,4 +66,17 @@
   width: auto; /* Imposta la larghezza desiderata */
   height: auto; /* Imposta l'altezza desiderata */
   object-fit: cover; /* Assicura che l'immagine sia ridimensionata per coprire l'intera area mantenendo le proporzioni */
+}
+
+.card-prod {
+  box-shadow: 15px 15px 15px 5px rgba(0,0,0,0.2); /* Orizzontale e verticale */
+  border: none !important; 
+  background: #ffffff;
+}
+
+.container-prod {
+  size:  100%;
+  margin: 0 !important; 
+  padding: 0 !important; 
+  padding-right: 0 !important;
 }

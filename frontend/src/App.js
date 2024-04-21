@@ -9,6 +9,7 @@ import { Blog } from './pages/Blog/Blog.jsx';
 import { BlogEdit } from './pages/Blog/BlogEditor/BlogEdit.jsx';
 import {BlogArticle} from './pages/Blog/BlogArticle.jsx';
 import {BlogArticleEdit} from './pages/Blog/BlogEditor/BlogArticleEdit.jsx';
+import {Search} from './pages/Search/Search.jsx';
 
 import { Support } from './pages/Support/Support.jsx';
 import { Cart } from './pages/Cart/Cart.jsx'
@@ -38,19 +39,20 @@ class App extends Component {
       <Header/>
       <Routes>
           <Route exact path ="/" Component={Home}/>
-          <Route exact path ="/Home" Component={Home}/>
-          <Route exact path ="/Products" Component={Products}/>
-          <Route exact path ="/Accessories" Component={Accessories}/>
-          <Route exact path ="/Blog" Component={Blog}/>
-          <Route exact path ="/BlogEdit" Component={BlogEdit}/>
+          <Route exact path ="/home" Component={Home}/>
+          <Route exact path ="/products" Component={Products}/>
+          <Route exact path ="/accessories" Component={Accessories}/>
+          <Route exact path ="/blog" Component={Blog}/>
+          <Route exact path ="/blogEdit" Component={BlogEdit}/>
+          <Route exact path ="/search" Component={Search}/>
 
           <Route path="/BlogArticle/:id" element={<BlogArticle/>} />
           <Route path="/BlogArticleEdit/:id" element={<BlogArticleEdit/>} />
 
-          <Route exact path ="/Support" Component={Support}/>
-          <Route exact path ="/Cart" Component={Cart}/>
+          <Route exact path ="/support" Component={Support}/>
+          <Route exact path ="/cart" Component={Cart}/>
           <Route exact path ="/product/:id" element={<Product/>}/>
-          <Route exact path="/Login" Component={Login_Signin}/>
+          <Route exact path="/login" Component={Login_Signin}/>
 
           </Routes>
 

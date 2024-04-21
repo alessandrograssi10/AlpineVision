@@ -67,9 +67,9 @@ export const Products = () => {
 
 
     return (
-        <Container fluid className="p-0 ml-0 mr-0 no-space-row">
+        <Container fluid className="p-0 m-0 ">
           <Row className="m-0 p-0 w-100 h-100 no-space-rowBg">
-            <Image src={ImmagineBg} className="p-0 img-fluid w-100 darkness darkness" />
+            <Image src={ImmagineBg} className="p-0 img-fluid-no-space w-100 darkness" />
             <div className="centered-text">Esplora tutti i prodotti</div>
           </Row>
           <Row className="ml-0 mr-0 no-space-row mt-3">
@@ -80,7 +80,7 @@ export const Products = () => {
             {productsMask.map((prodotto) => {
               return (
                 <Col xs={12} sm={6} md={4} lg={4} key={prodotto._id}>
-                  <Card as={Link} to={`/product/${prodotto._id}`} className='m-3 card-text-prod '>
+                  <Card as={Link} to={`/product/${prodotto._id}`} className='m-3 card-text-prod card-prod'>
                     {/* Immagine del post */}
                     <Card.Img variant="top" className='card-image-fit' src={imageUrlsp[prodotto._id]} />
                     {/* Dettagli del post */}
@@ -101,7 +101,7 @@ export const Products = () => {
             {productsGlass.map((prodotto) => {
               return (
                 <Col sm={6} md={4} lg={3} key={prodotto._id}>
-                  <Card as={Link} to={`/product/${prodotto._id}`} className='m-3 card-text-prod' style={{ width: '200px', height: '150px' }}>
+                  <Card as={Link} to={`/product/${prodotto._id}`} className='m-3 card-text-prod card-prod' style={{ width: '200px', height: '150px' }}>
                     {/* Immagine del post */}
                     <Card.Img variant="top" src={imageUrlsp[prodotto._id]}  />
                     {/* Dettagli del post */}
