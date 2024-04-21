@@ -8,21 +8,27 @@ const path = require('path');
 
 
 
+//ritorna tutte le varianti per un id 
 router.get('/:productId/variants', async (req, res) => {
     const { productId } = req.params;
     try {
+        console.log("Richiesta per le varianti del prodotto con ID:", productId); // Log della richiesta
         const variants = await getVariantsByProductId(productId);
+        console.log("Varianti trovate:", variants); // Log delle varianti trovate
         if (variants.length > 0) {
             res.status(200).json(variants);
         } else {
+            console.log("Nessuna variante trovata per questo prodotto"); // Log nel caso nessuna variante venga trovata
             res.status(404).json({ message: "Nessuna variante trovata per questo prodotto" });
         }
     } catch (error) {
-        console.error("Errore nel recupero delle varianti:", error);
+        console.error("Errore nel recupero delle varianti:", error); // Log degli errori
         res.status(500).json({ error: "Errore interno del server" });
     }
 });
 
+
+//ritorna tutti i prodotti
 router.get('/', async (req, res) => { //funziona
     try {
         const products = await getAllProducts();
@@ -34,7 +40,25 @@ router.get('/', async (req, res) => { //funziona
 });
 
 
+router.get('/photo-variante', (req, res) => {
+    const {idProd, colore} = req.query;
+    const dirPath = path.join(__dirname, '..', 'images', 'products', idProd, colore);
 
+    fs.readdir(dirPath, (err, files) => {
+        if (err) {
+            console.error("Errore nell'accedere alla directory:", err);
+            return res.status(500).json({ error: 'Errore interno del server' });
+        }
+
+        const images = files.filter(file => /\.(jpg|jpeg|png|gif)$/i.test(file));
+
+        if (images.length === 0) {
+            return res.status(404).json({ error: 'Immagini non trovate' });
+        }
+
+        res.sendFile(path.join(dirPath, images[0])); // Invia solo la prima immagine
+    });
+});
 
 
 // Elimina prodotto e tutte le sue varianti

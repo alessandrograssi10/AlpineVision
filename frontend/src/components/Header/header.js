@@ -5,6 +5,7 @@ import Immagine2 from '../../assets/Images/Asset 1.png';
 import Immagine3 from '../../assets/Images/maskL.png';
 import SearchIcon from '../../assets/Images/Sicon.png';
 import Car from '../../assets/Images/shopping-cart.png';
+import Skier from '../../assets/Images/skier.png';
 import './Header.css';
 
 
@@ -134,7 +135,7 @@ const toggleAccessoriestBox = () => {
                       
                         <Nav to="/Blog" className="me-auto"onMouseEnter={OpenAllBoxes} onMouseLeave={closeAllBoxes}>
                           <div onMouseEnter={toggleProductBox} onMouseLeave={cancelToggleBox}>
-                            <Nav.Link as={Link} to="/Products" onClick={() => handleLinkClick('Products')} className={`bold ${showProductBox ? 'hovered' : ''}`}>PRODUCTS</Nav.Link>
+                            <Nav.Link as={Link} to="/Products" onClick={() => handleLinkClick('Products')} className={`bold ${showProductBox ? 'hovered' : ''}`}>PRODOTTI</Nav.Link>
                                 {showProductBox && (
                                    <div className={`info-box ${isClosing ? 'closing' : isOpening ? 'opening' : ''}`} >
                                     <Row>
@@ -155,7 +156,7 @@ const toggleAccessoriestBox = () => {
                             </div>
 
                             <div  onMouseEnter={toggleAccessoriestBox} onMouseLeave={cancelToggleBox}>
-                            <Nav.Link as={Link} to="/Accessories" onClick={() => handleLinkClick('Accessories')} class="hover-3" className={`bold ${showAccessoriesBox ? 'hovered' : ''}`}>ACCESSORIES</Nav.Link>
+                            <Nav.Link as={Link} to="/Accessories" onClick={() => handleLinkClick('Accessories')}  className={`bold ${showAccessoriesBox ? 'hovered' : ''}`}>ACCESSORI</Nav.Link>
                                 {showAccessoriesBox && (
                                    <div className={`info-box ${isClosing ? 'closing' : isOpening ? 'opening' : ''}`} >
 
@@ -177,7 +178,7 @@ const toggleAccessoriestBox = () => {
                             </div>
 
                             <div  onMouseEnter={toggleAssistanceBox} onMouseLeave={cancelToggleBox}>
-                            <Nav.Link as={Link} to="/Support" onClick={() => handleLinkClick('Support')} className={`bold ${showAssistanceBox ? 'hovered' : ''}`}>SUPPORT</Nav.Link>
+                            <Nav.Link as={Link} to="/Support" onClick={() => handleLinkClick('Support')} className={`bold ${showAssistanceBox ? 'hovered' : ''}`}>SERVIZIO CLIENTI</Nav.Link>
                             {showAssistanceBox && (
                              <div className={`info-box ${isClosing ? 'closing' : isOpening ? 'opening' : ''}`}>
                            <p></p>
@@ -189,6 +190,9 @@ const toggleAccessoriestBox = () => {
                         <Nav className="ms-auto">
                             <Nav.Link href="#search"><Image src={SearchIcon} width="20" className="icon" alt="Search" /></Nav.Link>
                             <Nav.Link href="/Cart"><Image src={Car} width="20" className="icon" alt="Cart" /></Nav.Link>
+                            <Nav.Link href="/Login"><Image src={Skier} width="20" className="icon" alt="Login" /></Nav.Link>
+            
+                            
                         </Nav>
                     </Navbar.Collapse>
                 {/*</Container>*/} 

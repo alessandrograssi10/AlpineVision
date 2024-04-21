@@ -39,7 +39,7 @@ class App extends Component {
       <Routes>
           <Route exact path ="/" Component={Home}/>
           <Route exact path ="/Home" Component={Home}/>
-          <Route exact path ="/Products" Component={Products}/>
+          <Route exact path ="/Products" element={<Products/>}/>
           <Route exact path ="/Accessories" Component={Accessories}/>
           <Route exact path ="/Blog" Component={Blog}/>
           <Route exact path ="/BlogEdit" Component={BlogEdit}/>

@@ -3,7 +3,8 @@ import styled from 'styled-components';
 export const MainContainer = styled.div`
     display:flex;
     justify-content:center;
-    padding-top:60px;
+    height:100vh;
+    background-color:#ffffff;
 `;
 
 export const Container = styled.div`
@@ -12,13 +13,12 @@ export const Container = styled.div`
     box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
     position:relative;
     overflow:hidden;
-    width:60vw;
+    width:500vw;
     min-width:410px;
     max-width:100%;
     height:100%;
     min-height:400px;
-    height:70vh;
-    padding-top:20px;
+    height:100vh;
 `;
 
 export const SignUpContainer = styled.div`
@@ -61,21 +61,17 @@ export const Form = styled.form`
 ` ;
 
 export const Title = styled.h1`
-    font-weight: bold;
+    font-weight: boIl pld;
     margin: 0;
     margin-top:-80px;  
     letter-spacing:1px; 
     margin-bottom:30px;
 `;
 
-export const RTitle = styled(Title)`
-    margin-left:15px;
-`;
-
 
 
 export const Input = styled.input`
-    background-color: #eee;
+    background-color: #E6EDEF;
     border:none;
     padding: 12px 15px;
     margin: 8px 0;
@@ -86,8 +82,8 @@ export const Input = styled.input`
 
 export const Button = styled.button`
     border-radius:10px;
-    border: 1px solid #ff4b2b;
-    background-color: #ff4b2b;
+    border: 1px solid #1a2334;
+    background-color: #1a2334;
     color: #fff;
     font-size: 12px;
     font-weight:bold;
@@ -151,9 +147,9 @@ export const Overlay = styled.div`
 export const OverlayPanel = styled.div`
     position: absolute;
     display:flex;
+    flex-direction:column;
     align-items:center;
     justify-content:center;
-    flex-direction:column;
     padding: 0 40px;
     text-align: center;
     top:0;
@@ -164,21 +160,23 @@ export const OverlayPanel = styled.div`
 `;
 
 export const LeftOverlayPanel = styled(OverlayPanel)`
-    left:-20px;
     transform: translateX(-20%);
     ${(props) => ((props.signinin !== "true")? `transform:translateX(0);`: null)}
 `;
 
 export const RightOverlayPanel = styled(OverlayPanel)`
-    right:-20px;
+    right:0px;
     transform: translateX(0);
     ${(props) => ((props.signinin !== "true")? `transform:translateX(20%);`: null)}
 `;
 
 export const Paragraph = styled.p`
-    font-size:16px;
+    font-size:15px;
     font-weight:100;
     line-height:20px;
     letter-spacing: 0.7px;
     margin: 20px 40px 20px; 
 `;
+
+
+

@@ -17,17 +17,21 @@ export const Blog = () => {
   useEffect(() => {
     const fetchBlogPosts = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/api/posts/getAllPosts');
-        console.log(response);
-        setBlogPosts(response.data);
-      } catch (error) {
-        console.error("Errore nel recuperare i post del blog:", error);
-      }
+        const response = await fetch('http://localhost:3000/api/posts/getAllPosts');
+        if (!response.ok) {
+          throw new Error('Errore durante il recupero dei post del blog');
+        }
+        const data = await response.json();
+        console.log(data);
+        setBlogPosts(data);
+      } catch (error) {console.error("Errore nel recuperare i post del blog:", error);}
     };
-
+  
     fetchBlogPosts();
+  
   }, []);
 
+    
   return (
     <Container>
       {/* Griglia per visualizzare i post del blog */}
@@ -39,11 +43,11 @@ export const Blog = () => {
               <Col key={position} md={12}>
                 <Card className='m-3 card'>
                   <Row noGutters>
-                    <Col md={4}>
+                    <Col lg={4}>
                       {/* Immagine del post */}
                       <Card.Img src={getImageById(post._id)} style={{ width: '100%', height: 'auto' }} />
                     </Col>
-                    <Col md={8}>
+                    <Col lg={8}>
                       {/* Dettagli del post */}
                       <Card.Body>
                         <Card.Title>{post.title}</Card.Title>
@@ -59,7 +63,7 @@ export const Blog = () => {
           } else {
             // Altri post, disposti in colonne di un terzo della larghezza
             return (
-              <Col key={position} md={4}>
+              <Col key={position} md={12} lg={4}>
                 <Card className='m-3'>
                   {/* Immagine del post */}
                   <Card.Img variant="top" src={getImageById(post._id)} />

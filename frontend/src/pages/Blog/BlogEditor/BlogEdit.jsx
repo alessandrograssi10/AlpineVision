@@ -16,12 +16,11 @@ export const BlogEdit = () => {
 
   useEffect(() => {
     if (blogPosts.length === 0) {
-      fetchBlogPosts().then(data => {
-        setBlogPosts(data);
-        setBlogPostsCopy(data);
-      }).catch(error => console.error("Failed to fetch posts:", error));
+      fetchBlogPosts()
+      .then(data => {setBlogPosts(data);setBlogPostsCopy(data);})
+      .catch(error => console.error("Failed to fetch posts:", error));
     }
-  }, []); //blogPosts.length
+  }, []); 
 
   useEffect(() => {
     if (!Images.length) {
@@ -60,12 +59,11 @@ export const BlogEdit = () => {
 const updateImageUrlById = (id, newUrl, file) => {
   const updatedImages = Images.map(image => {
       if (image.id === id) {
-          return { ...image, 'copertina': newUrl,'copertinaFile': file}; // Updates the specific field (copertina or contenuto)
+          return { ...image, 'copertina': newUrl,'copertinaFile': file};
       }
       return image;
   });
   setImages(updatedImages);
-  console.log("Updated Images", updatedImages);
 };
   const handleFileChange = (event, position) => {
     setBlogPostsVerify(true);
@@ -366,7 +364,7 @@ return (
           return (
             <Col key={post._id} md={12}>
               <Card className='m-3'>
-                <Row noGutters>
+                <Row >
                   <Col md={4}>
                     {/* Immagine del post */}
                     <Card.Img key={post._id} src={getImageById(post._id)} />
@@ -422,7 +420,7 @@ return (
         } else {
           // Altri post, disposti in colonne di un terzo della larghezza
           return (
-            <Col key={position} md={4}>
+            <Col key={position} md={12} lg={4}>
               <Card className='m-3'>
                 <Card.Img variant="top" key={post._id} src={getImageById(post._id)} />
                 <Card.Body>

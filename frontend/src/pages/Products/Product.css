@@ -66,3 +66,8 @@
 .image-radio-button input[type="radio"] {
     display: none; /* Nasconde visivamente l'input radio ma lo mantiene nel DOM */
 }
+.black-tab .nav-link {
+    background-color: black !important;
+    color: white !important; /* Cambia anche il colore del testo per renderlo visibile */
+    border-color: black !important; /* Cambia anche il colore del bordo se necessario */
+  }

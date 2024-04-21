@@ -7,3 +7,60 @@
     color: #046586;
     font-size: 5vw;
   }
+  .darkness {
+    filter: brightness(35%);
+}
+.no-space-rowBg {
+  position: relative;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.centered-text {
+  position: absolute;
+  font-weight:normal;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white; /* Cambia il colore del testo come preferisci */
+  font-size: 5vw; /* Aggiusta la dimensione del testo secondo necessità */
+  z-index: 10; /* Assicurati che il testo sia visibile sopra l'immagine */
+  text-align: center;
+  width: 100%;
+}
+.boldText {
+  font-weight: bold; /* Rende il testo in grassetto */
+}
+
+.img-fluid {
+  width: 100%; /* Assicura che l'immagine si adatti alla larghezza del contenitore */
+  height: auto; /* Mantiene il rapporto dell'immagine */
+}
+.title-centered {
+  text-align: left; /* Centra il testo orizzontalmente */
+  font-weight: bold; /* Rende il testo in grassetto */
+  width: 100%; /* Estende il titolo all'intera larghezza del contenitore */
+  margin: 0; /* Rimuove margini predefiniti */
+}
+.card-text-prod {
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.darknesss {
+  position: relative;
+}
+
+.darknesss::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100px; /* Altezza della zona di transizione, regola a piacere */
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.5)); /* Gradient per la dissolvenza */
+}
+
+
+
