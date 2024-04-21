@@ -16,8 +16,7 @@ const imagesSet4 = importAll(require.context('../../assets/Images/products/Etern
 export const Product = () => {
     const { id } = useParams();
     const [key, setKey] = useState('vetrina');
-
-    const [product, setProduct] = useState({});
+    const [product, setProduct] = useState([]);
 
     const [activeIndex, setActiveIndex] = useState(0);  // Indice per il carosello
     const [selectedSetIndex, setSelectedSetIndex] = useState(0);  // Indice per selezionare il set di immagini
@@ -25,7 +24,7 @@ export const Product = () => {
     useEffect(() => {
         console.log(`Caricamento dei dettagli per il post con ID: ${id}`);
       
-        fetch(`http://localhost:3020/api/products/${id}`)
+        fetch(`http://localhost:3000/api/products/${id}/variants`)
           .then(response => {
             if (!response.ok) {
               throw new Error(`HTTP status ${response.status}`);
@@ -71,14 +70,14 @@ export const Product = () => {
                             <h2 className="text-left text-black">{product.nome}</h2>
                         </Row>
                         <Row>
-                            <h4 className="text-left text-black">{product.colore}</h4>
+                            <h4 key={product}className="text-left text-black">{product[selectedSetIndex]?.colore ?? ''}</h4>
                         </Row>
                         <Row>
                             <p className="text-left text-black">{product.descrizione || 'Descrizione prodotto'}</p>
                         </Row>
                         <Row>
                             <div className="d-flex align-items-left m-0 p-0">
-                                {[Immagine3, Immagine3].map((_, index) => (
+                            {product.map((item, index) => (
                                     <Form.Check 
                                         key={index}
                                         type="radio"

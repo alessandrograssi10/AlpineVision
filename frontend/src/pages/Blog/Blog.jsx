@@ -42,7 +42,7 @@ export const Blog = () => {
             return (
               <Col key={position} md={12}>
                 <Card className='m-3 card'>
-                  <Row noGutters>
+                  <Row>
                     <Col lg={4}>
                       {/* Immagine del post */}
                       <Card.Img src={getImageById(post._id)} style={{ width: '100%', height: 'auto' }} />

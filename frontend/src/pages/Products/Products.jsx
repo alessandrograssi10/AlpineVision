@@ -12,29 +12,34 @@ export const Products = () => {
     const [productsGlass, setProductsGlass] = useState([]);
     const [imageUrlsp, setImageUrlsp] = useState({});
 
+    
     useEffect(() => {
-        fetch(`http://localhost:3000/api/products`)
-          .then(response => {if (!response.ok) {throw new Error('errore');}return response.json();})
-          .then(data => {
-            const filteredProducts = data.filter(product => product.type === "prodotto");
-
-            // Divide i prodotti in maschere e occhiali
-            const masks = filteredProducts.filter(product => product.categoria === "maschera");
-            const glasses = filteredProducts.filter(product => product.categoria === "occhiale");
-
-            setProductsMask(masks);
-            setProductsGlass(glasses);
-            const urls = {};
-                filteredProducts.forEach(product => {
-                  getImageById(product._id)
-                        .then(url => {
-                            urls[product._id] = url;
-                            setImageUrlsp(urls);
-                        })
-                        .catch(error => console.error("Errore nel recupero dell'immagine", error));
-                });
-          })
-          .catch(error => {console.error("Errore nel recupero dei prodotti", error);});
+      fetch(`http://localhost:3000/api/products`)
+        .then(response => {if (!response.ok) {throw new Error('errore');}return response.json();})
+        .then(data => {
+          const filteredProducts = data.filter(product => product.type === "prodotto");
+          const masks = filteredProducts.filter(product => product.categoria === "maschera");
+          const glasses = filteredProducts.filter(product => product.categoria === "occhiale");
+          setProductsMask(masks);
+          setProductsGlass(glasses);
+          
+          // Crea un array di promesse per ottenere le immagini
+          const promises = filteredProducts.map(product => getImageById(product._id));
+          
+          // Attendere che tutte le promesse si risolvano
+          Promise.all(promises)
+            .then(imageUrls => {
+              // Costruire un oggetto con ID prodotto come chiave e URL immagine come valore
+              const urls = {};
+              filteredProducts.forEach((product, index) => {
+                urls[product._id] = imageUrls[index];
+                console.log(imageUrls[index]);
+              });
+              setImageUrlsp(urls);
+            })
+            .catch(error => console.error("Errore nel recupero delle immagini", error));
+        })
+        .catch(error => console.error("Errore nel recupero dei prodotti", error));
     }, []);
 
     
@@ -46,8 +51,9 @@ export const Products = () => {
           }
           const data = await response.json();
           const colore = data[0]?.colore;
+          //const count = data.length;
           const imageUrl = `http://localhost:3000/api/products/photo-variante?idProd=${id}&colore=${colore}`;
-          console.log(imageUrl);
+          //console.log(count);
           return imageUrl;
       } catch (error) {
           console.error("Errore nel recupero dei prodotti", error);
@@ -73,10 +79,10 @@ export const Products = () => {
           <Row className='mt-4'>
             {productsMask.map((prodotto) => {
               return (
-                <Col  sm={12} md={6} lg={4} key={prodotto._id}>
-                  <Card as={Link} to={`/product/${prodotto._id}`} className='m-3 card-text-prod'>
+                <Col xs={12} sm={6} md={4} lg={4} key={prodotto._id}>
+                  <Card as={Link} to={`/product/${prodotto._id}`} className='m-3 card-text-prod '>
                     {/* Immagine del post */}
-                    <Card.Img variant="top"  src={imageUrlsp[prodotto._id]} />
+                    <Card.Img variant="top" className='card-image-fit' src={imageUrlsp[prodotto._id]} />
                     {/* Dettagli del post */}
                     <Card.Body>
                       <Card.Title>{prodotto.nome}</Card.Title>
@@ -94,7 +100,7 @@ export const Products = () => {
           <Row className='mt-4 mb-5'>
             {productsGlass.map((prodotto) => {
               return (
-                <Col sm={12} md={6} lg={4} key={prodotto._id}>
+                <Col sm={6} md={4} lg={3} key={prodotto._id}>
                   <Card as={Link} to={`/product/${prodotto._id}`} className='m-3 card-text-prod' style={{ width: '200px', height: '150px' }}>
                     {/* Immagine del post */}
                     <Card.Img variant="top" src={imageUrlsp[prodotto._id]}  />

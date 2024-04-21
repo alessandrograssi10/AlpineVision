@@ -57,6 +57,9 @@ router.get('/photo-variante', (req, res) => {
         }
 
         res.sendFile(path.join(dirPath, images[0])); // Invia solo la prima immagine
+        /*images.forEach(image => {
+            res.sendFile(path.join(dirPath, image));
+        });*/
     });
 });
 

@@ -64,3 +64,8 @@
 
 
 
+.card-image-fit {
+  width: auto; /* Imposta la larghezza desiderata */
+  height: auto; /* Imposta l'altezza desiderata */
+  object-fit: cover; /* Assicura che l'immagine sia ridimensionata per coprire l'intera area mantenendo le proporzioni */
+}
