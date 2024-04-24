@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Image,Container, Row, Col,Card } from 'react-bootstrap';
-import Immagine from '../../assets/Images/mc.png';
 import ImmagineBg from '../../assets/Images/BgProd3.png';
 import { Link } from 'react-router-dom';
 
@@ -11,6 +10,10 @@ export const Products = () => {
     const [productsMask, setProductsMask] = useState([]);
     const [productsGlass, setProductsGlass] = useState([]);
     const [imageUrlsp, setImageUrlsp] = useState({});
+    const [imageUrlspLat, setImageUrlspLat] = useState({});
+    const [colorCount, setColorCount] = useState({});
+
+    const [hoverIndex, setHoverIndex] = useState(null);
 
     
     useEffect(() => {
@@ -25,7 +28,8 @@ export const Products = () => {
           
           // Crea un array di promesse per ottenere le immagini
           const promises = filteredProducts.map(product => getImageById(product._id));
-          
+          const promisesLat = filteredProducts.map(product => getImageByIdlat(product._id));
+
           // Attendere che tutte le promesse si risolvano
           Promise.all(promises)
             .then(imageUrls => {
@@ -38,9 +42,24 @@ export const Products = () => {
               setImageUrlsp(urls);
             })
             .catch(error => console.error("Errore nel recupero delle immagini", error));
+
+            // Attendere che tutte le promesse si risolvano
+          Promise.all(promisesLat)
+          .then(imageUrls => {
+            // Costruire un oggetto con ID prodotto come chiave e URL immagine come valore
+            const urls = {};
+            filteredProducts.forEach((product, index) => {
+              urls[product._id] = imageUrls[index];
+              console.log(imageUrls[index]);
+            });
+            setImageUrlspLat(urls);
+          })
+          .catch(error => console.error("Errore nel recupero delle immagini", error));
         })
         .catch(error => console.error("Errore nel recupero dei prodotti", error));
     }, []);
+
+    
 
     
     const getImageById = async (id) => {
@@ -52,14 +71,29 @@ export const Products = () => {
           const data = await response.json();
           const colore = data[0]?.colore;
           //const count = data.length;
-          const imageUrl = `http://localhost:3000/api/products/photo-variante?idProd=${id}&colore=${colore}`;
+          colorCount[id] = data.length;
+          const imageUrl = `http://localhost:3000/api/products/${id}/${colore}/frontale`;
           //console.log(count);
           return imageUrl;
-      } catch (error) {
-          console.error("Errore nel recupero dei prodotti", error);
-          return ''; 
-      }
+      } catch (error) { console.error("Errore nel recupero dei prodotti", error);}
   };
+  const getImageByIdlat = async (id) => {
+    try {
+        const response = await fetch(`http://localhost:3000/api/products/${id}/variants`);
+        if (!response.ok) {
+            throw new Error('Errore durante la richiesta');
+        }
+        const data = await response.json();
+        const colore = data[0]?.colore;
+        //const count = data.length;
+        const imageUrl = `http://localhost:3000/api/products/${id}/${colore}/sinistra`;
+        //console.log(count);
+        return imageUrl;
+    } catch (error) {
+        console.error("Errore nel recupero dei prodotti", error);
+        return ''; 
+    }
+};
 
 
 
@@ -79,14 +113,16 @@ export const Products = () => {
           <Row className='mt-4'>
             {productsMask.map((prodotto) => {
               return (
-                <Col xs={12} sm={6} md={4} lg={4} key={prodotto._id}>
+                <Col xs={12} sm={6} md={4} lg={3} key={prodotto._id}>
                   <Card as={Link} to={`/product/${prodotto._id}`} className='m-3 card-text-prod card-prod'>
-                    {/* Immagine del post */}
-                    <Card.Img variant="top" className='card-image-fit' src={imageUrlsp[prodotto._id]} />
-                    {/* Dettagli del post */}
+                    {/* Immagine del prodotto */}
+                    <Card.Img key={prodotto._id} variant="top" className='card-image-fit'onMouseEnter={() => setHoverIndex(prodotto._id)} onMouseLeave={() => setHoverIndex(null)} src={hoverIndex === prodotto._id ? imageUrlspLat[prodotto._id] : imageUrlsp[prodotto._id]} />
+                    {/* Dettagli del prodotto */}
                     <Card.Body>
                       <Card.Title>{prodotto.nome}</Card.Title>
+                      <Card.Title>{colorCount[prodotto._id]} colori</Card.Title>
                       <Card.Text>{prodotto.prezzo} €</Card.Text>
+
                     </Card.Body>
                   </Card>
                 </Col>

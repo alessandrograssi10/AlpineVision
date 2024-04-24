@@ -1,366 +1,309 @@
-import * as Components from '../../components/styled_components/Components.jsx';
-import { Container, Card, Row, Col, Button } from 'react-bootstrap';
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from "react";
+import { Form, Button, Container, Row, Col } from "react-bootstrap";
 import Skier2 from '../../assets/Images/skier2.png';
 import Skier3 from '../../assets/Images/skier3.png';
+import "./LoginSignupForm.css";
+import { Link } from "react-router-dom";
 
-function Login_Signin() {
+const LoginSignupForm = () => {
+  
+  const [loginEmail, setLoginEmail] = useState("");
+  const [loginPassword, setLoginPassword] = useState("");
+  const [activeTab, setActiveTab] = useState("login");
+  const [loginLinkVisible, setLoginLinkVisible] = useState(false);
 
-    const [signIn, toggle] = useState("true");
-    const [nameErrors, setNameErrors] = useState({ nome: false, cognome: false });
-    const [touchedFields, setTouchedFields] = useState({ nome: false, cognome: false });
+  const [userData, setUserData] = useState({
+    firstName: "",
+    lastName: "",
+    birthDate: new Date(),
+    email: "",
+    password: "",
+    confirmPassword: ""
+  });
 
-    const today = new Date().toISOString().split('T')[0]; 
-    const invertedtoday = today.split('-').reverse().join('-');
-    const [isValidDate, setIsValidDate] = useState(true);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [successMessage, setsuccessMessage] = useState("");
+  const [birthdateTouched, setBirthdateTouched] = useState(false);
 
-     
+  const handleLoginSubmit = (event) => {
+    event.preventDefault();
+    setErrorMessage("");
+    setsuccessMessage("");
 
-    const [isEmailValid, setIsEmailValid] = useState(true);
-    const [emailError, setEmailError] = useState('');
-
-    const isValidEmail = (email) => {
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return emailRegex.test(email);
+    if (loginEmail === "" || loginPassword === "") {
+      setErrorMessage("Completare tutti i campi.");
+      return;
     }
 
-    const [passwordMatchError, setPasswordMatchError] = useState(false);
-
-    const [error, setError] = useState('');
-    const [Signupfirstaccess, setSignupfirstaccess] = useState(false);
-
-    
-    const [userStat, setuserStat] = useState({
-        nome: "",
-        cognome: "",
-        dataNascita: new Date(), 
-        email: "",
-        password: "",
-        confermapassword: "",
-    })
-
-    const isUserStatEmpty = () => {
-        for (const key in userStat) {
-            if (userStat.hasOwnProperty(key) && (typeof userStat[key] !== 'object' ||
-             (typeof userStat[key] === 'object' && typeof userStat[key].toISOString === 'function'))
-              && typeof userStat[key].trim === 'function' && userStat[key].trim() !== '') {
-                return false;
-            }
-        }
-        return true;
+    const user = {
+      email: loginEmail,
+      password: loginPassword
     };
-    
 
-    const handleReset = () => {
-        setuserStat({
-            nome: "",
-            cognome: "",
-            dataNascita: new Date(),
-            email: "",
-            password: "",
-            confermapassword: "",
-        });
-    }
+    const myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
 
-    const handleInputChange = (e) => {
-        const { name, value } = e.target;
-
-        setuserStat({
-            ...userStat,
-            [name]: value,
-        });
-
-        if (name === 'email') {
-            setIsEmailValid(isValidEmail(value) || value === '');
-        }
-        
-        setNameErrors({
-            ...nameErrors,
-            [name]: touchedFields[name] && !value.trim(),
-        });
-    }
-
-    const handleBlur = (e) => {
-        const { name, value } = e.target;
-        if (name === 'email') {
-            if (value === '') {
-                setEmailError('Inserisci un email valida');
-            } else if (!isValidEmail(value)) {
-                setEmailError('Email non valida');
-            } else {
-                setEmailError('');
-            }
-        }
-         else if (name === 'nome' || name === 'cognome') {
-            
-            setNameErrors({
-                ...nameErrors,
-                [name]: !value.trim(),
-            });
-        }
+    const requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: JSON.stringify(user),
+      redirect: "follow"
     };
-    
 
-
-    const handleDateChange = (value) => {
-        const selectedDate = new Date(value);
-    
-        if (isNaN(selectedDate.getTime())) {
-            setuserStat({ ...userStat, dataNascita: new Date() });
-            setIsValidDate(false);
-        } else if (selectedDate > new Date()) {
-            setuserStat({ ...userStat, dataNascita: new Date() });
-            setIsValidDate(false);
-        } else {
-            setuserStat({ ...userStat, dataNascita: selectedDate });
-            setIsValidDate(true);
+    fetch("http://localhost:3000/api/users/login", requestOptions)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Errore durante il login');
         }
-    };
-    
-    
-    
-    //SUBMIT CON GESTIONE REGISTRAZIONE O ACCESSO
-    const handleClick = (e) => {
-        e.preventDefault();
-        setError('');
+        return response.json();
+        console.log(response);
+      })
+      .then((result) => {
+        localStorage.setItem("token", result.token);
+        localStorage.setItem("userId", result.userId);
+        window.location.href = "/AreaPersonale";
+      })
+      .catch((error) => {
+        setErrorMessage('Credenziali non valide.');
+      });
+  };
 
-        let user;
-        if (e.target.name === "Log in") {
-            user = {
-                email: userStat.email,
-                password: userStat.password
-            }
+  const handleSignupSubmit = (event) => {
+    event.preventDefault();
+    let errors = [];
+    setErrorMessage(""); 
+    setsuccessMessage(""); 
 
-            const myHeaders = new Headers();
-            myHeaders.append("Content-Type", "application/json");
-
-            const raw = JSON.stringify({
-                "email": userStat.email,
-                "password": userStat.password,
-            });
-
-            const requestOptions = {
-                method: "POST",
-                headers: myHeaders,
-                body: raw,
-                redirect: "follow"
-            };
-
-
-            fetch("http://localhost:3000/api/users/login", requestOptions)
-                .then((response) => response.text())
-                .then((result) => console.log(result))
-                .catch((error) => console.error(error));
-        } else {
-            console.log("Sign up");
-
-            //RICONTROLLO TUTTI I CAMPI AL MOMENTO DEL SUBMIT
-
-            if (isUserStatEmpty()) {
-                return;
-            }
-
-            if ((touchedFields.nome || touchedFields.cognome) && (nameErrors.nome || nameErrors.cognome)) {
-                return;
-            }
-            if (userStat.nome.trim() === '' || userStat.cognome.trim() === '') {
-                setNameErrors({ nome: true, cognome: true });
-                return;
-            }
-    
-
-            if (userStat.password !== userStat.confermapassword || userStat.password === '' || userStat.confermapassword === '') {
-                setPasswordMatchError(true);
-                return; 
-            }
-            else {
-                setPasswordMatchError(false);
-            }
-
-
-            if (!isValidEmail(userStat.email)) {
-                setEmailError('Email non valida');
-                return;
-            }
-
-            user = {
-                nome: userStat.nome,
-                cognome: userStat.cognome,
-                dataNascita: userStat.dataNascita,
-                email: userStat.email,
-                password: userStat.password,
-                confermapassword: userStat.confermapassword
-            }
-
-            const myHeaders = new Headers();
-            myHeaders.append("Content-Type", "application/json");
-
-            const raw = JSON.stringify({
-                "nome": user.nome,
-                "cognome": user.cognome,
-                "dataNascita": user.dataNascita.toISOString(),
-                "email": user.email,
-                "password": user.password,
-                "confermapassword": user.confermapassword
-            });
-
-            const requestOptions = {
-                method: "POST",
-                headers: myHeaders,
-                body: raw,
-                redirect: "follow"
-            };
-
-            fetch("http://localhost:3000/api/users/addUser", requestOptions)
-            .then((response) => {
-                if (!response.ok) {
-                    throw new Error('Errore durante la registrazione');
-                }
-                return response.json();
-            })
-            .then((result) => {
-                setSignupfirstaccess(true);
-            })
-            .catch((error) => {
-                    setError('Account già esistente con questa email. Accedi o registrati con un\'altra email.');
-            });
-        }
+    if (
+      userData.firstName === "" ||
+      userData.lastName === "" ||
+      userData.email === "" ||
+      userData.password === "" ||
+      userData.confirmPassword === ""||
+      !birthdateTouched
+    ) 
+    {
+      setErrorMessage("Completare tutti i campi.");
+      return;
     }
 
-    return (
-        <Container>
-            <Components.Container>
-                {/*CREAZIONE ACCOUNT*/}
-                <Components.SignUpContainer signinin={signIn}>
-                    <Components.Form>
-                        <Components.Title style={{ lineHeight: '2' }}>Crea Account</Components.Title>
+    if (userData.password.length < 8) {
+      setErrorMessage("La password deve contenere almeno 8 caratteri.");
+      return;
+    }
 
-                        <Components.Input
-                            name="nome"
-                            type="text"
-                            placeholder="Nome"
-                            value={userStat.nome}
-                            onChange={handleInputChange}
-                            onBlur={handleBlur}
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(userData.email)) {
+      errors.push("email non valida");
+    }
+
+    if (userData.password !== userData.confirmPassword) {
+      errors.push("le password non coincidono.");
+    }
+
+    if (errors.length > 0) {
+      setErrorMessage(errors.length > 1 ? errors.join(" e ") : errors[0]);
+      return;
+    }
+
+    const user = {
+      nome: userData.firstName,
+      cognome: userData.lastName,
+      dataNascita: userData.birthDate,
+      email: userData.email,
+      password: userData.password,
+      confermaPassword: userData.confirmPassword
+    };
+
+    const myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+
+    const raw = JSON.stringify(user);
+
+    const requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: raw,
+      redirect: "follow"
+    };
+
+    fetch("http://localhost:3000/api/users/addUser", requestOptions)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Errore durante la registrazione');
+        }
+        return response.json();
+      })
+      .then((result) => {
+        setsuccessMessage('Registrazione avvenuta con successo. Accedi.');
+        setLoginLinkVisible(true);
+      })
+      .catch((error) => {
+        setErrorMessage('Utente già registrato. Accedi con le tue credenziali.');
+      });
+  };
+
+  const handleTabChange = (tab) => {
+    setActiveTab(tab);
+    setErrorMessage("");
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setUserData({ ...userData, [name]: value });
+    if (name === "birthDate") {
+      setBirthdateTouched(true);
+    }
+    setErrorMessage("");
+  };
+
+  return (
+    <Container fluid className="login-signup-container">
+      <Row className="justify-content-md-center">
+        <Col xs={12} md={8} className="login-col">
+          <Form className={activeTab === "login" ? "login-form" : "signup-form"}>
+            <Row>
+              {activeTab === "login" ? (
+                <>
+                  <Col md={6}>
+                    <div className="d-flex flex-column justify-content-center align-items-center h-100">
+                      <div style={{ marginBottom: '5rem' }}></div>
+                      <p className="paragraph-text">Accedi</p>
+                      <div style={{ marginBottom: '8rem' }}></div>
+                      <Form.Group controlId="loginEmail">
+                        <Form.Control
+                          type="email"
+                          placeholder="Email"
+                          value={loginEmail}
+                          onChange={(e) => setLoginEmail(e.target.value)}
                         />
-                        {nameErrors.nome && <p style={{ color: 'red' }}>Nome non valido</p>}
-
-                        <Components.Input
-                            name="cognome"
-                            type="text"
-                            placeholder="Cognome"
-                            value={userStat.cognome}
-                            onChange={handleInputChange}
-                            onBlur={handleBlur}
-                            />
-                            
-                        {nameErrors.cognome && <p style={{ color: 'red' }}>Cognome non valido</p>}
-                        
-                        <Components.Input
-                            name="nascita"
-                            type="date"
-                            placeholder="Data di nascita"
-                            required
-                            value={userStat.dataNascita.toISOString().split('T')[0]} 
-                            onChange={(event) => handleDateChange(event.target.value)}
+                      </Form.Group>
+                      <Form.Group controlId="loginPassword">
+                        <Form.Control
+                          type="password"
+                          placeholder="Password"
+                          value={loginPassword}
+                          onChange={(e) => setLoginPassword(e.target.value)}
                         />
-                        {!isValidDate && <p>Seleziona una data precedente o uguale al {invertedtoday}</p>}
-
-                        <Components.Input
-                        name="email"
-                        type="email"
-                        placeholder="Email"
-                        required
-                        value={userStat.email}
-                        onChange={handleInputChange}
-                        onBlur={handleBlur}
-                        style={{ borderColor: emailError ? 'red' : 'initial' }}/>
-                        {emailError && <p style={{ color: 'red' }}>{emailError}</p>}
-
-                        <Components.Input
-                            name="password"
-                            type="password"
-                            placeholder="Password"
-                            required
-                            value={userStat.password}
-                            onChange={handleInputChange} />
-                        
-                        <Components.Input
-                        name="confermapassword"
-                        type="password"
-                        placeholder="Conferma Password"
-                        required
-                        value={userStat.confermapassword}
-                         onChange={handleInputChange}/>
-                         {passwordMatchError && <p style={{ color: 'red' }}>Le password non coincidono</p>}
-
-                         <Components.Button name="Sign Up" onClick={handleClick}>Registrati</Components.Button>
-                         {isUserStatEmpty() && <p style={{ color: 'red', marginTop: '70px' }}>Nessun campo inserito</p>}
-                         {error && <p style={{ color: 'red', marginTop:'70px' }}>{error}</p>}
-                         {Signupfirstaccess && (<div style={{ color: 'green', marginTop: '70px' }}>
-                        <p>Registrazione avvenuta con successo!</p>
-                        <Link to="/AreaPersonale">Accedi all'area personale</Link>
-                         </div>
-                        )}
-
-
-                    </Components.Form>
-                   
-
-                </Components.SignUpContainer>
-
-                {/*ACCESSO*/}
-                <Components.SignInContainer signinin={signIn}>
-                    <Components.Form>
-                        <Components.Title name="Sign in" style={{ lineHeight: '9', marginTop:'-200px' }}>Accedi</Components.Title>
-                        <Components.Input
-                            name="email"
-                            type="email"
-                            placeholder="Email"
-                            required
-                            value={userStat.email}
-                            onChange={handleInputChange}
+                      </Form.Group>
+                      {errorMessage && (
+                        <p className="error-message">{errorMessage}</p>
+                      )}
+                      <div className="button-container">
+                        <Button variant="primary" type="submit" onClick={handleLoginSubmit}>
+                          ACCEDI
+                        </Button>
+                      </div>
+                    </div>
+                  </Col>
+                  <Col md={6}>
+                    <div className="d-flex flex-column justify-content-center align-items-center h-100">
+                      <div style={{ marginBottom: '5rem' }}></div>
+                      <p className="paragraph-text">Prima volta su Alpine Vision?!</p>
+                      <img src={Skier2} className="img-login" alt="Skier 2" />
+                      <div className="button-container">
+                        <Button variant="primary" type="submit" onClick={() => handleTabChange("signup")}>
+                          REGISTRATI ORA &#x2192;
+                        </Button>
+                      </div>
+                    </div>
+                  </Col>
+                </>
+              ) : (
+                <>
+                  <Col md={6}>
+                    <div className="d-flex flex-column justify-content-center align-items-center h-100">
+                      <div style={{ marginBottom: '5rem' }}></div>
+                      <p className="paragraph-text">Benvenuto, Alpine Skier!</p>
+                      <img src={Skier3} className="img-signup" alt="Skier 3" />
+                      <div className="button-container">
+                        <Button variant="primary" type="submit" onClick={() => handleTabChange("login")}>
+                          &#x2190; TORNA INDIETRO
+                        </Button>
+                      </div>
+                    </div>
+                  </Col>
+                  <Col md={6}>
+                    <div className="d-flex flex-column justify-content-center align-items-center h-100">
+                      <div style={{ marginBottom: '5rem' }}></div>
+                      <p className="paragraph-text">Crea un nuovo account</p>
+                      <Form.Group controlId="signupFirstName" className="w-75">
+                        <Form.Control
+                          type="text"
+                          name="firstName"
+                          placeholder="Nome"
+                          value={userData.firstName}
+                          onChange={handleInputChange}
                         />
-                        <Components.Input
-                            name="password"
-                            type="password"
-                            placeholder="Password"
-                            required
-                            value={userStat.password}
-                            onChange={handleInputChange} />
-                        {/*<Components.Anchor href="#">Password dimenticata?</Components.Anchor>*/}
-                        <Link to="/AreaPersonale"> <Components.Button name="Log in">Accedi</Components.Button> </Link>
-                    </Components.Form>
-                </Components.SignInContainer>
+                      </Form.Group>
+                      <Form.Group controlId="signupLastName" className="w-75">
+                        <Form.Control
+                          type="text"
+                          name="lastName"
+                          placeholder="Cognome"
+                          value={userData.lastName}
+                          onChange={handleInputChange}
+                        />
+                      </Form.Group>
+                      <Form.Group controlId="signupBirthDate" className="w-75">
+                        <Form.Control
+                          type="date"
+                          name="birthDate"
+                          placeholder="Data di Nascita"
+                          value={userData.birthDate}
+                          onChange={handleInputChange}
+                        />
+                      </Form.Group>
+                      <Form.Group controlId="signupEmail" className="w-75">
+                        <Form.Control
+                          type="email"
+                          name="email"
+                          placeholder="Email"
+                          value={userData.email}
+                          onChange={handleInputChange}
+                        />
+                      </Form.Group>
+                      <Form.Group controlId="signupPassword" className="w-75">
+                        <Form.Control
+                          type="password"
+                          name="password"
+                          placeholder="Password"
+                          value={userData.password}
+                          onChange={handleInputChange}
+                        />
+                      </Form.Group>
+                      <Form.Group controlId="signupConfirmPassword" className="w-75">
+                        <Form.Control
+                          type="password"
+                          name="confirmPassword"
+                          placeholder="Conferma Password"
+                          value={userData.confirmPassword}
+                          onChange={handleInputChange}
+                        />
+                      </Form.Group>
+                      {errorMessage && (
+                        <p className="error-message">{errorMessage}</p>
+                      )}
+                      {successMessage && (
+                        <>
+                          <p className="success-message">{successMessage}</p>
+                        </>
+                      )}
+                      <div className="button-container">
+                        <Button variant="primary" type="submit" onClick={handleSignupSubmit}>
+                          REGISTRATI
+                        </Button>
+                      </div>
+                    </div>
+                  </Col>
+                </>
+              )}
+            </Row>
+          </Form>
+        </Col>
+      </Row>
+    </Container>
+  );
+};
 
-                {}
-                <Components.OverlayContainer signinin={signIn}>
-                    <Components.Overlay signinin={signIn}>
-
-                        {/* BENVENUTO */}
-                        <Components.LeftOverlayPanel signinin={signIn}>
-                            <Components.Title style={{  whiteSpace: 'nowrap', fontSize:'3vw'}}>Benvenuto, Alpine Skier!</Components.Title>
-                            <img src={Skier3}  style={{ width: '380px', height: 'auto' }} />
-                            <Components.GhostButton onClick={() => {toggle("true");handleReset();setError('');}}>
-                            &#9664;   Torna indietro
-                            </Components.GhostButton>
-                        </Components.LeftOverlayPanel>
-
-                        {/* PRIMA VOLTA SU ALPINE VISION? */}
-                        <Components.RightOverlayPanel signinin={signIn}>
-                            <Components.Title style={{ lineHeight: '0.5', fontSize: '32px', whiteSpace: 'nowrap' }}>Prima volta su Alpine Vision?!</Components.Title>
-                            <img src={Skier2}  style={{ width: '300px', height: 'auto' }} />
-                            <Components.GhostButton onClick={() => {toggle("false");handleReset();setError('')}}>
-                                Registrati &#9654;
-                            </Components.GhostButton>
-                        </Components.RightOverlayPanel>
-
-                    </Components.Overlay>
-                </Components.OverlayContainer>
-            </Components.Container>
-        </Container>
-    )
-}
-
-export default Login_Signin;
+export default LoginSignupForm;

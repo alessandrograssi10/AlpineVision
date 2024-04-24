@@ -1,0 +1,71 @@
+.login-signup-container {
+  background-color: #f8f9fa;
+  padding: 30px;
+  margin-bottom: auto;
+}
+
+.login-form,
+.signup-form {
+  background-color: #fff;
+  border-radius: 20px;
+  box-shadow: 30px 30px 30px rgba(0, 130, 244, 0.1);
+  transition: transform 0.5s ease-in-out;
+}
+
+.signup-form {
+  transform: rotateY(360deg);
+}
+
+
+#loginEmail,
+#loginPassword {
+  font-size: 25px;
+  margin-bottom: 45px;
+  color: black;
+}
+
+#signupFirstName,
+#signupLastName,
+#signupBirthDate,
+#signupEmail,
+#signupPassword,
+#signupConfirmPassword
+{
+  font-size: 20px;
+  margin-bottom: 45px;
+  color: black;
+}
+
+
+.paragraph-text {
+    text-align: center; 
+    font-size: 40px;
+   
+  }
+  
+  .button-container {
+    text-align: center;
+    width: 100%;
+    margin-top: auto;
+  }
+  
+  .button-container button {
+    width: 100%;
+    margin-top: auto;
+}
+
+
+.img-login {
+  max-width: 100%;
+  height: auto;
+}
+
+.img-signup {
+  max-width: 100%;
+  height: auto;
+}
+.signup-text{
+    text-align: center;
+    font-size: 30px;
+    margin-top: 0;
+}

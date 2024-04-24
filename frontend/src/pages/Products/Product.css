@@ -34,7 +34,7 @@
 }
 
 .shadow-box {
-    position: absolute;
+    position: relative;
     padding: 20px; /* Aggiungi un padding per assicurare spazio intorno al contenuto */
     overflow: hidden; 
     left: 10px;
@@ -66,8 +66,27 @@
 .image-radio-button input[type="radio"] {
     display: none; /* Nasconde visivamente l'input radio ma lo mantiene nel DOM */
 }
-.black-tab .nav-link {
-    background-color: black !important;
-    color: white !important; /* Cambia anche il colore del testo per renderlo visibile */
-    border-color: black !important; /* Cambia anche il colore del bordo se necessario */
+
+
+  .img-prod {
+    /*object-fit: scale-down; /* Assicura che le immagini coprano l'area disponibile senza perdere le proporzioni */
+    object-fit: contain; /* Assicura che le immagini coprano l'area disponibile senza perdere le proporzioni */
+    object-position: center; /* Centra l'immagine nel contenitore */
+
+    width: auto !important;
+    height: 60vh !important; /* Usa 100vh per far sì che copra tutto il viewport verticalmente */
+}
+.carosello-prod{
+    height: 60vh !important; /* Usa 100vh per far sì che copra tutto il viewport verticalmente */
+
+}
+
+.no-space-rowBg-prod {
+    display: flex;
+    align-items: center; /* Allinea verticalmente */
+    justify-content: center; /* Allinea orizzontalmente */
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    position: relative; /* Posizione relativa per il contenimento del testo assoluto */
   }

@@ -7,6 +7,7 @@ import SearchIcon from '../../assets/Images/Sicon.png';
 import Car from '../../assets/Images/shopping-cart.png';
 import Skier from '../../assets/Images/skier.png';
 import './Header.css';
+import HeaderProducts from './header_products';
 
 
 
@@ -167,28 +168,16 @@ const toggleAccessoriestBox = () => {
             <Navbar.Collapse id="basic-navbar-nav">
                 <Nav to="/Blog" className="me-auto" onMouseEnter={OpenAllBoxes} onMouseLeave={closeAllBoxes}>
                     <div onMouseEnter={toggleProductBox} onMouseLeave={cancelToggleBox}>
-                        <Nav.Link as={Link} to="/Products" onClick={() => handleLinkClick('Products')} className={`bold ${showProductBox ? 'hovered' : ''}`}>PRODOTTI</Nav.Link>
+                        <Nav.Link as={Link} to="/products" onClick={() => handleLinkClick('Products')} className={`bold ${showProductBox ? 'hovered' : ''}`}>PRODOTTI</Nav.Link>
                         {showProductBox && (
                             <div className={`info-box ${isClosing ? 'closing' : isOpening ? 'opening' : ''}`}>
-                                <Row>
-                                    <Col md={4} className="d-flex flex-column">
-                                        <p>MASCHERE</p>
-                                        <Image src={Immagine3} width="100" className="d-inline-block align-center logo mt-2 mb-3" alt="Logo" />
-                                        <p>-Eternal Aura</p>
-                                        <p>-Ethereal Spirit</p>
-                                    </Col>
-                                    <Col md={4} className="d-flex flex-column">
-                                        <p>OCCHIALI</p>
-                                        <p>-Clarity Peaks</p>
-                                        <p>-Horizon Gaze</p>
-                                    </Col>
-                                </Row>
+                                <HeaderProducts/>
                             </div>
                         )}
                     </div>
 
                     <div onMouseEnter={toggleAccessoriestBox} onMouseLeave={cancelToggleBox}>
-                        <Nav.Link as={Link} to="/Accessories" onClick={() => handleLinkClick('Accessories')} className={`bold ${showAccessoriesBox ? 'hovered' : ''}`}>ACCESSORI</Nav.Link>
+                        <Nav.Link as={Link} to="/accessories" onClick={() => handleLinkClick('Accessories')} className={`bold ${showAccessoriesBox ? 'hovered' : ''}`}>ACCESSORI</Nav.Link>
                         {showAccessoriesBox && (
                             <div className={`info-box ${isClosing ? 'closing' : isOpening ? 'opening' : ''}`}>
                                 <p>accessori vari.</p>
@@ -197,7 +186,7 @@ const toggleAccessoriestBox = () => {
                     </div>
 
                     <div onMouseEnter={toggleBlogBox} onMouseLeave={cancelToggleBox}>
-                        <Nav.Link as={Link} to="/Blog" onClick={() => handleLinkClick('Blog')} className={`bold ${showBlogBox ? 'hovered' : ''}`}>BLOG</Nav.Link>
+                        <Nav.Link as={Link} to="/blog" onClick={() => handleLinkClick('Blog')} className={`bold ${showBlogBox ? 'hovered' : ''}`}>BLOG</Nav.Link>
                         {showBlogBox && (
                             <div className={`info-box ${isClosing ? 'closing' : isOpening ? 'opening' : ''}`}>
                                 <p>blog vari.</p>
@@ -206,7 +195,7 @@ const toggleAccessoriestBox = () => {
                     </div>
 
                     <div onMouseEnter={toggleAssistanceBox} onMouseLeave={cancelToggleBox}>
-                        <Nav.Link as={Link} to="/Support" onClick={() => handleLinkClick('Support')} className={`bold ${showAssistanceBox ? 'hovered' : ''}`}>ASSISTENZA</Nav.Link>
+                        <Nav.Link as={Link} to="/support" onClick={() => handleLinkClick('Support')} className={`bold ${showAssistanceBox ? 'hovered' : ''}`}>ASSISTENZA</Nav.Link>
                         {showAssistanceBox && (
                             <div className={`info-box ${isClosing ? 'closing' : isOpening ? 'opening' : ''}`}>
                                 <p></p>
@@ -232,8 +221,8 @@ const toggleAccessoriestBox = () => {
                             )}
                         </div>
                     </Nav>
-                    <Nav.Link onMouseEnter={closeAllBoxes} href="/Cart"><Image src={Car} width="20" className="icon" alt="Cart" /></Nav.Link>
-                    <Nav.Link onMouseEnter={closeAllBoxes} href="/Login"><Image src={Skier} width="20" className="icon" alt="Login" /></Nav.Link>
+                    <Nav.Link onMouseEnter={closeAllBoxes} href="/cart"><Image src={Car} width="20" className="icon" alt="Cart" /></Nav.Link>
+                    <Nav.Link onMouseEnter={closeAllBoxes} href="/login"><Image src={Skier} width="20" className="icon" alt="Login" /></Nav.Link>
                 </Nav>
             </Navbar.Collapse>
         </Navbar>
