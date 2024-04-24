@@ -11,7 +11,7 @@ import {BlogArticle} from './pages/Blog/BlogArticle.jsx';
 import {BlogArticleEdit} from './pages/Blog/BlogEditor/BlogArticleEdit.jsx';
 import {Search} from './pages/Search/Search.jsx';
 
-import { Support } from './pages/Support/Support.jsx';
+import  AboutUs  from './pages/Support/AboutUs.jsx';
 import PersonalArea from './pages/AreaPersonale/PersonalArea.jsx'
 
 import { Cart } from './pages/Cart/Cart.jsx'
@@ -52,7 +52,7 @@ class App extends Component {
           <Route path="/BlogArticleEdit/:id" element={<BlogArticleEdit/>} />
           <Route exact path="/AreaPersonale" Component={PersonalArea}/>
 
-          <Route exact path ="/support" Component={Support}/>
+          <Route exact path ="/Support" Component={AboutUs}/>
           <Route exact path ="/cart" Component={Cart}/>
           <Route exact path ="/product/:id" element={<Product/>}/>
           <Route exact path="/login" Component={Login_Signin}/>
