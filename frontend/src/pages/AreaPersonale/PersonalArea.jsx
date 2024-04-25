@@ -1,16 +1,30 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
+import './PersonalArea.css'; // Importa il file CSS per gli stili
+import shopping from '../../assets/Images/shopping2.png';
 
 function PersonalArea() {
     const [user, setUser] = useState(null);
     const [orders, setOrders] = useState([]);
     const [favorites, setFavorites] = useState([]);
     const [userData, setUserData] = useState(null); 
+    const [walking, setWalking] = useState(false);
 
     const isNameFemale = (name) => {
         return name && name.trim().toLowerCase().endsWith('a');
     };
 
     const saluto = userData && isNameFemale(userData.nome) ? 'Bentornata' : 'Bentornato';
+
+    const handleAnimationEnd = () => {
+        setWalking(walking => !walking);
+    };
+
+    const handleLogout = () => {
+        localStorage.removeItem('token');
+        localStorage.removeItem('userId');
+        setUser(null); 
+        window.location.href = "/";
+    };
 
     useEffect(() => {
         const userId = localStorage.getItem('userId'); 
@@ -22,8 +36,7 @@ function PersonalArea() {
                     throw new Error('Network response was not ok');
                 }
                 const data = await response.json();
-                console.log(data);
-                setUserData(data); // Aggiorna il valore di userData con i dati ricevuti
+                setUserData(data); 
             } catch (error) {
                 console.error('There was a problem with the fetch operation:', error);
             }
@@ -32,28 +45,33 @@ function PersonalArea() {
         if (userId) {
             fetchData();
         }
+
+         // Avvia l'animazione dopo un certo ritardo (ad esempio, 1 secondo)
+         const timeout = setTimeout(() => {
+            setWalking(true);
+        }, 1000);
+
+        // Pulisce il timeout quando il componente si smonta
+        return () => clearTimeout(timeout);
     }, []);
 
-
-
-    const handleLogout = () => {
-      
-        localStorage.removeItem('token');
-        localStorage.removeItem('userId');
-        setUser(null); 
-        window.location.href = "/";
-    };
-
+   
     return (
-        <div className="container mt-5">
-            <div className="row justify-content-center">
-                <div className="col-md-8">
-                    <h1 className="text-center mb-4">{saluto}, {userData ? `${userData.nome} ${userData.cognome}` : 'USER SCONOSCIUTO'}!</h1>
+        <div className="personal-area-container mt-5">
+            <div className="personal-area-row justify-content-center">
+                <div className="personal-area-col">
+                    <h1 className="personal-area-text-center mb-4">{saluto}, {userData ? `${userData.nome}` : 'USER SCONOSCIUTO'}!</h1>
 
                     {/* Sezione: I miei ordini */}
-                    <div className="mb-4">
-                        <div className="container border rounded p-4">
+                    <div className="personal-area-margin-bottom">
+                        <div className="personal-area-container personal-area-border personal-area-rounded personal-area-padding">
                             <h2>I miei ordini</h2>
+                            <img
+                            src={shopping}
+                            alt="Shopping"
+                            className={`shopping-image ${walking ? 'shopping-image-walk' : ''} ${walking ? 'shopping-image-flip' : ''}`}
+                            onAnimationEnd={handleAnimationEnd}
+                        />
                             {orders.length > 0 ? (
                                 orders.map(order => (
                                     <div key={order.id}>
@@ -67,8 +85,8 @@ function PersonalArea() {
                     </div>
 
                     {/* Sezione: Articoli preferiti */}
-                    <div className="mb-4">
-                        <div className="container border rounded p-4">
+                    <div className="personal-area-margin-bottom">
+                        <div className="personal-area-container personal-area-border personal-area-rounded personal-area-padding">
                             <h2>Articoli preferiti</h2>
                             {favorites.length > 0 ? (
                                 favorites.map(item => (
@@ -83,8 +101,8 @@ function PersonalArea() {
                     </div>
 
                     {/* Sezione: Possibilità di logout */}
-                    <div className="text-center">
-                        <button className="btn btn-danger" onClick={handleLogout}>Logout</button>
+                    <div className="personal-area-text-center">
+                        <button className="personal-area-button personal-area-button-danger" onClick={handleLogout}>Esci</button>
                     </div>
                 </div>
             </div>
