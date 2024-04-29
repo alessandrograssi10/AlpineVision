@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import './PersonalArea.css'; // Importa il file CSS per gli stili
 import shopping from '../../assets/Images/shopping2.png';
+import AuthServices from '../Login_SignUp/AuthService';
 
 function PersonalArea() {
-    const [user, setUser] = useState(null);
     const [orders, setOrders] = useState([]);
     const [favorites, setFavorites] = useState([]);
     const [userData, setUserData] = useState(null); 
@@ -13,20 +13,14 @@ function PersonalArea() {
         return name && name.trim().toLowerCase().endsWith('a');
     };
 
-    const saluto = userData && isNameFemale(userData.nome) ? 'Bentornata' : 'Bentornato';
+    const saluto = userData && isNameFemale(userData.nome) ? 'Bentornata nella tua Area Personale' : 'Bentornato nella tua Area Personale';
 
     const handleAnimationEnd = () => {
         setWalking(walking => !walking);
     };
 
-    const handleLogout = () => {
-        localStorage.removeItem('token');
-        localStorage.removeItem('userId');
-        setUser(null); 
-        window.location.href = "/";
-    };
-
     useEffect(() => {
+        AuthServices.redirectIfNotLoggedIn();
         const userId = localStorage.getItem('userId'); 
 
         const fetchData = async () => {
@@ -102,7 +96,7 @@ function PersonalArea() {
 
                     {/* Sezione: Possibilità di logout */}
                     <div className="personal-area-text-center">
-                        <button className="personal-area-button personal-area-button-danger" onClick={handleLogout}>Esci</button>
+                        <button className="personal-area-button personal-area-button-danger" onClick={AuthServices.dologout}>Esci</button>
                     </div>
                 </div>
             </div>

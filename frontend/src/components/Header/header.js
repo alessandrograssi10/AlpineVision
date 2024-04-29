@@ -8,6 +8,7 @@ import Car from '../../assets/Images/shopping-cart.png';
 import Skier from '../../assets/Images/skier.png';
 import './Header.css';
 import HeaderProducts from './header_products';
+import AuthServices from '../../pages/Login_SignUp/AuthService';
 
 
 
@@ -156,6 +157,14 @@ const toggleAccessoriestBox = () => {
     // Qui puoi aggiungere la logica per effettuare la ricerca
   };
 
+  const handleLoginClick = () => {
+    if (AuthServices.isLoggedIn()) {
+      window.location.href = "/areapersonale";
+    } else {
+      window.location.href = "/login";
+    }
+  };
+
   return (
     <>
         <Navbar id="top" expand="lg" className="custom-navbar" onMouseLeave={closeAllBoxes}>
@@ -222,7 +231,7 @@ const toggleAccessoriestBox = () => {
                         </div>
                     </Nav>
                     <Nav.Link onMouseEnter={closeAllBoxes} href="/cart"><Image src={Car} width="20" className="icon" alt="Cart" /></Nav.Link>
-                    <Nav.Link onMouseEnter={closeAllBoxes} href="/login"><Image src={Skier} width="20" className="icon" alt="Login" /></Nav.Link>
+                    <Nav.Link onMouseEnter={closeAllBoxes} onClick={handleLoginClick}><Image src={Skier} width="20" className="icon" alt="Login" /></Nav.Link>
                 </Nav>
             </Navbar.Collapse>
         </Navbar>
