@@ -1,9 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { Image,Container, Row, Col,Card } from 'react-bootstrap';
 import ImmagineBg from '../../assets/Images/BgProd3.png';
+import heart from '../../assets/Images/heart-3.png';
+
 import { Link } from 'react-router-dom';
 
 import './Products.css';
+
+
+
+
+
 
 export const Products = () => {
 
@@ -110,19 +117,23 @@ export const Products = () => {
             <h3 className="m-4 mb-1 boldText">Maschere da sci</h3>
             <h5 className="m-4 mt-1 mb-2 notbold">Stile Unico</h5>
           </Row>
-          <Row className='mt-4'>
+          <Row className='mt-4' >
             {productsMask.map((prodotto) => {
+             
               return (
-                <Col xs={12} sm={6} md={4} lg={3} key={prodotto._id}>
-                  <Card as={Link} to={`/product/${prodotto._id}`} className='m-3 card-text-prod card-prod'>
+                <Col xs={12} sm={6} md={4} lg={3} key={prodotto._id} >
+
+                  <Card as={Link} to={`/product/${prodotto._id}`} className='m-3 card-text-prod card-prod  ' >
                     {/* Immagine del prodotto */}
                     <Card.Img key={prodotto._id} variant="top" className='card-image-fit'onMouseEnter={() => setHoverIndex(prodotto._id)} onMouseLeave={() => setHoverIndex(null)} src={hoverIndex === prodotto._id ? imageUrlspLat[prodotto._id] : imageUrlsp[prodotto._id]} />
                     {/* Dettagli del prodotto */}
                     <Card.Body>
                       <Card.Title>{prodotto.nome}</Card.Title>
                       <Card.Title>{colorCount[prodotto._id]} colori</Card.Title>
-                      <Card.Text>{prodotto.prezzo} €</Card.Text>
-
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+    <Card.Text>{prodotto.prezzo} €</Card.Text>
+    <img src={heart} style={{ width: '25px', height: '25px' }} alt="Descrizione Immagine" />
+  </div>
                     </Card.Body>
                   </Card>
                 </Col>

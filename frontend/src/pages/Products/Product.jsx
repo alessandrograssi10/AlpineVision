@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Container, Row, Form, Col, Carousel, Button,Tabs,Tab,Image } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
 import './Product.css';
+import { Link , useNavigate } from 'react-router-dom';
 
 import Immagine3 from '../../assets/Images/maskL.png';
 
@@ -12,6 +13,8 @@ export const Product = () => {
     const [product, setProduct] = useState([]);
     const [productInfo, setProductInfo] = useState([]);
     const [productVariantsCop, setproductVariantsCop] = useState([]);
+    const userId = localStorage.getItem("userId");
+    let navigate = useNavigate();
 
     const [activeIndex, setActiveIndex] = useState(0);  // Indice per il carosello
     const [selectedSetIndex, setSelectedSetIndex] = useState(0);  // Indice per selezionare il set di immagini
@@ -95,6 +98,41 @@ export const Product = () => {
         ));
       }
 
+      async function AddToCart() {
+        console.log(userId, "UserID");
+        if(userId)
+        {
+          console.log("carrello");
+          const quantity = 1;
+          const color = product[selectedSetIndex]?.colore;
+          const url = 'http://localhost:3000/api/carts/add'; 
+
+          try {
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                  userId: userId, 
+                  productId: id,   
+                  color: color,
+                  quantity: quantity
+                })
+            });
+    
+            if (!response.ok) {
+                throw new Error('Errore');
+            }
+    
+        } catch (error) {console.error('Error:', error);}
+        }
+        else{
+          navigate(`/login`);
+          console.log("login");
+        }
+      }
+
     return (
         <Container fluid className="p-0">
             <Row className="d-flex align-items-center pl-3 pt-3 equal-height">
@@ -141,7 +179,7 @@ export const Product = () => {
                         </Row>
                         <Row className="justify-content-center m-0 mt-3">
                             <Col xs={12} className="d-flex justify-content-left align-items-center pb-5 p-0 ">
-                                <Button variant="outline-dark pl-0 ml-0" size="lg">Aggiungi al carrello</Button>
+                                <Button onClick={() => AddToCart()} variant="outline-dark pl-0 ml-0" size="lg">Aggiungi al carrello</Button>
                                 <div style={{ width: '10px' }}></div>
                                 <Button href="/EternalAura" variant="outline-dark" size="lg">Compra ora</Button>
                             </Col>
