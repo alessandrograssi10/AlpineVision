@@ -3,14 +3,12 @@ import { Form, Button, Container, Row, Col } from "react-bootstrap";
 import Skier2 from '../../assets/Images/skier2.png';
 import Skier3 from '../../assets/Images/skier3.png';
 import "./LoginSignupForm.css";
-import { Link } from "react-router-dom";
 
 const LoginSignupForm = () => {
   
   const [loginEmail, setLoginEmail] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
   const [activeTab, setActiveTab] = useState("login");
-  const [loginLinkVisible, setLoginLinkVisible] = useState(false);
 
   const [userData, setUserData] = useState({
     firstName: "",
@@ -73,39 +71,38 @@ const LoginSignupForm = () => {
     let errors = [];
     setErrorMessage(""); 
     setsuccessMessage(""); 
-
+  
     if (
       userData.firstName === "" ||
       userData.lastName === "" ||
       userData.email === "" ||
       userData.password === "" ||
-      userData.confirmPassword === ""||
+      userData.confirmPassword === "" ||
       !birthdateTouched
-    ) 
-    {
+    ) {
       setErrorMessage("Completare tutti i campi.");
       return;
     }
-
+  
     if (userData.password.length < 8) {
       setErrorMessage("La password deve contenere almeno 8 caratteri.");
       return;
     }
-
+  
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(userData.email)) {
       errors.push("email non valida");
     }
-
+  
     if (userData.password !== userData.confirmPassword) {
       errors.push("le password non coincidono.");
     }
-
+  
     if (errors.length > 0) {
       setErrorMessage(errors.length > 1 ? errors.join(" e ") : errors[0]);
       return;
     }
-
+  
     const user = {
       nome: userData.firstName,
       cognome: userData.lastName,
@@ -114,19 +111,19 @@ const LoginSignupForm = () => {
       password: userData.password,
       confermaPassword: userData.confirmPassword
     };
-
+  
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
-
+  
     const raw = JSON.stringify(user);
-
+  
     const requestOptions = {
       method: "POST",
       headers: myHeaders,
       body: raw,
       redirect: "follow"
     };
-
+  
     fetch("http://localhost:3000/api/users/addUser", requestOptions)
       .then((response) => {
         if (!response.ok) {
@@ -135,14 +132,18 @@ const LoginSignupForm = () => {
         return response.json();
       })
       .then((result) => {
-        setsuccessMessage('Registrazione avvenuta con successo. Accedi.');
-        setLoginLinkVisible(true);
+        localStorage.setItem("token", result.token);
+        localStorage.setItem("userId", result.userId);
+        setsuccessMessage('Registrazione avvenuta con successo. Reindirizzamento in corso');
+        setTimeout(() => {
+          window.location.href = "/AreaPersonale";
+        }, 2000); 
       })
       .catch((error) => {
         setErrorMessage('Utente già registrato. Accedi con le tue credenziali.');
       });
   };
-
+  
   const handleTabChange = (tab) => {
     setActiveTab(tab);
     setErrorMessage("");

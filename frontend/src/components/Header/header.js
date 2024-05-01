@@ -8,6 +8,8 @@ import Skier from '../../assets/Images/skier.png';
 import './Header.css';
 import HeaderProducts from './header_products';
 
+
+
 export const Header = () => {
     const [currentBox, setCurrentBox] = useState(null);
     const [searchTerm, setSearchTerm] = useState('');
