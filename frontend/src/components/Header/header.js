@@ -7,7 +7,7 @@ import Car from '../../assets/Images/shopping-cart.png';
 import Skier from '../../assets/Images/skier.png';
 import './Header.css';
 import HeaderProducts from './header_products';
-
+import AuthServices from '../../pages/Login_SignUp/AuthService';
 
 
 export const Header = () => {
@@ -65,6 +65,14 @@ export const Header = () => {
 
     const handleSearchChange = (event) => { setSearchTerm(event.target.value); };
 
+    const handleLoginClick = ()=>{
+
+        if(AuthServices.isLoggedIn()){
+            window.location.href("/areapersonale")
+        }else{
+            window.location.href("/login")
+        }
+    }
     return (
         <>
             <Navbar id="top" expand="lg" className="custom-navbar" onMouseLeave={closeAllBoxes} >
@@ -139,7 +147,7 @@ export const Header = () => {
                           <span className="d-inline-block d-lg-none d-xl-none align-center logo">Carrello</span>
 
                         </Nav.Link>
-                        <Nav.Link onMouseEnter={closeAllBoxes} href="/login">
+                        <Nav.Link onMouseEnter={closeAllBoxes} onClick={() => handleLoginClick()}>
                           <Image src={Skier} width="20" className="icon d-none d-lg-inline-block d-xl-inline-block" alt="Login" />
                           <span className="d-inline-block d-lg-none d-xl-none align-center logo">login</span>
                         </Nav.Link>
