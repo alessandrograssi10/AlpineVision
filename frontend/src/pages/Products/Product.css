@@ -50,12 +50,12 @@
 }
 .image-radio-label {
     display: inline-block;
-    width: 50px;
-    height: 50px;
+    width: 60px;
+    height: 60px;
     border-radius: 50%;
     background-size: cover;
     cursor: pointer;
-    border: 2px solid transparent;
+    border: 2.5px solid #dbd9d9;/*transparent;*/
     background-position: center;
     margin: 10px;
 }
@@ -71,10 +71,12 @@
   .img-prod {
     /*object-fit: scale-down; /* Assicura che le immagini coprano l'area disponibile senza perdere le proporzioni */
     object-fit: contain; /* Assicura che le immagini coprano l'area disponibile senza perdere le proporzioni */
-    object-position: center; /* Centra l'immagine nel contenitore */
+    object-position: center!important; /* Centra l'immagine nel contenitore */
 
     width: auto !important;
     height: 60vh !important; /* Usa 100vh per far sì che copra tutto il viewport verticalmente */
+    margin: 0 auto; /* Centra l'immagine orizzontalmente */
+
 }
 .carosello-prod{
     height: 60vh !important; /* Usa 100vh per far sì che copra tutto il viewport verticalmente */
@@ -89,4 +91,35 @@
     margin: 0;
     padding: 0;
     position: relative; /* Posizione relativa per il contenimento del testo assoluto */
+  }
+
+  .button-black-prod {
+    position: relative;
+    padding: 10px 20px;
+    background-color: white;
+    color: black;
+    border: 2px solid black;
+    cursor: pointer;
+    text-align: center;
+    
+  }
+  
+  .button-black-prod::before, .button-black-prod::after {
+    content: "";
+    position: absolute;
+    top: -10px;
+    right: 20px;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 10px solid rgb(0, 0, 0);
+  }
+  
+  .button-black-prod::after {
+    right:5px;
+    top: -15px;
+    border-bottom-color: #4CAF50;
+    border-left: 15px solid transparent; /* Aumento la dimensione per un triangolo più largo */
+    border-right: 15px solid transparent; /* Aumento la dimensione per un triangolo più largo */
+    border-bottom: 15px solid rgb(0, 0, 0); /* Aumento la dimensione per un triangolo più alto */
+  
   }

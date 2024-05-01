@@ -1,19 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { Container, Card, Row, Col, Button } from 'react-bootstrap';
-import axios from 'axios';
 import { Link } from 'react-router-dom';
 import './Blog.css';
 
 export const Blog = () => {
-  // Stato per memorizzare i post del blog
-  const [blogPosts, setBlogPosts] = useState([]);
+
+  const [blogPosts, setBlogPosts] = useState([]); // Variabile per salvare i vari post
 
   // Funzione per ottenere l'URL dell'immagine di copertina del post
   const getImageById = (id) => {
-    return `http://localhost:3000/api/posts/photo-copertina?id=${id}`;
+     return `http://localhost:3000/api/posts/photo-copertina?id=${id}`;
   };
 
-  // Effetto per caricare i post del blog quando il componente si monta
+  // Caricamento dei post del blog dal backend
   useEffect(() => {
     const fetchBlogPosts = async () => {
       try {
@@ -34,7 +33,6 @@ export const Blog = () => {
     
   return (
     <Container>
-      {/* Griglia per visualizzare i post del blog */}
       <Row className='mt-4'>
         {blogPosts.sort((a, b) => a.position - b.position).map((post, position) => {
           if (position === 0) {

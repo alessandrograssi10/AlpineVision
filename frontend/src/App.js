@@ -12,7 +12,7 @@ import {BlogArticleEdit} from './pages/Blog/BlogEditor/BlogArticleEdit.jsx';
 import {Search} from './pages/Search/Search.jsx';
 import {Payments} from './pages/Payments/Payments.jsx';
 
-import  AboutUs  from './pages/Support/AboutUs.jsx';
+import  AboutUs  from './pages/About_Us/AboutUs.jsx';
 import PersonalArea from './pages/AreaPersonale/PersonalArea.jsx'
 
 import { Cart } from './pages/Cart/Cart.jsx'

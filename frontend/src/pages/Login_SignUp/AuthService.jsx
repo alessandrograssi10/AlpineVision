@@ -1,6 +1,6 @@
 
-import React from 'react';
-import PersonalArea from '../AreaPersonale/PersonalArea';
+//import React from 'react';
+//import PersonalArea from '../AreaPersonale/PersonalArea';
 
 const AuthServices = {
   isLoggedIn: () => {

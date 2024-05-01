@@ -5,16 +5,15 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 
 export const BlogArticle = () => {
-  const { id } = useParams();
-  const [post, setPost] = useState(null);
+  const { id } = useParams(); // Id del post passato tramite URL
+  const [post, setPost] = useState(null); // Dati del post
 
+  // Immagine recuperata dal backend tramite id
   const getImageById = (id) => {
     return `http://localhost:3000/api/posts/photo-contenuto?id=${id}`;
   };
 
   useEffect(() => {
-    console.log(`Caricamento dei dettagli per il post con ID: ${id}`); // Verifica l'ID
-
     fetch(`http://localhost:3000/api/posts/getAllPosts`)
       .then(response => {
         if (!response.ok) {
