@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 import './Product.css';
 import { Link, useNavigate } from 'react-router-dom';
 import Plx from 'react-plx';
+import HeaderCart from '../../components/Header/Boxes/header_cart';
 
 export const Product = () => {
     const { id } = useParams();
@@ -12,6 +13,8 @@ export const Product = () => {
     const [productInfo, setProductInfo] = useState([]);
     const [productVariantsCop, setproductVariantsCop] = useState([]);
     const userId = localStorage.getItem("userId");
+    const [qnt, setQnt] = useState(1);
+
     let navigate = useNavigate();
 
     const [activeIndex, setActiveIndex] = useState(0); // Indice per il carosello
@@ -108,11 +111,13 @@ export const Product = () => {
                         color: color,
                         quantity: quantity
                     })
+
                 });
 
                 if (!response.ok) {
                     throw new Error('Errore');
                 }
+                localStorage.setItem('Cart_Trig',"Trigger");
 
             } catch (error) { console.error('Error:', error); }
         } else {
@@ -145,9 +150,8 @@ export const Product = () => {
                         <Row>
                             <h5 key={product} className="text-left text-black">{product[selectedSetIndex]?.colore ?? ''}</h5>
                         </Row>
-                        <Row>
-                            <p className="text-left text-black">{product.descrizione || ' '}</p>
-                        </Row>
+                       
+                        
                         <Row>
                             <div className="d-flex align-items-left m-0 p-0">
                                 {product.map((item, index) => (
@@ -166,12 +170,16 @@ export const Product = () => {
                             </div>
                         </Row>
                         <Row className="justify-content-center m-0 mt-3">
+                            <h3 className="text-left text-black">{productInfo.prezzo}$</h3>
+                        </Row>
+                        <Row className="justify-content-center m-0 mt-3">
                             <Col xs={12} className="d-flex justify-content-left align-items-center pb-5 p-0 ">
-                                <Button className='button-black-prod  mt-5' onClick={() => AddToCart()} variant="outline-dark pl-0 ml-0" size="md">AGGIUNGI AL CARRELLO</Button>
+                                <Button className='button-black-prod  m-0 mt-3' onClick={() => AddToCart()} variant="outline-dark pl-0 ml-0" size="md">AGGIUNGI AL CARRELLO</Button>
                                 <div style={{ width: '10px' }}></div>
-                                <Button className='button-black-prod  mt-5' href="/EternalAura" variant="outline-dark" size="md">COMPRA ORA</Button>
+                                <Button className='button-black-prod m-0 mt-3' href="/EternalAura" variant="outline-dark" size="md">COMPRA ORA</Button>
                             </Col>
                         </Row>
+                    
 
                     </div>
                 </Col>

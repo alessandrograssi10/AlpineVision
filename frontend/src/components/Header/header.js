@@ -22,6 +22,8 @@ export const Header = () => {
     const [timeoutId, setTimeoutId] = useState(null); //id timer
     const [isLargeScreen, setIsLargeScreen] = useState(window.innerWidth >= 992); //verifica la dimensione dello schermo 
 
+    
+
     //evento che viene chiamato all ridimensionamento della schermata
     useEffect(() => {
         const handleResize = () => { setIsLargeScreen(window.innerWidth >= 992); };
@@ -144,7 +146,7 @@ export const Header = () => {
                             )}
                         </div>
                     </Nav>
-                    <Nav className="ms-auto" >
+                    <Nav  className="ms-auto" >
                         <Nav>
 
                             {/* Box Cerca */}
@@ -161,10 +163,10 @@ export const Header = () => {
                             </div>
                         </Nav>
                         {/* Bottone carrello */}
-                        <Nav.Link onMouseEnter={closeAllBoxes} onClick={handleCartClick} className="position-relative">
+                        <Nav.Link  onMouseEnter={closeAllBoxes} onClick={handleCartClick} className="position-relative">
                           <Image src={Car} width="20" className="icon d-none d-lg-inline-block d-xl-inline-block" alt="Cart" />
                           <span className="d-inline-block d-lg-none d-xl-none align-center logo">Carrello</span>
-                          <HeaderCart onCloseAllBoxes={closeAllBoxes} />
+                          <HeaderCart />
                         </Nav.Link>
                         {/* Bottone login o areapersonale */}
                         <Nav.Link onMouseEnter={closeAllBoxes} onClick={handleLoginClick}>

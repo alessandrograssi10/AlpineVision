@@ -2,39 +2,60 @@ import React, { useState, useEffect } from 'react';
 import { Row, Col, Image } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
-export const HeaderCart = ({ onCloseAllBoxes }) => {
 
 
-    const [productsMask, setProductsMask] = useState([]);
-    const [productsGlass, setProductsGlass] = useState([]);
-    const [imgMask, setImgMask] = useState(''); // Dichiarazione dello stato imgMask e della funzione setImgMask
-    const [imgGlass, setImgGlass] = useState(''); // Dichiarazione dello stato imgMask e della funzione setImgMask
+export const HeaderCart = ({ onChangeCart }) => {
+  const [qnt, setQnt] = useState(0);
+  const userId = localStorage.getItem('userId'); 
+
+  const item = localStorage.getItem('Cart_Trig'); 
+
+
+    useEffect(() => {localStorage.setItem('Cart_Trig'," Trigger"); },[]);
+
 
     useEffect(() => {
-        fetch(`http://localhost:3000/api/products`)
-          .then(response => {if (!response.ok) {throw new Error('errore');}return response.json();})
-          .then(data => {
-            const filteredProducts = data.filter(product => product.type === "prodotto");
-            const masks = filteredProducts.filter(product => product.categoria === "maschera");
-            const glasses = filteredProducts.filter(product => product.categoria === "occhiale");
-            setProductsMask(masks);
-            setProductsGlass(glasses);
-            const imgMaskValue = `http://localhost:3000/api/products/${masks[0]?._id}/verde/frontale`;
-            const imgGlassValue = `http://localhost:3000/api/products/${glasses[0]?._id}/verde/frontale`;
+      const fetchData = () => {
+        const item = localStorage.getItem('Cart_Trig'); 
+        if(item !== '') {
+          console.log("item",item);
 
-            setImgMask(imgMaskValue);
-            setImgGlass(imgGlassValue);
+      const myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/json");
 
+      const requestOptions = {
+          method: "GET",
+          headers: myHeaders,
+          redirect: "follow"
+      };
+      if(!userId) return;
+      fetch(`http://localhost:3000/api/carts/${userId}`, requestOptions)
+          .then((response) => response.json())
+          .then((result) => {
+              if (Array.isArray(result) && result) {
+                  const totalQuantita = result.reduce((sum, item) => sum + item.quantity, 0);
+                  setQnt(totalQuantita);  // Aggiorna lo stato con la quantità totale
+                  console.log("quant",totalQuantita);
+              }
+              
           })
-          .catch(error => console.error("Errore nel recupero dei prodotti", error));
-      }, []);
+          .catch((error) => console.error(error));
+          localStorage.setItem('Cart_Trig',"");
+        }
+      }
+        
+          const intervalId = setInterval(fetchData, 50); // Ogni 60 secondi
+          // Cleanup
+          return () => clearInterval(intervalId);
+        
+  },[]);
       
   
         return (
         <>
-            {5 > 0 && ( // Visualizza il badge solo se l'itemCount è maggiore di 0
-                <span className="position-absolute top-0 mt-0 start-50 badge m-0 p-0 p-1 rounded-pill bg-danger">
-                    {500}
+            {qnt > 0 && ( // Visualizza il badge solo se l'itemCount è maggiore di 0
+                <span className="position-absolute top-0 mt-0 start-50 badge m-0 p-0  p-1 mt-1 text-colored-navbar">
+                    {qnt}
                     <span className="visually-hidden">elementi nel carrello</span>
                 </span>
             )}
