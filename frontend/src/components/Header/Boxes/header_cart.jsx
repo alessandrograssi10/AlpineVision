@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Row, Col, Image } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import { Header } from './header.js';
 
-export const HeaderProducts = ({ onCloseAllBoxes }) => {
+export const HeaderCart = ({ onCloseAllBoxes }) => {
 
 
     const [productsMask, setProductsMask] = useState([]);
@@ -32,24 +31,15 @@ export const HeaderProducts = ({ onCloseAllBoxes }) => {
       
   
         return (
-            <Row>
-                <Col md={4} className="d-flex flex-column">
-                <Image key={productsMask} src={imgMask} style={{ width: '115px', height: '115px' }}/>
-
-                    <h4>MASCHERE</h4>
-                    {productsMask.map(product => (
-                    <Link to={`/product/${product._id}`} onClick={onCloseAllBoxes} key={product._id}>{product.nome}</Link>
-                ))}
-                </Col>
-                <Col md={4} className="d-flex flex-column">
-                <Image key={productsMask} src={imgGlass} style={{ width: '115px', height: '115px' }}/>
-                    <h4>OCCHIALI</h4>
-                    {productsGlass.map(product => (
-                    <Link to={`/product/${product._id}`} onClick={onCloseAllBoxes} key={product._id}>{product.nome}</Link>
-                ))}
-                </Col>
-            </Row>
+        <>
+            {5 > 0 && ( // Visualizza il badge solo se l'itemCount è maggiore di 0
+                <span className="position-absolute top-0 mt-0 start-50 badge m-0 p-0 p-1 rounded-pill bg-danger">
+                    {500}
+                    <span className="visually-hidden">elementi nel carrello</span>
+                </span>
+            )}
+      </>
     );
 }
 
-export default HeaderProducts;
+export default HeaderCart;

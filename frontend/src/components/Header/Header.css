@@ -23,17 +23,35 @@
   font-size: larger;
 
 }
-.bold {
-  color: #1A1B25 !important; /* This will make the text color black */
-  position: relative;
-
+/* Definizione dell'animazione fadeIn */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
+
+/* Applicazione dell'animazione e stili di base per .bold */
+.bold {
+  display: inline-block;
+  color: #1A1B25; /* Colore del testo nero */
+  position: relative;
+}
+
+/* Aggiunta dell'animazione alla classe .fadeIn */
+.fadeIn {
+  animation: fadeIn 5s ease-out; /* L'animazione dura 1 secondo con effetto di easing out */
+}
+
+/* Stili per hover e classe aggiuntiva hovered */
 .bold:hover,
 .bold.hovered {
   font-weight: bold!important;
-  text-decoration: underline !important;
+  /*text-decoration: underline!important;*/
+  
 }
-
 
 .logo {
   vertical-align: middle;
@@ -137,3 +155,38 @@
 }
 
 
+
+.hover-underline-animation {
+  display: inline-block;
+  position: relative;
+  color: #000000;
+}
+
+.hover-underline-animation::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  transform: scaleX(0);
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background-color: #000000;
+  transform-origin: bottom right;
+  transition: transform 0.25s ease-out;
+}
+
+.bold:hover .hover-underline-animation::after,
+.bold.hovered .hover-underline-animation::after {
+  transform: scaleX(1);
+  transform-origin: bottom left;
+}
+
+.bold-text-navbar{
+  font-weight: bold;
+
+}
+.text-navbar-box{
+  font-weight: normal; 
+  color: #000000; 
+  text-decoration: none !important; 
+}

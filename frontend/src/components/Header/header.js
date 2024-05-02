@@ -7,18 +7,20 @@ import Car from '../../assets/Images/shopping-cart.png';
 import Skier from '../../assets/Images/skier.png';
 import './Header.css';
 //Elementi delle tendine
-import HeaderProducts from './header_products';
+import HeaderProducts from './Boxes/header_products';
+import HeaderAccessories from './Boxes/header_accessories';
+import HeaderSearch from './Boxes/header_search';
+import HeaderCart from './Boxes/header_cart';
+
 import AuthServices from '../../pages/Login_SignUp/AuthService';
 
 
 export const Header = () => {
     const [currentBox, setCurrentBox] = useState(null); //Viene salvato il nome della tendina aperta
-    const [searchTerm, setSearchTerm] = useState(''); //da eliminare
     const [isClosing, setIsClosing] = useState(false); //Variabile per l'animazione di chiusura tendina
     const [isOpening, setIsOpening] = useState(false); //Variabile per l'animazione di apertura tendina
     const [timeoutId, setTimeoutId] = useState(null); //id timer
     const [isLargeScreen, setIsLargeScreen] = useState(window.innerWidth >= 992); //verifica la dimensione dello schermo 
-
 
     //evento che viene chiamato all ridimensionamento della schermata
     useEffect(() => {
@@ -71,8 +73,6 @@ export const Header = () => {
         }, 200);
     };
 
-    const handleSearchChange = (event) => { setSearchTerm(event.target.value); }; //da eliminare
-
     //L'utente viene reindirizzato se è loggato 
     const handleLoginClick = () => {
         if (AuthServices.isLoggedIn()) {
@@ -84,23 +84,23 @@ export const Header = () => {
 
     return (
         <>
-        {/*Navbar*/}
+        {/* Navbar */}
             <Navbar id="top" expand="lg" className="custom-navbar" onMouseLeave={closeAllBoxes} >
-                {/*Logo e Scritta di AlpineVision*/}
+                {/* Logo e Scritta di AlpineVision */}
                 <Navbar.Brand as={Link} to="/home" className="navbar-brand-bold">
                     <Image src={Logo} width="50" className="d-inline-block align-center logo" alt="Logo" />
                     ALPINE VISION
                 </Navbar.Brand>
-                {/*Toggle per gli elementi con lo schermo piccolo*/}
+                {/* Toggle per gli elementi con lo schermo piccolo */}
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
 
-                {/*Elementi della navbar con schermo grande*/}
+                {/* Elementi della navbar con schermo grande */}
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="me-auto" onMouseEnter={OpenAllBoxes} onMouseLeave={closeAllBoxes}>
 
-                        {/*Box Prodotti*/}
+                        {/* Box Prodotti */}
                         <div onMouseEnter={() => toggleBox("showProductBox")} onMouseLeave={cancelToggleBox}>
-                            <Nav.Link as={Link} to="/products" onClick={() => handleLinkClick('Products')} className={`bold ${currentBox === 'showProductBox' ? 'hovered' : ''}`}>PRODOTTI</Nav.Link>
+                            <Nav.Link as={Link} to="/products" onClick={() => handleLinkClick('Products')} className={`bold ${currentBox === 'showProductBox' ? 'hovered' : ''}`}><div className="hover-underline-animation">PRODOTTI</div></Nav.Link>
                             {currentBox === 'showProductBox' && (
                                 <div className={`info-box ${isClosing ? 'closing' : isOpening ? 'opening' : ''}`}>
                                     <HeaderProducts onCloseAllBoxes={closeAllBoxes} />
@@ -108,19 +108,19 @@ export const Header = () => {
                             )}
                         </div>
 
-                        {/*Box Accessori*/}
+                        {/* Box Accessori */}
                         <div onMouseEnter={() => toggleBox("showAccessoriesBox")} onMouseLeave={cancelToggleBox}>
-                            <Nav.Link as={Link} to="/accessories" onClick={() => handleLinkClick('Accessories')} className={`bold ${currentBox === 'showAccessoriesBox' ? 'hovered' : ''}`}>ACCESSORI</Nav.Link>
+                            <Nav.Link as={Link} to="/accessories" onClick={() => handleLinkClick('Accessories')} className={`bold ${currentBox === 'showAccessoriesBox' ? 'hovered' : ''}`}><div className="hover-underline-animation">ACCESSORI</div></Nav.Link>
                             {currentBox === 'showAccessoriesBox' && (
                                 <div className={`info-box ${isClosing ? 'closing' : isOpening ? 'opening' : ''}`}>
-                                    <p>accessori vari.</p>
+                                    <HeaderAccessories onCloseAllBoxes={closeAllBoxes} />
                                 </div>
                             )}
                         </div>
 
                         {/*Box Blog*/}
                         <div onMouseEnter={() => toggleBox('showBlogBox')} onMouseLeave={cancelToggleBox}>
-                            <Nav.Link as={Link} to="/blog" onClick={() => handleLinkClick('Blog')} className={`bold ${currentBox === 'showBlogBox' ? 'hovered' : ''}`}>BLOG</Nav.Link>
+                            <Nav.Link as={Link} to="/blog" onClick={() => handleLinkClick('Blog')} className={`bold ${currentBox === 'showBlogBox' ? 'hovered' : ''}`}><div className="hover-underline-animation">BLOG</div></Nav.Link>
                             {currentBox === 'showBlogBox' && (
                                 <div className={`info-box ${isClosing ? 'closing' : isOpening ? 'opening' : ''}`}>
                                     <p>blog vari.</p>
@@ -128,9 +128,9 @@ export const Header = () => {
                             )}
                         </div>
 
-                        {/*Box Chi siamo*/}
+                        {/* Box Chi siamo */}
                         <div onMouseEnter={() => toggleBox('showAboutUs')} onMouseLeave={cancelToggleBox}>
-                            <Nav.Link as={Link} to="/support" onClick={() => handleLinkClick('Support')} className={`bold ${currentBox === 'showAboutUs' ? 'hovered' : ''}`}>CHI SIAMO</Nav.Link>
+                            <Nav.Link as={Link} to="/support" onClick={() => handleLinkClick('Support')} className={`bold ${currentBox === 'showAboutUs' ? 'hovered' : ''}`}><div className="hover-underline-animation">CHI SIAMO</div></Nav.Link>
                             {currentBox === 'showAboutUs' && (
                                 <div className={`info-box ${isClosing ? 'closing' : isOpening ? 'opening' : ''}`}>
                                     <p>At Alpine Vision, we believe that every adventure is an opportunity for discovery and growth. Whether you're conquering mountain peaks, traversing rugged trails, or simply soaking in the beauty of nature, we're here to support you every step of the way.</p>
@@ -141,7 +141,7 @@ export const Header = () => {
                     <Nav className="ms-auto" >
                         <Nav>
 
-                            {/*Box Cerca*/}
+                            {/* Box Cerca */}
                             <div >
                                 <Nav.Link as={Link} className={`bold ${currentBox === 'showSearchBox' ? 'hovered' : ''}`}>
                                   <Image onClick={() => toggleBox("showSearchBox")} src={SearchIcon} width="20" className="icon d-none d-lg-inline-block d-xl-inline-block" alt="Search" />
@@ -149,24 +149,18 @@ export const Header = () => {
                                 </Nav.Link>
                                 {currentBox === 'showSearchBox' && (
                                     <div className={`info-box ${isClosing ? 'closing' : isOpening ? 'opening' : ''}`}>
-                                        <Form className="mt-5 mb-5">
-                                            <Form.Control
-                                                type="text"
-                                                placeholder="Cerca..."
-                                                value={searchTerm}
-                                                onChange={handleSearchChange}
-                                            />
-                                        </Form>
+                                        <HeaderSearch onCloseAllBoxes={closeAllBoxes} />
                                     </div>
                                 )}
                             </div>
                         </Nav>
-                        {/*Bottone carrello*/}
-                        <Nav.Link onMouseEnter={closeAllBoxes} href="/cart">
+                        {/* Bottone carrello */}
+                        <Nav.Link onMouseEnter={closeAllBoxes} href="/cart"className="position-relative">
                           <Image src={Car} width="20" className="icon d-none d-lg-inline-block d-xl-inline-block" alt="Cart" />
                           <span className="d-inline-block d-lg-none d-xl-none align-center logo">Carrello</span>
+                          <HeaderCart onCloseAllBoxes={closeAllBoxes} />
                         </Nav.Link>
-                        {/*Bottone login o areapersonale*/}
+                        {/* Bottone login o areapersonale */}
                         <Nav.Link onMouseEnter={closeAllBoxes} onClick={handleLoginClick}>
                           <Image src={Skier} width="20" className="icon d-none d-lg-inline-block d-xl-inline-block" alt="Login" />
                           <span className="d-inline-block d-lg-none d-xl-none align-center logo">login</span>
