@@ -82,6 +82,12 @@ export const Header = () => {
         }
     }
 
+    const handleCartClick = () => {
+        if (AuthServices.isLoggedIn()) {
+            window.location.href = "/cart";
+        } 
+    }
+
     return (
         <>
         {/* Navbar */}
@@ -155,7 +161,7 @@ export const Header = () => {
                             </div>
                         </Nav>
                         {/* Bottone carrello */}
-                        <Nav.Link onMouseEnter={closeAllBoxes} href="/cart"className="position-relative">
+                        <Nav.Link onMouseEnter={closeAllBoxes} onClick={handleCartClick} className="position-relative">
                           <Image src={Car} width="20" className="icon d-none d-lg-inline-block d-xl-inline-block" alt="Cart" />
                           <span className="d-inline-block d-lg-none d-xl-none align-center logo">Carrello</span>
                           <HeaderCart onCloseAllBoxes={closeAllBoxes} />

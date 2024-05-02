@@ -1,19 +1,59 @@
 #mainContainer{
-    box-shadow: 0px 0px 30px 1px black;
-    width:90%;
-    margin: auto;
-    border: 1px solid white;
+    width:100%;
 }
 
-.introAV{
-    margin:0px 0px 60px
+#hdDIV{
+    margin: 0px 0px 0px 0px;
+}
+
+#knowUsH1{
+    color:#fff;
+    position:absolute;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    z-index:1;
+    margin: 70px 0px 0px 25px ;
+    font-weight: bold;
+}
+
+#mountainPH{
+    width:100%;
+    height:600px;
+    z-index:0;
+}
+
+#hdH1Container{
+    position:absolute;
+    color:#fff;
+    bottom:100px;
+}
+
+#infoProblemH1{
+    margin-bottom:0px;
+    z-index:1;
+}
+
+#skiGogglesPlus{
+
+    background-color: #DDA72D;
+    border-radius:0px 7px 7px 0px;
 }
 
 .img-resizing{
     width:100%;
-    height:100%;
+    height:70%;
 }
 
-.containerSpace{
-    margin-top:100px;
+#pollutionImg{
+    border-radius:100px;
+    width:200px;
+}
+
+#greenBg{
+    background-color: #C5E7D3;
+}
+
+#mateImg{
+    margin-top:80px;
+    margin-bottom:100px;
 }

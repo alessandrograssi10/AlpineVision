@@ -15,7 +15,7 @@ import {Payments} from './pages/Payments/Payments.jsx';
 import  AboutUs  from './pages/About_Us/AboutUs.jsx';
 import PersonalArea from './pages/AreaPersonale/PersonalArea.jsx'
 
-import { Cart } from './pages/Cart/Cart.jsx'
+import  Cart  from './pages/Cart/Cart.jsx'
 import { Product } from './pages/Products/Product.jsx'
 import Header from './components/Header/header.js';
 import Footer from './components/Footer/Footer.js';

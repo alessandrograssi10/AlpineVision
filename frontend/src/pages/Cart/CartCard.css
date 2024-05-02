@@ -1,0 +1,63 @@
+#cartMainContainer{
+    height:100px;
+}
+
+#variantImgContainer{
+    
+    width:100%;
+    max-width: 113px;
+
+}
+
+#qntTitle{
+    font-size: 28px;
+}
+
+#qntDiv{
+    width:100px;
+    min-width: 100px;
+    display:flex;
+    flex-direction:row;
+    align-items:center;
+}
+
+#decreaseButton{
+    color:black;
+    height:38px;
+    background-color:darkgrey;
+    border-color: darkgrey;
+    border-radius:2px 0px 0px 2px;
+}
+
+#qnt{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    width:37px; 
+    height:38px;
+    border:1px solid darkgrey;
+}
+
+#increaseButton{
+    color:black;
+    height:38px;
+    background-color:darkgrey;
+    border-color: darkgrey;
+    border-radius:0px 2px 2px 0px;
+}
+
+#buyButton{
+    color:black;
+    border-radius:5px;
+    background-color:chocolate;
+    border-color:chocolate;
+}
+
+#buyButton:active{
+    transform:scale(0.97);
+}
+
+#trashBinImgContainer{
+    width:30px;
+    height:30px;
+}

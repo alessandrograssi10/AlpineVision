@@ -3,6 +3,7 @@ import { Form, Button, Container, Row, Col } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 export const Payments = () => {
+  
     const [state, setState] = useState({
         nome: '',
         cognome: '',
