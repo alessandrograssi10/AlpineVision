@@ -1,0 +1,25 @@
+@keyframes moveMoney1 {
+    0% { transform: translateY(-5px) rotate(0deg); }
+    50% { transform: translateZ(-7vw) rotate(30deg); }
+}
+
+@keyframes moveMoney2 {
+    0% { transform: rotate3d(0, 0, 1, 0deg); }
+    50% { transform: rotate3d(0, 0, 1, -30deg); }
+}
+
+.text-center {
+    text-align: center;
+}
+
+.money-image1 {
+    width: 20vw;
+    left: -20vw;
+    animation: moveMoney1 5s infinite;
+}
+
+.money-image2 {
+    width: 20vw;
+    right: -20vw;
+    animation: moveMoney2 5s infinite; 
+}
