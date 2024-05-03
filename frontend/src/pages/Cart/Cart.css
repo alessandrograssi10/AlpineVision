@@ -1,0 +1,27 @@
+#cartImgDiv img {
+    width: 40px;
+    height: 40px;
+    display: block;
+}
+
+#buyButton {
+    color: black;
+    border-radius: 5px;
+    background-color: chocolate;
+    border-color: chocolate;
+}
+
+#buyButton:active {
+    transform: scale(0.97);
+}
+
+#prodPageButton {
+    color: black;
+    border-radius: 5px;
+    background-color: chocolate;
+    border-color: chocolate;
+}
+
+#prodPageButton:active {
+    transform: scale(0.97);
+}

@@ -46,18 +46,18 @@
     border-radius:0px 2px 2px 0px;
 }
 
-#buyButton{
+
+
+#trashBinImgDiv img{
+    width: 30px;
+    height: 30px; 
+    display:block;
+}
+
+#removeButton{
+    font-size:20px;
     color:black;
-    border-radius:5px;
-    background-color:chocolate;
-    border-color:chocolate;
-}
-
-#buyButton:active{
-    transform:scale(0.97);
-}
-
-#trashBinImgContainer{
-    width:30px;
-    height:30px;
+    padding:0px;
+    background-color: #fff;
+    border-color: #fff;
 }
