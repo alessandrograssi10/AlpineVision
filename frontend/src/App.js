@@ -10,7 +10,7 @@ import { BlogEdit } from './pages/Blog/BlogEditor/BlogEdit.jsx';
 import {BlogArticle} from './pages/Blog/BlogArticle.jsx';
 import {BlogArticleEdit} from './pages/Blog/BlogEditor/BlogArticleEdit.jsx';
 import {Search} from './pages/Search/Search.jsx';
-import {Payments} from './pages/Payments/Payments.jsx';
+import Payments from './pages/Payments/Payments.jsx';
 
 import  AboutUs  from './pages/About_Us/AboutUs.jsx';
 import PersonalArea from './pages/AreaPersonale/PersonalArea.jsx'

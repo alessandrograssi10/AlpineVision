@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './PersonalArea.css'; // Importa il file CSS per gli stili
 import shopping from '../../assets/Images/shopping2.png';
+import shoppingrev from '../../assets/Images/shopping2rev.png';
 import AuthServices from '../Login_SignUp/AuthService';
 
 function PersonalArea() {
@@ -55,17 +56,23 @@ function PersonalArea() {
             <div className="personal-area-row justify-content-center">
                 <div className="personal-area-col">
                     <h1 className="personal-area-text-center mb-4">{saluto}, {userData ? `${userData.nome}` : 'USER SCONOSCIUTO'}!</h1>
-
-                    {/* Sezione: I miei ordini */}
-                    <div className="personal-area-margin-bottom">
-                        <div className="personal-area-container personal-area-border personal-area-rounded personal-area-padding">
-                            <h2>I miei ordini</h2>
-                            <img
+                    
+                    <img
                             src={shopping}
                             alt="Shopping"
                             className={`shopping-image ${walking ? 'shopping-image-walk' : ''} ${walking ? 'shopping-image-flip' : ''}`}
                             onAnimationEnd={handleAnimationEnd}
                         />
+                    <img
+                            src={shoppingrev}
+                            alt="Shopping"
+                            className={`shopping-image2 ${walking ? 'shopping-image-walk2' : ''} ${walking ? 'shopping-image-flip2' : ''}`}
+                            onAnimationEnd={handleAnimationEnd}
+                        />
+                    {/* Sezione: I miei ordini */}
+                    <div className="personal-area-margin-bottom">
+                        <div className="personal-area-container personal-area-border personal-area-rounded personal-area-padding">
+                            <h2>I miei ordini</h2>
                             {orders.length > 0 ? (
                                 orders.map(order => (
                                     <div key={order.id}>
