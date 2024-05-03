@@ -6,6 +6,7 @@ const userRoutes = require('./routes/userRoutes');
 const productRoutes = require('./routes/productRoutes');
 const postsRoutes = require('./routes/postRoutes');
 const cartRoutes = require('./routes/cartRoutes');
+const orderRoutes= require('./routes/orderRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -18,6 +19,7 @@ connectToDatabase().then(() => {
     app.use('/api/products', productRoutes);
     app.use('/api/posts', postsRoutes);
     app.use('/api/carts',cartRoutes);
+    app.use('/api/orders',orderRoutes);
 
     app.listen(PORT, () => {
         console.log(`Server in ascolto sulla porta ${PORT}`);
