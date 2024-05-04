@@ -31,11 +31,15 @@ export const Accessories = () => {
             .then(imageUrls => {
               // Costruire un oggetto con ID prodotto come chiave e URL immagine come valore
               const urls = {};
+              const urlsLat = {};
+
               data.forEach((product, index) => {
-                urls[product._id] = imageUrls[index];
+                urls[product._id] = imageUrls[index][0];
+                urlsLat[product._id] = imageUrls[index][1];
                 console.log(imageUrls[index]);
               });
               setImageUrlsp(urls);
+              setImageUrlspLat(urlsLat);
             })
             .catch(error => console.error("Errore nel recupero delle immagini", error));
         })
@@ -46,8 +50,8 @@ export const Accessories = () => {
     const getImageById = async (id) => {
       try {
           const imageUrl = `http://localhost:3000/api/accessories/${id}/image1`;
-          //console.log(count);
-          return imageUrl;
+          const imageUrl2 = `http://localhost:3000/api/accessories/${id}/image2`;
+          return [imageUrl,imageUrl2];
       } catch (error) {
           console.error("Errore nel recupero dei prodotti", error);
           return ''; 

@@ -26,7 +26,7 @@ export const HeaderProducts = ({ onCloseAllBoxes }) => {
 
           })
           .catch(error => console.error("Errore nel recupero dei prodotti", error));
-      }, []);
+      }, [productsMask]);
       
   
         return (

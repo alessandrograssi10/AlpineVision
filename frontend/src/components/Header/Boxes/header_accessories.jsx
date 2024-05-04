@@ -6,20 +6,15 @@ export const HeaderAccessories = ({ onCloseAllBoxes }) => {
 
 
     const [productAccessories, setProductsAccessories] = useState();
-    const [imgMask, setImgMask] = useState(''); // Dichiarazione dello stato imgMask e della funzione setImgMask
-    const [imgGlass, setImgGlass] = useState(''); // Dichiarazione dello stato imgMask e della funzione setImgMask
-
     useEffect(() => {
         fetch(`http://localhost:3000/api/accessories`)
           .then(response => {if (!response.ok) {throw new Error('errore');}return response.json();})
           .then(data => {
-            //const imgMaskValue = `http://localhost:3000/api/products/${masks[0]?._id}/verde/frontale`;
-            //const imgGlassValue = `http://localhost:3000/api/products/${glasses[0]?._id}/verde/frontale`;
             console.log(data,"HHHHHH");
             setProductsAccessories(data);
           })
           .catch(error => console.error("Errore nel recupero dei prodotti", error));
-      }, []);
+      }, [productAccessories]);
       
   
         return (
