@@ -39,7 +39,7 @@ export const Blog = () => {
             // Primo post, occupa tutta la larghezza
             return (
               <Col key={position} md={12}>
-                <Card className='m-3 card '>
+                <Card className='m-3 card card-blog'>
                   <Row>
                     <Col lg={4}>
                       {/* Immagine del post */}
@@ -61,11 +61,16 @@ export const Blog = () => {
           } else {
             // Altri post, disposti in colonne di un terzo della larghezza
             return (
-              <Col key={position} md={12} lg={4} className='m-0 p-1 d-flex h-100'>
-                <Card as={Link} to={`/BlogArticle/${post._id}`} className='m-0 p-0 h-100 w-100'>
+              <Col key={position} md={12} lg={4} className='m-0 p-0 d-flex '>
+                <Card as={Link} to={`/BlogArticle/${post._id}`} className='card-blog m-0 p-0 '>
                   {/* Immagine del post */}
-                  <Card.Img  className='m-0 p-0 w-100 h-auto' variant="top" src={getImageById(post._id)} />
-                  {/* Dettagli del post */}
+                  <div className="zoom-image">
+        <Card.Img className='zoom-image m-0 p-0  img-car-blog' variant="top" src={getImageById(post._id)} />
+
+      </div>                  
+      <Card.Title className='centered-text centered-text-blog'><h2>{post.title}</h2></Card.Title>
+
+{/* Dettagli del post */}
                   {/*<Card.Body>
                     <Card.Title>{post.title}</Card.Title>
                     {/*<Card.Text>{post.description}</Card.Text>*/}

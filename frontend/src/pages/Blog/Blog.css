@@ -1,4 +1,66 @@
 .card-blog {
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
-    
+    max-width: auto !important;
+    max-height: 600px!important;
+    min-height: auto!important;
 }
+.centered-text-blog {
+    color: white !important; /* Imposta il colore del testo su bianco */
+    font-weight: bold; /* Imposta lo stile del font su grassetto */
+
+    text-align: center;
+    width: 100%;
+    z-index: 2;
+
+}
+.img-cop-blog {
+    max-height: 35vw; /* Set the maximum height */
+    width: 100%;
+    position: relative;
+    overflow: hidden; /* Hide any overflowing content */
+    display: flex;
+    justify-content: center; /* Horizontally center the image */
+    align-items: center;    /* Vertically center the image */
+
+}
+
+/* Image styling */
+.img-cop-blog img {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    object-fit: cover;
+    object-position: center;
+}
+
+.img-car-blog {
+    /* Aggiungi qui eventuali personalizzazioni aggiuntive per la card */
+    object-fit: cover !important;
+
+  }
+  
+  .zoom-image {
+    max-width: 867px !important;
+    max-height: 600px !important;
+    aspect-ratio: 4 / 5 !important;
+
+    overflow: hidden;
+    filter: brightness(70%);
+  }
+  
+  .zoom-image img,
+.centered-text-blog {
+    transition: transform 0.3s ease; /* Aggiungi la stessa transizione qui */
+  }
+  
+  .zoom-image:hover img,
+.zoom-image:hover .centered-text-blog  {
+    transform: scale(1.1); /* Imposta la scala dell'immagine al 110% quando ci si passa sopra */
+  }
+  
+  .zoom-image img {
+    transform: scale(1); /* Riporta l'immagine alla dimensione originale */
+  }
+
+  
+  

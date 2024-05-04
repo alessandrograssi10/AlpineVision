@@ -12,6 +12,9 @@ export const BlogArticle = () => {
   const getImageById = (id) => {
     return `http://localhost:3000/api/posts/photo-contenuto?id=${id}`;
   };
+  const getImageByIdCop = (id) => {
+    return `http://localhost:3000/api/posts/photo-copertina?id=${id}`;
+  };
 
   useEffect(() => {
     fetch(`http://localhost:3000/api/posts/getAllPosts`)
@@ -38,37 +41,42 @@ export const BlogArticle = () => {
   }
 
   return (
-    <Container>
-      <Row className="my-2 mt-4 justify-content-center">
-      <Col lg={12}className="text-center"> <h1>{post.title}</h1></Col>
+    <Container fluid className='m-0 p-0'>
+      <Row className="m-0 p-0  h-10 no-space-rowBg img-cop-blog">
+                <Image src={getImageByIdCop(post._id)} className="img-cop-blog p-0 img-fluid-no-space  h-10 darkness" />
+                <div className="centered-text"><h1>{post.title}</h1></div>
+      </Row>
+
+      
+      <Row className=" mt-5 justify-content-center m-5">
+      <h5 className=" text-center">{post.content.part1}</h5>
+
+      </Row>
+      <Row className="my-2 justify-content-center"><h1 className=" text-center">{post.content.part2.title}</h1></Row>
+
+      <Row className=" mt-5 justify-content-center m-5">
+      <h5 className="text-center">{post.content.part2.body}</h5>
+         </Row>
+
+
+
+      <Row className="my-2 justify-content-center">
+          <Image src={getImageById(post._id)} alt={post.title} fluid className="mb-3" />
+        
+      </Row>
+      <Row className=" mt-5 justify-content-center m-5"><h1 className=' text-center'>{post.content.part3.title}</h1></Row>
+          <Row className=" mt-5 justify-content-center m-5">
+          <h5 className="text-center">{post.content.part2.body}</h5>
+      </Row >
+      <Row className="my-2 justify-content-center">
+        <Col lg={12}>
+        
+         
+        </Col>
       </Row>
       <Row className="my-2 mt-4 justify-content-center">
       <p className="text-muted text-center">Pubblicato il {new Date(post.date).toLocaleDateString()}</p>
 
-      </Row>
-      <Row className="my-2 mt-4 justify-content-center">
-      <p className="text-muted text-center">{post.content.part1}</p>
-
-      </Row>
-      <Row className="my-2 justify-content-center">
-        <Col lg={6}>
-          <Image src={getImageById(post._id)} alt={post.title} fluid className="mb-3" />
-        </Col>
-        <Col lg={6}>
-          <Row><h3>{post.content.part2.title}</h3></Row>
-          <Row>
-          <p className="text-muted">{post.content.part2.body}</p>
-         </Row>
-        </Col>
-      </Row>
-      <Row className="my-2 justify-content-center">
-        <Col lg={12}>
-        <Row><h3 className=' text-left mt-3'>{post.content.part3.title}</h3></Row>
-          <Row>
-          <p className="text-muted">{post.content.part2.body}</p>
-         </Row>
-         
-        </Col>
       </Row>
       <Row className="my-2 justify-content-center">
         <Col lg={6} className="d-flex justify-content-center mb-3">
