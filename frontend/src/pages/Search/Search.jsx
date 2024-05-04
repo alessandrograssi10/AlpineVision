@@ -1,85 +1,144 @@
 import React, { useState, useEffect } from 'react';
+import { useParams,useLocation } from 'react-router-dom';
 import { Image, Container,Form, Button, InputGroup,Card,Col,Row ,Tab,Tabs} from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import './Search.css';
 
 
 export const Search = () => {
+    const location = useLocation();
+    const queryString = location.search;  // This includes the '?' character
+
+    // Remove the '?' to get everything after it
+    const cerca = queryString.substring(1);
+
     const [searchElements, setSearchElements] = useState([]);
     const [searchFilteredElements, setSearchFilteredElements] = useState([]);
+    const [imageUrls, setImageUrls] = useState({});
     const [key, setKey] = useState('vetrina');
-
     const [query, setQuery] = useState('');
 
-
     useEffect(() => {
-      const fetchProducts = () =>
-          fetch('http://localhost:3000/api/products')
-              .then(response => {
-                  if (!response.ok) throw new Error('errore');
-                  return response.json();
-              });
 
-      const fetchPosts = () =>
-          fetch('http://localhost:3000/api/posts/getAllPosts')
-              .then(response => {
-                  if (!response.ok) throw new Error('errore');
-                  return response.json();
-              });
+        const fetchProducts = async () => {
+            try {
+                const response = await fetch('http://localhost:3000/api/products');
+                if (!response.ok) throw new Error('Errore durante il recupero dei prodotti');
+                const products = await response.json();
+                return products;
+            } catch (error) {
+                console.error("Errore nel recupero dei prodotti", error);
+                return [];
+            }
+        };
 
-      const fetchAccessories = () =>
-          fetch('http://localhost:3000/api/accessories')
-              .then(response => {
-                  if (!response.ok) throw new Error('errore');
-                  return response.json();
-              });
+        const fetchPosts = async () => {
+            try {
+                const response = await fetch('http://localhost:3000/api/posts/getAllPosts');
+                if (!response.ok) throw new Error('Errore durante il recupero dei post');
+                return await response.json();
+            } catch (error) {
+                console.error("Errore nel recupero dei post", error);
+                return [];
+            }
+        };
 
-      Promise.all([fetchProducts(), fetchPosts(), fetchAccessories()])
-          .then(([products, posts, accessories]) => {
-              setSearchElements([...products, ...posts, ...accessories]);
-          })
-          .catch(error => {
-              console.error('Errore nel recupero dei prodotti', error);
-          });
-  }, []);
+        const fetchAccessories = async () => {
+            try {
+                const response = await fetch('http://localhost:3000/api/accessories');
+                if (!response.ok) throw new Error('Errore durante il recupero degli accessori');
+                return await response.json();
+            } catch (error) {
+                console.error("Errore nel recupero degli accessori", error);
+                return [];
+            }
+        };
 
-  
+        const loadImages = async (products) => {
+            const urls = {};
+            for (const product of products) {
+                if (product.nome) {
+                    const url = await getImageById(product._id);
+                    urls[product._id] = url;
+                }
+                else if (product.title) {
+                    urls[product._id] =  `http://localhost:3000/api/posts/photo-copertina?id=${product._id}`;
+                } else if (product.name) {
+                    urls[product._id] =  `http://localhost:3000/api/accessories/${product._id}/image1`;
+                }
+            }
+            setImageUrls(urls);
+        };
 
+        Promise.all([fetchProducts(), fetchPosts(), fetchAccessories()])
+            .then(([products, posts, accessories]) => {
+                const allElements = [...products, ...posts, ...accessories];
+                setSearchElements(allElements);
+                setSearchFilteredElements([]);  // Initially set filtered elements to all
+                loadImages(allElements);  // Load images only for products
+                if(cerca) handleSearch(cerca);
 
-      const getProductName = (product) => {
+            })
+            .catch(error => {
+                console.error('Errore nel recupero degli elementi', error);
+            });
+
+        
+    }, []);
+
+    const getProductName = (product) => {
         return product.title || product.name || product.nome || "Unknown";
     };
-    const getProductImage = (product) => {
-      if (product.title) {
-          return `http://localhost:3000/api/posts/photo-copertina?id=${product._id}`;
-      } else if (product.name) {
-          // Assuming the URL pattern requires a placeholder
-          return `http://localhost:3000/api/accessories/${product._id}/image1`;
-      } else if (product.nome) {
-          // Define the URL pattern for `nome` if applicable
-          // Replace `your_path` with the actual endpoint path
-          return `http://localhost:3000/api/your_path/${product._id}/image1`;
-      }
-      return null; // Return null if none of the properties are present
-  };
 
-      const handleSearch = (event) => {
-        setQuery(event.target.value)
-        event.preventDefault();
-        console.log(searchElements,"searchElements")
+    const getElementPath= (product) => {
+        if (product.title) {
+            return `/blogarticle/${product._id}`;
+        } else if (product.name) {
+            return `/accessory/${product._id}`;
+        } else if (product.nome) {
+            return `/product/${product._id}`;
+        }
+        return null;
+    };
+
+    const handleSearch = (event) => {
+        const Query = typeof event === 'string' ? event : event.target.value;
+        setQuery(Query);
+        if(!Query)setSearchFilteredElements([]);
+        if (Query.trim() === '') {
+            setSearchFilteredElements([]);
+        }
+
+        if(Query)
+        {
+        const queryLower = Query.toLowerCase();
+
         const filteredElements = searchElements.filter(prodotto => {
-            const queryLower = query.toLowerCase();
             const properties = ['title', 'name', 'nome'];
-    
-            // Check for any matching property
             return properties.some(prop => prodotto[prop] && prodotto[prop].toLowerCase().includes(queryLower));
         });
-    
-        // Imposta gli elementi filtrati nello stato
         setSearchFilteredElements(filteredElements);
+        console.log("cerco");
+    }
+    };
+    const getImageById = async (id) => {
+        try {
+            const response = await fetch(`http://localhost:3000/api/products/${id}/variants`);
+            if (!response.ok) throw new Error('Errore durante la richiesta');
+            const data = await response.json();
+            const colore = data[0]?.colore;
+            return `http://localhost:3000/api/products/${id}/${colore}/frontale`;
+        } catch (error) {
+            console.error("Errore nel recupero dei prodotti", error);
+            return null;
+        }
     };
 
     return (
         <Container fluid className="p-0 m-0 ">
+            <Row className="ml-0 mr-0 no-space-row mt-3 m-5 mb-1">
+          <h3 className="m-4 mb-1 boldText">CERCA</h3>
+        </Row>
         <div className="container mt-5">
             <Form onSubmit={handleSearch}>
                 <InputGroup>
@@ -109,9 +168,9 @@ export const Search = () => {
             return (
               <Col xs={12} sm={6} md={4} lg={3} key={prodotto._id} >
 
-                <Card as={Link} to={`/product/${prodotto._id}`} className='m-3 card-text-prod card-prod  ' >
+                <Card as={Link} to={getElementPath(prodotto)} className='m-3 card-text-prod card-prod  ' >
                   {/* Immagine del prodotto */}
-                  <Card.Img key={prodotto._id} variant="top" className='card-image-fit' src={getProductImage(prodotto)}/>
+                  <Card.Img key={prodotto._id} variant="top" className='card-image-fit card-image-fit-se'        src={imageUrls[prodotto._id]}/>
                   {/* Dettagli del prodotto */}
                   <Card.Body>
                   <Card.Title>{getProductName(prodotto)}</Card.Title>

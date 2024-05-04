@@ -7,7 +7,6 @@
 .centered-text-blog {
     color: white !important; /* Imposta il colore del testo su bianco */
     font-weight: bold; /* Imposta lo stile del font su grassetto */
-
     text-align: center;
     width: 100%;
     z-index: 2;
@@ -22,6 +21,16 @@
     justify-content: center; /* Horizontally center the image */
     align-items: center;    /* Vertically center the image */
 
+}
+.img-maxH
+{
+    max-height: 50vw; /* Set the maximum height */
+    width: 100%;
+    position: relative;
+    overflow: hidden; /* Hide any overflowing content */
+    display: flex;
+    justify-content: center; /* Horizontally center the image */
+    align-items: center;    /* Vertically center the image */
 }
 
 /* Image styling */
