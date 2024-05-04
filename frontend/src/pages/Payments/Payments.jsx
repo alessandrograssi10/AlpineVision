@@ -30,6 +30,70 @@ const Payments = () => {
     const cvvValido = /^\d{3}$/.test(state.cvv);
     const scadenzaValida = /^(0[1-9]|1[0-2])\/(2[5-9]|[3-9]\d)$/.test(state.scadenza);
 
+    const [cartItems, setCartItems] = useState([]);
+    const [prodName, setProdName] = useState("");
+    const [totalPrice, setTotalPrice] = useState(0);
+    const userId = localStorage.getItem('userId');
+    let provTotalPrice;
+
+
+    useEffect(() => {
+        const requestOptions = {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+                // Additional headers here, e.g., authorization tokens
+            }
+        };
+    
+        fetch('http://localhost:3000/api/carts/' + userId, requestOptions)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(cartData => {
+                console.log("Cart Items Loaded:", cartData);
+                // Finding the first product-type item in the cart data
+                const dataPro = cartData.find(product => product.type === "product");
+                setCartItems(cartData);
+                if (dataPro) {
+                    // No need to map, directly fetch details for this product
+                    fetch(`http://localhost:3000/api/products/`, requestOptions)
+                        .then(response => response.json())
+                        .then(productData => {
+                            console.log("Product data loaded:", productData);
+                            // Assuming productData is an array and we need to find specific product info
+                            const product = productData.find(p => p._id === dataPro.productId);
+                            if (product) {
+                                console.log("Product :", product);
+
+                                /*setProdName(prevNames => ({
+                                    ...prevNames,
+                                    [dataPro._id]: product.nome
+                                }));*/
+                                console.log(product.nome,"NOME")
+                                const urls = {};
+                                urls[dataPro.productId] = product.nome;
+                                //prodName[dataPro.productId] = product.nome;
+                                setProdName(...prodName,urls);
+                            }
+                        })
+                        .catch(error => console.error("Error fetching product details:", error));
+                }
+            })
+            .catch(error => {
+                console.error("Error fetching cart items:", error);
+            });
+    }, [userId]);
+    
+
+
+
+
+
+
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -173,6 +237,39 @@ const Payments = () => {
 
                 <Col xs={12} md={6}>
                     <h3 className="text-center m-5">Riepilogo ordine</h3>
+                    {cartItems.map((prodotto) => {
+                    return (
+                        <Row>
+                            <p>{prodName[prodotto.productId]} + {prodotto.productId}</p>
+                        </Row>
+                    );
+                })}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                 </Col>
             </Row>
 
