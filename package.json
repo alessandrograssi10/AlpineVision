@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "react-country-region-selector": "^3.6.1",
+    "react-credit-cards-2": "^1.0.2",
+    "react-phone-number-input": "^3.4.1"
+  }
+}

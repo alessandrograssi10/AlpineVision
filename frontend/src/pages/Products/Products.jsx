@@ -17,7 +17,6 @@ export const Products = () => {
         fetch(`http://localhost:3000/api/products`)
             .then(response => {if (!response.ok) {throw new Error('Errore');}return response.json();})
             .then(data => {
-                //Divido i prodotti dagli accessori
                 //Divido i prodotti maschera da quelli occhiale
                 const masks = data.filter(product => product.categoria === "maschera");
                 const glasses = data.filter(product => product.categoria === "occhiale");
