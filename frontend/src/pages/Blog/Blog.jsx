@@ -32,14 +32,14 @@ export const Blog = () => {
 
     
   return (
-    <Container>
-      <Row className='mt-4'>
+    <Container fluid className="p-0 m-0 ">
+      <Row className='mt-1 m-0 p-0 w-100 d-flex flex-grow-1 m-0 p-0'>
         {blogPosts.sort((a, b) => a.position - b.position).map((post, position) => {
-          if (position === 0) {
+          if (position === 1000) {
             // Primo post, occupa tutta la larghezza
             return (
               <Col key={position} md={12}>
-                <Card className='m-3 card'>
+                <Card className='m-3 card '>
                   <Row>
                     <Col lg={4}>
                       {/* Immagine del post */}
@@ -61,23 +61,23 @@ export const Blog = () => {
           } else {
             // Altri post, disposti in colonne di un terzo della larghezza
             return (
-              <Col key={position} md={12} lg={4}>
-                <Card className='m-3'>
+              <Col key={position} md={12} lg={4} className='m-0 p-1 d-flex h-100'>
+                <Card as={Link} to={`/BlogArticle/${post._id}`} className='m-0 p-0 h-100 w-100'>
                   {/* Immagine del post */}
-                  <Card.Img variant="top" src={getImageById(post._id)} />
+                  <Card.Img  className='m-0 p-0 w-100 h-auto' variant="top" src={getImageById(post._id)} />
                   {/* Dettagli del post */}
-                  <Card.Body>
+                  {/*<Card.Body>
                     <Card.Title>{post.title}</Card.Title>
-                    <Card.Text>{post.description}</Card.Text>
+                    {/*<Card.Text>{post.description}</Card.Text>*/}
                     {/* Link per leggere di più sul post */}
-                    <Button as={Link} to={`/BlogArticle/${post._id}`}>Leggi di più</Button>
-                  </Card.Body>
+                   {/* <Button as={Link} to={`/BlogArticle/${post._id}`}>Leggi di più</Button>
+                  </Card.Body>*/}
                   {/* Footer del post */}
-                  <Card.Footer>
+                  {/*<Card.Footer>
                     <small className="text-muted">
                       By {post.author} | {post.date}
                     </small>
-                  </Card.Footer>
+                  </Card.Footer>*/}
                 </Card>
               </Col>
             );

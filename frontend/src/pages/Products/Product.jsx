@@ -133,6 +133,10 @@ export const Product = () => {
 
     return (
         <Container fluid className="p-0">
+            <Row className="d-flex mt-3 ml-4 align-items-center">
+            <div className='m-3 mt-1 mb-1'>
+      <Link to={`/products`} className='text-navbar-box'>products</Link> / <Link className='text-navbar-box'>{productInfo?.nome?.toLowerCase()}</Link>
+    </div></Row>
             <Row className="d-flex align-items-center pl-3 pt-3 equal-height">
                 <Col lg={7} className="d-flex  flex-column p-3">
                     <Carousel activeIndex={activeIndex} onSelect={(selectedIndex, e) => setActiveIndex(selectedIndex)}>
