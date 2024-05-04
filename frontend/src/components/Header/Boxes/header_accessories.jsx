@@ -3,9 +3,8 @@ import { Row, Col, Image } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
 export const HeaderAccessories = ({ onCloseAllBoxes }) => {
-
-
     const [productAccessories, setProductsAccessories] = useState();
+
     useEffect(() => {
         fetch(`http://localhost:3000/api/accessories`)
           .then(response => {if (!response.ok) {throw new Error('errore');}return response.json();})
@@ -20,9 +19,7 @@ export const HeaderAccessories = ({ onCloseAllBoxes }) => {
         return (
             <Row className='m-5 mt-1 mb-3'>
                 <Col md={2} className="d-flex flex-column">
-                {/*<Image key={productsMask} src={imgMask} style={{ width: '115px', height: '115px' }}/>*/}
-
-                    <h6 className='bold-text-navbar'>ACCESSORI</h6>
+                    <h5 className='bold-text-navbar'>ACCESSORI</h5>
                     {productAccessories?.map(product => (
                     <Link className='text-navbar-box' to={`/accessory/${product._id}`} onClick={onCloseAllBoxes} key={product._id}><div className='text-navbar-box'>{product.name}</div></Link>
                 ))}

@@ -23,7 +23,6 @@
   font-size: larger;
 
 }
-/* Definizione dell'animazione fadeIn */
 @keyframes fadeIn {
   from {
     opacity: 0;

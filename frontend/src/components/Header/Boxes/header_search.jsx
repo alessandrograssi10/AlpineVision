@@ -7,7 +7,6 @@ export const HeaderSearch = ({ onCloseAllBoxes }) => {
 
     const handleSearchChange = (event) => { setSearchTerm(event.target.value); }; 
 
-
         return (
             <Row>
                 <Form className="mt-5 mb-5">
