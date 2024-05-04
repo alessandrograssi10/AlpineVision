@@ -70,7 +70,7 @@
 }
 
 .shopping-image-walk {
-    animation: walkAnimation1 2s infinite alternate; 
+    animation: walkAnimation1 10s infinite alternate; 
     position: relative;
     width: 25vw;
     top: 0vh; 
@@ -78,7 +78,7 @@
 }
 
 .shopping-image-walk2 {
-    animation: walkAnimation2 2s infinite alternate; 
+    animation: walkAnimation2 10s infinite alternate; 
     position: relative;
     width: 25vw;
     top: 0vh; 
