@@ -106,9 +106,24 @@ export const Products = () => {
                 {productsMask.map((prodotto) => {
                     return (
                         <Col xs={12} sm={6} md={4} lg={3} key={prodotto._id} >
-                            <Card as={Link} to={`/product/${prodotto._id}`} className='m-3 card-text-prod card-prod  ' >
+                            <Card as={Link} to={`/product/${prodotto._id}`} className='m-3 card-text-prod card-prod  ' onMouseEnter={() => setHoverIndex(prodotto._id)}onMouseLeave={() => setHoverIndex(null)}>
                                 {/* Immagine della maschera */}
-                                <Card.Img key={prodotto._id} variant="top" className='card-image-fit' onMouseEnter={() => setHoverIndex(prodotto._id)} onMouseLeave={() => setHoverIndex(null)} src={hoverIndex === prodotto._id ? imageUrlspLat[prodotto._id] : imageUrlsp[prodotto._id]} />
+                                {/*<Card.Img key={prodotto._id} variant="top" className='card-image-fit' onMouseEnter={() => setHoverIndex(prodotto._id)} onMouseLeave={() => setHoverIndex(null)} src={hoverIndex === prodotto._id ? imageUrlspLat[prodotto._id] : imageUrlsp[prodotto._id]} />*/}
+                                <div
+                            className="card-image-container"
+                            
+                        >
+                            <Card.Img
+                                key={`${prodotto._id}-front`}
+                                className={`card-image-fit-prod ${hoverIndex === prodotto._id ? '' : 'card-image-visible'}`}
+                                src={imageUrlsp[prodotto._id]}
+                            />
+                            <Card.Img
+                                key={`${prodotto._id}-lat`}
+                                className={`card-image-fit-prod ${hoverIndex === prodotto._id ? 'card-image-visible' : ''}`}
+                                src={imageUrlspLat[prodotto._id]}
+                            />
+                        </div>
                                 {/* Dettagli della maschera */}
                                 <Card.Body>
                                     <Card.Title>{prodotto.nome}</Card.Title>
@@ -132,9 +147,24 @@ export const Products = () => {
             {productsGlass.map((prodotto) => {
                     return (
                         <Col xs={12} sm={6} md={4} lg={3} key={prodotto._id} >
-                            <Card as={Link} to={`/product/${prodotto._id}`} className='m-3 card-text-prod card-prod  ' >
+                            <Card as={Link} to={`/product/${prodotto._id}`} className='m-3 card-text-prod card-prod  ' onMouseEnter={() => setHoverIndex(prodotto._id)}onMouseLeave={() => setHoverIndex(null)}>
                                 {/* Immagine della maschera */}
-                                <Card.Img key={prodotto._id} variant="top" className='card-image-fit' onMouseEnter={() => setHoverIndex(prodotto._id)} onMouseLeave={() => setHoverIndex(null)} src={hoverIndex === prodotto._id ? imageUrlspLat[prodotto._id] : imageUrlsp[prodotto._id]} />
+                               {/* <Card.Img key={prodotto._id} variant="top" className='card-image-fit' onMouseEnter={() => setHoverIndex(prodotto._id)} onMouseLeave={() => setHoverIndex(null)} src={hoverIndex === prodotto._id ? imageUrlspLat[prodotto._id] : imageUrlsp[prodotto._id]} />*/}
+                               <div
+                            className="card-image-container"
+                            
+                        >
+                            <Card.Img
+                                key={`${prodotto._id}-front`}
+                                className={`card-image-fit-prod ${hoverIndex === prodotto._id ? '' : 'card-image-visible'}`}
+                                src={imageUrlsp[prodotto._id]}
+                            />
+                            <Card.Img
+                                key={`${prodotto._id}-lat`}
+                                className={`card-image-fit-prod ${hoverIndex === prodotto._id ? 'card-image-visible' : ''}`}
+                                src={imageUrlspLat[prodotto._id]}
+                            />
+                        </div>
                                 {/* Dettagli della maschera */}
                                 <Card.Body>
                                     <Card.Title>{prodotto.nome}</Card.Title>
