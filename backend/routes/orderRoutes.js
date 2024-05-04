@@ -6,44 +6,54 @@ const { createOrder, updateOrderStatus } = require('../models/orders');
 
 
 router.post('/createOrder', async (req, res) => {
-    const { userId, productId, color, quantity } = req.body;
+    const { userId, productId, color, quantity, type } = req.body;
 
     try {
         const db = getDb();
-        console.log(new ObjectId(userId));
-        const variantCollection = db.collection('Variants');
-        const variant = await variantCollection.findOne({
-            productId: new ObjectId(productId),
-            colore: color
-        });
-        if (!variant || variant.quantita < quantity) {
-            return res.status(400).json({ message: "Variante non disponibile o quantità non sufficiente" });
+        let itemDetails, productDetails;
+
+        if (type === 'product') {
+            // Ottieni dettagli della variante
+            itemDetails = await db.collection('Variants').findOne({
+                productId: new ObjectId(productId),
+                colore: color
+            });
+            // Ottieni dettagli del prodotto per il prezzo
+            productDetails = await db.collection('Products').findOne({ _id: new ObjectId(productId) });
+        } else if (type === 'accessory') {
+            // Gli accessori hanno prezzo nel loro documento
+            itemDetails = await db.collection('Accessories').findOne({ _id: new ObjectId(productId) });
+            productDetails = itemDetails;
         }
 
-        const productCollection = db.collection('Products');
-        const product = await productCollection.findOne({ _id: new ObjectId(productId) });
+        if (!itemDetails || itemDetails.quantita < quantity) {
+            return res.status(400).json({ message: `${type} non disponibile o quantità non sufficiente` });
+        }
 
-        if (!product) {
-            return res.status(404).json({ message: "Prodotto non trovato" });
+        if (!productDetails || !productDetails.prezzo) {
+            return res.status(404).json({ message: `Prezzo per il ${type} non trovato` });
         }
 
         const items = [{
             productId: productId,
-            color: color,
+            color: type === 'product' ? color : undefined,
             quantity: quantity,
-            total: product.prezzo * quantity
+            total: productDetails.prezzo * quantity,
+            type: type
         }];
+
         const orderId = await createOrder(userId, items);
 
+        // Aggiornamento dello stato dell'ordine con delay
         setTimeout(async () => {
             await updateOrderStatus(orderId, 'shipped', 'shippedAt');
             console.log("shipped");
-        }, 6000); 
+        }, 6000); // 6 secondi
 
         setTimeout(async () => {
             await updateOrderStatus(orderId, 'delivered', 'deliveredAt');
             console.log("delivered");
-        }, 24000); // 4 minuti
+        }, 24000); // 24 secondi
 
         res.status(201).json({ message: "Ordine creato con successo", orderId: orderId });
     } catch (error) {
@@ -54,35 +64,34 @@ router.post('/createOrder', async (req, res) => {
 
 
 
+
+
 router.post('/createOrderFromCart', async (req, res) => {
     const { userId } = req.body;
 
     try {
         const db = getDb();
         const cartsCollection = db.collection('Carts');
-        const cart = await cartsCollection.findOne({ userId:  userId });
+        const cart = await cartsCollection.findOne({ userId: userId });
 
         if (!cart || !cart.items || cart.items.length === 0) {
             return res.status(404).json({ message: "Carrello non trovato o vuoto" });
         }
 
-        const variantCollection = db.collection('Variants');
-       
+        // Dovrai iterare sugli item per controllare la disponibilità nei rispettivi inventari
         for (const item of cart.items) {
-            console.log(item.productId);
-            const variant = await variantCollection.findOne({
-                productId: new ObjectId(item.productId),
-                colore: item.color
-            });
+            const collectionName = item.type === 'product' ? 'Variants' : 'Accessories';
+            const collection = db.collection(collectionName);
+            const query = item.type === 'product' ? { productId: new ObjectId(item.productId), colore: item.color } : { _id: new ObjectId(item.productId) };
+            const inventoryItem = await collection.findOne(query);
 
-            if (!variant || variant.quantita < item.quantity) {
-                return res.status(400).json({ message: "Uno o più articoli non disponibili o con quantità insufficiente" });
+            if (!inventoryItem || inventoryItem.quantita < item.quantity) {
+                return res.status(400).json({ message: `Uno o più ${item.type === 'product' ? 'prodotti' : 'accessori'} non disponibili o con quantità insufficiente` });
             }
         }
 
         const orderId = await createOrder(userId, cart.items);
 
-    
         setTimeout(async () => {
             await updateOrderStatus(orderId, 'shipped', 'shippedAt');
             console.log("shipped");
@@ -99,6 +108,7 @@ router.post('/createOrderFromCart', async (req, res) => {
         res.status(500).json({ error: "Errore interno del server" });
     }
 });
+
 
 router.get('/getOrdersByUserId/:userId', async (req, res) => {
     const userId = req.params.userId;

@@ -14,9 +14,8 @@ export const HeaderProducts = ({ onCloseAllBoxes }) => {
         fetch(`http://localhost:3000/api/products`)
           .then(response => {if (!response.ok) {throw new Error('errore');}return response.json();})
           .then(data => {
-            const filteredProducts = data.filter(product => product.type === "prodotto");
-            const masks = filteredProducts.filter(product => product.categoria === "maschera");
-            const glasses = filteredProducts.filter(product => product.categoria === "occhiale");
+            const masks = data.filter(product => product.categoria === "maschera");
+            const glasses = data.filter(product => product.categoria === "occhiale");
             setProductsMask(masks);
             setProductsGlass(glasses);
             const imgMaskValue = `http://localhost:3000/api/products/${masks[0]?._id}/verde/frontale`;

@@ -3,34 +3,35 @@ import { Image,Container, Row, Col,Card } from 'react-bootstrap';
 import Immagine from '../../assets/Images/mc.png';
 import ImmagineBg from '../../assets/Images/BgProd3.png';
 import { Link } from 'react-router-dom';
+import heart from '../../assets/Images/heart-3.png';
 
 
 export const Accessories = () => {
 
-    const [productsMask, setProductsMask] = useState([]);
-    const [productsGlass, setProductsGlass] = useState([]);
-    const [imageUrlsp, setImageUrlsp] = useState({});
+    const [accessories, setAccessories] = useState([]);
+    const [imageUrlsp, setImageUrlsp] = useState({}); // immagini frontali
+    const [imageUrlspLat, setImageUrlspLat] = useState({}); // immagini laterali
+    const [hoverIndex, setHoverIndex] = useState(null); //elemento selezionato
 
     
     useEffect(() => {
-      fetch(`http://localhost:3000/api/products`)
+      fetch(`http://localhost:3000/api/accessories`)
         .then(response => {if (!response.ok) {throw new Error('errore');}return response.json();})
         .then(data => {
-          const filteredProducts = data.filter(product => product.type === "prodotto");
-          const masks = filteredProducts.filter(product => product.categoria === "maschera");
-          const glasses = filteredProducts.filter(product => product.categoria === "occhiale");
-          setProductsMask(masks);
-          setProductsGlass(glasses);
-          
+          //
+          if(data)
+          {
+              setAccessories(data);
+          }          
           // Crea un array di promesse per ottenere le immagini
-          const promises = filteredProducts.map(product => getImageById(product._id));
+          const promises = data.map(product => getImageById(product._id));
           
           // Attendere che tutte le promesse si risolvano
           Promise.all(promises)
             .then(imageUrls => {
               // Costruire un oggetto con ID prodotto come chiave e URL immagine come valore
               const urls = {};
-              filteredProducts.forEach((product, index) => {
+              data.forEach((product, index) => {
                 urls[product._id] = imageUrls[index];
                 console.log(imageUrls[index]);
               });
@@ -44,14 +45,7 @@ export const Accessories = () => {
     
     const getImageById = async (id) => {
       try {
-          const response = await fetch(`http://localhost:3000/api/products/${id}/variants`);
-          if (!response.ok) {
-              throw new Error('Errore durante la richiesta');
-          }
-          const data = await response.json();
-          const colore = data[0]?.colore;
-          //const count = data.length;
-          const imageUrl = `http://localhost:3000/api/products/photo-variante?idProd=${id}&colore=${colore}`;
+          const imageUrl = `http://localhost:3000/api/accessories/${id}/image1`;
           //console.log(count);
           return imageUrl;
       } catch (error) {
@@ -76,21 +70,24 @@ export const Accessories = () => {
             <h5 className="m-4 mt-1 mb-2 notbold">Stile Unico</h5>
           </Row>
           <Row className='mt-4 mb-5'>
-            {productsMask.map((prodotto) => {
-              return (
-                <Col xs={12} sm={6} md={4} lg={4} key={prodotto._id}>
-                  <Card as={Link} to={`/product/${prodotto._id}`} className='m-3 card-text-prod '>
-                    {/* Immagine del post */}
-                    <Card.Img variant="top" className='card-image-fit' src={imageUrlsp[prodotto._id]} />
-                    {/* Dettagli del post */}
-                    <Card.Body>
-                      <Card.Title>{prodotto.nome}</Card.Title>
-                      <Card.Text>{prodotto.prezzo} €</Card.Text>
-                    </Card.Body>
-                  </Card>
-                </Col>
-              );
-            })}
+          {accessories.map((prodotto) => {
+                    return (
+                        <Col xs={12} sm={6} md={4} lg={3} key={prodotto._id} >
+                            <Card as={Link} to={`/product/${prodotto._id}`} className='m-3 card-text-prod card-prod  ' >
+                                {/* Immagine della maschera */}
+                                <Card.Img key={prodotto._id} variant="top" className='card-image-fit' onMouseEnter={() => setHoverIndex(prodotto._id)} onMouseLeave={() => setHoverIndex(null)} src={hoverIndex === prodotto._id ? imageUrlspLat[prodotto._id] : imageUrlsp[prodotto._id]} />
+                                {/* Dettagli della maschera */}
+                                <Card.Body>
+                                    <Card.Title>{prodotto.name}</Card.Title>
+                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                        <Card.Text>{prodotto.prezzo} €</Card.Text>
+                                        <img src={heart} style={{ width: '25px', height: '25px' }} alt="Descrizione Immagine" />
+                                    </div>
+                                </Card.Body>
+                            </Card>
+                        </Col>
+                    );
+                })}
           </Row>
           
         </Container>
