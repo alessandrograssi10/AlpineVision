@@ -29,7 +29,7 @@ export const HeaderAccessories = ({ onCloseAllBoxes }) => {
 
                     <h6 className='bold-text-navbar'>ACCESSORI</h6>
                     {productAccessories?.map(product => (
-                    <Link className='text-navbar-box' to={`/product/${product._id}`} onClick={onCloseAllBoxes} key={product._id}><div className='text-navbar-box'>{product.nome}</div></Link>
+                    <Link className='text-navbar-box' to={`/accessory/${product._id}`} onClick={onCloseAllBoxes} key={product._id}><div className='text-navbar-box'>{product.name}</div></Link>
                 ))}
                 </Col>
                 
