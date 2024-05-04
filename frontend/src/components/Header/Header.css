@@ -1,7 +1,7 @@
 .custom-navbar {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   background-color: hsl(210, 17%, 98%); 
-  z-index: 1100!important; 
+  z-index: 200!important; 
   padding: 0rem 1rem !important;
 }
 
@@ -100,7 +100,7 @@
   background-color: hsl(210, 17%, 98%); 
   padding: 20px;
   
-  z-index: 1050!important; 
+  z-index: 199!important; 
 }
 
 .info-box p {
@@ -140,7 +140,7 @@
   height: 100vh;
   background: rgba(0, 0, 0, 0.5);
   backdrop-filter: blur(10px);
-  z-index: 900;
+  z-index: 198;
 }
 .backdrop.opening {
   animation: fadeIn 0.2s ease-out forwards;

@@ -15,6 +15,7 @@ code {
 }
 html, body {
   overflow-x: hidden !important;
+  padding: 0px !important;
 }
 *{
   font-family: "Zilla Slab", serif;
