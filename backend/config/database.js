@@ -9,7 +9,7 @@ let _db;
 async function connectToDatabase() {
     try {
         await client.connect();
-        console.log("Connesso a MongoDB");
+        console.log("Connesso a MongoDB ATLAS!");
         _db = client.db("AlpineVision_");
     } catch (error) {
         console.error("Impossibile connettersi a MongoDB", error);
