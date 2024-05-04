@@ -10,6 +10,8 @@ import HeaderProducts from './Boxes/header_products';
 import HeaderAccessories from './Boxes/header_accessories';
 import HeaderSearch from './Boxes/header_search';
 import HeaderCart from './Boxes/header_cart';
+import HeaderBlog from './Boxes/header_blog';
+
 import AuthServices from '../../pages/Login_SignUp/AuthService';
 
 export const Header = () => {
@@ -138,7 +140,7 @@ export const Header = () => {
               </Nav.Link>
               {currentBox === 'showBlogBox' && (
                 <div className={`info-box ${isClosing ? 'closing' : isOpening ? 'opening' : ''}`}>
-                  <p>blog vari.</p>
+                  <HeaderBlog onCloseAllBoxes={closeAllBoxes} />
                 </div>
               )}
             </div>
