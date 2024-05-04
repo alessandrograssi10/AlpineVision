@@ -16,18 +16,18 @@ export const Search = () => {
           .then(response => {if (!response.ok) {throw new Error('errore');}return response.json();})
           .then(data => {
             const filteredProducts = data.filter(product => product.type === "prodotto");
-            setSearchElements([...searchElements, ...filteredProducts]);
+            setSearchElements([...searchElements, ...data]);
           })
           .catch(error => console.error("Errore nel recupero dei prodotti", error));
 
 
-          fetch(`http://localhost:3000/api/posts/getAllPosts`)
+          /*fetch(`http://localhost:3000/api/posts/getAllPosts`)
           .then(response => {if (!response.ok) {throw new Error('errore');}return response.json();})
           .then(data => {
             setSearchElements([...searchElements, ...data]);
             console.log("art", data);
           })
-          .catch(error => console.error("Errore nel recupero dei prodotti", error));
+          .catch(error => console.error("Errore nel recupero dei prodotti", error));*/
 
           
       }, []);
@@ -39,15 +39,14 @@ export const Search = () => {
         if(!query) return;
         event.preventDefault();
         const filteredElements = searchElements.filter(prodotto => {
-            
             if (prodotto.nome) {
                 return prodotto.nome.toLowerCase().includes(query.toLowerCase());
             }
-            else if(prodotto.title)
+            /*else if(prodotto.title)
             {
                 return prodotto.title.toLowerCase().includes(query.toLowerCase());
             }
-            return false; // Se prodotto.nome non è definito, non includerlo nei risultati
+            return false; // Se prodotto.nome non è definito, non includerlo nei risultati*/
         });    
         // Imposta gli elementi filtrati nello stato
         setSearchFilteredElements(filteredElements);

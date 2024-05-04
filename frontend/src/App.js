@@ -17,6 +17,8 @@ import PersonalArea from './pages/AreaPersonale/PersonalArea.jsx'
 
 import  Cart  from './pages/Cart/Cart.jsx'
 import { Product } from './pages/Products/Product.jsx'
+import { Accessory } from './pages/Accessories/Accessory.jsx'
+
 import Header from './components/Header/header.js';
 import Footer from './components/Footer/Footer.js';
 import { useEffect } from 'react';
@@ -57,6 +59,8 @@ class App extends Component {
           <Route exact path ="/Support" Component={AboutUs}/>
           <Route exact path ="/cart" Component={Cart}/>
           <Route exact path ="/product/:id" element={<Product/>}/>
+          <Route exact path ="/accessory/:id" element={<Accessory/>}/>
+
           <Route exact path="/login" Component={Login_Signin}/>
 
           </Routes>

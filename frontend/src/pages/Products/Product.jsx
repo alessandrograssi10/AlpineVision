@@ -108,6 +108,7 @@ export const Product = () => {
                     body: JSON.stringify({
                         userId: userId,
                         productId: id,
+                        type: "product",
                         color: color,
                         quantity: quantity
                     })

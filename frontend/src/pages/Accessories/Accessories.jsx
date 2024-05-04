@@ -73,7 +73,7 @@ export const Accessories = () => {
           {accessories.map((prodotto) => {
                     return (
                         <Col xs={12} sm={6} md={4} lg={3} key={prodotto._id} >
-                            <Card as={Link} to={`/product/${prodotto._id}`} className='m-3 card-text-prod card-prod  ' >
+                            <Card as={Link} to={`/accessory/${prodotto._id}`} className='m-3 card-text-prod card-prod  ' >
                                 {/* Immagine della maschera */}
                                 <Card.Img key={prodotto._id} variant="top" className='card-image-fit' onMouseEnter={() => setHoverIndex(prodotto._id)} onMouseLeave={() => setHoverIndex(null)} src={hoverIndex === prodotto._id ? imageUrlspLat[prodotto._id] : imageUrlsp[prodotto._id]} />
                                 {/* Dettagli della maschera */}
