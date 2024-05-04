@@ -123,3 +123,15 @@
     border-bottom: 15px solid rgb(0, 0, 0); /* Aumento la dimensione per un triangolo più alto */
   
   }
+  .custom-modal {
+    overflow: hidden !important;
+    overflow-x: hidden !important;
+
+
+  }
+  
+  .custom-modal-body {
+    font-size: x-large;
+    text-align: center;
+    font-weight: normal;
+  }

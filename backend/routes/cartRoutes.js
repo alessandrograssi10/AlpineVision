@@ -35,57 +35,59 @@ async function calculateTotalPrice(items, db) {
     return totalPrice;
 }
 
-// Aggiungi un prodotto al carrello
 router.post('/add', async (req, res) => {
-    const { userId, productId, color, quantity } = req.body;
+    const { userId, productId, color, quantity, type } = req.body;
     try {
         const db = getDb();
         const cartCollection = db.collection('Carts');
-        const productCollection = db.collection('Products');
-        
-        let cart = await cartCollection.findOne({ userId: userId });
-        const product = await productCollection.findOne({ _id: new ObjectId(productId) });
+        const collection = db.collection(type === 'product' ? 'Products' : 'Accessories');
 
-        if (!product) {
-            return res.status(404).json({ message: "Prodotto non trovato" });
+        let cart = await cartCollection.findOne({ userId: userId });
+        const item = await collection.findOne({ _id: new ObjectId(productId) });
+
+        if (!item) {
+            return res.status(404).json({ message: type === 'product' ? "Prodotto non trovato" : "Accessorio non trovato" });
         }
 
-        const itemTotal = product.prezzo * quantity;
-
+        const itemTotal = item.prezzo * quantity;
+        
         if (!cart) {
             // Se non esiste un carrello, crealo con un singolo prodotto
             const newItem = {
+                type,
                 productId,
-                color,
+                color: type === 'product' ? color : undefined,
                 quantity,
                 total: itemTotal
             };
             cart = {
                 userId,
                 items: [newItem],
-                totalPrice: itemTotal, // Inizializza il prezzo totale del carrello con il totale dell'articolo
+                totalPrice: itemTotal,
                 createdAt: new Date(),
                 updatedAt: new Date()
             };
             await cartCollection.insertOne(cart);
         } else {
-            // Altrimenti, aggiorna il carrello esistente
-            const itemIndex = cart.items.findIndex(item => item.productId === productId && item.color === color);
+            // Cerca l'item nel carrello
+            const itemIndex = cart.items.findIndex(item => item.productId === productId && item.type === type && (type === 'product' ? item.color === color : true));
+
             if (itemIndex > -1) {
-                // Prodotto già nel carrello, aggiorna la quantità e il totale
+                // Aggiorna la quantità e il totale dell'item esistente
                 cart.items[itemIndex].quantity += quantity;
                 cart.items[itemIndex].total += itemTotal;
             } else {
-                // Prodotto non nel carrello, aggiungilo
-                const newItem = {
+                // Aggiungi un nuovo item se non esiste
+                cart.items.push({
+                    type,
                     productId,
-                    color,
+                    color: type === 'product' ? color : undefined,
                     quantity,
                     total: itemTotal
-                };
-                cart.items.push(newItem);
+                });
             }
-            cart.totalPrice = cart.items.reduce((sum, item) => sum + item.total, 0); // Ricalcola il prezzo totale del carrello
+            // Ricalcola il prezzo totale del carrello
+            cart.totalPrice = cart.items.reduce((sum, item) => sum + item.total, 0);
             cart.updatedAt = new Date();
             await cartCollection.updateOne({ _id: cart._id }, { $set: { items: cart.items, totalPrice: cart.totalPrice, updatedAt: cart.updatedAt } });
         }
@@ -96,17 +98,19 @@ router.post('/add', async (req, res) => {
     }
 });
 
+
+
 // Rimuovi un prodotto dal carrello
 router.delete('/remove', async (req, res) => {
-    const { userId, productId, color } = req.body;
+    const { userId, productId, color, type } = req.body;
     try {
         const db = getDb();
         const cartCollection = db.collection('Carts');
         let cart = await cartCollection.findOne({ userId: userId });
 
         if (cart) {
-            const newItems = cart.items.filter(item => !(item.productId === productId && item.color === color));
-            const totalPrice = await calculateTotalPrice(newItems, db);
+            const newItems = cart.items.filter(item => !(item.productId === productId && (type === 'product' ? item.color === color : true)));
+            const totalPrice = newItems.reduce((sum, item) => sum + item.total, 0);
             await cartCollection.updateOne({ _id: cart._id }, { $set: { items: newItems, totalPrice, updatedAt: new Date() } });
             res.status(200).json({ message: "Prodotto rimosso con successo", totalPrice });
         } else {

@@ -12,43 +12,68 @@ export const Search = () => {
 
 
     useEffect(() => {
-        fetch(`http://localhost:3000/api/products`)
-          .then(response => {if (!response.ok) {throw new Error('errore');}return response.json();})
-          .then(data => {
-            const filteredProducts = data.filter(product => product.type === "prodotto");
-            setSearchElements([...searchElements, ...filteredProducts]);
+      const fetchProducts = () =>
+          fetch('http://localhost:3000/api/products')
+              .then(response => {
+                  if (!response.ok) throw new Error('errore');
+                  return response.json();
+              });
+
+      const fetchPosts = () =>
+          fetch('http://localhost:3000/api/posts/getAllPosts')
+              .then(response => {
+                  if (!response.ok) throw new Error('errore');
+                  return response.json();
+              });
+
+      const fetchAccessories = () =>
+          fetch('http://localhost:3000/api/accessories')
+              .then(response => {
+                  if (!response.ok) throw new Error('errore');
+                  return response.json();
+              });
+
+      Promise.all([fetchProducts(), fetchPosts(), fetchAccessories()])
+          .then(([products, posts, accessories]) => {
+              setSearchElements([...products, ...posts, ...accessories]);
           })
-          .catch(error => console.error("Errore nel recupero dei prodotti", error));
+          .catch(error => {
+              console.error('Errore nel recupero dei prodotti', error);
+          });
+  }, []);
+
+  
 
 
-          fetch(`http://localhost:3000/api/posts/getAllPosts`)
-          .then(response => {if (!response.ok) {throw new Error('errore');}return response.json();})
-          .then(data => {
-            setSearchElements([...searchElements, ...data]);
-            console.log("art", data);
-          })
-          .catch(error => console.error("Errore nel recupero dei prodotti", error));
-
-          
-      }, []);
-
-
-
+      const getProductName = (product) => {
+        return product.title || product.name || product.nome || "Unknown";
+    };
+    const getProductImage = (product) => {
+      if (product.title) {
+          return `http://localhost:3000/api/posts/photo-copertina?id=${product._id}`;
+      } else if (product.name) {
+          // Assuming the URL pattern requires a placeholder
+          return `http://localhost:3000/api/accessories/${product._id}/image1`;
+      } else if (product.nome) {
+          // Define the URL pattern for `nome` if applicable
+          // Replace `your_path` with the actual endpoint path
+          return `http://localhost:3000/api/your_path/${product._id}/image1`;
+      }
+      return null; // Return null if none of the properties are present
+  };
 
       const handleSearch = (event) => {
-        if(!query) return;
+        setQuery(event.target.value)
         event.preventDefault();
+        console.log(searchElements,"searchElements")
         const filteredElements = searchElements.filter(prodotto => {
-            
-            if (prodotto.nome) {
-                return prodotto.nome.toLowerCase().includes(query.toLowerCase());
-            }
-            else if(prodotto.title)
-            {
-                return prodotto.title.toLowerCase().includes(query.toLowerCase());
-            }
-            return false; // Se prodotto.nome non è definito, non includerlo nei risultati
-        });    
+            const queryLower = query.toLowerCase();
+            const properties = ['title', 'name', 'nome'];
+    
+            // Check for any matching property
+            return properties.some(prop => prodotto[prop] && prodotto[prop].toLowerCase().includes(queryLower));
+        });
+    
         // Imposta gli elementi filtrati nello stato
         setSearchFilteredElements(filteredElements);
     };
@@ -62,7 +87,8 @@ export const Search = () => {
                         type="text"
                         placeholder="Cerca..."
                         value={query}
-                        onChange={e => setQuery(e.target.value)}
+                        onChange={handleSearch}
+                        
                     />
                     <Button variant="primary" type="submit">
                         Cerca
@@ -73,24 +99,7 @@ export const Search = () => {
         <Row className="ml-0 mr-0 no-space-row mt-3 m-5 mb-1">
           <h3 className="m-4 mb-1 boldText">Elementi trovati</h3>
         </Row>
-        <Tabs
-      id="controlled-tab-example"
-      activeKey={key}
-      onSelect={(k) => setKey(k)}
-      className="mb-0 justify-content-left dark-prod p-0 tab-text-color "
-      //justify
-    >
-      <Tab eventKey="vetrina" title="Prodotti" className='dark p-0 color-black dark-prod'>
-      
-      
-      </Tab>
-      <Tab eventKey="caratteristiche" title="Articoli">
-      <Row className="m-0 p-0 w-100 h-100 d-flex justify-content-center align-items-center p-5 ">
-    </Row>
-
-      </Tab>
-     
-    </Tabs>
+       
 
 
 
@@ -102,10 +111,10 @@ export const Search = () => {
 
                 <Card as={Link} to={`/product/${prodotto._id}`} className='m-3 card-text-prod card-prod  ' >
                   {/* Immagine del prodotto */}
-                  <Card.Img key={prodotto._id} variant="top" className='card-image-fit' />
+                  <Card.Img key={prodotto._id} variant="top" className='card-image-fit' src={getProductImage(prodotto)}/>
                   {/* Dettagli del prodotto */}
                   <Card.Body>
-                    <Card.Title>{prodotto.nome}</Card.Title>
+                  <Card.Title>{getProductName(prodotto)}</Card.Title>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                         <Card.Text>{prodotto.prezzo} €</Card.Text>
                     </div>

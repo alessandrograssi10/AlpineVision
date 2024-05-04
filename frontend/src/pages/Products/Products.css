@@ -51,6 +51,7 @@
   text-decoration: none;
 }
 
+
 .darknesss {
   position: relative;
   background-size: cover;
@@ -66,6 +67,7 @@
   width: auto; /* Imposta la larghezza desiderata */
   height: auto; /* Imposta l'altezza desiderata */
   object-fit: cover; /* Assicura che l'immagine sia ridimensionata per coprire l'intera area mantenendo le proporzioni */
+
 }
 
 .card-prod {
@@ -79,5 +81,27 @@
   margin: 0 !important; 
   padding: 0 !important; 
   padding-right: 0 !important;
+}
+
+/**/
+.card-image-container {
+  position: relative;
+  overflow: hidden;
+}
+
+.card-image-fit-prod {
+  position: absolute;
+  transition: opacity 0.5s ease-out;
+  opacity: 0;
+}
+.card-image-fit-prod::after {
+  position: absolute;
+  opacity: 1;
+}
+
+.card-image-visible {
+  position: relative;
+  transition: opacity 0.5s ease-in;
+  opacity: 1; 
 }
 

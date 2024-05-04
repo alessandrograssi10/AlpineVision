@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Container, Row, Form, Col, Carousel, Button, Tabs, Tab, Image } from 'react-bootstrap';
+import { Container, Row, Form, Col, Carousel, Modal,Button, Tabs, Tab, Image } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
 import './Product.css';
 import { Link, useNavigate } from 'react-router-dom';
@@ -14,6 +14,7 @@ export const Product = () => {
     const [productVariantsCop, setproductVariantsCop] = useState([]);
     const userId = localStorage.getItem("userId");
     const [qnt, setQnt] = useState(1);
+    const [smShow, setSmShow] = useState(false);
 
     let navigate = useNavigate();
 
@@ -108,12 +109,16 @@ export const Product = () => {
                     body: JSON.stringify({
                         userId: userId,
                         productId: id,
+                        type: "product",
                         color: color,
                         quantity: quantity
                     })
-
+                    
                 });
-
+                setSmShow(true);
+                const timer = setTimeout(() => {
+                    setSmShow(false);
+                }, 700);
                 if (!response.ok) {
                     throw new Error('Errore');
                 }
@@ -173,8 +178,19 @@ export const Product = () => {
                             <h3 className="text-left text-black">{productInfo.prezzo}$</h3>
                         </Row>
                         <Row className="justify-content-center m-0 mt-3">
-                            <Col xs={12} className="d-flex justify-content-left align-items-center pb-5 p-0 ">
+                            <Col xs={12} className="d-flex justify-content-left align-items-center pb-5 p-0 " >
                                 <Button className='button-black-prod  m-0 mt-3' onClick={() => AddToCart()} variant="outline-dark pl-0 ml-0" size="md">AGGIUNGI AL CARRELLO</Button>
+                                <Modal 
+        size="sm"
+        show={smShow}
+        onHide={() => setSmShow(false)}
+        aria-labelledby="example-modal-sizes-title-vcenter "
+        className='modal-open custom-modal'
+        backdrop={true}
+      >
+        
+        <Modal.Body className='custom-modal-body'>prodotto aggiunto</Modal.Body>
+      </Modal>
                                 <div style={{ width: '10px' }}></div>
                                 <Button className='button-black-prod m-0 mt-3' href="/EternalAura" variant="outline-dark" size="md">COMPRA ORA</Button>
                             </Col>

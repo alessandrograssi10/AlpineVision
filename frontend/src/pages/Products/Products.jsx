@@ -18,22 +18,21 @@ export const Products = () => {
             .then(response => {if (!response.ok) {throw new Error('Errore');}return response.json();})
             .then(data => {
                 //Divido i prodotti dagli accessori
-                const filteredProducts = data.filter(product => product.type === "prodotto");
                 //Divido i prodotti maschera da quelli occhiale
-                const masks = filteredProducts.filter(product => product.categoria === "maschera");
-                const glasses = filteredProducts.filter(product => product.categoria === "occhiale");
+                const masks = data.filter(product => product.categoria === "maschera");
+                const glasses = data.filter(product => product.categoria === "occhiale");
                 setProductsMask(masks);
                 setProductsGlass(glasses);
 
                 // Crea un array di promises per ottenere le immagini tutte insieme
-                const promises = filteredProducts.map(product => getImageById(product._id));
-                const promisesLat = filteredProducts.map(product => getImageByIdlat(product._id));
+                const promises = data.map(product => getImageById(product._id));
+                const promisesLat = data.map(product => getImageByIdlat(product._id));
 
                 // Attendere che tutte le promises vengano completate
                 Promise.all(promises)
                     .then(imageUrls => {
                         const urls = {};
-                        filteredProducts.forEach((product, index) => {
+                        data.forEach((product, index) => {
                             urls[product._id] = imageUrls[index];
                             console.log(imageUrls[index]);
                         });
@@ -45,7 +44,7 @@ export const Products = () => {
                 Promise.all(promisesLat)
                     .then(imageUrls => {
                         const urls = {};
-                        filteredProducts.forEach((product, index) => {
+                        data.forEach((product, index) => {
                             urls[product._id] = imageUrls[index];
                             console.log(imageUrls[index]);
                         });
@@ -107,9 +106,24 @@ export const Products = () => {
                 {productsMask.map((prodotto) => {
                     return (
                         <Col xs={12} sm={6} md={4} lg={3} key={prodotto._id} >
-                            <Card as={Link} to={`/product/${prodotto._id}`} className='m-3 card-text-prod card-prod  ' >
+                            <Card as={Link} to={`/product/${prodotto._id}`} className='m-3 card-text-prod card-prod  ' onMouseEnter={() => setHoverIndex(prodotto._id)}onMouseLeave={() => setHoverIndex(null)}>
                                 {/* Immagine della maschera */}
-                                <Card.Img key={prodotto._id} variant="top" className='card-image-fit' onMouseEnter={() => setHoverIndex(prodotto._id)} onMouseLeave={() => setHoverIndex(null)} src={hoverIndex === prodotto._id ? imageUrlspLat[prodotto._id] : imageUrlsp[prodotto._id]} />
+                                {/*<Card.Img key={prodotto._id} variant="top" className='card-image-fit' onMouseEnter={() => setHoverIndex(prodotto._id)} onMouseLeave={() => setHoverIndex(null)} src={hoverIndex === prodotto._id ? imageUrlspLat[prodotto._id] : imageUrlsp[prodotto._id]} />*/}
+                                <div
+                            className="card-image-container"
+                            
+                        >
+                            <Card.Img
+                                key={`${prodotto._id}-front`}
+                                className={`card-image-fit-prod ${hoverIndex === prodotto._id ? '' : 'card-image-visible'}`}
+                                src={imageUrlsp[prodotto._id]}
+                            />
+                            <Card.Img
+                                key={`${prodotto._id}-lat`}
+                                className={`card-image-fit-prod ${hoverIndex === prodotto._id ? 'card-image-visible' : ''}`}
+                                src={imageUrlspLat[prodotto._id]}
+                            />
+                        </div>
                                 {/* Dettagli della maschera */}
                                 <Card.Body>
                                     <Card.Title>{prodotto.nome}</Card.Title>
@@ -130,16 +144,35 @@ export const Products = () => {
             </Row>
             {/* Lista degli occhiali */}
             <Row className='mt-4 mb-5'>
-                {productsGlass.map((prodotto) => {
+            {productsGlass.map((prodotto) => {
                     return (
-                        <Col sm={6} md={4} lg={3} key={prodotto._id}>
-                            <Card as={Link} to={`/product/${prodotto._id}`} className='m-3 card-text-prod card-prod' style={{ width: '200px', height: '150px' }}>
-                                {/* Immagine del occhiale */}
-                                <Card.Img variant="top" src={imageUrlsp[prodotto._id]} />
-                                {/* Dettagli del occhiale */}
+                        <Col xs={12} sm={6} md={4} lg={3} key={prodotto._id} >
+                            <Card as={Link} to={`/product/${prodotto._id}`} className='m-3 card-text-prod card-prod  ' onMouseEnter={() => setHoverIndex(prodotto._id)}onMouseLeave={() => setHoverIndex(null)}>
+                                {/* Immagine della maschera */}
+                               {/* <Card.Img key={prodotto._id} variant="top" className='card-image-fit' onMouseEnter={() => setHoverIndex(prodotto._id)} onMouseLeave={() => setHoverIndex(null)} src={hoverIndex === prodotto._id ? imageUrlspLat[prodotto._id] : imageUrlsp[prodotto._id]} />*/}
+                               <div
+                            className="card-image-container"
+                            
+                        >
+                            <Card.Img
+                                key={`${prodotto._id}-front`}
+                                className={`card-image-fit-prod ${hoverIndex === prodotto._id ? '' : 'card-image-visible'}`}
+                                src={imageUrlsp[prodotto._id]}
+                            />
+                            <Card.Img
+                                key={`${prodotto._id}-lat`}
+                                className={`card-image-fit-prod ${hoverIndex === prodotto._id ? 'card-image-visible' : ''}`}
+                                src={imageUrlspLat[prodotto._id]}
+                            />
+                        </div>
+                                {/* Dettagli della maschera */}
                                 <Card.Body>
                                     <Card.Title>{prodotto.nome}</Card.Title>
-                                    <Card.Text>{prodotto.prezzo} €</Card.Text>
+                                    <Card.Title>{colorCount[prodotto._id]} colori</Card.Title>
+                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                        <Card.Text>{prodotto.prezzo} €</Card.Text>
+                                        <img src={heart} style={{ width: '25px', height: '25px' }} alt="Descrizione Immagine" />
+                                    </div>
                                 </Card.Body>
                             </Card>
                         </Col>
