@@ -123,7 +123,7 @@ router.post('/login', async (req, res) => {
             { expiresIn: '1h' }  // Opzioni: token valido per 1 ora
         );
         // Invia il token al client
-        res.status(200).json({ message: "Login riuscito", token: token, userId: user._id });
+        res.status(200).json({ message: "Login riuscito", token: token, userId: user._id, ruolo: user.ruolo});
     } catch (error) {
         console.error("Errore nel login:", error);
         res.status(500).json({ error: "Errore nel processo di login" });
@@ -132,7 +132,7 @@ router.post('/login', async (req, res) => {
 
 
 /*
-
+    
 DELETE
 
 */

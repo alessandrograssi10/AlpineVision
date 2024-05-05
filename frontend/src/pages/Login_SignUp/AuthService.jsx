@@ -17,6 +17,7 @@ const AuthServices = {
   dologout: () => {
     localStorage.removeItem('token');
     localStorage.removeItem('userId');
+    localStorage.removeItem('ruoloUser');
     window.location.href = '/';
   }
 };

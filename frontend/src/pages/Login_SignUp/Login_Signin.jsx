@@ -59,6 +59,7 @@ const LoginSignupForm = () => {
       .then((result) => {
         localStorage.setItem("token", result.token);
         localStorage.setItem("userId", result.userId);
+        localStorage.setItem("ruoloUser", result.ruolo);
         window.location.href = "/AreaPersonale";
       })
       .catch((error) => {
