@@ -202,6 +202,7 @@ export const Product = () => {
                         <Row className="justify-content-center m-0 mt-3">
                             <Col xs={12} className="d-flex justify-content-left align-items-center pb-5 p-0 " >
                                 <Button className='button-black-prod  m-0 mt-3' onClick={() => AddToCart()} variant="outline-dark pl-0 ml-0" size="md">AGGIUNGI AL CARRELLO</Button>
+
                                 <Modal 
         size="sm"
         show={smShow}
