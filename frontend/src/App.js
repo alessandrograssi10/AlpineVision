@@ -49,7 +49,7 @@ class App extends Component {
           <Route exact path ="/accessories" Component={Accessories}/>
           <Route exact path ="/blog" Component={Blog}/>
           <Route exact path ="/blogEdit" Component={BlogEdit}/>
-          <Route exact path ="/search" element={<Search/>}/>
+          <Route  path ="/search" element={<Search/>}/>
 
           <Route path="/BlogArticle/:id" element={<BlogArticle/>} />
           <Route path="/BlogArticleEdit/:id" element={<BlogArticleEdit/>} />

@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { useParams,useLocation } from 'react-router-dom';
 import { Image, Container,Form, Button, InputGroup,Card,Col,Row ,Tab,Tabs} from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Link ,useNavigate} from 'react-router-dom';
 import './Search.css';
 
 
 export const Search = () => {
     const location = useLocation();
     const queryString = location.search;  // This includes the '?' character
+    let navigate = useNavigate();
+
 
     // Remove the '?' to get everything after it
     const cerca = queryString.substring(1);
@@ -57,17 +59,19 @@ export const Search = () => {
         const loadImages = async (products) => {
             const urls = {};
             for (const product of products) {
-                if (product.nome) {
-                    const url = await getImageById(product._id);
-                    urls[product._id] = url;
-                }
-                else if (product.title) {
-                    urls[product._id] =  `http://localhost:3000/api/posts/photo-copertina?id=${product._id}`;
-                } else if (product.name) {
-                    urls[product._id] =  `http://localhost:3000/api/accessories/${product._id}/image1`;
+                try {
+                    if (product.nome) {  // Assuming you want to fetch only if 'nome' exists
+                        urls[product._id] = await getImageById(product._id);
+                    } else if (product.title) {
+                        urls[product._id] = `http://localhost:3000/api/posts/photo-copertina?id=${product._id}`;
+                    } else if (product.name) {
+                        urls[product._id] = `http://localhost:3000/api/accessories/${product._id}/image1`;
+                    }
+                } catch (error) {
+                    console.error("Failed to load image for product ID:", product._id, error);
                 }
             }
-            setImageUrls(urls);
+            setImageUrls(urls);  // Set state only after all promises are resolved
         };
 
         Promise.all([fetchProducts(), fetchPosts(), fetchAccessories()])
@@ -76,15 +80,18 @@ export const Search = () => {
                 setSearchElements(allElements);
                 setSearchFilteredElements([]);  // Initially set filtered elements to all
                 loadImages(allElements);  // Load images only for products
-                if(cerca) handleSearch(cerca);
-
+                if (cerca) {
+                    handleSearch(cerca,allElements);
+                    setQuery(cerca);
+                }
             })
+            
             .catch(error => {
                 console.error('Errore nel recupero degli elementi', error);
             });
 
         
-    }, []);
+    }, [cerca]);
 
     const getProductName = (product) => {
         return product.title || product.name || product.nome || "Unknown";
@@ -101,26 +108,42 @@ export const Search = () => {
         return null;
     };
 
-    const handleSearch = (event) => {
+    const handleSearch = (event, all) => {
+        // Determine the source of the query based on input type
         const Query = typeof event === 'string' ? event : event.target.value;
         setQuery(Query);
-        if(!Query)setSearchFilteredElements([]);
-        if (Query.trim() === '') {
+    
+        // Clear filtered results if the query is empty or only whitespace
+        if (!Query || Query.trim() === '') {
             setSearchFilteredElements([]);
+            console.log("reset", searchFilteredElements);
+            return; // Exit early if there's no query to process
         }
-
-        if(Query)
-        {
+    
+        // Prepare to filter elements based on the query
         const queryLower = Query.toLowerCase();
-
-        const filteredElements = searchElements.filter(prodotto => {
-            const properties = ['title', 'name', 'nome'];
-            return properties.some(prop => prodotto[prop] && prodotto[prop].toLowerCase().includes(queryLower));
-        });
+        let filteredElements = [];
+    
+        if (all) {
+            // If 'all' is provided, filter using 'all' array
+            filteredElements = all.filter(prodotto => {
+                const properties = ['title', 'name', 'nome'];
+                return properties.some(prop => prodotto[prop] && prodotto[prop].toLowerCase().includes(queryLower));
+            });
+        } else {
+            // Otherwise, filter the standard 'searchElements'
+            filteredElements = searchElements.filter(prodotto => {
+                const properties = ['title', 'name', 'nome'];
+                return properties.some(prop => prodotto[prop] && prodotto[prop].toLowerCase().includes(queryLower));
+            });
+            navigate('/search?' + Query);
+        }
+    
+        // Update the state with the filtered results and log the action
         setSearchFilteredElements(filteredElements);
-        console.log("cerco");
-    }
+        console.log("search", filteredElements);
     };
+    
     const getImageById = async (id) => {
         try {
             const response = await fetch(`http://localhost:3000/api/products/${id}/variants`);
