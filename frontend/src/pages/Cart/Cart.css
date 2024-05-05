@@ -59,7 +59,11 @@
 }
 
 .totalprice-class {
-    font-size: 35px;
+    font-size: 20px;
     font-weight: bold;
     color: black;
 }
+.custom-col {
+    margin-left: -10px;
+}
+
