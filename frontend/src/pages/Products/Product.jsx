@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Container, Row, Form, Col, Carousel, Modal,Button, Tabs, Tab, Image } from 'react-bootstrap';
+import { Container, Row, Form, Col, Carousel, Modal, Button, Tabs, Tab, Image } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
 import './Product.css';
 import { Link, useNavigate } from 'react-router-dom';
 import Plx from 'react-plx';
 import HeaderCart from '../../components/Header/Boxes/header_cart';
 
-export const Product = () => {
+export const Product = (addToStorage) => {
     const { id } = useParams();
     const [key, setKey] = useState('vetrina');
     const [product, setProduct] = useState([]);
@@ -15,15 +15,12 @@ export const Product = () => {
     const userId = localStorage.getItem("userId");
     const [qnt, setQnt] = useState(1);
     const [smShow, setSmShow] = useState(false);
-
-    let navigate = useNavigate();
-
     const [activeIndex, setActiveIndex] = useState(0); // Indice per il carosello
     const [selectedSetIndex, setSelectedSetIndex] = useState(0); // Indice per selezionare il set di immagini
     const [imageSets, setImageSets] = useState([]);
-
     const ImgSimpatica = `http://localhost:3000/api/products/${id}/simpatica`;
     const ImgInnovativa = `http://localhost:3000/api/products/${id}/innovativa`;
+    let navigate = useNavigate();
 
     useEffect(() => {
         fetch(`http://localhost:3000/api/products/${id}/variants`)
@@ -34,7 +31,6 @@ export const Product = () => {
                 return response.json();
             })
             .then(data => {
-                console.log('prodotto ricevuto:', data);
                 setProduct(data);
                 fetchData(data[selectedSetIndex]?.colore);
                 data.forEach((item, index) => {
@@ -56,7 +52,6 @@ export const Product = () => {
                 const datiProd = data.find(item => item._id === id);
 
                 setProductInfo(datiProd);
-                console.log('PRODOTTO:', datiProd);
             })
             .catch(error => {
                 console.error("Errore nel recupero dell'articolo:", error);
@@ -65,11 +60,9 @@ export const Product = () => {
 
     const handleRadioChange = (event) => {
         const newSetIndex = Number(event.target.value);
-        console.log("index", event.target.value)
         setSelectedSetIndex(newSetIndex);
         setActiveIndex(0); // Resetta l'indice del carosello
         fetchData(product[newSetIndex]?.colore);
-        console.log("index", event.target.value)
     };
 
     const fetchData = (colore) => {
@@ -77,7 +70,6 @@ export const Product = () => {
         const imageUrll = `http://localhost:3000/api/products/${id}/${colore}/sinistra`;
         const imageUrlr = `http://localhost:3000/api/products/${id}/${colore}/destra`;
         const imageUrlb = `http://localhost:3000/api/products/${id}/${colore}/posteriore`;
-        console.log(imageSets, "url");
         const imageUrls = [imageUrlf, imageUrll, imageUrlr, imageUrlb];
         setImageSets(imageUrls);
     };
@@ -93,13 +85,12 @@ export const Product = () => {
     }
 
     async function AddToCart() {
-        console.log(userId, "UserID");
+        const quantity = 1;
+        const color = product[selectedSetIndex]?.colore;
+        const url = 'http://localhost:3000/api/carts/add';
+        const cartItem = id;
+        
         if (userId) {
-            console.log("carrello");
-            const quantity = 1;
-            const color = product[selectedSetIndex]?.colore;
-            const url = 'http://localhost:3000/api/carts/add';
-
             try {
                 const response = await fetch(url, {
                     method: 'POST',
@@ -113,7 +104,7 @@ export const Product = () => {
                         color: color,
                         quantity: quantity
                     })
-                    
+
                 });
                 setSmShow(true);
                 const timer = setTimeout(() => {
@@ -122,30 +113,30 @@ export const Product = () => {
                 if (!response.ok) {
                     throw new Error('Errore');
                 }
-                localStorage.setItem('Cart_Trig',"Trigger");
+                localStorage.setItem('Cart_Trig', "Trigger");
 
             } catch (error) { console.error('Error:', error); }
         } else {
-            alert("Devi prima effettuare l'accesso per accedere a questa funzione.");
-
-            
-                    }
+           
+        }
     }
+
+    
 
     function DirectPayt() {
         if (userId) {
             const quantity = 1;
             const color = product[selectedSetIndex]?.colore;
 
-        const riep = JSON.stringify({
-            productId: id,
-            quantity: quantity,
-            color: color,
-            type: "product",
-        })
+            const riep = JSON.stringify({
+                productId: id,
+                quantity: quantity,
+                color: color,
+                type: "product",
+            })
 
-        localStorage.setItem("riepilogoCart",riep);
-        navigate(`/payments/direct`);
+            localStorage.setItem("riepilogoCart", riep);
+            navigate(`/payments/direct`);
         }
     }
 
@@ -214,17 +205,17 @@ export const Product = () => {
                             <Col xs={12} className="justify-content-left align-items-center pb-4 m-0 mt-1 ml-0 p-0 " >
                                 <Button className='button-black-prod  m-2 mt-5' onClick={() => AddToCart()} variant="outline-dark pl-0 ml-0" size="lg"><h3 className='p-0 m-0'>AGGIUNGI AL CARRELLO</h3 ></Button>
 
-                                <Modal 
-        size="sm"
-        show={smShow}
-        onHide={() => setSmShow(false)}
-        aria-labelledby="example-modal-sizes-title-vcenter "
-        className='modal-open custom-modal'
-        backdrop={true}
-      >
-        
-        <Modal.Body className='custom-modal-body'>prodotto aggiunto</Modal.Body>
-      </Modal>
+                                <Modal
+                                    size="sm"
+                                    show={smShow}
+                                    onHide={() => setSmShow(false)}
+                                    aria-labelledby="example-modal-sizes-title-vcenter "
+                                    className='modal-open custom-modal'
+                                    backdrop={true}
+                                >
+
+                                    <Modal.Body className='custom-modal-body'>prodotto aggiunto</Modal.Body>
+                                </Modal>
                                 <div style={{ width: '10px' }}></div>
                                 <Button className='button-black-prod-nomon m-2 mt-4 mb-0' onClick={() => DirectPayt()} variant="outline-dark" size="lg"><h3 className='p-0 m-0'>COMPRA ORA</h3></Button>
                             </Col>
@@ -243,7 +234,7 @@ export const Product = () => {
                 onSelect={(k) => setKey(k)}
                 className="mb-5 mt-5 justify-content-center dark-prod p-0 buttonn   tab-text-color tabs-black"
                 variant='pills'
-                //transition="fade" 
+            //transition="fade" 
             >
                 <Tab eventKey="vetrina" title="Vetrina" className='fade dark p-0 color-black mt-5 dark-prod '>
 

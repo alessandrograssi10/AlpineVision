@@ -5,10 +5,16 @@
 }
 
 #buyButton {
-    color: black;
+    color: #fff;
+    font-size: 25px;
     border-radius: 5px;
-    background-color: chocolate;
-    border-color: chocolate;
+    background-color: #007bff;
+    border:none;
+    transition: background-color 0.3s ease;
+}
+
+#buyButton:hover{
+    background-color: #0056b3;
 }
 
 #buyButton:active {
@@ -16,50 +22,46 @@
 }
 
 #prodPageButton {
-    color: black;
+    color: #fff;
+    font-size: 25px;
     border-radius: 5px;
-    background-color: chocolate;
-    border-color: chocolate;
+    background-color: #007bff;
+    border:none;
+    transition: background-color 0.3s ease;
+}
+
+#prodPageButton:hover{
+    background-color: #0056b3;
 }
 
 #prodPageButton:active {
     transform: scale(0.97);
 }
 
-.cartpayment-button {
-    /* Aggiungi qui le regole CSS desiderate per il tuo pulsante */
-    background-color: #007bff; /* colore di sfondo */
-    color: #fff; /* colore del testo */
-    border: none; /* rimuovi il bordo */
-    padding: 10px 20px; /* spaziatura interna */
-    border-radius: 5px; /* angoli arrotondati */
-    font-size: 25px; /* dimensione del testo */
-    cursor: pointer; /* cursore a forma di mano */
-    transition: background-color 0.3s ease; /* effetto di transizione */
-  }
-  
-  .cartpayment-button:hover {
-    background-color: #0056b3; /* colore di sfondo al passaggio del mouse */
-  }
- 
-  .cartimage {
+#cartimage {
     width: 10vw;
     margin-top: -50px;
-    transition: transform 0.3s ease-in-out; /* Aggiungi una transizione per il cambiamento di trasformazione */
-    animation: moveImage 5s infinite alternate; /* Applica l'animazione senza pulsante */
+    transition: transform 0.3s ease-in-out;
+    animation: moveImage 5s infinite alternate;
+}
+
+
+.totalprice-class {
+    font-size: 20px;
+    font-weight: bold;
+    color: black;
+}
+
+.custom-col {
+    margin-left: -10px;
 }
 
 @keyframes moveImage {
     from {
-        transform: translateX(0); /* Partenza - immagine non spostata */
+        transform: translateX(0);
     }
-    to {
-        transform: translateX(500px); /* Fine - immagine spostata di 500px */
-    }
-}
 
-.totalprice-class {
-    font-size: 35px;
-    font-weight: bold;
-    color: black;
+    to {
+        transform: translateX(500px);
+    }
 }

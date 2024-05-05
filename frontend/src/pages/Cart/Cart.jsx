@@ -44,9 +44,11 @@ function Cart() {
         setTotalPrice(newTotalPrice);
     }
 
-    const removeProd = (delProductId) => {
+    const removeProd = (delProductId, priceToDel) => {
         const newCartItems = cartItems.filter(product => product.productId !== delProductId);
         setCartItems(newCartItems);
+        const newPrice = totalPrice - priceToDel;
+        setTotalPrice(newPrice);
 
         const myHeadersrm = new Headers();
         myHeadersrm.append("Content-Type", "application/json");
@@ -78,7 +80,7 @@ function Cart() {
             <Row className="mt-5 mb-5">
                 <Col className="d-flex align-items-center">
                     <h1 className="fw-bold">IL TUO CARRELLO</h1>
-                    <img src={cartimage} alt="cartimage" className="cartimage" />
+                    <img id="cartimage" src={cartimage} alt="cartimage" />
                 </Col>
             </Row>
 
@@ -87,38 +89,43 @@ function Cart() {
                     <h1> Carrello vuoto </h1>
                 </Row>
                 ) : (
-                cartItems.map((cartItem) => (
-                    <CartCard
-                        key={cartItem.productId}
-                        price={cartItem.total}
-                        quantity={cartItem.quantity}
-                        updateTotalPrice={updateTotalPrice}
-                        prodID={cartItem.productId}
-                        color={cartItem.color}
-                        type={cartItem.type}
-                        removeProd={removeProd}
-                    />
-                ))
-            )}
+                    cartItems.map((cartItem) => (
+                        <CartCard
+                            key={cartItem.productId}
+                            price={cartItem.total}
+                            quantity={cartItem.quantity}
+                            updateTotalPrice={updateTotalPrice}
+                            prodID={cartItem.productId}
+                            color={cartItem.color}
+                            type={cartItem.type}
+                            removeProd={removeProd}
+                        />
+                    ))
+                )}
             <Row className="p-2 mt-3 justify-content-between align-items-end">
-    <Col className="d-flex justify-content-start">
-        <Link to="/Payments/cart" className="fs-4">
-            <Button id="buyButton" className="cartpayment-button">
-                Procedi all'acquisto
-            </Button>
-        </Link>
-    
-        {toggler ? (
-            <h3 className="totalprice-class ms-auto">Totale: {totalPrice.toFixed(2)} €</h3>
-        ) : (
-            <Link to="/Products" className="invisible-link">
-                <Button id="prodPageButton" className="fs-4">
-                    Shop
-                </Button>
-            </Link>
-        )}
-    </Col>
-</Row>
+                <Col className="d-flex justify-content-start">
+                    {(toggler) ? (
+                        <Row className="w-100">
+                            <Col xs="6">
+                                <Link to="/Payments/cart" className="fs-4">
+                                    <Button id="buyButton">
+                                        Procedi all'acquisto
+                                    </Button>
+                                </Link>
+                            </Col>
+                            <Col xs="6" className="d-flex align-items-center justify-content-end">
+                                <h3 className="fw-bold fs-3">Totale: {totalPrice.toFixed(2)} €</h3>
+                            </Col>
+                        </Row>
+                    ) : (
+                        <Link to="/Products" className="invisible-link">
+                            <Button id="prodPageButton" className="fs-4">
+                                Shop
+                            </Button>
+                        </Link>
+                    )}
+                </Col>
+            </Row>
 
         </Container>
     );

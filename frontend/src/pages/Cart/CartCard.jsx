@@ -10,7 +10,7 @@ function CartCard({ price, quantity, updateTotalPrice, prodID, color, type, remo
     const [prodName, setProdName] = useState("");
     const [frontalImg, setFrontalImg] = useState({});
     const [currentProduct, setCurrentProduct] = useState({});
-    
+
     useEffect(() => {
 
         if (type === "product") {
@@ -73,7 +73,7 @@ function CartCard({ price, quantity, updateTotalPrice, prodID, color, type, remo
     }
 
     const removeHandleClick = () => {
-        removeProd(prodID);
+        removeProd(prodID, price * qnt);
     }
 
     return (
@@ -94,15 +94,15 @@ function CartCard({ price, quantity, updateTotalPrice, prodID, color, type, remo
                         <span id="productColor">{color}</span>
                     </Col>
 
-                    {/* Colonna quantità */}
-                    <Col xs="6" lg="4" xl="5" className="d-flex justify-content-start align-items-center">
-                        <h5 id="qntTitle" className="display-6 me-3"> Quantità: </h5>
+                    <Col xs="6" lg="4" xl="5" className="d-flex justify-content-start align-items-center custom-col">
+                        <h5 id="qntTitle" className=" custom-col me-2">Quantità:</h5>
                         <div id="qntDiv">
-                            <Button id="decreaseButton" onClick={clickHandle} >-</Button>
+                            <Button id="decreaseButton" onClick={clickHandle}>-</Button>
                             <div id="qnt" className='fw-bold'>{qnt}</div>
                             <Button id="increaseButton" onClick={clickHandle}>+</Button>
                         </div>
                     </Col>
+
 
                     {/* Colonna totale relativo */}
                     <Col xs="12" lg="3" xl="2" className="d-flex justify-content-end align-items-center pe-3">
@@ -113,7 +113,7 @@ function CartCard({ price, quantity, updateTotalPrice, prodID, color, type, remo
                             </div>
                         </Button>
                     </Col>
-                </Row>     
+                </Row>
             </Container>
             <hr />
         </>
