@@ -351,6 +351,9 @@ return (
                 {/* Immagine di copertina del post */}
                 <Card.Img className='zoom-image m-0 p-0 img-car-blog' variant="top" src={getImageById(post._id)} />
               </div>
+              <Card.Title className='centered-text centered-text-blog'>
+                <h2>{post.title}</h2>
+              </Card.Title>
                  <Card.Body>
                   {/* Input per caricare un'immagine */}
                   <input
