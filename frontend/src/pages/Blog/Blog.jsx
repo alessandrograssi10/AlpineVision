@@ -13,6 +13,9 @@ export const Blog = () => {
 
   
   useLayoutEffect(() => {
+    let g = localStorage.getItem("ruolo");
+    console.log(g);
+
     const fetchBlogPosts = async () => {
       try {
         // Effettua una richiesta per ottenere tutti gli articoli del blog
