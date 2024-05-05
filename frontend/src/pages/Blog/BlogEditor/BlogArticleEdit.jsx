@@ -4,28 +4,30 @@ import { useParams } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 
 export const BlogArticleEdit = () => {
-  // Ottieni l'ID del post dalla route
-  const { id } = useParams();
-  localStorage.setItem("prevPage","Edit");
+  const { id } = useParams(); //prendo l'id dall'url
+  localStorage.setItem("prevPage","Edit"); //setto che sono nella pagina editing
 
-  // Stati per i post del blog, le immagini, il post attuale, la verifica dei post e l'elaborazione del post
-  const [blogPosts, setBlogPosts] = useState(() => {
-    const savedPosts = sessionStorage.getItem('blogPosts');
-    return savedPosts ? JSON.parse(savedPosts) : [];
-  });
-  const [Images, setImages] = useState(() => {
-    const savedImages = sessionStorage.getItem('blogImages');
-    return savedImages ? JSON.parse(savedImages) : [];
-  });
-  const [post, setPost] = useState(null);
-  const [blogPostsVerify, setBlogPostsVerify] = useState(() => {
-    const savedVerify = sessionStorage.getItem('blogPostsVerify');
-    return savedVerify ? JSON.parse(savedVerify) : false;
-  });
+  // Se esistono prendo gli elementi dall'localstorage senno prendo un elemneto vuoto per le seguenti variabili
+  const [blogPosts, setBlogPosts] = useState(() => {const savedPosts = sessionStorage.getItem('blogPosts');return savedPosts ? JSON.parse(savedPosts) : [];}); 
+  const [Images, setImages] = useState(() => {const savedImages = sessionStorage.getItem('blogImages');return savedImages ? JSON.parse(savedImages) : [];});
+  const [blogPostsVerify, setBlogPostsVerify] = useState(() => {const savedVerify = sessionStorage.getItem('blogPostsVerify');return savedVerify ? JSON.parse(savedVerify) : false;});
+  
+  const [post, setPost] = useState(null); // Variabile per i dati del post
 
-  // Effetto per caricare i dettagli del post corrente
+  // Recupero l'immagine copertina tramite l'Id
+  const getImageByIdCop = (id) => {
+    return `http://localhost:3000/api/posts/photo-copertina?id=${id}`;
+  };
+
+  // Recupero l'immagine copertina tramite l'Id
+  const getImageById = (id) => {
+    const image = Images.find(image => image.id === id);
+    return image ? image.contenuto : 'Immagine non trovata';
+  };
+
+  // Prendo le informazioni del post corrente cercando tra tutti i post
   useEffect(() => {
-    console.log(`Caricamento dei dettagli per il post con ID: ${id}`);
+    console.log(`Caricamento dei dettagli del il post`);
     const foundPost = blogPosts.find(p => p._id.toString() === id.toString());
     if (foundPost) {
       console.log('Post ricevuto:', foundPost);
@@ -33,11 +35,9 @@ export const BlogArticleEdit = () => {
     } else {
       console.error("Errore: Post non trovato");
     }
-    console.log(blogPosts)
-
   }, [id, blogPosts]);
 
-  // Effetti per salvare i post, le immagini e la verifica dei post in sessionStorage
+  /*
   useEffect(() => {
     sessionStorage.setItem('blogPosts', JSON.stringify(blogPosts));
   }, [blogPosts]);
@@ -48,26 +48,17 @@ export const BlogArticleEdit = () => {
 
   useEffect(() => {
     sessionStorage.setItem('blogPostsVerify', JSON.stringify(blogPostsVerify));
-  }, [blogPostsVerify]);
+  }, [blogPostsVerify]);*/
 
-  // Funzione per ottenere l'URL dell'immagine corrispondente all'ID
-  const getImageById = (id) => {
-    const image = Images.find(image => image.id === id);
-    return image ? image.contenuto : 'No image found with such ID';
-  };
+  // Salvo le variabili nel localstorage quando vengono cambiate
+  useEffect(() => {
+    sessionStorage.setItem('blogPosts', JSON.stringify(blogPosts));
+    sessionStorage.setItem('blogImages', JSON.stringify(Images));
+    sessionStorage.setItem('blogPostsVerify', JSON.stringify(blogPostsVerify));
+  }, [blogPosts, Images, blogPostsVerify]);
 
-  // Funzione per aggiornare l'URL dell'immagine corrispondente all'ID
-  const updateImageUrlById = (id, newUrl, file) => {
-    const updatedImages = Images.map(image => {
-      if (image.id === id) {
-        return { ...image, 'contenuto': newUrl, 'contenutoFile': file };
-      }
-      return image;
-    });
-    setImages(updatedImages);
-  };
 
-  // Gestisce il cambio di file
+  // Caricamento dell'immagine da file
   const handleFileChange = (event) => {
     setBlogPostsVerify(true);
 
@@ -78,19 +69,25 @@ export const BlogArticleEdit = () => {
     }
   };
 
-  // Se non c'è nessun post, mostra un messaggio di caricamento
-  if (!post) {
-    return <div>Caricamento...</div>;
-  }
+  // Carico l'immagine caricata sulla variabile generale delle immagini
+  const updateImageUrlById = (id, newUrl, file) => {
+    const updatedImages = Images.map(image => {
+      if (image.id === id) {
+        return { ...image, 'contenuto': newUrl, 'contenutoFile': file };
+      }
+      return image;
+    });
+    setImages(updatedImages);
+  };
 
+  
   // Funzione per gestire il cambiamento dei campi del post
   const handleChange = (event, path) => {
     if (!post) return;
 
-    setBlogPostsVerify(true);
-    // Utilizza l'aggiornamento funzionale per assicurarsi di lavorare sempre con lo stato più recente
+    setBlogPostsVerify(true); // Variabile per tenere conto che c'è stata una modifica
+
     setPost(currentPost => {
-      // Crea una copia profonda del post corrente per garantire l'immutabilità
       const newPost = JSON.parse(JSON.stringify(currentPost));
 
       // Funzione per impostare il valore nel percorso all'interno di un oggetto nidificato
@@ -120,22 +117,38 @@ export const BlogArticleEdit = () => {
     setBlogPosts(updatedPosts);
   };
 
+  // Se non c'è nessun post, mostra un messaggio di caricamento
+  if (!post) {
+    return <div>Caricamento...</div>;
+  }
+
   return (
-    <Container>
+    <Container fluid className="m-1 p-0">
       {/* Pulsante per tornare all'area editor */}
       <Button as={Link} to={`/BlogEdit`} onClick={() => handleSavePost()} className="mt-3" variant="outline-success">
         Torna Area Editor
       </Button>
       {/* Avviso per la modalità di modifica */}
       <Alert variant={'warning'} className='m-0 mt-4'>
-        YOU ARE IN EDIT MODE!!!!!
+        SEI IN EDIT MODE!!!!!
       </Alert>
       {/* Avviso per salvare le modifiche */}
       <Alert variant={'danger'} className='m-0 mt-4'>
         Tutte le modifiche devono essere salvate nell'area blog!!!!!
       </Alert>
+
+      <Row className="m-0  mt-4 p-0 h-10 no-space-rowBg img-cop-blog">
+        <Image
+          src={getImageByIdCop(post._id)}
+          className="img-cop-blog p-0 img-fluid-no-space h-10 darkness"
+        />
+        <div className="centered-text">
+          <h1>{post.title}</h1>
+        </div>
+      </Row>
+
       {/* Titolo del post */}
-      <Row className="my-2 mt-4 justify-content-center">
+      <Row className="my-2 mt-4 justify-content-center m-3">
         <Col lg={12} className="text-center">
           <h1>
             <Form.Group className="mb-3">
@@ -144,27 +157,25 @@ export const BlogArticleEdit = () => {
           </h1>
         </Col>
       </Row>
-      {/* Data di pubblicazione */}
-      <Row className="my-2 mt-4 justify-content-center">
-        <p className="text-muted text-center"> {post?.date ? `Pubblicato il ${new Date(post.date).toLocaleDateString()}` : 'Data non disponibile'}</p>
-      </Row>
+      
       {/* Parte 1 del contenuto */}
-      <Row className="my-2 mt-4 justify-content-center">
+
+      <Row className="my-2 mt-4 justify-content-center m-3">
         <Form.Group className="mb-3">
           <Form.Control as="textarea" rows={3} type="text" value={post.content.part1} placeholder="Parte 1" onChange={(event) => handleChange(event, 'content.part1')} onBlur={handleSavePost} />
         </Form.Group>
       </Row>
+
       {/* Immagine e caricamento di file */}
+
       <Row className="my-2 justify-content-center">
-        <Col lg={6}>
-          <Col lg={6}>
             {post && (
               <>
                 <Image
                   key={post._id}
                   src={getImageById(id)}
                   fluid
-                  className="mb-3"
+                  className="mb-3 img-maxH"
                 />
                 <input
                   type="file"
@@ -176,30 +187,34 @@ export const BlogArticleEdit = () => {
                 <Button
                   style={{
                     position: 'relative',
-                    top: '10px',
-                    left: '10px',
+                    top: '-50px',
+                    left: '0',
                     zIndex: 5,
-                    backgroundColor: 'red',
+                    backgroundColor: 'blue',
+                    width: '10%', 
+
                   }}
                   onClick={() => document.getElementById(`file-input-contenuto-${id}`).click()}
                   variant="primary"
+                  className='m-3'
                 >
                   Upload
                 </Button>
               </>
             )}
-          </Col>
-        </Col>
+          
+        
         {/* Parte 2 del contenuto */}
-        <Col lg={6}>
-          <Row>
+
+        <Col lg={12} >
+          <Row className='m-3'>
             <h3>
               <Form.Group className="mb-3">
                 <Form.Control type="text" value={post.content.part2.title} placeholder="Parte 2 Title" onChange={(event) => handleChange(event, 'content.part2.title')} onBlur={handleSavePost} />
               </Form.Group>
             </h3>
           </Row>
-          <Row>
+          <Row className='m-3'>
             <p className="text-muted">
               <Form.Group className="mb-3">
                 <Form.Control type="text" as="textarea" rows={12} value={post.content.part2.body} placeholder="Parte 2" onChange={(event) => handleChange(event, 'content.part2.body')} onBlur={handleSavePost} />
@@ -207,9 +222,11 @@ export const BlogArticleEdit = () => {
             </p>
           </Row>
         </Col>
-      </Row>
+      </Row >
+
       {/* Parte 3 del contenuto */}
-      <Row className="my-2 justify-content-center">
+
+      <Row className="my-2 justify-content-center m-3" >
         <Col lg={12}>
           <Row>
             <h3 className=' text-left mt-3'>
@@ -227,7 +244,15 @@ export const BlogArticleEdit = () => {
           </Row>
         </Col>
       </Row>
+
+      {/* Data di pubblicazione */}
+
+      <Row className="my-2 mt-4 justify-content-center">
+        <p className="text-muted text-center"> {post?.date ? `Pubblicato il ${new Date(post.date).toLocaleDateString()}` : 'Data non disponibile'}</p>
+      </Row>
+      
       {/* Pulsante per tornare all'area editor */}
+
       <Row className="my-2 justify-content-center">
         <Col lg={6} className="d-flex justify-content-center mb-3">
           <Button as={Link} to={`/BlogEdit`} variant="primary" className="mt-3">Torna area editor</Button>

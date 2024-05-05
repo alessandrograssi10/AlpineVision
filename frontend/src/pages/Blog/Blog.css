@@ -25,10 +25,11 @@
 .img-maxH
 {
     max-height: 50vw; /* Set the maximum height */
-    width: 100%;
+    width: auto;
     position: relative;
     overflow: hidden; /* Hide any overflowing content */
     display: flex;
+    object-fit: cover !important;
     justify-content: center; /* Horizontally center the image */
     align-items: center;    /* Vertically center the image */
 }
