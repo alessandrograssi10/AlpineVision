@@ -54,7 +54,7 @@ class App extends Component {
           <Route path="/BlogArticle/:id" element={<BlogArticle/>} />
           <Route path="/BlogArticleEdit/:id" element={<BlogArticleEdit/>} />
           <Route exact path="/AreaPersonale" Component={PersonalArea}/>
-          <Route path="/Payments/" Component={Payments} />
+          <Route path="/Payments/:id" element={<Payments/>} />
 
           <Route exact path ="/Support" Component={AboutUs}/>
           <Route exact path ="/cart" Component={Cart}/>

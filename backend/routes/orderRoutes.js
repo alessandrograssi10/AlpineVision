@@ -85,9 +85,9 @@ router.post('/createOrderFromCart', async (req, res) => {
             const query = item.type === 'product' ? { productId: new ObjectId(item.productId), colore: item.color } : { _id: new ObjectId(item.productId) };
             const inventoryItem = await collection.findOne(query);
 
-            if (!inventoryItem || inventoryItem.quantita < item.quantity) {
+            /*if (!inventoryItem || inventoryItem.quantita < item.quantity) {
                 return res.status(400).json({ message: `Uno o più ${item.type === 'product' ? 'prodotti' : 'accessori'} non disponibili o con quantità insufficiente` });
-            }
+            }*/
         }
 
         const orderId = await createOrder(userId, cart.items);

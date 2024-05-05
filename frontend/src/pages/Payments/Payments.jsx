@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Button, Container, Row, Col } from 'react-bootstrap';
 import { CountryDropdown, RegionDropdown } from 'react-country-region-selector';
+import { useParams } from 'react-router-dom';
 import PhoneInput from 'react-phone-number-input';
 import 'react-phone-number-input/style.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -10,6 +11,7 @@ import money from '../../assets/Images/money.png';
 import './Payments.css';
 
 const Payments = () => {
+    const { id } = useParams();
     const [state, setState] = useState({
         nome: '',
         cognome: '',
@@ -29,65 +31,61 @@ const Payments = () => {
     const cartaValida = /^\d{16}$/.test(state.numeroCarta);
     const cvvValido = /^\d{3}$/.test(state.cvv);
     const scadenzaValida = /^(0[1-9]|1[0-2])\/(2[5-9]|[3-9]\d)$/.test(state.scadenza);
-
-    const [cartItems, setCartItems] = useState([]);
-    const [prodName, setProdName] = useState("");
-    const [totalPrice, setTotalPrice] = useState(0);
-    const userId = localStorage.getItem('userId');
-    let provTotalPrice;
-
+    const userId = localStorage.getItem("userId");
 
     useEffect(() => {
-        const requestOptions = {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json'
-                // Additional headers here, e.g., authorization tokens
-            }
-        };
-    
-        fetch('http://localhost:3000/api/carts/' + userId, requestOptions)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(cartData => {
-                console.log("Cart Items Loaded:", cartData);
-                // Finding the first product-type item in the cart data
-                const dataPro = cartData.find(product => product.type === "product");
-                setCartItems(cartData);
-                if (dataPro) {
-                    // No need to map, directly fetch details for this product
-                    fetch(`http://localhost:3000/api/products/`, requestOptions)
-                        .then(response => response.json())
-                        .then(productData => {
-                            console.log("Product data loaded:", productData);
-                            // Assuming productData is an array and we need to find specific product info
-                            const product = productData.find(p => p._id === dataPro.productId);
-                            if (product) {
-                                console.log("Product :", product);
+        console.log(id);
+    }, []);
 
-                                /*setProdName(prevNames => ({
-                                    ...prevNames,
-                                    [dataPro._id]: product.nome
-                                }));*/
-                                console.log(product.nome,"NOME")
-                                const urls = {};
-                                urls[dataPro.productId] = product.nome;
-                                //prodName[dataPro.productId] = product.nome;
-                                setProdName(...prodName,urls);
-                            }
-                        })
-                        .catch(error => console.error("Error fetching product details:", error));
+   
+    async function sendOrder() {
+        if (userId) {
+            let url = '';
+            const arra = localStorage.getItem("riepilogoCart");
+            const riepilogoDati = JSON.parse(arra);
+            if(id === 'cart')
+            {
+                    url = 'http://localhost:3000/api/orders/createOrderFromCart';
+                    try {
+                        const response = await fetch(url, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                userId: userId,
+                            })
+                        });
+                        console.log("Ordine", "comp")
+                        localStorage.setItem('Cart_Trig',"Trigger");
+        
+                    } catch (error) { console.error('Error:', error); }
+            }
+            if(id === 'direct')
+                {
+                        url = 'http://localhost:3000/api/orders/createOrder';
+                        try {
+                            const response = await fetch(url, {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify({
+                                    userId: userId,
+                                    productId: riepilogoDati.productId,
+                                    quantity: riepilogoDati.quantity,
+                                    color: riepilogoDati.color,
+                                    type: riepilogoDati.type,
+                                })
+                            });
+                            console.log("Ordine", "comp")
+                            localStorage.setItem('Cart_Trig',"Trigger");
+            
+                        } catch (error) { console.error('Error:', error); }
                 }
-            })
-            .catch(error => {
-                console.error("Error fetching cart items:", error);
-            });
-    }, [userId]);
-    
+            
+        } 
+    }
 
 
 
@@ -97,6 +95,7 @@ const Payments = () => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
+        sendOrder();
         console.log('Pagamento effettuato con successo');
     };
     
@@ -237,13 +236,7 @@ const Payments = () => {
 
                 <Col xs={12} md={6}>
                     <h3 className="text-center m-5">Riepilogo ordine</h3>
-                    {cartItems.map((prodotto) => {
-                    return (
-                        <Row>
-                            <p>{prodName[prodotto.productId]} + {prodotto.productId}</p>
-                        </Row>
-                    );
-                })}
+                    
 
 
 
