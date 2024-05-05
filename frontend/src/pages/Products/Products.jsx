@@ -12,10 +12,11 @@ export const Products = () => {
     const [imageUrlspLat, setImageUrlspLat] = useState({}); // immagini laterali
     const [colorCount, setColorCount] = useState({}); // set per contare i colori
     const [hoverIndex, setHoverIndex] = useState(null); //elemento selezionato
+    const [toCart, setToCart] = useState([])
 
     useEffect(() => {
         fetch(`http://localhost:3000/api/products`)
-            .then(response => {if (!response.ok) {throw new Error('Errore');}return response.json();})
+            .then(response => { if (!response.ok) { throw new Error('Errore'); } return response.json(); })
             .then(data => {
                 //Divido i prodotti maschera da quelli occhiale
                 const masks = data.filter(product => product.categoria === "maschera");
@@ -100,29 +101,27 @@ export const Products = () => {
                 <h3 className="m-4 mb-1 boldText">Maschere da sci</h3>
                 <h5 className="m-4 mt-1 mb-2 notbold">Stile Unico</h5>
             </Row>
-             {/* Lista delle maschere */}
+            {/* Lista delle maschere */}
             <Row className='mt-4' >
                 {productsMask.map((prodotto) => {
                     return (
                         <Col xs={12} sm={6} md={4} lg={3} key={prodotto._id} >
-                            <Card as={Link} to={`/product/${prodotto._id}`} className='m-3 card-text-prod card-prod  ' onMouseEnter={() => setHoverIndex(prodotto._id)}onMouseLeave={() => setHoverIndex(null)}>
-                                {/* Immagine della maschera */}
-                                {/*<Card.Img key={prodotto._id} variant="top" className='card-image-fit' onMouseEnter={() => setHoverIndex(prodotto._id)} onMouseLeave={() => setHoverIndex(null)} src={hoverIndex === prodotto._id ? imageUrlspLat[prodotto._id] : imageUrlsp[prodotto._id]} />*/}
+                            <Card as={Link} to={`/product/${prodotto._id}`} className='m-3 card-text-prod card-prod  ' onMouseEnter={() => setHoverIndex(prodotto._id)} onMouseLeave={() => setHoverIndex(null)}>
                                 <div
-                            className="card-image-container"
-                            
-                        >
-                            <Card.Img
-                                key={`${prodotto._id}-front`}
-                                className={`card-image-fit-prod ${hoverIndex === prodotto._id ? '' : 'card-image-visible'}`}
-                                src={imageUrlsp[prodotto._id]}
-                            />
-                            <Card.Img
-                                key={`${prodotto._id}-lat`}
-                                className={`card-image-fit-prod ${hoverIndex === prodotto._id ? 'card-image-visible' : ''}`}
-                                src={imageUrlspLat[prodotto._id]}
-                            />
-                        </div>
+                                    className="card-image-container"
+
+                                >
+                                    <Card.Img
+                                        key={`${prodotto._id}-front`}
+                                        className={`card-image-fit-prod ${hoverIndex === prodotto._id ? '' : 'card-image-visible'}`}
+                                        src={imageUrlsp[prodotto._id]}
+                                    />
+                                    <Card.Img
+                                        key={`${prodotto._id}-lat`}
+                                        className={`card-image-fit-prod ${hoverIndex === prodotto._id ? 'card-image-visible' : ''}`}
+                                        src={imageUrlspLat[prodotto._id]}
+                                    />
+                                </div>
                                 {/* Dettagli della maschera */}
                                 <Card.Body>
                                     <Card.Title>{prodotto.nome}</Card.Title>
@@ -143,27 +142,27 @@ export const Products = () => {
             </Row>
             {/* Lista degli occhiali */}
             <Row className='mt-4 mb-5'>
-            {productsGlass.map((prodotto) => {
+                {productsGlass.map((prodotto) => {
                     return (
                         <Col xs={12} sm={6} md={4} lg={3} key={prodotto._id} >
-                            <Card as={Link} to={`/product/${prodotto._id}`} className='m-3 card-text-prod card-prod  ' onMouseEnter={() => setHoverIndex(prodotto._id)}onMouseLeave={() => setHoverIndex(null)}>
+                            <Card as={Link} to={`/product/${prodotto._id}`} className='m-3 card-text-prod card-prod  ' onMouseEnter={() => setHoverIndex(prodotto._id)} onMouseLeave={() => setHoverIndex(null)}>
                                 {/* Immagine della maschera */}
-                               {/* <Card.Img key={prodotto._id} variant="top" className='card-image-fit' onMouseEnter={() => setHoverIndex(prodotto._id)} onMouseLeave={() => setHoverIndex(null)} src={hoverIndex === prodotto._id ? imageUrlspLat[prodotto._id] : imageUrlsp[prodotto._id]} />*/}
-                               <div
-                            className="card-image-container"
-                            
-                        >
-                            <Card.Img
-                                key={`${prodotto._id}-front`}
-                                className={`card-image-fit-prod ${hoverIndex === prodotto._id ? '' : 'card-image-visible'}`}
-                                src={imageUrlsp[prodotto._id]}
-                            />
-                            <Card.Img
-                                key={`${prodotto._id}-lat`}
-                                className={`card-image-fit-prod ${hoverIndex === prodotto._id ? 'card-image-visible' : ''}`}
-                                src={imageUrlspLat[prodotto._id]}
-                            />
-                        </div>
+                                {/* <Card.Img key={prodotto._id} variant="top" className='card-image-fit' onMouseEnter={() => setHoverIndex(prodotto._id)} onMouseLeave={() => setHoverIndex(null)} src={hoverIndex === prodotto._id ? imageUrlspLat[prodotto._id] : imageUrlsp[prodotto._id]} />*/}
+                                <div
+                                    className="card-image-container"
+
+                                >
+                                    <Card.Img
+                                        key={`${prodotto._id}-front`}
+                                        className={`card-image-fit-prod ${hoverIndex === prodotto._id ? '' : 'card-image-visible'}`}
+                                        src={imageUrlsp[prodotto._id]}
+                                    />
+                                    <Card.Img
+                                        key={`${prodotto._id}-lat`}
+                                        className={`card-image-fit-prod ${hoverIndex === prodotto._id ? 'card-image-visible' : ''}`}
+                                        src={imageUrlspLat[prodotto._id]}
+                                    />
+                                </div>
                                 {/* Dettagli della maschera */}
                                 <Card.Body>
                                     <Card.Title>{prodotto.nome}</Card.Title>
