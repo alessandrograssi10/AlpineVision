@@ -10,6 +10,8 @@ function CartCard({ price, quantity, updateTotalPrice, prodID, color, type, remo
     const [prodName, setProdName] = useState("");
     const [frontalImg, setFrontalImg] = useState({});
     const [currentProduct, setCurrentProduct] = useState({});
+    const userID = localStorage.getItem('userId');
+
 
     useEffect(() => {
 
@@ -62,6 +64,7 @@ function CartCard({ price, quantity, updateTotalPrice, prodID, color, type, remo
         if (e.target.id === "increaseButton") {
             setQnt(qnt + 1);
             updateTotalPrice(price, true);
+
         } else {
             if (qnt === 1) {
                 // Se la quantità è già 1, non fare nulla
@@ -70,7 +73,37 @@ function CartCard({ price, quantity, updateTotalPrice, prodID, color, type, remo
                 updateTotalPrice(price, false);
             }
         }
+
     }
+
+    useEffect(() => {
+
+        const myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+
+        const raw = JSON.stringify({
+            "userId": `${userID}`,
+            "productId": `${prodID}`,
+            "color": `${color}`,
+            "quantity": qnt,
+            "type": `${type}`
+        });
+
+        const requestOptions = {
+            method: "PATCH",
+            headers: myHeaders,
+            body: raw,
+            redirect: "follow"
+        };
+
+        fetch("http://localhost:3000/api/carts/updateQuantity", requestOptions)
+            .then((response) => response.text())
+            .then((result) => console.log(result))
+            .catch((error) => console.error(error));
+
+
+    }, [qnt])
+
 
     const removeHandleClick = () => {
         removeProd(prodID, price * qnt);
