@@ -89,14 +89,14 @@ function Cart() {
 
     return (
         <Container className="mb-5">
-            <Row className="mt-3 mb-5 bg-light">
-                <Col xs="1" className="d-flex align-items-center me-2">
+            <Row className="mt-5 mb-5 ">
+                {/*<Col xs="1" className="d-flex align-items-center me-2">
                     <div id="cartImgDiv">
                         <img src={shoppingCart} alt="" />
                     </div>
-                </Col>
+                </Col>*/}
                 <Col className="">
-                    <h1 className="fw-bold  ">Il tuo carrello</h1>
+                    <h1 className="fw-bold  ">IL TUO CARRELLO</h1>
                 </Col>
             </Row>
 
