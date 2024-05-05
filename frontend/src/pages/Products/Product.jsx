@@ -235,46 +235,7 @@ export const Product = () => {
 
                     <Row className=" m-0 p-0 w-100 h-100 no-space-rowBg-prod ">
                         <Image src={ImgSimpatica} className="p-0 img-fluid-no-space w-100 darkness align-items-center" />
-                        <Plx className=' centered-text '
-                            parallaxData={[
-                                {
-                                    start: 100,
-                                    end: 500,
-                                    properties: [
-                                        {
-                                            startValue: 0,
-                                            endValue: 1,
-                                            property: "opacity"
-                                        },
-                                        {
-                                            startValue: 0,
-                                            endValue: 0,
-                                            property: "translateY"
-                                        },
-
-                                    ]
-                                },
-                                {
-                                    start: 500, 
-                                    end: 800,  
-                                    properties: [
-                                        {
-                                            startValue: 1,
-                                            endValue: 1.3, 
-                                            property: "scale"
-                                        },
-                                        {
-                                            startValue: 0,
-                                            endValue: 0,
-                                            property: "translateY"
-                                        },
-                                    ]
-                                }
-
-                            ]}>
-                            <div className="centered-text d-flex">{productInfo.nome}</div>
-
-                        {/*<div className="centered-text">{productInfo.nome}</div>*/}
+                        <div className="centered-text">{productInfo.nome}</div>
                     </Row>
                     <Row className="m-0 p-0 w-100 h-100 d-flex justify-content-center align-items-center p-5 ">
                         <h3 className="text-center text-bold">{productInfo.motto}</h3>
