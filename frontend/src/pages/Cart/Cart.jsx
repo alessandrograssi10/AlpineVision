@@ -3,15 +3,15 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Container, Row, Col, Button } from 'react-bootstrap';
 import CartCard from './CartCard.jsx';
 import shoppingCart from '../../assets/Images/shopping-cart.png';
-import { Link } from 'react-router-dom';
-
 import './Cart.css';
 
 function Cart() {
+
     const [cartItems, setCartItems] = useState([]);
     const [totalPrice, setTotalPrice] = useState(0);
-    const userId = localStorage.getItem('userId');
-    
+    const [toggler, setToggler] = useState(false);
+    const userID = localStorage.getItem('userId');
+
 
     useEffect(() => {
         const myHeaders = new Headers();
@@ -22,16 +22,22 @@ function Cart() {
             headers: myHeaders,
             redirect: "follow"
         };
-        fetch(`http://localhost:3000/api/carts/${userId}`, requestOptions)
+        fetch(`http://localhost:3000/api/carts/${userID}`, requestOptions)
             .then((response) => response.json())
             .then((result) => {
                 setCartItems(result);
                 const provTotalPrice = result.reduce((somma, cartItem) => somma + cartItem.total * cartItem.quantity, 0);
                 setTotalPrice(provTotalPrice);
+                if (cartItems.length == 0) {
+                    setToggler(false);
+                } else if (cartItems.length != 0) {
+                    setToggler(true);
+                }
             })
             .catch((error) => console.error(error));
     }, []);
-    
+
+
     const updateTotalPrice = (priceToAdd, incDec) => {
         let newTotalPrice;
         if (incDec == true) {
@@ -43,9 +49,43 @@ function Cart() {
     }
 
     const removeProd = (delProductId) => {
-        const prodotto = cartItems.find(product => product._id === delProductId);
-        console.log();
+        const newCartItems = cartItems.filter(product => product.productId !== delProductId);
+        setCartItems(newCartItems);
+
+        const myHeadersrm = new Headers();
+        myHeadersrm.append("Content-Type", "application/json");
+
+        const raw = JSON.stringify({
+            "userId": `${userID}`,
+            "productId": `${delProductId}`
+        });
+
+        const requestOptions = {
+            method: "DELETE",
+            headers: myHeadersrm,
+            body: raw,
+            redirect: "follow"
+        };
+
+        fetch("http://localhost:3000/api/carts/remove", requestOptions)
+            .then((response) => response.text())
+            .then((result) => console.log())
+            .catch((error) => console.error(error));
+
+        
     }
+
+
+    useEffect(() => {
+        if (cartItems.length == 0) {
+            setTotalPrice(0);
+            setToggler(false);
+        } else if (cartItems.length > 0) {
+            setToggler(true);
+        }
+    }, [cartItems]);
+
+    console.log(toggler);
 
     return (
         <Container className="mb-5">
@@ -86,20 +126,21 @@ function Cart() {
             <Row className="p-2 mt-5">
                 {/* Procedi all'acquisto */}
                 <Col className="d-flex justify-content-end">
-                    {((cartItems.length == null) ?
-                        <Button  as={Link}  to = "/products" id="prodPageButton" className="fs-4">
-                            Shop
+                    {((toggler) ?
+                        <Button id="buyButton" className="fs-4">
+                            Procedi all'acquisto
                         </Button>
                         :
-                        <Button as={Link}  to = "/payments/cart" id="buyButton" className="fs-4">
-                            Procedi all'acquisto
-                        </Button>)
+                        <Button id="prodPageButton" className="fs-4">
+                            Shop
+                        </Button>
+                    )
                     }
 
                 </Col>
                 {/* Totale */}
                 <Col className="fw-bold fs-5 d-flex align-items-center justify-content-start">
-                    Totale: {totalPrice.toFixed(2)} €
+                    Totale: {totalPrice.toFixed(2)}€
                 </Col>
             </Row>
         </Container >

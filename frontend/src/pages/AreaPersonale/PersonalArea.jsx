@@ -9,6 +9,7 @@ function PersonalArea() {
     const [favorites, setFavorites] = useState([]);
     const [userData, setUserData] = useState(null); 
     const [walking, setWalking] = useState(false);
+    const ruolo = localStorage.getItem("ruoloUser");
 
     const isNameFemale = (name) => {
         return name && name.trim().toLowerCase().endsWith('a');
@@ -100,6 +101,12 @@ function PersonalArea() {
                             )}
                         </div>
                     </div>
+
+                    {ruolo === 'admin' && (
+                        <div className="personal-area-text-center">
+                        <button className="personal-area-button personal-area-button-danger" onClick={AuthServices.dologout}>Esci</button>
+                    </div>
+                    )}
 
                     {/* Sezione: Possibilità di logout */}
                     <div className="personal-area-text-center">
