@@ -48,7 +48,7 @@ export const Header = () => {
     if (!isLargeScreen) return; //se la navbar ha il toggle disabilita le tendine
     cancelToggleBox();
     if (currentBox !== boxName) {
-      if (currentBox === 'showSearchBox') OpenAllBoxes();
+      //if (currentBox === 'showSearchBox') OpenAllBoxes();
       const id = setTimeout(() => {
         setCurrentBox(boxName);
       }, 100);
@@ -61,6 +61,8 @@ export const Header = () => {
   //Fa si che si avvii l'animazione di apertura delle tendine
   const OpenAllBoxes = () => {
     if (!isLargeScreen || currentBox) return;
+    //cancelToggleBox();
+
     setIsOpening(true);
     setTimeout(() => {
       setIsOpening(false);
@@ -158,7 +160,7 @@ export const Header = () => {
 
               {/* Box Cerca */}
               <div>
-                <Nav.Link as={Link} className={`bold ${currentBox === 'showSearchBox' ? 'hovered' : ''}`}>
+                <Nav.Link as={Link} onMouseEnter={OpenAllBoxes} className={`bold ${currentBox === 'showSearchBox' ? 'hovered' : ''}`}>
                   <Image onClick={() => toggleBox("showSearchBox")} src={SearchIcon} width="20" className="icon d-none d-lg-inline-block d-xl-inline-block" alt="Search" />
                   <span className="d-inline-block d-lg-none d-xl-none align-center logo">Cerca</span>
                 </Nav.Link>

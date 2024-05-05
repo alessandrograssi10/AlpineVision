@@ -107,6 +107,16 @@ export const Search = () => {
         }
         return null;
     };
+    const getElementType= (product) => {
+        if (product.title) {
+            return `articolo blog`;
+        } else if (product.name) {
+            return `accessorio`;
+        } else if (product.nome) {
+            return `prodotto`;
+        }
+        return null;
+    };
 
     const handleSearch = (event, all) => {
         // Determine the source of the query based on input type
@@ -157,36 +167,47 @@ export const Search = () => {
         }
     };
 
+
+    const handleKeyPress = (event) => {
+        if (event.key === 'Enter') {
+            if (!queryString) return;
+            event.preventDefault();
+            event.stopPropagation();
+            handleSearch(event); // Chiama la funzione per gestire la ricerca
+        }
+    };
+
     return (
-        <Container fluid className="p-0 m-0 ">
-            <Row className="ml-0 mr-0 no-space-row mt-3 m-5 mb-1">
-          <h3 className="m-4 mb-1 boldText">CERCA</h3>
+        <Container fluid className="p-0 m-0">
+            <Row className="ml-0 mr-0 no-space-row mt-3 m-5 mb-0 p-3 pb-0">
+          <h3 className="m-4 mb-1 boldText">TROVA CIÒ CHE DESIDERI</h3>
         </Row>
-        <div className="container mt-5">
-            <Form onSubmit={handleSearch}>
-                <InputGroup>
+        <Row className="m-5   mr-5 no-space-row mt-3  mb-0 ">
+        <div >
+            <Form onSubmit={handleSearch} action = {`http://localhost:3020/search?` + queryString}>
+                <InputGroup >
                     <Form.Control
                         type="text"
                         placeholder="Cerca..."
                         value={query}
                         onChange={handleSearch}
-                        
+                        onKeyDown={handleKeyPress} 
                     />
-                    <Button variant="primary" type="submit">
-                        Cerca
-                    </Button>
                 </InputGroup>
             </Form>
         </div>
-        <Row className="ml-0 mr-0 no-space-row mt-3 m-5 mb-1">
-          <h3 className="m-4 mb-1 boldText">Elementi trovati</h3>
         </Row>
+
+        <Row className="ml-0 mr-0 p-0 mt-3 m-5 ml-0 mb-1">
+  <h7 className="m-4 mb-1 p-0 boldText text-left ms-0">Elementi trovati</h7>
+</Row>
        
+        <div className="border-bottom"></div>
 
 
 
         <Row className='mt-5 m-5' >
-          {searchFilteredElements.map((prodotto) => {
+          {searchFilteredElements.length > 0 && searchFilteredElements.map((prodotto) => {
            
             return (
               <Col xs={12} sm={6} md={4} lg={3} key={prodotto._id} >
@@ -197,14 +218,25 @@ export const Search = () => {
                   {/* Dettagli del prodotto */}
                   <Card.Body>
                   <Card.Title>{getProductName(prodotto)}</Card.Title>
+                    
+                  {prodotto.prezzo && (
+  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+    <Card.Text>{prodotto.prezzo} €</Card.Text>
+  </div>
+)}
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                        <Card.Text>{prodotto.prezzo} €</Card.Text>
+                        <Card.Text>{getElementType(prodotto)}</Card.Text>
                     </div>
                   </Card.Body>
                 </Card>
               </Col>
             );
           })}
+           {searchFilteredElements.length <= 0 && queryString.trim() !== ''  && (
+    <Col xs={12} className="text-center mt-5">
+      <h4>Nessun elemento trovato.</h4>
+    </Col>
+  )}
         </Row>
        
       </Container>
