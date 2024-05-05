@@ -9,6 +9,11 @@
 
 }
 
+#variantImgContainer img {
+    width:100%;
+    max-width: 100%;
+}
+
 #qntTitle{
     font-size: 28px;
 }

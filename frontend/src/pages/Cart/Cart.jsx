@@ -3,15 +3,15 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Container, Row, Col, Button } from 'react-bootstrap';
 import CartCard from './CartCard.jsx';
 import shoppingCart from '../../assets/Images/shopping-cart.png';
+import { Link } from 'react-router-dom';
+
 import './Cart.css';
 
 function Cart() {
-
     const [cartItems, setCartItems] = useState([]);
     const [totalPrice, setTotalPrice] = useState(0);
     const userId = localStorage.getItem('userId');
-
-    let provTotalPrice;
+    
 
     useEffect(() => {
         const myHeaders = new Headers();
@@ -25,15 +25,13 @@ function Cart() {
         fetch(`http://localhost:3000/api/carts/${userId}`, requestOptions)
             .then((response) => response.json())
             .then((result) => {
-                console.log(result);
                 setCartItems(result);
-                provTotalPrice = result.reduce((somma, cartItem) => somma + cartItem.total, 0);
+                const provTotalPrice = result.reduce((somma, cartItem) => somma + cartItem.total * cartItem.quantity, 0);
                 setTotalPrice(provTotalPrice);
             })
             .catch((error) => console.error(error));
-
     }, []);
-
+    
     const updateTotalPrice = (priceToAdd, incDec) => {
         let newTotalPrice;
         if (incDec == true) {
@@ -41,17 +39,12 @@ function Cart() {
         } else {
             newTotalPrice = totalPrice - priceToAdd;
         }
-
         setTotalPrice(newTotalPrice);
-
     }
 
-    useEffect(() => {
-        console.log(totalPrice);
-    }, [totalPrice])
-
-    const removeProd = (variantId) => {
-
+    const removeProd = (delProductId) => {
+        const prodotto = cartItems.find(product => product._id === delProductId);
+        console.log();
     }
 
     return (
@@ -65,9 +58,6 @@ function Cart() {
                 <Col className="">
                     <h1 className="fw-bold  ">Il tuo carrello</h1>
                 </Col>
-
-
-
             </Row>
 
             {(cartItems.length == null) ?
@@ -83,7 +73,10 @@ function Cart() {
                         price={cartItem.total}
                         quantity={cartItem.quantity}
                         updateTotalPrice={updateTotalPrice}
-                        prodID={cartItem.productId}>
+                        prodID={cartItem.productId}
+                        color={cartItem.color}
+                        type={cartItem.type}
+                        removeProd={removeProd}>
                     </CartCard>
                 ))
                 )
@@ -95,10 +88,10 @@ function Cart() {
                 <Col className="d-flex justify-content-end">
                     {((cartItems.length == null) ?
                         <Button id="prodPageButton" className="fs-4">
-                            Vai alla nostra pagina prodotti!
+                            Shop
                         </Button>
                         :
-                        <Button id="buyButton" className="fs-4">
+                        <Button as={Link}  to = "/payments/cart" id="buyButton" className="fs-4">
                             Procedi all'acquisto
                         </Button>)
                     }

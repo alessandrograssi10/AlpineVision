@@ -4,13 +4,65 @@ import { useEffect, useState } from 'react';
 import './CartCard.css'
 import trashBin from '../../assets/Images/trashBin.png';
 
-function CartCard({ price, quantity, updateTotalPrice, prodID}) {
+function CartCard({ price, quantity, updateTotalPrice, prodID, color, type, removeProd }) {
 
     const [qnt, setQnt] = useState(quantity);
     const [prodName, setProdName] = useState("");
+    const [frontalImg, setFrontalImg] = useState({});
+    const [currentProduct, setCurrentProduct] = useState({});
+    
+    useEffect(() => {
+
+        if (type == "product") {
+            const myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/json");
+
+            const requestOptions = {
+                method: "GET",
+                headers: myHeaders,
+                redirect: "follow"
+            };
+
+            fetch("http://localhost:3000/api/products", requestOptions)
+                .then((response) => response.json())
+                .then((result) => {
+                    const product = result.find(product => product._id === prodID);
+
+                    setCurrentProduct(product);
+
+                    setProdName(product.nome);
+                })
+                .catch((error) => console.error(error));
+
+            setFrontalImg(`http://localhost:3000/api/products/${prodID}/${color}/frontale`);
+
+        } else if (type == "accessory") {
+
+            const myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/json");
+
+            const requestOptions = {
+                method: "GET",
+                headers: myHeaders,
+                redirect: "follow"
+            };
+
+
+            fetch("http://localhost:3000/api/accessories", requestOptions)
+                .then((response) => response.json())
+                .then((result) => {
+                    const product = result.find(product => product._id === prodID);
+                    setProdName(product.name);
+                })
+                .catch((error) => console.error(error));
+
+            setFrontalImg(`http://localhost:3000/api/accessories/${prodID}/image1`);
+        }
+    })
+
+
 
     const clickHandle = (e) => {
-
         if (e.target.id == "increaseButton") {
             setQnt(qnt + 1);
             updateTotalPrice(price, true);
@@ -21,36 +73,12 @@ function CartCard({ price, quantity, updateTotalPrice, prodID}) {
                 setQnt(qnt - 1);
                 updateTotalPrice(price, false);
             }
-
         }
     }
 
     const removeHandleClick = () => {
-
+        removeProd(prodID);
     }
-
-    useEffect(() => {
-
-        const myHeaders = new Headers();
-        myHeaders.append("Content-Type", "application/json");
-
-        const requestOptions = {
-            method: "GET",
-            headers: myHeaders,
-            redirect: "follow"
-        };
-
-        fetch("http://localhost:3000/api/products", requestOptions)
-            .then((response) => response.json())
-            .then((result) => {
-                const product = result.find(product => product._id === prodID);
-                setProdName(product.nome);
-            })
-            .catch((error) => console.error(error));
-
-
-    })
-
 
     return (
         <>
@@ -59,11 +87,10 @@ function CartCard({ price, quantity, updateTotalPrice, prodID}) {
                     <h1 className="display-5">{prodName}</h1>
                 </Row>
                 <Row className="h-100">
-
                     {/* Colonna immagine */}
                     <Col xs="2" lg="2" xl="2" className="p-1">
-                        <Container id="variantImgContainer" className="bg-danger h-100 d-flex justify-content-center align-items-center">
-                            <img id="variantImg" src="" alt="prodotto" />
+                        <Container id="variantImgContainer" className="h-100 d-flex justify-content-center align-items-center">
+                            <img src={frontalImg} alt="prodotto" />
                         </Container>
                     </Col>
 
@@ -72,7 +99,7 @@ function CartCard({ price, quantity, updateTotalPrice, prodID}) {
                         <h5 id="qntTitle" className="display-6 me-3"> Quantità: </h5>
                         <div id="qntDiv">
                             <Button id="decreaseButton" onClick={clickHandle}>-</Button>
-                            <div id="qnt" className='fw-bold' contentEditable>{qnt}</div>
+                            <div id="qnt" className='fw-bold'>{qnt}</div>
                             <Button id="increaseButton" onClick={clickHandle}>+</Button>
                         </div>
                     </Col>
@@ -84,9 +111,9 @@ function CartCard({ price, quantity, updateTotalPrice, prodID}) {
                 </Row>
 
                 <Row className="mt-2">
-                    <Col xs="6"className="fs-3">
+                    <Col xs="6" className="fs-3">
                         Rimuovi
-                        <Button id="removeButton" className="ms-3">
+                        <Button id="removeButton" className="ms-3" onClick={removeHandleClick}>
                             <div id="trashBinImgDiv">
                                 <img src={trashBin} alt="" />
                             </div>
