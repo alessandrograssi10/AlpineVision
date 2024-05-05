@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef,useLayoutEffect } from 'react';
 import { Container, Card, Row, Col, Button, Alert, Form } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Link,useNavigate } from 'react-router-dom';
 import { fetchBlogPosts, updateImageUrlById, handleSessionStorage, getSessionStorageOrDefault, generateNewArticle, fetchBlobFromUrl } from './BlogEditLogic';
 
 import Img from '../../../assets/Images/notfound.png';
@@ -13,14 +13,18 @@ export const BlogEdit = () => {
   const [ImagesCopy, setImagesCopy] = useState(() => getSessionStorageOrDefault('blogImagesCopy', []));
   const [imagesLoaded, setImagesLoaded] = useState(false);
   const ruolo = localStorage.getItem("ruoloUser");
+  let navigate = useNavigate();
 
-
-  useLayoutEffect(() => {
-
+  useEffect(() => {
     if(ruolo !== "admin")
       {
-        
+        //navigate(`/home`);
+        window.location.href = '/home';
       }
+  }, []);
+  useLayoutEffect(() => {
+
+    
 
 
     if (blogPosts.length === 0) {
