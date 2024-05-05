@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { Button } from 'react-bootstrap';
+
 import './PersonalArea.css'; // Importa il file CSS per gli stili
 import shopping from '../../assets/Images/shopping2.png';
 import shoppingrev from '../../assets/Images/shopping2rev.png';
 import AuthServices from '../Login_SignUp/AuthService';
+import { Link } from 'react-router-dom';
 
 function PersonalArea() {
     const [orders, setOrders] = useState([]);
@@ -103,8 +106,8 @@ function PersonalArea() {
                     </div>
 
                     {ruolo === 'admin' && (
-                        <div className="personal-area-text-center">
-                        <button className="personal-area-button personal-area-button-danger" onClick={AuthServices.dologout}>Esci</button>
+                        <div className="personal-area-text-center m-5">
+                        <Button as={Link} to="/blogedit" className="personal-area-button personal-area-button-danger" >EditBlog</Button>
                     </div>
                     )}
 

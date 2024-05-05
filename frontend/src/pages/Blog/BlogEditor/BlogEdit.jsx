@@ -12,9 +12,17 @@ export const BlogEdit = () => {
   const [Images, setImages] = useState(() => getSessionStorageOrDefault('blogImages', []));
   const [ImagesCopy, setImagesCopy] = useState(() => getSessionStorageOrDefault('blogImagesCopy', []));
   const [imagesLoaded, setImagesLoaded] = useState(false);
+  const ruolo = localStorage.getItem("ruoloUser");
 
 
   useLayoutEffect(() => {
+
+    if(ruolo !== "admin")
+      {
+        
+      }
+
+
     if (blogPosts.length === 0) {
       fetchBlogPosts()
       .then(data => {setBlogPosts(data);setBlogPostsCopy(data);})
