@@ -126,9 +126,10 @@ export const Product = () => {
 
             } catch (error) { console.error('Error:', error); }
         } else {
-            navigate(`/login`);
-            console.log("login");
-        }
+            alert("Devi prima effettuare l'accesso per accedere a questa funzione.");
+
+            
+                    }
     }
 
     function DirectPayt() {
@@ -144,9 +145,6 @@ export const Product = () => {
         })
 
         localStorage.setItem("riepilogoCart",riep);
-
-
-        
         navigate(`/payments/direct`);
         }
     }
@@ -237,46 +235,9 @@ export const Product = () => {
 
                     <Row className=" m-0 p-0 w-100 h-100 no-space-rowBg-prod ">
                         <Image src={ImgSimpatica} className="p-0 img-fluid-no-space w-100 darkness align-items-center" />
-                        <Plx className=' centered-text '
-                            parallaxData={[
-                                {
-                                    start: 100,
-                                    end: 500,
-                                    properties: [
-                                        {
-                                            startValue: 0,
-                                            endValue: 1,
-                                            property: "opacity"
-                                        },
-                                        {
-                                            startValue: 0,
-                                            endValue: 0,
-                                            property: "translateY"
-                                        },
+                        
+                            <div className="centered-text ">{productInfo.nome}</div>
 
-                                    ]
-                                },
-                                {
-                                    start: 500, // Inizia dopo il completamento dell'effetto precedente
-                                    end: 800,   // Termine dell'effetto di ingrandimento
-                                    properties: [
-                                        {
-                                            startValue: 1, // Ingrandimento iniziale della scritta
-                                            endValue: 1.3, // Effetto di ingrandimento
-                                            property: "scale"
-                                        },
-                                        {
-                                            startValue: 0,
-                                            endValue: 0,
-                                            property: "translateY"
-                                        },
-                                    ]
-                                }
-
-                            ]}>
-                            <div className="centered-text d-flex">{productInfo.nome}</div>
-
-                        </Plx>
                         {/*<div className="centered-text">{productInfo.nome}</div>*/}
                     </Row>
                     <Row className="m-0 p-0 w-100 h-100 d-flex justify-content-center align-items-center p-5 ">

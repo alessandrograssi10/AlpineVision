@@ -5,7 +5,9 @@ import { fetchBlogPosts, getSessionStorageOrDefault, fetchBlobFromUrl } from './
 
 
 export const BlogEdit = () => {
+  /*const [blogPosts, setBlogPosts] = useState(() => getSessionStorageOrDefault('blogPosts', [])); // Elementi*/
   const [blogPosts, setBlogPosts] = useState(() => getSessionStorageOrDefault('blogPosts', [])); // Elementi
+
   const [blogPostsCopy, setBlogPostsCopy] = useState(() => getSessionStorageOrDefault('blogPostsCopy', [])); //Copia degli elementi
   const [blogPostsVerify, setBlogPostsVerify] = useState(() => getSessionStorageOrDefault('blogPostsVerify', false)); // Variabile per le modifiche
   const [Images, setImages] = useState(() => getSessionStorageOrDefault('blogImages', []));
@@ -301,9 +303,6 @@ async function uploadImage(postId, file, uploadUrl) {
       return response.json();
   });
 }
-
-
-
 
 
 

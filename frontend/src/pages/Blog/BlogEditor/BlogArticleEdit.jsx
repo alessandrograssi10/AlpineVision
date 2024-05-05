@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 export const BlogArticleEdit = () => {
   const { id } = useParams(); //prendo l'id dall'url
   localStorage.setItem("prevPage","Edit"); //setto che sono nella pagina editing
+  const ruolo = localStorage.getItem("ruoloUser");
 
   // Se esistono prendo gli elementi dall'localstorage senno prendo un elemneto vuoto per le seguenti variabili
   const [blogPosts, setBlogPosts] = useState(() => {const savedPosts = sessionStorage.getItem('blogPosts');return savedPosts ? JSON.parse(savedPosts) : [];}); 
@@ -13,6 +14,11 @@ export const BlogArticleEdit = () => {
   const [blogPostsVerify, setBlogPostsVerify] = useState(() => {const savedVerify = sessionStorage.getItem('blogPostsVerify');return savedVerify ? JSON.parse(savedVerify) : false;});
   
   const [post, setPost] = useState(null); // Variabile per i dati del post
+
+  // Vai alla home se non sei admin
+  useEffect(() => {
+    if(ruolo !== "admin"){ window.location.href = '/home'; }
+  }, []);
 
   // Recupero l'immagine copertina tramite l'Id
   const getImageByIdCop = (id) => {
