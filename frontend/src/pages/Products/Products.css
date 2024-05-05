@@ -105,3 +105,10 @@
   opacity: 1; 
 }
 
+.card-prod-prod-ca {
+  transition: transform 0.3s ease-in-out; /* Transizione fluida per l'animazione */
+}
+
+.card-prod-prod-ca:hover {
+  transform: scale(1.05); /* Aumenta la dimensione del 5% quando il mouse è sopra */
+}

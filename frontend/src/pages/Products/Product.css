@@ -67,19 +67,33 @@
     display: none; /* Nasconde visivamente l'input radio ma lo mantiene nel DOM */
 }
 
+.ombra{
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 6px 20px rgba(0, 0, 0, 0.19);
 
+}
   .img-prod {
-    /*object-fit: scale-down; /* Assicura che le immagini coprano l'area disponibile senza perdere le proporzioni */
-    object-fit: contain; /* Assicura che le immagini coprano l'area disponibile senza perdere le proporzioni */
-    object-position: center!important; /* Centra l'immagine nel contenitore */
 
-    width: auto !important;
-    height: 60vh !important; /* Usa 100vh per far sì che copra tutto il viewport verticalmente */
+    /*object-fit: scale-down; /* Assicura che le immagini coprano l'area disponibile senza perdere le proporzioni */
+    object-fit: contain; /* Assicura che le immagini coprano l'area disponibile mantenendo le proporzioni, tagliando se necessario */
+    object-position: center;
+    width: 100%; /* Assicura che l'immagine si estenda per tutta la larghezza del contenitore */
+
+    height: 90% !important; /* Usa 100vh per far sì che copra tutto il viewport verticalmente */
     margin: 0 auto; /* Centra l'immagine orizzontalmente */
 
 }
+.tabs-black .nav-link.active {
+  background-color: #000000; /* Nero */
+  color: #ffffff; /* Bianco */
+}
+
+/* Colore di sfondo e del testo per i tab non attivi */
+.tabs-black .nav-link {
+  background-color: #f8f9fa; /* Grigio chiaro */
+  color: #000000; /* Nero */
+}
 .carosello-prod{
-    height: 60vh !important; /* Usa 100vh per far sì che copra tutto il viewport verticalmente */
+    /*height: 60vh !important; /* Usa 100vh per far sì che copra tutto il viewport verticalmente */
 
 }
 
@@ -101,7 +115,8 @@
     border: 2px solid black;
     cursor: pointer;
     text-align: center;
-    
+    width: 30vw; 
+    border-radius: 5px; /* Rimuove i bordi arrotondati */
   }
   
   .button-black-prod::before, .button-black-prod::after {
@@ -123,6 +138,20 @@
     border-bottom: 15px solid rgb(0, 0, 0); /* Aumento la dimensione per un triangolo più alto */
   
   }
+
+  .button-black-prod-nomon {
+    position: relative;
+    padding: 10px 20px;
+    background-color: white;
+    color: black;
+    border: 2px solid black;
+    cursor: pointer;
+    text-align: center;
+    width: 30vw; 
+    border-radius: 5px; /* Rimuove i bordi arrotondati */
+  }
+  
+  
   .custom-modal {
     overflow: hidden !important;
     overflow-x: hidden !important;
@@ -134,4 +163,15 @@
     font-size: x-large;
     text-align: center;
     font-weight: normal;
+  }
+
+  .title-text-prod{
+    font-size: 3em ;
+    font-weight: normal ; 
+
+  }
+  .price-text-prod{
+    font-size: 2em ;
+    font-weight: bold ; 
+
   }

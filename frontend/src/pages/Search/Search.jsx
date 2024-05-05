@@ -212,7 +212,7 @@ export const Search = () => {
             return (
               <Col xs={12} sm={6} md={4} lg={3} key={prodotto._id} >
 
-                <Card as={Link} to={getElementPath(prodotto)} className='m-3 card-text-prod card-prod  ' >
+                <Card as={Link} to={getElementPath(prodotto)} className='m-3 card-text-prod card-prod  card-prod-prod-ca' >
                   {/* Immagine del prodotto */}
                   <Card.Img key={prodotto._id} variant="top" className='card-image-fit card-image-fit-se'        src={imageUrls[prodotto._id]}/>
                   {/* Dettagli del prodotto */}
