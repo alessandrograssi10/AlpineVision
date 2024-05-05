@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef,useLayoutEffect } from 'react';
 import { Container, Card, Row, Col, Button, Alert, Form } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { fetchBlogPosts, updateImageUrlById, handleSessionStorage, getSessionStorageOrDefault, generateNewArticle, fetchBlobFromUrl } from './BlogEditLogic';
@@ -14,7 +14,7 @@ export const BlogEdit = () => {
   const [imagesLoaded, setImagesLoaded] = useState(false);
 
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (blogPosts.length === 0) {
       fetchBlogPosts()
       .then(data => {setBlogPosts(data);setBlogPostsCopy(data);})
@@ -22,7 +22,7 @@ export const BlogEdit = () => {
     }
   }, []); 
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!Images.length) {
     const setImagesFun = () => {
       const newItems = blogPosts.map((post) => ({
@@ -44,7 +44,7 @@ export const BlogEdit = () => {
   }
   },[blogPosts, imagesLoaded]);
   
-  useEffect(() => {    
+  useLayoutEffect(() => {    
     sessionStorage.setItem('blogPostsVerify', JSON.stringify(blogPostsVerify));
     sessionStorage.setItem('blogPosts', JSON.stringify(blogPosts));
     sessionStorage.setItem('blogPostsCopy', JSON.stringify(blogPostsCopy));
@@ -325,7 +325,7 @@ async function uploadImage(postId, file, uploadUrl) {
 
 
 return (
-  <Container>
+  <Container fluid className="p-0 m-0">
     {/* Alert per avvertire che si è in modalità editing */}
     <Alert variant={'warning'} className='m-3 mt-4'>
       STAI IN MODALITA EDITING
@@ -357,73 +357,18 @@ return (
     </Button>
 
     {/* Griglia per visualizzare gli articoli */}
-    <Row>
+    <Row className='mt-1 m-0 p-0 w-100 d-flex flex-grow-1'>
       {blogPosts.sort((a, b) => a.position - b.position).map((post, position) => {
-        if (position === 0) {
-          // Primo post, occupa tutta la larghezza
-          return (
-            <Col key={post._id} md={12}>
-              <Card className='m-3'>
-                <Row >
-                  <Col md={4}>
-                    {/* Immagine del post */}
-                    <Card.Img key={post._id} src={getImageById(post._id)} />
-                    {/* Input per caricare un'immagine */}
-                    <input
-                      type="file"
-                      onChange={(event) => handleFileChange(event, position)}
-                      style={{ display: 'none' }}
-                      accept="image/*"
-                      id={`file-input-copertina-${post._id}`} // Ensure this is unique
-                    />
-                    <Button 
-                      style={{ position: 'absolute', top: '10px', left: '10px' }}
-                      onClick={() => document.getElementById(`file-input-copertina-${post._id}`).click()}
-                      variant="primary"
-                    >
-                      Carica
-                    </Button>
-                    {/* Pulsanti per spostare o eliminare il post */}
-                    <Button 
-                      onClick={() => handleMoveDownClick(position)} // Passa l'indice corrente
-                      variant="primary"
-                      style={{ position: 'absolute', bottom: '10px', right: '100px' }}
-                    >
-                      Sposta in basso
-                    </Button>
-                    <Button 
-                      style={{ position: 'absolute', bottom: '10px', right: '10px' }}
-                      onClick={() => handleDeleteClick(position)} // Passa l'indice corrente
-                      variant="danger"
-                    >
-                      Elimina
-                    </Button>
-                  </Col>
-                  <Col md={8}>
-                    {/* Dettagli del post */}
-                    <Card.Body>
-                      <Form.Group className="mb-3">
-                        <Form.Control type="text" value={post.title} placeholder="Title" onChange={(event) => handleTitleChange(event, position)} />
-                      </Form.Group>
-                      <Form.Group className="mb-1">
-                        <Form.Control as="textarea" rows={3} value={post.description} placeholder="Short description" style={{ resize: 'none' }} onChange={(event) => handleDescriptionChange(event, position)} />
-                      </Form.Group>
-                      <Button as={Link} to={`/BlogArticleEdit/${post._id}`} variant="primary" className="mt-3">
-                        Apri articolo
-                      </Button>                
-                    </Card.Body>         
-                  </Col>
-                </Row>
-              </Card>
-            </Col>
-          );
-        } else {
+        
           // Altri post, disposti in colonne di un terzo della larghezza
           return (
-            <Col key={position} md={12} lg={4}>
-              <Card className='m-3'>
-                <Card.Img variant="top" key={post._id} src={getImageById(post._id)} />
-                <Card.Body>
+            <Col key={position} md={12} lg={4} className=' m-0 p-0'>
+              <Card className='card-blog m-0 p-0'>
+              <div className="zoom-image">
+                {/* Immagine di copertina del post */}
+                <Card.Img className='zoom-image m-0 p-0 img-car-blog' variant="top" src={getImageById(post._id)} />
+              </div>
+                 <Card.Body>
                   {/* Input per caricare un'immagine */}
                   <input
                     type="file"
@@ -443,17 +388,10 @@ return (
                   <Form.Group className="mb-3">
                     <Form.Control type="text" value={post.title} placeholder="Title" onChange={(event) => handleTitleChange(event, position)} />
                   </Form.Group>
-                  <Form.Group className="mb-1">
-                    <Form.Control as="textarea" rows={3} value={post.description} placeholder="Short description" style={{ resize: 'none' }} onChange={(event) => handleDescriptionChange(event, position)} />
-                  </Form.Group>
+               
                   <Link to={`/BlogArticleEdit/${post._id}`}>Apri articolo</Link>
                 </Card.Body>
-                <Card.Footer>
-                  {/* Informazioni sul post */}
-                  <small className="text-muted">
-                    Scritto da {post.author} | {post.date}
-                  </small>     
-                </Card.Footer>
+               
                 <Row>
                   {/* Pulsanti per spostare il post */}
                   <Col md={6} className="d-flex justify-content-center align-items-center">
@@ -486,7 +424,7 @@ return (
               </Card>
             </Col>
           );
-        }
+        
       })}
     </Row>
   </Container>

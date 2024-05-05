@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Container, Card, Row, Col, Button, Image } from 'react-bootstrap';
 import { useParams, Link } from 'react-router-dom';
-import axios from 'axios';
 
 export const BlogArticle = () => {
   const { id } = useParams(); // Id del post passato tramite URL

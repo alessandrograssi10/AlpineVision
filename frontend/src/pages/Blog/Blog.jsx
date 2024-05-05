@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState ,useLayoutEffect} from 'react';
 import { Container, Card, Row, Col } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import './Blog.css';
@@ -12,7 +12,10 @@ export const Blog = () => {
   };
 
   
-  useEffect(() => {
+  useLayoutEffect(() => {
+    let g = localStorage.getItem("ruolo");
+    console.log(g);
+
     const fetchBlogPosts = async () => {
       try {
         // Effettua una richiesta per ottenere tutti gli articoli del blog
@@ -36,7 +39,7 @@ export const Blog = () => {
       <Row className='mt-1 m-0 p-0 w-100 d-flex flex-grow-1'>
         {/* Ordina e mappa i post del blog */}
         {blogPosts.sort((a, b) => a.position - b.position).map((post, index) => (
-          <Col key={index} md={12} lg={4} className='m-0 p-0 d-flex'>
+          <Col key={index} md={12} lg={4}  className='m-0 p-0 '>
             <Card as={Link} to={`/BlogArticle/${post._id}`} className='card-blog m-0 p-0'>
               <div className="zoom-image">
                 {/* Immagine di copertina del post */}
