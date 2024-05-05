@@ -1,5 +1,7 @@
 #cartMainContainer{
-    height:100px;
+    height:120px;
+    margin-top: 35px;
+    margin-bottom: 35px;
 }
 
 #variantImgContainer{
@@ -29,8 +31,8 @@
 #decreaseButton{
     color:black;
     height:38px;
-    background-color:darkgrey;
-    border-color: darkgrey;
+    background-color:aliceblue;
+    border-color: rgba(163, 163, 163, 0.694);
     border-radius:2px 0px 0px 2px;
 }
 
@@ -46,8 +48,8 @@
 #increaseButton{
     color:black;
     height:38px;
-    background-color:darkgrey;
-    border-color: darkgrey;
+    background-color:aliceblue;
+    border-color: rgb(163, 163, 163, 0.694);
     border-radius:0px 2px 2px 0px;
 }
 
@@ -65,4 +67,20 @@
     padding:0px;
     background-color: #fff;
     border-color: #fff;
+}
+
+/* CartCard.css */
+.cartproductimage {
+    width: 40px;
+    border-radius: 70%; /* Rende l'immagine del prodotto circolare */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Aggiunge una leggera ombra */
+    transition: transform 0.3s ease; /* Aggiunge una transizione fluida al passaggio del mouse */
+}
+
+.cartproductimage:hover {
+    transform: scale(1.2); /* Ingrandisce leggermente l'immagine al passaggio del mouse */
+}
+
+.remove-cart {
+    margin-top: 20px;
 }

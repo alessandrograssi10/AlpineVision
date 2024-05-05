@@ -257,12 +257,12 @@ export const Product = () => {
                                     ]
                                 },
                                 {
-                                    start: 500, // Inizia dopo il completamento dell'effetto precedente
-                                    end: 800,   // Termine dell'effetto di ingrandimento
+                                    start: 500, 
+                                    end: 800,  
                                     properties: [
                                         {
-                                            startValue: 1, // Ingrandimento iniziale della scritta
-                                            endValue: 1.3, // Effetto di ingrandimento
+                                            startValue: 1,
+                                            endValue: 1.3, 
                                             property: "scale"
                                         },
                                         {

@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Container, Row, Col, Button } from 'react-bootstrap';
 import CartCard from './CartCard.jsx';
-import shoppingCart from '../../assets/Images/shopping-cart.png';
+import { Link } from 'react-router-dom';
 import './Cart.css';
+import cartimage from '../../assets/Images/cartimage.png';
 
 function Cart() {
 
@@ -11,7 +12,6 @@ function Cart() {
     const [totalPrice, setTotalPrice] = useState(0);
     const [toggler, setToggler] = useState(false);
     const userID = localStorage.getItem('userId');
-
 
     useEffect(() => {
         const myHeaders = new Headers();
@@ -22,21 +22,17 @@ function Cart() {
             headers: myHeaders,
             redirect: "follow"
         };
+
         fetch(`http://localhost:3000/api/carts/${userID}`, requestOptions)
             .then((response) => response.json())
             .then((result) => {
                 setCartItems(result);
                 const provTotalPrice = result.reduce((somma, cartItem) => somma + cartItem.total * cartItem.quantity, 0);
                 setTotalPrice(provTotalPrice);
-                if (cartItems.length == 0) {
-                    setToggler(false);
-                } else if (cartItems.length != 0) {
-                    setToggler(true);
-                }
+                setToggler(result.length !== 0);
             })
             .catch((error) => console.error(error));
     }, []);
-
 
     const updateTotalPrice = (priceToAdd, incDec) => {
         let newTotalPrice;
@@ -71,79 +67,60 @@ function Cart() {
             .then((response) => response.text())
             .then((result) => console.log())
             .catch((error) => console.error(error));
-
-        
     }
 
-
     useEffect(() => {
-        if (cartItems.length == 0) {
-            setTotalPrice(0);
-            setToggler(false);
-        } else if (cartItems.length > 0) {
-            setToggler(true);
-        }
+        setToggler(cartItems.length !== 0);
     }, [cartItems]);
-
-    console.log(toggler);
 
     return (
         <Container className="mb-5">
-            <Row className="mt-5 mb-5 ">
-                {/*<Col xs="1" className="d-flex align-items-center me-2">
-                    <div id="cartImgDiv">
-                        <img src={shoppingCart} alt="" />
-                    </div>
-                </Col>*/}
-                <Col className="">
-                    <h1 className="fw-bold  ">IL TUO CARRELLO</h1>
+            <Row className="mt-5 mb-5">
+                <Col className="d-flex align-items-center">
+                    <h1 className="fw-bold">IL TUO CARRELLO</h1>
+                    <img src={cartimage} alt="cartimage" className="cartimage" />
                 </Col>
             </Row>
 
-            {(cartItems.length == null) ?
-
+            {(cartItems.length === 0) ?
                 (<Row className="">
                     <h1> Carrello vuoto </h1>
                 </Row>
-
-                )
-                :
-                (cartItems.map((cartItem) => (
+                ) : (
+                cartItems.map((cartItem) => (
                     <CartCard
+                        key={cartItem.productId}
                         price={cartItem.total}
                         quantity={cartItem.quantity}
                         updateTotalPrice={updateTotalPrice}
                         prodID={cartItem.productId}
                         color={cartItem.color}
                         type={cartItem.type}
-                        removeProd={removeProd}>
-                    </CartCard>
+                        removeProd={removeProd}
+                    />
                 ))
-                )
+            )}
+            <Row className="p-2 mt-3 justify-content-between align-items-end">
+    <Col className="d-flex justify-content-start">
+        <Link to="/Payments/cart" className="fs-4">
+            <Button id="buyButton" className="cartpayment-button">
+                Procedi all'acquisto
+            </Button>
+        </Link>
+    
+        {toggler ? (
+            <h3 className="totalprice-class ms-auto">Totale: {totalPrice.toFixed(2)} €</h3>
+        ) : (
+            <Link to="/Products" className="invisible-link">
+                <Button id="prodPageButton" className="fs-4">
+                    Shop
+                </Button>
+            </Link>
+        )}
+    </Col>
+</Row>
 
-            }
-
-            <Row className="p-2 mt-5">
-                {/* Procedi all'acquisto */}
-                <Col className="d-flex justify-content-end">
-                    {((toggler) ?
-                        <Button id="buyButton" className="fs-4">
-                            Procedi all'acquisto
-                        </Button>
-                        :
-                        <Button id="prodPageButton" className="fs-4">
-                            Shop
-                        </Button>
-                    )
-                    }
-
-                </Col>
-                {/* Totale */}
-                <Col className="fw-bold fs-5 d-flex align-items-center justify-content-start">
-                    Totale: {totalPrice.toFixed(2)}€
-                </Col>
-            </Row>
-        </Container >
+        </Container>
     );
 }
 
