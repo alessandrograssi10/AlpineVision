@@ -9,7 +9,6 @@ export const HeaderAccessories = ({ onCloseAllBoxes }) => {
         fetch(`http://localhost:3000/api/accessories`)
           .then(response => {if (!response.ok) {throw new Error('errore');}return response.json();})
           .then(data => {
-            console.log(data,"HHHHHH");
             setProductsAccessories(data);
           })
           .catch(error => console.error("Errore nel recupero dei prodotti", error));
