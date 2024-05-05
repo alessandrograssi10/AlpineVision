@@ -126,9 +126,10 @@ export const Product = () => {
 
             } catch (error) { console.error('Error:', error); }
         } else {
-            navigate(`/login`);
-            console.log("login");
-        }
+            alert("Devi prima effettuare l'accesso per accedere a questa funzione.");
+
+            
+                    }
     }
 
     function DirectPayt() {
@@ -144,9 +145,6 @@ export const Product = () => {
         })
 
         localStorage.setItem("riepilogoCart",riep);
-
-
-        
         navigate(`/payments/direct`);
         }
     }
@@ -276,7 +274,6 @@ export const Product = () => {
                             ]}>
                             <div className="centered-text d-flex">{productInfo.nome}</div>
 
-                        </Plx>
                         {/*<div className="centered-text">{productInfo.nome}</div>*/}
                     </Row>
                     <Row className="m-0 p-0 w-100 h-100 d-flex justify-content-center align-items-center p-5 ">

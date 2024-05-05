@@ -1,32 +1,42 @@
-import React, { useEffect, useState, useRef,useLayoutEffect } from 'react';
+import React, { useEffect, useState,useLayoutEffect } from 'react';
 import { Container, Card, Row, Col, Button, Alert, Form } from 'react-bootstrap';
-import { Link,useNavigate } from 'react-router-dom';
-import { fetchBlogPosts, updateImageUrlById, handleSessionStorage, getSessionStorageOrDefault, generateNewArticle, fetchBlobFromUrl } from './BlogEditLogic';
+import { Link } from 'react-router-dom';
+import { fetchBlogPosts, getSessionStorageOrDefault, fetchBlobFromUrl } from './BlogEditLogic';
 
-import Img from '../../../assets/Images/notfound.png';
 
 export const BlogEdit = () => {
-  const [blogPosts, setBlogPosts] = useState(() => getSessionStorageOrDefault('blogPosts', []));
-  const [blogPostsCopy, setBlogPostsCopy] = useState(() => getSessionStorageOrDefault('blogPostsCopy', []));
-  const [blogPostsVerify, setBlogPostsVerify] = useState(() => getSessionStorageOrDefault('blogPostsVerify', false));
+  /*const [blogPosts, setBlogPosts] = useState(() => getSessionStorageOrDefault('blogPosts', [])); // Elementi*/
+  const [blogPosts, setBlogPosts] = useState(() => getSessionStorageOrDefault('blogPosts', [])); // Elementi
+
+  const [blogPostsCopy, setBlogPostsCopy] = useState(() => getSessionStorageOrDefault('blogPostsCopy', [])); //Copia degli elementi
+  const [blogPostsVerify, setBlogPostsVerify] = useState(() => getSessionStorageOrDefault('blogPostsVerify', false)); // Variabile per le modifiche
   const [Images, setImages] = useState(() => getSessionStorageOrDefault('blogImages', []));
   const [ImagesCopy, setImagesCopy] = useState(() => getSessionStorageOrDefault('blogImagesCopy', []));
   const [imagesLoaded, setImagesLoaded] = useState(false);
   const ruolo = localStorage.getItem("ruoloUser");
-  let navigate = useNavigate();
+  let firstOpen = false;
 
   useEffect(() => {
-    if(ruolo !== "admin")
-      {
-        //navigate(`/home`);
-        window.location.href = '/home';
+    if(ruolo !== "admin"){ window.location.href = '/home'; }
+      if(!firstOpen){
+          firstOpen = true;
+      if(localStorage.getItem("prevPage") !== "Edit")
+        {
+          setBlogPosts([]);
+          setBlogPostsCopy([]);
+          setImages([]); 
+          setImagesLoaded(false); 
+          fetchBlogPosts()
+        .then(data => {setBlogPosts(data);setBlogPostsCopy(data);})
+        .catch(error => console.error("Failed to fetch posts:", error));
+        }
+        else{
+          localStorage.setItem("prevPage","");
+        }
       }
   }, []);
+
   useLayoutEffect(() => {
-
-    
-
-
     if (blogPosts.length === 0) {
       fetchBlogPosts()
       .then(data => {setBlogPosts(data);setBlogPostsCopy(data);})
@@ -35,7 +45,9 @@ export const BlogEdit = () => {
   }, []); 
 
   useLayoutEffect(() => {
+
     if (!Images.length) {
+
     const setImagesFun = () => {
       const newItems = blogPosts.map((post) => ({
         copertina: `http://localhost:3000/api/posts/photo-copertina?id=${post._id}`,
@@ -48,13 +60,11 @@ export const BlogEdit = () => {
       setImages(JSON.parse(JSON.stringify(newItems))); 
       setImagesCopy(JSON.parse(JSON.stringify(newItems))); 
     };
-
-    if (blogPosts.length > 0 && !imagesLoaded) {
-      setImagesFun();
-      setImagesLoaded(true); 
-    }
+    setImagesFun();
+  
+  
   }
-  },[blogPosts, imagesLoaded]);
+  },[blogPosts, imagesLoaded],[imagesLoaded]);
   
   useLayoutEffect(() => {    
     sessionStorage.setItem('blogPostsVerify', JSON.stringify(blogPostsVerify));
@@ -65,7 +75,7 @@ export const BlogEdit = () => {
 
   const getImageById = (id) => {
     const image = Images.find(image => image.id === id);
-    return image ? image.copertina : 'No image found with such ID';
+    return image ? image.copertina : 'Nessuna Immagine Trovata';
 };
     
 const updateImageUrlById = (id, newUrl, file) => {
@@ -82,6 +92,7 @@ const updateImageUrlById = (id, newUrl, file) => {
     const file = event.target.files[0];
     if (file) {
         const newUrl = URL.createObjectURL(file).toString();
+        console.log(newUrl);
         updateImageUrlById(blogPosts[position]._id, newUrl,file);
     }
 };
@@ -91,13 +102,6 @@ const updateImageUrlById = (id, newUrl, file) => {
 
     const updatedPosts = [...blogPosts];
     updatedPosts[position].title = event.target.value;
-    setBlogPosts(updatedPosts);
-  };
-  
-  const handleDescriptionChange = (event, position) => {
-    setBlogPostsVerify(true);
-    const updatedPosts = [...blogPosts];
-    updatedPosts[position].description = event.target.value;
     setBlogPosts(updatedPosts);
   };
 
@@ -128,60 +132,39 @@ const updateImageUrlById = (id, newUrl, file) => {
     }
   };
 
-  
   const handleAddArticleClick = () => {
     setBlogPostsVerify(true);
     const newArticle = {
-      _id: Math.random().toString(36).substr(2, 9),  // Generates a unique ID for the new post
-      title: '',  // Title empty, to be filled by the user
-      description: '',  // Description empty, to be filled by the user
-      content: {
-        part1: '',
-        part2: {
-          title: '',
-          body: ''
-        },
-        part3: {
-          title: '',
-          body: ''
-        }
-      },  // Content structured as an object with specific fields for each part
-      author: '',  // Author empty or a default value
-      date: new Date().toISOString().slice(0, 10),  // Current date as YYYY-MM-DD string
-      position: 0  // Initial index set to 0
+      _id: Math.random().toString(36).substr(2, 9), 
+      title: '', description: '', content: {part1: '',part2: {title: '',body: ''},part3: {title: '',body: ''}}, author: '', 
+      date: new Date().toISOString().slice(0, 10),  
+      position: 0  
     };
 
-    // Update positions of existing posts
     const updatedPosts = blogPosts.map(post => ({
         ...post,
-        position: post.position + 1  // Increment each post's position by 1
+        position: post.position + 1  
     }));
 
-    console.log(newArticle);
-    // Add the new article at the start of the array and update the state
-    setBlogPosts([newArticle, ...updatedPosts]);  // Prepend the new article
+    setBlogPosts([newArticle, ...updatedPosts]);  
 
-    //
-     // Add a new image entry for the new article
      const newImageEntry = {
       id: newArticle._id,
-      copertina: 'Default Image Path or Placeholder',
+      copertina: '',
       copertinaFile: null,
-      contenuto: 'Default Image Path or Placeholder',
+      contenuto: '',
       contenutoFile: null
   };
   setImages([...Images, newImageEntry]);
-  setBlogPostsVerify(true); // To trigger verification or alerts if needed
-    
+  setBlogPostsVerify(true); 
 };
+
+
   const handleDeleteChanges = () => {
     setBlogPostsVerify(true);
-    // Reset the blog posts to their original state
     setBlogPosts(JSON.parse(JSON.stringify([...blogPostsCopy])));
     setImages(JSON.parse(JSON.stringify([...ImagesCopy])));
 
-    // Reset any additional states if they depend on the posts
-    // For example, if Images should reflect the state of blogPosts
     const resetImages = blogPostsCopy.map(post => ({
       copertina: `http://localhost:3000/api/posts/photo-copertina?id=${post._id}`,
       copertinaFile: null,
@@ -191,11 +174,6 @@ const updateImageUrlById = (id, newUrl, file) => {
 
     }));
     setImages(resetImages);
-
-    // Ensuring this state is reset properly
-    setImagesLoaded(false);
-
-    // Reset the verification flag
     setBlogPostsVerify(false);
     console.log("Changes discarded");
 };
@@ -208,12 +186,11 @@ async function handleSaveChanges() {
   let updatePromises = [];
   let createPromises = [];
   let deletePromises = [];
-  let updatedBlogPosts = [...blogPosts]; // Create a shallow copy of blogPosts for immutability
+  let updatedBlogPosts = [...blogPosts]; 
   let tempImages = [...Images];
 
   blogPostsCopy.forEach(post => {
     if (!currentPostIds.has(post._id)) {
-      // This post has been removed in the current session and should be deleted from the server
       deletePromises.push(
         fetch(`http://localhost:3000/api/posts/${post._id}`, {
           method: 'DELETE'
@@ -242,7 +219,6 @@ async function handleSaveChanges() {
     };
 
       if (existingPostIds.has(post._id)) {
-          // Update existing post
           updatePromises.push(
               fetch(`http://localhost:3000/api/posts/editPost/${post._id}`, {
                   method: 'POST',
@@ -252,7 +228,6 @@ async function handleSaveChanges() {
               .then(response => response.ok ? response.json() : Promise.reject(`Failed to update post: ${response.statusText}`))
           );
       } else {
-          
           createPromises.push(
               fetch(`http://localhost:3000/api/posts/createPost`, {
                   method: 'POST',
@@ -264,16 +239,13 @@ async function handleSaveChanges() {
               .then(response => response.ok ? response.json() : Promise.reject(`Failed to create post: ${response.statusText}`))
               .then(data => {
                   if (data.postId) {
-                      // Update the _id of the post in the updatedBlogPosts array
-                      
-
                       let imageIndex = tempImages.findIndex(img => img.id === post._id);
                       tempImages[imageIndex].id = data.postId; 
 
                       updatedBlogPosts[index]._id = data.postId;
-                      existingPostIds.add(data.postId); // Add new ID to the set of existing IDs
+                      existingPostIds.add(data.postId); 
                   }
-                  return updatedBlogPosts[index]; // Return the updated post
+                  return updatedBlogPosts[index]; 
               })
           );
       }
@@ -283,7 +255,6 @@ console.log(updatedBlogPosts);
       await Promise.all(updatePromises);
       await Promise.all(createPromises);
 
-      // Prepare to upload images for all posts (both updated and newly created)
       const imageUploadPromises = updatedBlogPosts.map(async post => {
           const uploads = [];
           const details = tempImages.find(img => img.id === post._id);
@@ -291,29 +262,31 @@ console.log(updatedBlogPosts);
           if (details && details.copertinaFile) {
               const copertinaUrl = `http://localhost:3000/api/posts/${existingPostIds.has(post._id) ? `update/copertina/${post._id}` : `upload/copertina/${post._id}`}`;
               const file = await fetchBlobFromUrl(details.copertina);
+              if(!file) return;
               uploads.push(uploadImage(post._id, file, copertinaUrl));
           }
 
           if (details && details.contenutoFile) {
               const contenutoUrl = `http://localhost:3000/api/posts/${existingPostIds.has(post._id) ? `update/contenuto/${post._id}` : `upload/contenuto/${post._id}`}`;
               const file = await fetchBlobFromUrl(details.contenuto);
+              if(!file) return;
+
               uploads.push(uploadImage(post._id, file, contenutoUrl));
           }
 
           return Promise.all(uploads);
       });
 
-      // Execute all image uploads
       await Promise.all(imageUploadPromises);
 
-      console.log("All posts and images processed successfully");
-      setBlogPosts(updatedBlogPosts);  // Update the local state with all changes
-      setBlogPostsCopy([...updatedBlogPosts]);  // Keep a copy for reference
+      console.log("Tutti i post sono stati caricati con successo");
+      setBlogPosts(updatedBlogPosts);  
+      setBlogPostsCopy([...updatedBlogPosts]); 
       setBlogPostsVerify(false);
-      alert("Changes saved successfully!");
+      alert("Modifiche salvate con successo");
   } catch (error) {
-      console.error("Error processing changes:", error);
-      alert("Failed to process changes. Please try again.");
+      console.error("Errore salvataggio:", error);
+      alert("Errore durante il salvataggio");
   }
 }
 
@@ -330,9 +303,6 @@ async function uploadImage(postId, file, uploadUrl) {
       return response.json();
   });
 }
-
-
-
 
 
 
@@ -380,6 +350,9 @@ return (
                 {/* Immagine di copertina del post */}
                 <Card.Img className='zoom-image m-0 p-0 img-car-blog' variant="top" src={getImageById(post._id)} />
               </div>
+              <Card.Title className='centered-text centered-text-blog'>
+                <h2>{post.title}</h2>
+              </Card.Title>
                  <Card.Body>
                   {/* Input per caricare un'immagine */}
                   <input
@@ -436,7 +409,6 @@ return (
               </Card>
             </Col>
           );
-        
       })}
     </Row>
   </Container>
