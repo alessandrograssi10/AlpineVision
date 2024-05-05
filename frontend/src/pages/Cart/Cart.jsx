@@ -87,7 +87,7 @@ function Cart() {
                 {/* Procedi all'acquisto */}
                 <Col className="d-flex justify-content-end">
                     {((cartItems.length == null) ?
-                        <Button id="prodPageButton" className="fs-4">
+                        <Button  as={Link}  to = "/products" id="prodPageButton" className="fs-4">
                             Shop
                         </Button>
                         :
