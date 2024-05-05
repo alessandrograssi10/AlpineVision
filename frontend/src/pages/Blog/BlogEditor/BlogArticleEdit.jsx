@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 export const BlogArticleEdit = () => {
   // Ottieni l'ID del post dalla route
   const { id } = useParams();
+  localStorage.setItem("prevPage","Edit");
 
   // Stati per i post del blog, le immagini, il post attuale, la verifica dei post e l'elaborazione del post
   const [blogPosts, setBlogPosts] = useState(() => {

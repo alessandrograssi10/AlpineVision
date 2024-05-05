@@ -3,7 +3,6 @@ import { Container, Card, Row, Col, Button, Alert, Form } from 'react-bootstrap'
 import { Link,useNavigate } from 'react-router-dom';
 import { fetchBlogPosts, updateImageUrlById, handleSessionStorage, getSessionStorageOrDefault, generateNewArticle, fetchBlobFromUrl } from './BlogEditLogic';
 
-import Img from '../../../assets/Images/notfound.png';
 
 export const BlogEdit = () => {
   const [blogPosts, setBlogPosts] = useState(() => getSessionStorageOrDefault('blogPosts', []));
@@ -13,30 +12,55 @@ export const BlogEdit = () => {
   const [ImagesCopy, setImagesCopy] = useState(() => getSessionStorageOrDefault('blogImagesCopy', []));
   const [imagesLoaded, setImagesLoaded] = useState(false);
   const ruolo = localStorage.getItem("ruoloUser");
-  let navigate = useNavigate();
+  let p = false;
 
   useEffect(() => {
     if(ruolo !== "admin")
       {
-        //navigate(`/home`);
         window.location.href = '/home';
       }
+      if(!p)
+        {
+          p = true;
+      if(localStorage.getItem("prevPage") !== "Edit")
+        {
+          console.log("PUTTANA")
+          setBlogPosts([]);
+          setBlogPostsCopy([]);
+          setImages([]); 
+          setImagesLoaded(false); 
+  
+          fetchBlogPosts()
+        .then(data => {setBlogPosts(data);setBlogPostsCopy(data);})
+        .catch(error => console.error("Failed to fetch posts:", error));
+        }
+        else{
+          localStorage.setItem("prevPage","");
+        }
+      }
   }, []);
+
+
   useLayoutEffect(() => {
 
     
 
-
+    
     if (blogPosts.length === 0) {
       fetchBlogPosts()
       .then(data => {setBlogPosts(data);setBlogPostsCopy(data);})
       .catch(error => console.error("Failed to fetch posts:", error));
     }
+    
   }, []); 
 
   useLayoutEffect(() => {
+    console.log("Car IMMAGINI",blogPosts.length, imagesLoaded);
+
     if (!Images.length) {
+
     const setImagesFun = () => {
+      console.log("Car IMMAGINI");
       const newItems = blogPosts.map((post) => ({
         copertina: `http://localhost:3000/api/posts/photo-copertina?id=${post._id}`,
         copertinaFile: null,
@@ -48,13 +72,18 @@ export const BlogEdit = () => {
       setImages(JSON.parse(JSON.stringify(newItems))); 
       setImagesCopy(JSON.parse(JSON.stringify(newItems))); 
     };
+    console.log("Car ",(blogPosts.length > 0 && imagesLoaded === false));
+    setImagesFun();
+  
+    if (blogPosts.length > 0 && imagesLoaded === false) {
+      console.log("Car IMMAGINI load");
 
-    if (blogPosts.length > 0 && !imagesLoaded) {
       setImagesFun();
       setImagesLoaded(true); 
+
     }
   }
-  },[blogPosts, imagesLoaded]);
+  },[blogPosts, imagesLoaded],[imagesLoaded]);
   
   useLayoutEffect(() => {    
     sessionStorage.setItem('blogPostsVerify', JSON.stringify(blogPostsVerify));
@@ -82,6 +111,7 @@ const updateImageUrlById = (id, newUrl, file) => {
     const file = event.target.files[0];
     if (file) {
         const newUrl = URL.createObjectURL(file).toString();
+        console.log(newUrl);
         updateImageUrlById(blogPosts[position]._id, newUrl,file);
     }
 };
@@ -193,7 +223,8 @@ const updateImageUrlById = (id, newUrl, file) => {
     setImages(resetImages);
 
     // Ensuring this state is reset properly
-    setImagesLoaded(false);
+   // setImages([]); 
+    //setImagesLoaded(false); 
 
     // Reset the verification flag
     setBlogPostsVerify(false);
@@ -291,14 +322,32 @@ console.log(updatedBlogPosts);
           if (details && details.copertinaFile) {
               const copertinaUrl = `http://localhost:3000/api/posts/${existingPostIds.has(post._id) ? `update/copertina/${post._id}` : `upload/copertina/${post._id}`}`;
               const file = await fetchBlobFromUrl(details.copertina);
+              if(!file) return;
               uploads.push(uploadImage(post._id, file, copertinaUrl));
           }
 
           if (details && details.contenutoFile) {
               const contenutoUrl = `http://localhost:3000/api/posts/${existingPostIds.has(post._id) ? `update/contenuto/${post._id}` : `upload/contenuto/${post._id}`}`;
               const file = await fetchBlobFromUrl(details.contenuto);
+              if(!file) return;
+
               uploads.push(uploadImage(post._id, file, contenutoUrl));
           }
+          // AGGIUNTO DOPO
+          /*if (details && details.copertinaFile !== null) {
+            const copertinaUrl = `http://localhost:3000/api/posts/${existingPostIds.has(post._id) ? `update/copertina/${post._id}` : `upload/copertina/${post._id}`}`;
+            const file = await fetchBlobFromUrl(details.copertinaFile);
+            if(!file) return;
+            uploads.push(uploadImage(post._id, file, copertinaUrl));
+        }
+
+        if (details && details.contenutoFile!== null) {
+            const contenutoUrl = `http://localhost:3000/api/posts/${existingPostIds.has(post._id) ? `update/contenuto/${post._id}` : `upload/contenuto/${post._id}`}`;
+            const file = await fetchBlobFromUrl(details.copertinaFile);
+            if(!file) return;
+
+            uploads.push(uploadImage(post._id, file, contenutoUrl));
+        }*/
 
           return Promise.all(uploads);
       });
@@ -310,6 +359,10 @@ console.log(updatedBlogPosts);
       setBlogPosts(updatedBlogPosts);  // Update the local state with all changes
       setBlogPostsCopy([...updatedBlogPosts]);  // Keep a copy for reference
       setBlogPostsVerify(false);
+      //setImages([]); 
+      //setImagesLoaded(false); 
+    console.log(Images)
+      console.log(ImagesCopy)
       alert("Changes saved successfully!");
   } catch (error) {
       console.error("Error processing changes:", error);
