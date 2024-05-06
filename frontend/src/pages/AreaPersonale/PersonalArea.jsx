@@ -11,7 +11,7 @@ function PersonalArea() {
     const [orders, setOrders] = useState([]);
     const [favorites, setFavorites] = useState([]);
     const [userData, setUserData] = useState(null); 
-    const [walking, setWalking] = useState(false);
+    const [walking, setWalking] = useState(true);
     const ruolo = localStorage.getItem("ruoloUser");
 
     const isNameFemale = (name) => {
@@ -54,6 +54,27 @@ function PersonalArea() {
         return () => clearTimeout(timeout);
     }, []);
 
+    useEffect(() => {
+        const userId = localStorage.getItem('userId'); 
+
+        const fetchData = async () => {
+            try {
+                const response = await fetch(`http://localhost:3000/api/orders/getOrdersByUserId/${userId}`);
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const data = await response.json();
+                setOrders(data); 
+                console.log(data,"ordini");
+            } catch (error) {
+                console.error('There was a problem with the fetch operation:', error);
+            }
+        };
+
+        fetchData();
+
+    }, []);
+
    
     return (
         <div className="personal-area-container mt-5">
@@ -77,11 +98,15 @@ function PersonalArea() {
                     <div className="personal-area-margin-bottom">
                         <div className="personal-area-container personal-area-border personal-area-rounded personal-area-padding">
                             <h2>I miei ordini</h2>
+                            <hr></hr>
                             {orders.length > 0 ? (
                                 orders.map(order => (
-                                    <div key={order.id}>
+                                    <div key={order._id}>
                                         {/* Visualizza dettagli ordine */}
+                                        <h4>Ordine n°{order._id}</h4><h4>{order.status}</h4>
+                                        <hr></hr>
                                     </div>
+                                    
                                 ))
                             ) : (
                                 <p>Nessun ordine disponibile al momento.</p>
