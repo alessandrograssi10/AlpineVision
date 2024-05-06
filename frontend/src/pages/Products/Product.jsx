@@ -2,9 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Container, Row, Form, Col, Carousel, Modal, Button, Tabs, Tab, Image } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
 import './Product.css';
+import { BsCheck } from 'react-icons/bs';  // Ensure you have react-icons installed
 import { Link, useNavigate } from 'react-router-dom';
-import Plx from 'react-plx';
-import HeaderCart from '../../components/Header/Boxes/header_cart';
 
 export const Product = (addToStorage) => {
     const { id } = useParams();
@@ -13,14 +12,14 @@ export const Product = (addToStorage) => {
     const [productInfo, setProductInfo] = useState([]);
     const [productVariantsCop, setproductVariantsCop] = useState([]);
     const userId = localStorage.getItem("userId");
-    const [qnt, setQnt] = useState(1);
-    const [smShow, setSmShow] = useState(false);
     const [activeIndex, setActiveIndex] = useState(0); // Indice per il carosello
     const [selectedSetIndex, setSelectedSetIndex] = useState(0); // Indice per selezionare il set di immagini
     const [imageSets, setImageSets] = useState([]);
     const ImgSimpatica = `http://localhost:3000/api/products/${id}/simpatica`;
     const ImgInnovativa = `http://localhost:3000/api/products/${id}/innovativa`;
     let navigate = useNavigate();
+    const [buttonState, setButtonState] = useState('default');  // 'default', 'loading', 'confirmed'
+    const [buttonStateDirect, setButtonStateDirect] = useState('default');  // 'default', 'loading', 'confirmed'
 
     useEffect(() => {
         fetch(`http://localhost:3000/api/products/${id}/variants`)
@@ -84,7 +83,7 @@ export const Product = (addToStorage) => {
         ));
     }
 
-    async function AddToCart() {
+    async function addToCart() {
         const quantity = 1;
         const color = product[selectedSetIndex]?.colore;
         const url = 'http://localhost:3000/api/carts/add';
@@ -106,16 +105,20 @@ export const Product = (addToStorage) => {
                     })
 
                 });
-                setSmShow(true);
-                const timer = setTimeout(() => {
-                    setSmShow(false);
-                }, 700);
+                setButtonState('loading');
+        setTimeout(() => {
+            setButtonState('confirmed');
+            setTimeout(() => {
+                setButtonState('default');
+                localStorage.setItem('Cart_Trig', "Trigger");
+            }, 500);  
+        }, 500);
                 if (!response.ok) {
                     throw new Error('Errore');
                 }
-                localStorage.setItem('Cart_Trig', "Trigger");
 
             } catch (error) { console.error('Error:', error); }
+            
         } else {
            
         }
@@ -136,7 +139,17 @@ export const Product = (addToStorage) => {
                 prezzo: productInfo.prezzo.toFixed(2)
             };
             localStorage.setItem("productDetails", JSON.stringify(productDetails));
-            navigate(`/payments/direct`);
+            setButtonStateDirect('loading');
+            setTimeout(() => {
+                setButtonStateDirect('default');
+                navigate(`/payments/direct`);
+            }, 500);
+        }
+        else{
+            setButtonStateDirect('login');
+            setTimeout(() => {
+                setButtonStateDirect('default');
+            }, 2000);
         }
     }
     
@@ -144,9 +157,9 @@ export const Product = (addToStorage) => {
     return (
         <Container fluid className="p-0">
             
-            <Row className="d-flex align-items-center pl-3 pt-3 equal-height">
-                <Col lg={7} className="d-flex  flex-column p-3">
-                    <Carousel activeIndex={activeIndex} onSelect={(selectedIndex, e) => setActiveIndex(selectedIndex)} className='ombra m-2 mt-0 mb-0 mr-0'>
+            <Row className="d-flex align-items-center pl-0 pt-3 m-0 ml-0 mt-4 equal-height">
+                <Col lg={7} className="d-flex  flex-column p-3 pl-0 m-0" >
+                    <Carousel activeIndex={activeIndex} onSelect={(selectedIndex, e) => setActiveIndex(selectedIndex)} className=' m-0 mt-0 mb-0 mr-0'>
                         {imageSets.map((imageSrc, idx) => (
                             <Carousel.Item key={idx}>
                                 <img
@@ -204,26 +217,25 @@ export const Product = (addToStorage) => {
 
                         <Row className="justify-content-center m-0 mt-1 ml-0 p-0 mb-0">
                             <Col xs={12} className="justify-content-left align-items-center pb-4 m-0 mt-1 ml-0 p-0 " >
-                                <Button className='button-black-prod  m-2 mt-5' onClick={() => AddToCart()} variant="outline-dark pl-0 ml-0" size="lg"><h3 className='p-0 m-0'>AGGIUNGI AL CARRELLO</h3 ></Button>
-
-                                <Modal
-                                    size="sm"
-                                    show={smShow}
-                                    onHide={() => setSmShow(false)}
-                                    aria-labelledby="example-modal-sizes-title-vcenter "
-                                    className='modal-open custom-modal'
-                                    backdrop={true}
-                                >
-
-                                    <Modal.Body className='custom-modal-body'>prodotto aggiunto</Modal.Body>
-                                </Modal>
+                                {/*<Button className='button-black-prod  m-2 mt-5' onClick={() => AddToCart()} variant="outline-dark pl-0 ml-0" size="lg"><h3 className='p-0 m-0'>AGGIUNGI AL CARRELLO</h3 ></Button>*/}
+                                <Button className={`button-black-prod m-2 mt-5 ${buttonState}`} onClick={addToCart} variant="outline-dark pl-0 ml-0" size="lg">
+                {buttonState === 'loading' && <div className="spinner "></div>}
+                {buttonState === 'confirmed' && <BsCheck className='icon-confirmed'/>}
+                {buttonState === 'default' && <h3 className='p-0 m-0'>AGGIUNGI AL CARRELLO</h3>}
+            </Button>
+                                
                                 <div style={{ width: '10px' }}></div>
-                                <Button className='button-black-prod-nomon m-2 mt-4 mb-0' onClick={() => DirectPay()} variant="outline-dark" size="lg"><h3 className='p-0 m-0'>COMPRA ORA</h3></Button>
+                                <Button className={`button-black-prod-nomon m-2 mt-4 mb-0 ${buttonStateDirect}`} onClick={() => DirectPay()} variant="outline-dark" size="lg">
+                                {buttonStateDirect === 'loading' && <div className="spinner "></div>}
+                                {buttonStateDirect === 'default' && <h3 className='p-0 m-0'><h3 className='p-0 m-0'>COMPRA ORA</h3></h3>}
+                                {buttonStateDirect === 'login' && <h3 className='p-0 m-0'><h3 className='p-0 m-0'>EFFETTUA IL LOGIN</h3></h3>}
+
+                                </Button>
                             </Col>
                         </Row>
                     
                         <Row className="justify-content-center m-0 mt-1 ml-0 p-0 mb-3">
-                            <h10 className="text-left text-black text-bold">SKU: DFKSUN0213-0800-UNI</h10>
+                            <h10 className="text-left text-black text-bold">SKU: {productInfo._id}</h10>
                         </Row>
                     </div>
                 </Col>
@@ -235,7 +247,6 @@ export const Product = (addToStorage) => {
                 onSelect={(k) => setKey(k)}
                 className="mb-5 mt-5 justify-content-center dark-prod p-0 buttonn   tab-text-color tabs-black"
                 variant='pills'
-            //transition="fade" 
             >
                 <Tab eventKey="vetrina" title="Vetrina" className='fade dark p-0 color-black mt-5 dark-prod '>
 
@@ -247,30 +258,8 @@ export const Product = (addToStorage) => {
                         <h3 className="text-center text-bold">{productInfo.motto}</h3>
                     </Row>
                     <Row className="m-0 p-0 w-100 h-100 d-flex justify-content-center align-items-center p-5 ">
-                        <Plx
-                            parallaxData={[
-                                {
-                                    start: 500,
-                                    end: 900,
-                                    properties: [
-                                        {
-                                            startValue: 0,
-                                            endValue: 1,
-                                            property: "opacity"
-                                        },
-                                        {
-                                            startValue: 400,
-                                            endValue: 0,
-                                            property: "translateY"
-                                        },
+                        <h4 className="text-center text-bold">{productInfo.descrizione}</h4>
 
-                                    ]
-                                },
-
-                            ]}>
-                            <h4 className="text-center text-bold">{productInfo.descrizione}</h4>
-
-                        </Plx>
                     </Row>
                     <Row className="m-0 p-0 w-100 h-100 no-space-rowBg-prod">
                         <Image src={ImgInnovativa} className="p-0 m-0 img-fluid-no-space w-100" />

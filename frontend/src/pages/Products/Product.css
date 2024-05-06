@@ -68,7 +68,7 @@
 }
 
 .ombra{
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 6px 20px rgba(0, 0, 0, 0.19);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05), 0 5px 5px rgba(0, 0, 0, 0.19);
 
 }
   .img-prod {
@@ -78,8 +78,8 @@
     object-position: center;
     width: 100%; /* Assicura che l'immagine si estenda per tutta la larghezza del contenitore */
 
-    height: 90% !important; /* Usa 100vh per far sì che copra tutto il viewport verticalmente */
-    margin: 0 auto; /* Centra l'immagine orizzontalmente */
+    height: 48vw !important; /* Usa 100vh per far sì che copra tutto il viewport verticalmente */
+     /*margin: 0 auto; /* Centra l'immagine orizzontalmente */
 
 }
 .tabs-black .nav-link.active {
@@ -89,8 +89,8 @@
 
 /* Colore di sfondo e del testo per i tab non attivi */
 .tabs-black .nav-link {
-  background-color: #f8f9fa; /* Grigio chiaro */
-  color: #000000; /* Nero */
+  background-color: #f8f9fa; 
+  color: #000000; 
 }
 .carosello-prod{
     /*height: 60vh !important; /* Usa 100vh per far sì che copra tutto il viewport verticalmente */
@@ -175,3 +175,55 @@
     font-weight: bold ; 
 
   }
+
+
+  .button-black-prod.loading {
+    background-color: rgb(255, 255, 255); /* or any color when loading */
+}
+
+.button-black-prod.confirmed {
+    background-color: rgb(0, 0, 0); /* or any color when confirmed */
+}
+
+.balck-back{
+  background-color: #000000;
+}
+.spinner {
+    border: 4px solid rgba(0, 0, 0, 0.1);
+    width: 32px;
+    height: 32px;
+    object-position: center;
+
+    border-radius: 50%;
+    border-left-color: rgb(0, 0, 0);
+    animation: spin 0.5s linear infinite;
+    position: relative;  
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.icon-confirmed {
+  color: rgb(0, 0, 0);        /* Sets the icon color to green */
+  font-size: 24px;     /* Sets the icon size to be larger, adjust as needed */
+  margin: 0;
+  padding: 0;
+  width: auto;
+  height: 100%;
+
+}
+/*.button-black-prod.loading {
+  background-color: black; /* Set the background color to black when loading */
+  /*color: white; /* Optional: Change text color for better visibility on black background *//*
+}*/
+
+.button-black-prod.confirmed {
+  background-color: rgb(255, 255, 255); /* Set the background color to black when loading */
+  color: rgb(0, 0, 0) !important; /* Optional: Change text color for better visibility on black background */
+}
+
+.button-black-prod-nomon.loading {
+  background-color: rgb(255, 255, 255); /* or any color when loading */
+}
