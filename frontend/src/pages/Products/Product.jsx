@@ -18,8 +18,8 @@ export const Product = (addToStorage) => {
     const ImgSimpatica = `http://localhost:3000/api/products/${id}/simpatica`;
     const ImgInnovativa = `http://localhost:3000/api/products/${id}/innovativa`;
     let navigate = useNavigate();
-    const [buttonState, setButtonState] = useState('default');  // 'default', 'loading', 'confirmed'
-    const [buttonStateDirect, setButtonStateDirect] = useState('default');  // 'default', 'loading', 'confirmed'
+    const [buttonState, setButtonState] = useState('default');
+    const [buttonStateDirect, setButtonStateDirect] = useState('default');
 
     useEffect(() => {
         fetch(`http://localhost:3000/api/products/${id}/variants`)
@@ -228,7 +228,7 @@ export const Product = (addToStorage) => {
                                 <Button className={`button-black-prod-nomon m-2 mt-4 mb-0 ${buttonStateDirect}`} onClick={() => DirectPay()} variant="outline-dark" size="lg">
                                 {buttonStateDirect === 'loading' && <div className="spinner "></div>}
                                 {buttonStateDirect === 'default' && <h3 className='p-0 m-0'><h3 className='p-0 m-0'>COMPRA ORA</h3></h3>}
-                                {buttonStateDirect === 'login' && <h3 className='p-0 m-0'><h3 className='p-0 m-0'>EFFETTUA IL LOGIN</h3></h3>}
+                                {buttonStateDirect === 'login' && <h3 className='p-0 m-0'><h3 className='p-0 m-0'>EFFETTUA PRIMA IL LOGIN</h3></h3>}
 
                                 </Button>
                             </Col>

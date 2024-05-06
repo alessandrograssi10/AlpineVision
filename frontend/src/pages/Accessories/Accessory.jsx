@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Container, Row, Form,Modal, Col, Carousel, Button, Tabs, Tab, Image } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
 import { Link, useNavigate } from 'react-router-dom';
-import Plx from 'react-plx';
+import { BsCheck } from 'react-icons/bs';  // Ensure you have react-icons installed
 
 export const Accessory = () => {
     const { id } = useParams();
@@ -13,6 +13,8 @@ export const Accessory = () => {
     const userId = localStorage.getItem("userId");
     const [qnt, setQnt] = useState(1);
     const [smShow, setSmShow] = useState(false);
+    const [buttonState, setButtonState] = useState('default');
+    const [buttonStateDirect, setButtonStateDirect] = useState('default');
 
     let navigate = useNavigate();
 
@@ -100,15 +102,78 @@ export const Accessory = () => {
         }
     }
 
+    async function addToCart() {
+        const quantity = 1;
+        const color = product[selectedSetIndex]?.colore;
+        const url = 'http://localhost:3000/api/carts/add';
+        const cartItem = id;
+        
+        if (userId) {
+            try {
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        userId: userId,
+                        productId: id,
+                        type: "accessry",
+                        color: color,
+                        quantity: quantity
+                    })
+
+                });
+                setButtonState('loading');
+        setTimeout(() => {
+            setButtonState('confirmed');
+            setTimeout(() => {
+                setButtonState('default');
+                localStorage.setItem('Cart_Trig', "Trigger");
+            }, 500);  
+        }, 500);
+                if (!response.ok) {
+                    throw new Error('Errore');
+                }
+
+            } catch (error) { console.error('Error:', error); }
+            
+        } else {
+           
+        }
+    }
+
+    function DirectPay() {
+        if (userId) {
+            const quantity = 1;
+    
+           
+            const productDetails = {
+                nome: product[0].name,
+                colore: null,
+                immagine: imageUrls[0], 
+                prezzo: product[0].prezzo.toFixed(2)
+            };
+            localStorage.setItem("productDetails", JSON.stringify(productDetails));
+            setButtonStateDirect('loading');
+            setTimeout(() => {
+                setButtonStateDirect('default');
+                navigate(`/payments/direct`);
+            }, 500);
+        }
+        else{
+            setButtonStateDirect('login');
+            setTimeout(() => {
+                setButtonStateDirect('default');
+            }, 2000);
+        }
+    }
     return (
         <Container fluid className="p-0">
-            <Row className="d-flex mt-3 ml-4 align-items-center">
-            <div className='m-3 mt-1 mb-1'>
-      <Link to={`/accessories`} className='text-navbar-box'>accessories</Link> / <Link className='text-navbar-box'>{product[0]?.name?.toLowerCase()}</Link>
-    </div></Row>
-            <Row className="d-flex align-items-center pl-3 pt-3 equal-height">
-                <Col lg={7} className="d-flex  flex-column p-3">
-                    <Carousel activeIndex={activeIndex} onSelect={(selectedIndex, e) => setActiveIndex(selectedIndex)}>
+           
+            <Row className="d-flex align-items-center pl-3 pt-3 ml-0 mt-4 equal-height">
+            <Col lg={7} className="d-flex  flex-column p-3 pl-0 m-0" >
+                    <Carousel activeIndex={activeIndex} onSelect={(selectedIndex, e) => setActiveIndex(selectedIndex)} className=' m-0 mt-0 mb-0 mr-0'>
                         {imageUrls.map((imageSrc, idx) => (
                             <Carousel.Item key={idx}>
                                 <img
@@ -120,38 +185,53 @@ export const Accessory = () => {
                         ))}
                     </Carousel>
                 </Col>
-                <Col lg={5} className="white-panel  p-0 justify-content-center carosello-prod">
+            <Col lg={5} className="white-panel  p-0 justify-content-center carosello-prod">
+                    
                     <div className="shadow-box mx-0">
-                        <Row>
-                            <h1 className="text-left text-black">{product[0]?.name}</h1>
+                    <Row className="d-flex mt-3 ml-4 align-items-center">
+            <div className='m-3 mt-1 mb-1'>
+            <Link to={`/home`} className='text-navbar-box'>HOME</Link> /<Link to={`/accessories`} className='text-navbar-box'>ACCESSORI</Link> / <Link className='text-navbar-box'>{product[0]?.name?.toUpperCase()}</Link>
+    </div></Row>
+                    <Row className="justify-content-center m-0 mt-3 ml-0 p-0">
+                            <h15 className="text-left text-black mb-2">{productInfo?.categoria?.toUpperCase()}</h15>
                         </Row>
-                       
-                       
-                        
-                        
-                        <Row className="justify-content-center m-0 mt-3">
-                            <h3 className="text-left text-black">{product[0]?.prezzo}$</h3>
+                 
+                        <Row className="justify-content-center m-0 mt-1 ml-0 p-0">
+                            <h1 className="text-left text-black title-text-prod">{product[0]?.name}</h1>
+                            
                         </Row>
-                        <Row className="justify-content-center m-0 mt-3">
-                            <Col xs={12} className="d-flex justify-content-left align-items-center pb-5 p-0 ">
-                                <Button className='button-black-prod  m-0 mt-3' onClick={() => AddToCart()} variant="outline-dark pl-0 ml-0" size="md">AGGIUNGI AL CARRELLO</Button>
-                                <Modal 
-        size="sm"
-        show={smShow}
-        onHide={() => setSmShow(false)}
-        aria-labelledby="example-modal-sizes-title-vcenter "
-        className='modal-open custom-modal'
-        backdrop={true}
-      >
-        
-        <Modal.Body className='custom-modal-body'>prodotto aggiunto</Modal.Body>
-      </Modal>
+                        
+                       
+                        <Row className="justify-content-center m-0 mt-1 ml-0 p-0 mb-3">
+                            <h3 className="text-left text-black text-bold price-text-prod">{product[0]?.prezzo} €</h3>
+                        </Row>
+ 
+                        
+                       
+                        <div className="border-bottom"></div>
+
+                        <Row className="justify-content-center m-0 mt-1 ml-0 p-0 mb-0">
+                            <Col xs={12} className="justify-content-left align-items-center pb-4 m-0 mt-1 ml-0 p-0 " >
+                                {/*<Button className='button-black-prod  m-2 mt-5' onClick={() => AddToCart()} variant="outline-dark pl-0 ml-0" size="lg"><h3 className='p-0 m-0'>AGGIUNGI AL CARRELLO</h3 ></Button>*/}
+                                <Button className={`button-black-prod m-2 mt-5 ${buttonState}`} onClick={addToCart} variant="outline-dark pl-0 ml-0" size="lg">
+                {buttonState === 'loading' && <div className="spinner "></div>}
+                {buttonState === 'confirmed' && <BsCheck className='icon-confirmed'/>}
+                {buttonState === 'default' && <h3 className='p-0 m-0'>AGGIUNGI AL CARRELLO</h3>}
+            </Button>
+                                
                                 <div style={{ width: '10px' }}></div>
-                                <Button className='button-black-prod m-0 mt-3' href="/EternalAura" variant="outline-dark" size="md">COMPRA ORA</Button>
+                                <Button className={`button-black-prod-nomon m-2 mt-4 mb-0 ${buttonStateDirect}`} onClick={() => DirectPay()} variant="outline-dark" size="lg">
+                                {buttonStateDirect === 'loading' && <div className="spinner "></div>}
+                                {buttonStateDirect === 'default' && <h3 className='p-0 m-0'><h3 className='p-0 m-0'>COMPRA ORA</h3></h3>}
+                                {buttonStateDirect === 'login' && <h3 className='p-0 m-0'><h3 className='p-0 m-0'>EFFETTUA PRIMA IL LOGIN</h3></h3>}
+
+                                </Button>
                             </Col>
                         </Row>
                     
-
+                        <Row className="justify-content-center m-0 mt-1 ml-0 p-0 mb-3">
+                            <h10 className="text-left text-black text-bold">SKU: {product[0]?._id}</h10>
+                        </Row>
                     </div>
                 </Col>
             </Row>
