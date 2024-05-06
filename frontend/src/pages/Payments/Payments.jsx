@@ -36,8 +36,11 @@ const Payments = () => {
     const userId = localStorage.getItem("userId");
 
     useEffect(() => {
-        console.log(id);
+        return () => {
+            localStorage.removeItem('productDetails');
+        };
     }, []);
+    
 
    
     async function sendOrder() {
@@ -47,45 +50,15 @@ const Payments = () => {
             const riepilogoDati = JSON.parse(arra);
             if(id === 'cart')
             {
-                    url = 'http://localhost:3000/api/orders/createOrderFromCart';
-                    try {
-                        const response = await fetch(url, {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify({
-                                userId: userId,
-                            })
-                        });
-                        console.log("Ordine", "comp")
-                        localStorage.setItem('Cart_Trig',"Trigger");
-        
-                    } catch (error) { console.error('Error:', error); }
+                // Gestisci l'invio dell'ordine dal carrello
             }
-            if(id === 'direct')
-                {
-                        url = 'http://localhost:3000/api/orders/createOrder';
-                        try {
-                            const response = await fetch(url, {
-                                method: 'POST',
-                                headers: {
-                                    'Content-Type': 'application/json'
-                                },
-                                body: JSON.stringify({
-                                    userId: userId,
-                                    productId: riepilogoDati.productId,
-                                    quantity: riepilogoDati.quantity,
-                                    color: riepilogoDati.color,
-                                    type: riepilogoDati.type,
-                                })
-                            });
-                            console.log("Ordine", "comp")
-                            localStorage.setItem('Cart_Trig',"Trigger");
-            
-                        } catch (error) { console.error('Error:', error); }
-                }
-            
+            else if(id === 'direct')
+            {
+                // Gestisci l'invio dell'ordine diretto
+            }
+            else {
+                // Gestisci l'opzione 'cart'
+            }
         } 
     }
 
@@ -231,15 +204,22 @@ const Payments = () => {
                     </Form.Group>
                 </Col>
                 <Col xs={12} md={6}>
-    <h3 className="text-center m-5">Riepilogo ordine</h3>
-    <div className="product-details">
-        <img src={state.productDetails.immagine} alt="Prodotto" className="product-image-direct" />
-            <h6>Prodotto: {state.productDetails.nome}, {state.productDetails.colore}</h6>
-            <h6>Prezzo: {state.productDetails.prezzo} €</h6>
-    </div>
-</Col>
-
-
+                    {id === 'direct' && (
+                        <React.Fragment>
+                            <h3 className="text-center m-5">Acquisto Diretto</h3>
+                            <div className="product-details">
+                                <img src={state.productDetails.immagine} alt="Prodotto" className="product-image-direct" />
+                                <h6>Prodotto: {state.productDetails.nome}, {state.productDetails.colore}</h6>
+                                <h6>Prezzo: {state.productDetails.prezzo} €</h6>
+                            </div>
+                        </React.Fragment>
+                    )}
+                    {id === 'cart' && (
+                        <React.Fragment>
+                            <h3 className="text-center m-5">Riepilogo del carrello(under construction)</h3>
+                        </React.Fragment>
+                    )}
+                </Col>
             </Row>
 
             <Row className="justify-content-md-center m-2">
