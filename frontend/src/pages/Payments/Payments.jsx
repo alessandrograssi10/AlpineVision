@@ -25,7 +25,9 @@ const Payments = () => {
         cvv: '',
         focused: '',
         touchedScadenza: false,
+        productDetails: JSON.parse(localStorage.getItem('productDetails')) || {},
         paymentSuccess: false
+       
     });
 
     const cartaValida = /^\d{16}$/.test(state.numeroCarta);
@@ -87,14 +89,9 @@ const Payments = () => {
         } 
     }
 
-
-
-
-
-
-
     const handleSubmit = (event) => {
         event.preventDefault();
+        localStorage.removeItem('productDetails');
         sendOrder();
         console.log('Pagamento effettuato con successo');
     };
@@ -233,37 +230,16 @@ const Payments = () => {
                         />
                     </Form.Group>
                 </Col>
-
                 <Col xs={12} md={6}>
-                    <h3 className="text-center m-5">Riepilogo ordine</h3>
-                    
+    <h3 className="text-center m-5">Riepilogo ordine</h3>
+    <div className="product-details">
+        <img src={state.productDetails.immagine} alt="Prodotto" className="product-image-direct" />
+            <h6>Prodotto: {state.productDetails.nome}, {state.productDetails.colore}</h6>
+            <h6>Prezzo: {state.productDetails.prezzo} €</h6>
+    </div>
+</Col>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                </Col>
             </Row>
 
             <Row className="justify-content-md-center m-2">

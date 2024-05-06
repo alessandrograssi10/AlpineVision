@@ -123,22 +123,23 @@ export const Product = (addToStorage) => {
 
     
 
-    function DirectPayt() {
+    function DirectPay() {
         if (userId) {
             const quantity = 1;
             const color = product[selectedSetIndex]?.colore;
-
-            const riep = JSON.stringify({
-                productId: id,
-                quantity: quantity,
-                color: color,
-                type: "product",
-            })
-
-            localStorage.setItem("riepilogoCart", riep);
+    
+           
+            const productDetails = {
+                nome: productInfo.nome,
+                colore: color,
+                immagine: imageSets[0], 
+                prezzo: productInfo.prezzo.toFixed(2)
+            };
+            localStorage.setItem("productDetails", JSON.stringify(productDetails));
             navigate(`/payments/direct`);
         }
     }
+    
 
     return (
         <Container fluid className="p-0">
@@ -217,7 +218,7 @@ export const Product = (addToStorage) => {
                                     <Modal.Body className='custom-modal-body'>prodotto aggiunto</Modal.Body>
                                 </Modal>
                                 <div style={{ width: '10px' }}></div>
-                                <Button className='button-black-prod-nomon m-2 mt-4 mb-0' onClick={() => DirectPayt()} variant="outline-dark" size="lg"><h3 className='p-0 m-0'>COMPRA ORA</h3></Button>
+                                <Button className='button-black-prod-nomon m-2 mt-4 mb-0' onClick={() => DirectPay()} variant="outline-dark" size="lg"><h3 className='p-0 m-0'>COMPRA ORA</h3></Button>
                             </Col>
                         </Row>
                     

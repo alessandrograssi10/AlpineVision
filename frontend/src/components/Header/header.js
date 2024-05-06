@@ -162,7 +162,7 @@ export const Header = () => {
               <div>
                 <Nav.Link as={Link} onMouseEnter={OpenAllBoxes} className={`bold ${currentBox === 'showSearchBox' ? 'hovered' : ''}`}>
                   <Image onClick={() => toggleBox("showSearchBox")} src={SearchIcon} width="20" className="icon d-none d-lg-inline-block d-xl-inline-block" alt="Search" />
-                  <span className="d-inline-block d-lg-none d-xl-none align-center logo">Cerca</span>
+                  <span className="d-inline-block d-lg-none d-xl-none align-center logo">CERCA</span>
                 </Nav.Link>
                 {currentBox === 'showSearchBox' && (
                   <div className={`info-box ${isClosing ? 'closing' : isOpening ? 'opening' : ''}`}>
@@ -174,13 +174,13 @@ export const Header = () => {
             {/* Bottone carrello */}
             <Nav.Link onMouseEnter={closeAllBoxes} onClick={handleCartClick} className="position-relative">
               <Image src={Car} width="20" className="icon d-none d-lg-inline-block d-xl-inline-block" alt="Cart" />
-              <span className="d-inline-block d-lg-none d-xl-none align-center logo">Carrello</span>
+              <span className="d-inline-block d-lg-none d-xl-none align-center logo">CARRELLO</span>
               <HeaderCart />
             </Nav.Link>
             {/* Bottone login o areapersonale */}
             <Nav.Link onMouseEnter={closeAllBoxes} onClick={handleLoginClick}>
               <Image src={Skier} width="20" className="icon d-none d-lg-inline-block d-xl-inline-block" alt="Login" />
-              <span className="d-inline-block d-lg-none d-xl-none align-center logo">login</span>
+              <span className="d-inline-block d-lg-none d-xl-none align-center logo">LOGIN</span>
             </Nav.Link>
           </Nav>
         </Navbar.Collapse>

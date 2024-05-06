@@ -89,7 +89,7 @@
 .enlarged-card {
     flex: 1 1 200px; 
     margin: 50px; 
-    transform: scale(1.5) translateX(40px) translateY(20px); 
+    transform: scale(1.5) translateX(30px) translateY(20px); 
     transition: transform 0.3s ease; 
 }
 
@@ -103,6 +103,26 @@
         transform: translateX(-5px) translateY(10px); 
     }
 }
+.product-details {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 
+.product-image-direct {
+    width: 10vw;
+    border-radius: 50%;
+    margin-top: 20px;
+    margin-bottom: 10px; /* Aggiunto margine inferiore */
+    transition: transform 0.3s ease; /* Aggiunto effetto di transizione */
+}
 
+.product-image-direct:hover {
+    transform: scale(1.1); /* Ingrandisce leggermente l'immagine al passaggio del mouse */
+}
 
+.product-details h6 {
+    font-size: 2rem;
+    margin: 10px 0; /* Aggiunto margine superiore e inferiore */
+}
