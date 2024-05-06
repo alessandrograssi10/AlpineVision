@@ -73,6 +73,7 @@ function CartCard({ price, quantity, updateTotalPrice, prodID, color, type, remo
                 updateTotalPrice(price, false);
             }
         }
+        localStorage.setItem('Cart_Trig', "Trigger");
 
     }
 
