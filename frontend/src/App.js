@@ -1,4 +1,4 @@
-import logo from './assets/Images/logo.svg';
+//import logo from './assets/Images/logo.svg';
 import './App.css';
 import React, { Component , useState} from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
@@ -10,6 +10,7 @@ import { BlogEdit } from './pages/Blog/BlogEditor/BlogEdit.jsx';
 import {BlogArticle} from './pages/Blog/BlogArticle.jsx';
 import {BlogArticleEdit} from './pages/Blog/BlogEditor/BlogArticleEdit.jsx';
 import {Search} from './pages/Search/Search.jsx';
+
 import Payments from './pages/Payments/Payments.jsx';
 
 import  AboutUs  from './pages/About_Us/AboutUs.jsx';
@@ -50,17 +51,14 @@ class App extends Component {
           <Route exact path ="/blog" Component={Blog}/>
           <Route exact path ="/blogEdit" Component={BlogEdit}/>
           <Route  path ="/search" element={<Search/>}/>
-
           <Route path="/BlogArticle/:id" element={<BlogArticle/>} />
           <Route path="/BlogArticleEdit/:id" element={<BlogArticleEdit/>} />
           <Route exact path="/AreaPersonale" Component={PersonalArea}/>
           <Route path="/Payments/:id" element={<Payments/>} />
-
           <Route exact path ="/Support" Component={AboutUs}/>
           <Route exact path ="/cart" Component={Cart}/>
           <Route exact path ="/product/:id" element={<Product/>}/>
           <Route exact path ="/accessory/:id" element={<Accessory/>}/>
-
           <Route exact path="/login" Component={Login_Signin}/>
 
           </Routes>
