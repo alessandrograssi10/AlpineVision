@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 export const HeaderProducts = ({ onCloseAllBoxes }) => {
   const [productsMask, setProductsMask] = useState([]);
   const [productsGlass, setProductsGlass] = useState([]);
-
+  
   // Vengono scaricati i prodotti dal backend
   useEffect(() => {
     fetch('http://localhost:3000/api/products')
