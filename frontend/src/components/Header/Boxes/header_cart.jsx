@@ -22,37 +22,43 @@ export const HeaderCart = ({ onChangeCart }) => {
 
   useEffect(() => {
     const fetchData = () => {
-      const item = localStorage.getItem('Cart_Trig');
-      if (item !== '') {
+        const item = localStorage.getItem('Cart_Trig');
+        if (item !== null && item !== undefined && item !== '') {
+            if (userId) {
+                const myHeaders = new Headers();
+                myHeaders.append("Content-Type", "application/json");
 
-        const myHeaders = new Headers();
-        myHeaders.append("Content-Type", "application/json");
+                const requestOptions = {
+                    method: "GET",
+                    headers: myHeaders,
+                    redirect: "follow"
+                };
 
-        const requestOptions = {
-          method: "GET",
-          headers: myHeaders,
-          redirect: "follow"
-        };
-
-        if (!userId) return;
-        fetch(`http://localhost:3000/api/carts/${userId}`, requestOptions)
-          .then((response) => response.json())
-          .then((result) => {
-            if (Array.isArray(result) && result) {
-              const totalQuantita = result.reduce((sum, item) => sum + item.quantity, 0);
-              setQnt(totalQuantita); 
+                fetch(`http://localhost:3000/api/carts/${userId}`, requestOptions)
+                    .then((response) => response.json())
+                    .then((result) => {
+                        if (Array.isArray(result) && result) {
+                            const totalQuantita = result.reduce((sum, item) => sum + item.quantity, 0);
+                            setQnt(totalQuantita); 
+                        }
+                    })
+                    .catch((error) => console.error(error));
+            } else {
+              var cart = JSON.parse(localStorage.getItem("virtualCart") || "[]");
+              if (Array.isArray(cart) && cart) {
+                    const totalQuantita = cart.reduce((sum, item) => sum + item.quantity, 0);
+                    setQnt(totalQuantita); 
+                }
             }
+            localStorage.setItem('Cart_Trig', "");
+        }
+    };
 
-          })
-          .catch((error) => console.error(error));
-        localStorage.setItem('Cart_Trig', "");
-      }
-    }
+    const intervalId = setInterval(fetchData, 50); // Imposta l'intervallo a 5 secondi
+    fetchData(); // Esegui la prima richiesta immediatamente
+    return () => clearInterval(intervalId); // Pulisci l'intervallo quando l'effetto viene dismesso
+}, []); // Aggiungi userId come dipendenza per far sì che l'effetto venga eseguito quando userId cambia
 
-    const intervalId = setInterval(fetchData, 50); 
-    return () => clearInterval(intervalId);
-
-  }, []);
 
   return (
     <>

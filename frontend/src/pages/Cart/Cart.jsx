@@ -17,6 +17,7 @@ function Cart() {
 
     //  Scarica carrello
     useEffect(() => {
+        if(userID){
         const myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
 
@@ -35,6 +36,15 @@ function Cart() {
                 setToggler(result.length !== 0);
             })
             .catch((error) => console.error(error));
+        }
+        else{
+            var cart = JSON.parse(localStorage.getItem("virtualCart") || "[]");
+            setCartItems(cart);
+            //
+            const provTotalPrice = cart.reduce((somma, cartItem) => somma + cartItem.total, 0);
+                setTotalPrice(provTotalPrice);
+                setToggler(cart.length !== 0);
+        }
     }, []);
 
     //  Aggiorna pulsante carrello

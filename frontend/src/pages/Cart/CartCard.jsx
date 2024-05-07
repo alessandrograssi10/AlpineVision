@@ -3,6 +3,7 @@ import { Container, Row, Col, Button } from 'react-bootstrap';
 import { useEffect, useState } from 'react';
 import './CartCard.css';
 import trashBin from '../../assets/Images/trashBin.png';
+import { changeCart } from '../../assets/Scripts/Virtual_Cart.js';
 
 function CartCard({ quantity, updateTotalPrice, prodID, color, type, removeProd,}) {
 
@@ -64,7 +65,7 @@ function CartCard({ quantity, updateTotalPrice, prodID, color, type, removeProd,
 
     //  Modifica la quantità nel db
     useEffect(() => {
-
+        if(userID){
         const myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
 
@@ -87,7 +88,9 @@ function CartCard({ quantity, updateTotalPrice, prodID, color, type, removeProd,
             .then((response) => response.text())
             .then((result) => console.log())
             .catch((error) => console.error(error));
-
+    }else{
+        changeCart(prodID,qnt,color);
+    }
 
     }, [qnt]);
 

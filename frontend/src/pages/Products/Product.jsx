@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 import './Product.css';
 import { BsCheck } from 'react-icons/bs';  // Ensure you have react-icons installed
 import { Link, useNavigate } from 'react-router-dom';
+import { addToVirtualCart } from '../../assets/Scripts/Virtual_Cart.js';
 
 export const Product = (addToStorage) => {
     const { id } = useParams();
@@ -120,10 +121,12 @@ export const Product = (addToStorage) => {
             } catch (error) { console.error('Error:', error); }
             
         } else{
-            setButtonState('login');
+            /*setButtonState('login');
             setTimeout(() => {
                 setButtonState('default');
-            }, 1000);
+            }, 1000);*/
+            addToVirtualCart(productInfo,product[selectedSetIndex]?.colore);
+            localStorage.setItem('Cart_Trig', "Trigger");
         }
     }
 

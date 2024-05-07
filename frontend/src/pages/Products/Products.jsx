@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Image, Container, Row, Col, Card } from 'react-bootstrap';
 import ImmagineBg from '../../assets/Images/BgProd3.png';
 import heart from '../../assets/Images/heart-3.png';
+import filledHeart from '../../assets/Images/heart.png';
 import { Link } from 'react-router-dom';
 import './Products.css';
 
@@ -12,6 +13,10 @@ export const Products = () => {
     const [imageUrlspLat, setImageUrlspLat] = useState({}); // immagini laterali
     const [colorCount, setColorCount] = useState({}); // set per contare i colori
     const [hoverIndex, setHoverIndex] = useState(null); //elemento selezionato
+    
+    // Prendo i valori dal localstorage
+    let Favorite = JSON.parse(localStorage.getItem("Favorite") || "[]");
+    const userId = localStorage.getItem('userId');
 
     useEffect(() => {
         fetch(`http://localhost:3000/api/products`)
@@ -87,6 +92,29 @@ export const Products = () => {
             return '';
         }
     };
+    const handleClickFavorite = (prodotto, evento) => {
+        if(userId)
+        {
+            //salva su server
+        }else{
+            if(Favorite.includes(prodotto._id)) 
+            {
+                let index = Favorite.indexOf(prodotto._id);
+                if (index > -1) {
+                    Favorite.splice(index, 1);
+                }
+                localStorage.setItem("Favorite",JSON.stringify(Favorite));
+            }
+            else{
+                Favorite.push(prodotto._id);
+                localStorage.setItem("Favorite",JSON.stringify(Favorite));
+            }
+            console.log("change",Favorite);
+        }
+        if (evento.defaultPrevented) {
+            evento.stopPropagation();
+        }
+    }
 
     return (
         <Container fluid className="p-0 m-0 ">
@@ -103,13 +131,10 @@ export const Products = () => {
                 {productsMask.map((prodotto) => {
                     return (
                         <Col xs={12} sm={6} md={4} lg={3} key={prodotto._id} >
-                            <Card as={Link} to={`/product/${prodotto._id}`} className='m-3 card-text-prod card-prod card-prod-prod-ca' onMouseEnter={() => setHoverIndex(prodotto._id)}onMouseLeave={() => setHoverIndex(null)}>
+                            <Card as={Link} to={`/product/${prodotto._id}`} className='m-3 card-text-prod card-prod card-prod-prod-ca' onMouseEnter={() => setHoverIndex(prodotto._id)} onMouseLeave={() => setHoverIndex(null)}>
                                 {/* Immagine della maschera */}
                                 {/*<Card.Img key={prodotto._id} variant="top" className='card-image-fit' onMouseEnter={() => setHoverIndex(prodotto._id)} onMouseLeave={() => setHoverIndex(null)} src={hoverIndex === prodotto._id ? imageUrlspLat[prodotto._id] : imageUrlsp[prodotto._id]} />*/}
-                                <div
-                                    className="card-image-container"
-
-                                >
+                                <div className="card-image-container">
                                     <Card.Img
                                         key={`${prodotto._id}-front`}
                                         className={`card-image-fit-prod ${hoverIndex === prodotto._id ? '' : 'card-image-visible'}`}
@@ -127,7 +152,7 @@ export const Products = () => {
                                     <Card.Title>{colorCount[prodotto._id]} colori</Card.Title>
                                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                                         <Card.Text>{prodotto.prezzo} €</Card.Text>
-                                        <img src={heart} style={{ width: '25px', height: '25px' }} alt="Descrizione Immagine" />
+                                        <Image key ={Favorite} onClick={(e) => {handleClickFavorite(prodotto,e);e.preventDefault();}} src={Favorite.includes(prodotto._id) ? filledHeart : heart} style={{ width: '25px', height: '25px' }} alt="Descrizione Immagine" />
                                     </div>
                                 </Card.Body>
                             </Card>
