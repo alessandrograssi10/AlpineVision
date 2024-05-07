@@ -5,15 +5,17 @@ import CartCard from './CartCard.jsx';
 import { Link } from 'react-router-dom';
 import './Cart.css';
 import cartimage from '../../assets/Images/cartimage.png';
-import { GetInfo} from '../../assets/Scripts/GetFromCart.js';
+import { GetInfo } from '../../assets/Scripts/GetFromCart.js';
 
 function Cart() {
 
     const [cartItems, setCartItems] = useState([]);
     const [totalPrice, setTotalPrice] = useState(0);
     const [toggler, setToggler] = useState(false);
+
     const userID = localStorage.getItem('userId');
 
+    //  Scarica carrello
     useEffect(() => {
         const myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
@@ -28,14 +30,24 @@ function Cart() {
             .then((response) => response.json())
             .then((result) => {
                 setCartItems(result);
-               console.log("Eeeee", GetInfo(result[0]))
-                const provTotalPrice = result.reduce((somma, cartItem) => somma + cartItem.total * cartItem.quantity, 0);
+                const provTotalPrice = result.reduce((somma, cartItem) => somma + cartItem.total, 0);
                 setTotalPrice(provTotalPrice);
                 setToggler(result.length !== 0);
             })
             .catch((error) => console.error(error));
     }, []);
 
+    //  Aggiorna pulsante carrello
+    useEffect(() => {
+        if (cartItems.length == 0) {
+            setTotalPrice(0);
+            setToggler(false);
+        } else if (cartItems.length > 0) {
+            setToggler(true);
+        }
+    }, [cartItems]);
+
+    //  Aggiorna prezzo totale al cambiamento delle quantità
     const updateTotalPrice = (priceToAdd, incDec) => {
         let newTotalPrice;
         if (incDec === true) {
@@ -46,6 +58,7 @@ function Cart() {
         setTotalPrice(newTotalPrice);
     }
 
+    //  Rimuove un prodotto dal db
     const removeProd = (delProductId, priceToDel) => {
         const newCartItems = cartItems.filter(product => product.productId !== delProductId);
         setCartItems(newCartItems);
@@ -55,27 +68,26 @@ function Cart() {
         const myHeadersrm = new Headers();
         myHeadersrm.append("Content-Type", "application/json");
 
-        const raw = JSON.stringify({
+        const rawrm = JSON.stringify({
             "userId": `${userID}`,
             "productId": `${delProductId}`
         });
 
-        const requestOptions = {
+        const requestOptionsrm = {
             method: "DELETE",
             headers: myHeadersrm,
-            body: raw,
+            body: rawrm,
             redirect: "follow"
         };
 
-        fetch("http://localhost:3000/api/carts/remove", requestOptions)
+        fetch("http://localhost:3000/api/carts/remove", requestOptionsrm)
             .then((response) => response.text())
             .then((result) => console.log())
             .catch((error) => console.error(error));
     }
 
-    useEffect(() => {
-        setToggler(cartItems.length !== 0);
-    }, [cartItems]);
+    console.log(cartItems);
+
 
     return (
         <Container className="mb-5">
@@ -94,13 +106,13 @@ function Cart() {
                     cartItems.map((cartItem) => (
                         <CartCard
                             key={cartItem.productId}
-                            price={cartItem.total}
                             quantity={cartItem.quantity}
                             updateTotalPrice={updateTotalPrice}
                             prodID={cartItem.productId}
                             color={cartItem.color}
                             type={cartItem.type}
                             removeProd={removeProd}
+
                         />
                     ))
                 )}
@@ -110,7 +122,7 @@ function Cart() {
                         <Row className="w-100">
                             <Col xs="6">
                                 <Link to="/Payments/cart" className="fs-4">
-                                    <Button id="buyButton">
+                                    <Button id="buyButton" >
                                         Procedi all'acquisto
                                     </Button>
                                 </Link>
@@ -128,7 +140,6 @@ function Cart() {
                     )}
                 </Col>
             </Row>
-
         </Container>
     );
 }

@@ -4,15 +4,17 @@ import { useEffect, useState } from 'react';
 import './CartCard.css';
 import trashBin from '../../assets/Images/trashBin.png';
 
-function CartCard({ price, quantity, updateTotalPrice, prodID, color, type, removeProd }) {
+function CartCard({ quantity, updateTotalPrice, prodID, color, type, removeProd,}) {
 
     const [qnt, setQnt] = useState(quantity);
     const [prodName, setProdName] = useState("");
     const [frontalImg, setFrontalImg] = useState({});
-    const [currentProduct, setCurrentProduct] = useState({});
+    const [price, setPrice] = useState(0);
     const userID = localStorage.getItem('userId');
 
 
+
+    // Scarica prodotti, accessori e immagini
     useEffect(() => {
 
         if (type === "product") {
@@ -29,15 +31,14 @@ function CartCard({ price, quantity, updateTotalPrice, prodID, color, type, remo
                 .then((response) => response.json())
                 .then((result) => {
                     const product = result.find(product => product._id === prodID);
-
-                    setCurrentProduct(product);
+                    setPrice(product.prezzo);
                     setProdName(product.nome);
                 })
                 .catch((error) => console.error(error));
 
             setFrontalImg(`http://localhost:3000/api/products/${prodID}/${color}/frontale`);
 
-        } else if (type === "accessory") {
+        } else if (type === "accessry") {
 
             const myHeaders = new Headers();
             myHeaders.append("Content-Type", "application/json");
@@ -53,6 +54,7 @@ function CartCard({ price, quantity, updateTotalPrice, prodID, color, type, remo
                 .then((result) => {
                     const product = result.find(product => product._id === prodID);
                     setProdName(product.name);
+                    setPrice(product.prezzo);
                 })
                 .catch((error) => console.error(error));
 
@@ -60,23 +62,7 @@ function CartCard({ price, quantity, updateTotalPrice, prodID, color, type, remo
         }
     }, [prodID, color, type])
 
-    const clickHandle = (e) => {
-        if (e.target.id === "increaseButton") {
-            setQnt(qnt + 1);
-            updateTotalPrice(price, true);
-
-        } else {
-            if (qnt === 1) {
-                // Se la quantità è già 1, non fare nulla
-            } else {
-                setQnt(qnt - 1);
-                updateTotalPrice(price, false);
-            }
-        }
-        localStorage.setItem('Cart_Trig', "Trigger");
-
-    }
-
+    //  Modifica la quantità nel db
     useEffect(() => {
 
         const myHeaders = new Headers();
@@ -99,16 +85,34 @@ function CartCard({ price, quantity, updateTotalPrice, prodID, color, type, remo
 
         fetch("http://localhost:3000/api/carts/updateQuantity", requestOptions)
             .then((response) => response.text())
-            .then((result) => console.log(result))
+            .then((result) => console.log())
             .catch((error) => console.error(error));
 
 
-    }, [qnt])
+    }, [qnt]);
 
+    //  Modifica la quantità e modifica il prezzo totale
+    const qntClickHandle = (e) => {
+        if (e.target.id === "increaseButton") {
+            setQnt(qnt + 1);
+            updateTotalPrice(price, true);
 
+        } else {
+            if (qnt === 1) {
+                // Se la quantità è già 1, non fare nulla
+            } else {
+                setQnt(qnt - 1);
+                updateTotalPrice(price, false);
+            }
+        }
+        localStorage.setItem('Cart_Trig', "Trigger");
+    }
+
+    // rimuove un prodotto nel carrello
     const removeHandleClick = () => {
         removeProd(prodID, price * qnt);
-    }
+    };
+
 
     return (
         <>
@@ -131,9 +135,9 @@ function CartCard({ price, quantity, updateTotalPrice, prodID, color, type, remo
                     <Col xs="6" lg="4" xl="5" className="d-flex justify-content-start align-items-center custom-col">
                         <h5 id="qntTitle" className=" custom-col me-2">Quantità:</h5>
                         <div id="qntDiv">
-                            <Button id="decreaseButton" onClick={clickHandle}>-</Button>
+                            <Button id="decreaseButton" onClick={qntClickHandle}>-</Button>
                             <div id="qnt" className='fw-bold'>{qnt}</div>
-                            <Button id="increaseButton" onClick={clickHandle}>+</Button>
+                            <Button id="increaseButton" onClick={qntClickHandle}>+</Button>
                         </div>
                     </Col>
 
