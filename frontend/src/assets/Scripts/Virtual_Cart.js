@@ -1,30 +1,4 @@
 
-/*
-export function addToVirtualCart(element, color) {
-    var cart = JSON.parse(localStorage.getItem("virtualCart") || "{}");
-    console.log("ID",element._id)
-    if (cart[element._id + color] && cart[element._id].color === color) {
-        cart[element._id + color].quantity += 1;
-        cart[element._id + color].total = element.prezzo * cart[element._id].quantity;
-    } else {
-        cart[element._id + color] = addInfo(element, color);
-    }
-
-    localStorage.setItem("virtualCart", JSON.stringify(cart));
-}
-
-function addInfo(element, color) {
-    var info = {};
-
-    info.productId = element._id;
-    info.color = color;
-    info.quantity = 1;
-    info.total = element.prezzo;
-
-    return info;
-}
-*/
-
 export function addToVirtualCart(element, color) {
     var cart = JSON.parse(localStorage.getItem("virtualCart") || "[]");
     console.log("ID", element._id);
@@ -47,7 +21,7 @@ export function addToVirtualCart(element, color) {
 
 function addInfo(element, color) {
     // Crea un nuovo oggetto con le informazioni del prodotto
-    var type = color ? "product" : "accessory";
+    var type = color ? "product" : "accessry";
 
     var info = {
         productId: element._id,

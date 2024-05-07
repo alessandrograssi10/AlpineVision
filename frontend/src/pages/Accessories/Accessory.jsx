@@ -3,6 +3,7 @@ import { Container, Row, Form,Modal, Col, Carousel, Button, Tabs, Tab, Image } f
 import { useParams } from 'react-router-dom';
 import { Link, useNavigate } from 'react-router-dom';
 import { BsCheck } from 'react-icons/bs';  // Ensure you have react-icons installed
+import { addToVirtualCart } from '../../assets/Scripts/Virtual_Cart.js';
 
 export const Accessory = () => {
     const { id } = useParams();
@@ -61,40 +62,7 @@ export const Accessory = () => {
         ));
     }
 
-    async function AddToCart() {
-        if (userId) {
-            const quantity = 1;
-            const color = product[selectedSetIndex]?.colore;
-            const url = 'http://localhost:3000/api/carts/add';
-
-            try {
-                const response = await fetch(url, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        userId: userId,
-                        productId: id,
-                        type: "accessory",
-                        quantity: quantity
-                    })
-
-                });
-                setSmShow(true);
-                const timer = setTimeout(() => {
-                    setSmShow(false);
-                }, 700);
-                if (!response.ok) {
-                    throw new Error('Errore');
-                }
-                localStorage.setItem('Cart_Trig',"Trigger");
-
-            } catch (error) { console.error('Error:', error); }
-        } else {
-            navigate(`/login`);
-        }
-    }
+    
 
     async function addToCart() {
         const quantity = 1;
@@ -133,10 +101,20 @@ export const Accessory = () => {
             } catch (error) { console.error('Error:', error); }
             
         } else{
-            setButtonState('login');
+            /*setButtonState('login');
             setTimeout(() => {
                 setButtonState('default');
-            }, 1000);
+            }, 1000);*/
+                addToVirtualCart(product[0],null);
+                setButtonState('loading');
+            setTimeout(() => {
+                setButtonState('confirmed');
+                setTimeout(() => {
+                    setButtonState('default');
+                    localStorage.setItem('Cart_Trig', "Trigger");
+                }, 500);  
+            }, 500);
+            
         }
     }
 

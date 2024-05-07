@@ -121,12 +121,15 @@ export const Product = (addToStorage) => {
             } catch (error) { console.error('Error:', error); }
             
         } else{
-            /*setButtonState('login');
+            addToVirtualCart(productInfo,product[selectedSetIndex]?.colore);
+            setButtonState('loading');
+        setTimeout(() => {
+            setButtonState('confirmed');
             setTimeout(() => {
                 setButtonState('default');
-            }, 1000);*/
-            addToVirtualCart(productInfo,product[selectedSetIndex]?.colore);
-            localStorage.setItem('Cart_Trig', "Trigger");
+                localStorage.setItem('Cart_Trig', "Trigger");
+            }, 500);  
+        }, 500);
         }
     }
 
