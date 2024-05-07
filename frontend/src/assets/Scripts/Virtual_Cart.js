@@ -31,7 +31,7 @@ function addInfo(element, color) {
         productId: element._id,
         color: color,
         quantity: 1,
-        total: element.prezzo,
+        total: Number(element.prezzo),
         type: type
 
     };
@@ -50,7 +50,7 @@ export function changeCart(elementId, qnt, color) {
         let newTotale = ((existingItem.total/existingItem.quantity) * qnt).toFixed(2);
         console.log(newTotale);
         existingItem.quantity = qnt;
-        existingItem.total = newTotale;
+        existingItem.total = Number(newTotale);
     } else {
         return;
     }

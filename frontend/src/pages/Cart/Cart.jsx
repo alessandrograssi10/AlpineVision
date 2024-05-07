@@ -40,11 +40,10 @@ function Cart() {
             var cart = JSON.parse(localStorage.getItem("virtualCart")) || "[]";
             setCartItems(cart);
             //
-            
-            const provTotalPrice = cart.reduce((somma, cartItem) => somma + cartItem.total, 0);
-            console.log(provTotalPrice)
-                setTotalPrice(provTotalPrice);
-                setToggler(cart.length !== 0);
+            const provTotalPrice = cart.reduce((total, cartItem) => total + cartItem.total, 0);
+            console.log("Tot",provTotalPrice)
+            setTotalPrice(provTotalPrice);
+            setToggler(cart.length !== 0);
         }
     }, []);
 
@@ -148,7 +147,7 @@ function Cart() {
                                 </Link>
                             </Col>
                             <Col xs="6" className="d-flex align-items-center justify-content-end">
-                                <h3 className="fw-bold fs-3">Totale: {totalPrice.toFixed(2)} €</h3>
+                                <h3 className="fw-bold fs-3">Totale: {!isNaN(totalPrice) ? totalPrice.toFixed(2) + ' €' : '0€'}</h3>
                             </Col>
                         </Row>
                     ) : (
