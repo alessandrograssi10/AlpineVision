@@ -14,12 +14,15 @@ import './Payments.css';
 
 const Payments = () => {
     const { id } = useParams();
+    const [email, setEmail] = useState('');
+    const [touchedEmail, setTouchedEmail] = useState(false);
     const [state, setState] = useState({
         nome: '',
         cognome: '',
         nazione: '',
         regione: '',
         città: '',
+        email: '',  
         indirizzo: '',
         telefono: '',
         numeroCarta: '',
@@ -46,40 +49,67 @@ const Payments = () => {
     }, []);
     
     useEffect(() => {
-        if (!userId) return;
+        if (userId) {
+            const requestOptions = {
+                method: "GET",
+            };
     
-        const requestOptions = {
-            method: "GET",
-        };
+            const fetchCartData = async () => {
+                try {
+                    const response = await fetch(`http://localhost:3000/api/carts/${userId}`, requestOptions);
+                    const result = await response.json();
+                    setCartItems(result);
+                    console.log("Prodotti", result);
+                    
+                    const fetchDetails = result.map(item =>
+                        GetInfo(item).then(info => ({ _id: item.productId, info }))
+                    );
+                    console.log("fetchDetails", fetchDetails);
     
-        const fetchCartData = async () => {
-            try {
-                const response = await fetch(`http://localhost:3000/api/carts/${userId}`, requestOptions);
-                const result = await response.json();
-                setCartItems(result);
-                console.log("Prodotti",result);
-                const fetchDetails = result.map(item => 
-                    GetInfo(item).then(info => ({ _id: item.productId, info }))
-                );
-                console.log("fetchDetails",fetchDetails);
+                    const detailsArray = await Promise.all(fetchDetails);
+                    const details = detailsArray.reduce((acc, current) => {
+                        acc[current._id] = current.info;
+                        console.log("InfoFunzione", acc);
+                        return acc;
+                    }, {});
+                    console.log("DET", details);
+                    setCartDetails(details);
+                } catch (error) {
+                    console.error('Failed to fetch cart items:', error);
+                }
+            };
+            
+            fetchCartData();
+        } else {
+            var cart = JSON.parse(localStorage.getItem("virtualCart")) || [];
+            const fetchCartData = async () => {
+                try {
+                    const result = cart;
+                    setCartItems(result);
+                    console.log("Prodotti", result);
+                    
+                    const fetchDetails = result.map(item =>
+                        GetInfo(item).then(info => ({ _id: item.productId, info }))
+                    );
+                    console.log("fetchDetails", fetchDetails);
+    
+                    const detailsArray = await Promise.all(fetchDetails);
+                    const details = detailsArray.reduce((acc, current) => {
+                        acc[current._id] = current.info;
+                        console.log("InfoFunzione", acc);
+                        return acc;
+                    }, {});
+                    setCartDetails(details);
+                } catch (error) {
+                    console.error('Failed to fetch cart items:', error);
+                }
+            };
+            
+            fetchCartData();
+            
+        }
+    }, [userId]);
 
-                const detailsArray = await Promise.all(fetchDetails);
-                const details = await detailsArray.reduce((acc, current) => {
-                    acc[current._id] = current.info;
-                    console.log("InfoFunzione",acc);
-                    return acc;
-                }, {});
-                console.log("DET",details);
-                setCartDetails(details);
-            } catch (error) {
-                console.error('Failed to fetch cart items:', error);
-            }
-        };
-    
-        fetchCartData();
-    }, []);
-
-   
     async function sendOrder() {
         if (userId) {
             let url = '';
@@ -102,7 +132,6 @@ const Payments = () => {
         sendOrder();
         console.log('Pagamento effettuato con successo');
     };
-    
 
     const handleChange = (event) => {
         const { name, value } = event.target;
@@ -123,6 +152,15 @@ const Payments = () => {
         }));
     };
 
+    const handleChangeEmail = (event) => {
+        const { value } = event.target;
+        setEmail(value);
+    };
+
+    const checkEmail = (email) => {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+    };
     const handleCountryChange = (val) => {
         const randomShippingCost = (Math.random() * (30 - 5) + 5).toFixed(2);
     
@@ -162,8 +200,9 @@ const Payments = () => {
 
     const { nome, cognome, nazione, regione, città, indirizzo, telefono, numeroCarta, scadenza, cvv, focused, touchedScadenza } = state;
 
-    const isFormValid = nome && cognome && nazione && regione && città && indirizzo && numeroCarta && scadenza && cvv;
-; 
+    const isFormValid = nome && cognome && nazione && regione && città && indirizzo && numeroCarta && scadenza && cvv&&telefono;
+    const isFormVirtualValid= isFormValid && email;
+
     const totalProductsPrice = parseFloat(localStorage.getItem('totalPrice')) || 0;
     const total = state.shippingCost + totalProductsPrice;
 
@@ -175,6 +214,11 @@ const Payments = () => {
                     <h1 className="Payments-title">Pagamento</h1>
                     <img src={money} className="money-image2" alt="money" />
                 </Col>
+                {!userId&&(
+                <Col xs={12} className="d-flex justify-content-center align-items-center m-5">
+                    <h3> Nessun account? Nessun problema! Fai shopping e paga in pochi clic.</h3>
+                </Col>
+                )}
             </Row>
             <Row className="justify-content-md-center m-2">
                 <Col xs={12} md={6}>
@@ -242,53 +286,66 @@ const Payments = () => {
                             className="payments-form"
                         />
                     </Form.Group>
+                    {!userId && (
+                        <Form.Group>
+                            <Form.Label className="payments-label">E-mail</Form.Label>
+                            <Form.Control
+                                type="email"
+                                placeholder="Inserisci l'indirizzo email"
+                                value={email}
+                                onChange={handleChangeEmail}
+                                onBlur={() => setTouchedEmail(true)}
+                                className={`payments-form ${touchedEmail && !checkEmail(email) ? 'is-invalid' : ''}`}
+                            />
+                            {touchedEmail && !checkEmail(email) && <div className="invalid-feedback">Inserire un'email valida</div>}
+                        </Form.Group>
+                    )}
                 </Col>
                 <Col xs={12} md={6}>
-    <h3 className="text-center m-5">Riepilogo Ordine</h3>
-    {id === 'direct' && (
-        <React.Fragment>
-            <div className="product-details">
-                <img src={state.productDetails.immagine} alt="Prodotto" className="product-image" />
-                <h6>Prodotto: {state.productDetails.nome}, {state.productDetails.colore}</h6>
-                <h6>Prezzo: {state.productDetails.prezzo} €</h6>
-            </div>
-            {/* Calcolo delle spese di spedizione e del totale */}
-            {state.nazione !== '' && (
-                <div className="shipping-details m-5">
-                    <h6>Spese di spedizione da {state.nazione}: {state.shippingCost} €</h6>
-                    <h6>Totale da pagare: {(parseFloat(state.productDetails.prezzo) + parseFloat(state.shippingCost)).toFixed(2)} €</h6>
-                </div>
-            )}
-        </React.Fragment>
-    )}
-    {id === 'cart' && (
-        <React.Fragment>
-            <div className="cart-container">
-                {cartItems?.map((item) => (
-                    <div className="cart-item m-3" key={item.productId}>
-                        <img src={cartDetails[item.productId]?.immagine} alt="Prodotto" className="product-image" />
-                        <div className='product-details'>
-                            <h6>{cartDetails[item.productId]?.nome}, {cartDetails[item.productId]?.colore}</h6>
-                            <h6>Quantità: {cartDetails[item.productId]?.quantita}</h6>
-                            <h6>Prezzo: {cartDetails[item.productId]?.totale.toFixed(2)} €</h6>
-                        </div>
-                    </div>
-                ))}
-            </div>
-            <div className="shipping-details m-5">
-                {state.nazione !== '' && (
-                    <React.Fragment>
-                        <h6>Spese di spedizione da {state.nazione}: {state.shippingCost} €</h6>
-                        <h6>Totale da pagare: {(parseFloat(totalProductsPrice) + parseFloat(state.shippingCost)).toFixed(2)} €</h6>
-                    </React.Fragment>
-                )}
-            </div>
-        </React.Fragment>
-    )}
-</Col>
-
-        </Row>
-         <Row className="justify-content-md-center m-2">
+                    <h3 className="text-center m-5">Riepilogo Ordine</h3>
+                    {id === 'direct' && (
+                        <React.Fragment>
+                            <div className="product-details">
+                                <img src={state.productDetails.immagine} alt="Prodotto" className="product-image" />
+                                <h6>Prodotto: {state.productDetails.nome}, {state.productDetails.colore}</h6>
+                                <h6>Prezzo: {state.productDetails.prezzo} €</h6>
+                            </div>
+                            {/* Calcolo delle spese di spedizione e del totale */}
+                            {state.nazione !== '' && (
+                                <div className="shipping-details m-5">
+                                    <h6>Spese di spedizione da {state.nazione}: {state.shippingCost} €</h6>
+                                    <h6>Totale da pagare: {(parseFloat(state.productDetails.prezzo) + parseFloat(state.shippingCost)).toFixed(2)} €</h6>
+                                </div>
+                            )}
+                        </React.Fragment>
+                    )}
+                    {id === 'cart' && (
+                        <React.Fragment>
+                            <div className="cart-container">
+                                {cartItems?.map((item) => (
+                                    <div className="cart-item m-3" key={item.productId}>
+                                        <img src={cartDetails[item.productId]?.immagine} alt="Prodotto" className="product-image" />
+                                        <div className='product-details'>
+                                            <h6>{cartDetails[item.productId]?.nome}, {cartDetails[item.productId]?.colore}</h6>
+                                            <h6>Quantità: {cartDetails[item.productId]?.quantita}</h6>
+                                            <h6>Prezzo: {cartDetails[item.productId]?.totale.toFixed(2)} €</h6>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                            <div className="shipping-details m-5">
+                                {state.nazione !== '' && (
+                                    <React.Fragment>
+                                        <h6>Spese di spedizione da {state.nazione}: {state.shippingCost} €</h6>
+                                        <h6>Totale da pagare: {(parseFloat(totalProductsPrice) + parseFloat(state.shippingCost)).toFixed(2)} €</h6>
+                                    </React.Fragment>
+                                )}
+                            </div>
+                        </React.Fragment>
+                    )}
+                </Col>
+            </Row>
+            <Row className="justify-content-md-center m-2">
                 <Col xs={12} md={6} >
                     <h3 className="text-center m-5">Informazioni di pagamento</h3>
                     <Row>
@@ -340,22 +397,24 @@ const Payments = () => {
                 </Col>
             </Row>
             <Col xs={12} className="d-flex justify-content-center">
-    <Row className="m-5 payments-buttons">
-        <Col className="text-center"> {/* Utilizziamo una colonna per allineare i pulsanti */}
-            <Link to="/cart">
-                <Button type="submit">
-                    <h5>Torna al Carrello</h5>
-                </Button>
-            </Link>
-            <Button variant="primary" type="submit" onClick={handleSubmit} disabled={!isFormValid || !scadenzaValida}>
-                <h5>Conferma Pagamento</h5>
-            </Button>
-        </Col>
-    </Row>
-</Col>
-
-
-
+                <Row className="m-5 payments-buttons">
+                    <Col className="text-center"> {/* Utilizziamo una colonna per allineare i pulsanti */}
+                        <Link to="/cart">
+                            <Button type="submit">
+                                <h5>Torna al Carrello</h5>
+                            </Button>
+                        </Link>
+                        <Button 
+                            variant="primary" 
+                            type="submit" 
+                            onClick={handleSubmit} 
+                            disabled={!isFormValid || !scadenzaValida || (!userId ? !isFormVirtualValid : false)}
+                        >
+                            <h5>Conferma Pagamento</h5>
+                        </Button>
+                    </Col>
+                </Row>
+            </Col>
         </Container>
     );
 };
