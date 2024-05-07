@@ -102,7 +102,7 @@ export const Header = () => {
     }
     else{
       handleLinkClick('/cart');
-      navigate(`/login`);
+      navigate(`/cart`);
     }
   }
 

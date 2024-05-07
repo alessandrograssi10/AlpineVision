@@ -5,7 +5,6 @@ import CartCard from './CartCard.jsx';
 import { Link } from 'react-router-dom';
 import './Cart.css';
 import cartimage from '../../assets/Images/cartimage.png';
-import { GetInfo } from '../../assets/Scripts/GetFromCart.js';
 
 function Cart() {
 
@@ -17,6 +16,7 @@ function Cart() {
 
     //  Scarica carrello
     useEffect(() => {
+        if(userID){
         const myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
 
@@ -35,6 +35,15 @@ function Cart() {
                 setToggler(result.length !== 0);
             })
             .catch((error) => console.error(error));
+        }
+        else{
+            var cart = JSON.parse(localStorage.getItem("virtualCart") || "[]");
+            setCartItems(cart);
+            //
+            const provTotalPrice = cart.reduce((somma, cartItem) => somma + cartItem.total, 0);
+                setTotalPrice(provTotalPrice);
+                setToggler(cart.length !== 0);
+        }
     }, []);
 
     //  Aggiorna pulsante carrello
@@ -59,18 +68,20 @@ function Cart() {
     }
 
     //  Rimuove un prodotto dal db
-    const removeProd = (delProductId, priceToDel) => {
+    const removeProd = (delProductId, priceToDel,colore) => {
         const newCartItems = cartItems.filter(product => product.productId !== delProductId);
         setCartItems(newCartItems);
         const newPrice = totalPrice - priceToDel;
         setTotalPrice(newPrice);
 
+        if(userID){
         const myHeadersrm = new Headers();
         myHeadersrm.append("Content-Type", "application/json");
 
         const rawrm = JSON.stringify({
             "userId": `${userID}`,
-            "productId": `${delProductId}`
+            "productId": `${delProductId}`,
+            "color": `${colore}`,
         });
 
         const requestOptionsrm = {
@@ -84,8 +95,9 @@ function Cart() {
             .then((response) => response.text())
             .then((result) => localStorage.setItem('Cart_Trig', "Trigger"))
             .catch((error) => console.error(error));
-        
+    }
         localStorage.setItem('Cart_Trig', "Trigger");
+
     }
 
     const handleCheckout = () => {
