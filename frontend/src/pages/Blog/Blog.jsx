@@ -36,7 +36,7 @@ export const Blog = () => {
 
   return (
     <Container fluid className="p-0 m-0">
-      <Row className='mt-1 m-0 p-0 w-100 d-flex flex-grow-1'>
+      <Row className='mt-0 m-0 p-0 w-100 d-flex flex-grow-1'>
         {/* Ordina e mappa i post del blog */}
         {blogPosts.sort((a, b) => a.position - b.position).map((post, index) => (
           <Col key={index} md={12} lg={4}  className='m-0 p-0 '>
