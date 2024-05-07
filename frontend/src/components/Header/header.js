@@ -75,7 +75,6 @@ export const Header = () => {
 
   //Chiusura di tutte le tendine
   const closeAllBoxes = () => {
-    console.log("val", currentBox);
     if (!isLargeScreen || !currentBox) return;
     setIsClosing(true);
     setTimeout(() => {

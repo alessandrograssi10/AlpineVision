@@ -38,9 +38,6 @@ export const Accessory = () => {
             })
             .then(data => {
                 const filteredData = data.filter(item => item._id === id);
-
-                console.log('prodotto ricevuto:', filteredData);
-                console.log("Prodffff",filteredData)
                 setProduct(filteredData);
             })
             .catch(error => {
@@ -65,9 +62,7 @@ export const Accessory = () => {
     }
 
     async function AddToCart() {
-        console.log(userId, "UserID");
         if (userId) {
-            console.log("carrello");
             const quantity = 1;
             const color = product[selectedSetIndex]?.colore;
             const url = 'http://localhost:3000/api/carts/add';
@@ -98,7 +93,6 @@ export const Accessory = () => {
             } catch (error) { console.error('Error:', error); }
         } else {
             navigate(`/login`);
-            console.log("login");
         }
     }
 
@@ -196,7 +190,7 @@ export const Accessory = () => {
             <Link to={`/home`} className='text-navbar-box'>HOME</Link> /<Link to={`/accessories`} className='text-navbar-box'>ACCESSORI</Link> / <Link className='text-navbar-box'>{product[0]?.name?.toUpperCase()}</Link>
     </div></Row>
                     <Row className="justify-content-center m-0 mt-3 ml-0 p-0">
-                            <h15 className="text-left text-black mb-2">{productInfo?.categoria?.toUpperCase()}</h15>
+                            <h6 className="text-left text-black mb-2">{productInfo?.categoria?.toUpperCase()}</h6>
                         </Row>
                  
                         <Row className="justify-content-center m-0 mt-1 ml-0 p-0">
@@ -220,21 +214,21 @@ export const Accessory = () => {
                 {buttonState === 'loading' && <div className="spinner "></div>}
                 {buttonState === 'confirmed' && <BsCheck className='icon-confirmed'/>}
                 {buttonState === 'default' && <h3 className='p-0 m-0'>AGGIUNGI AL CARRELLO</h3>}
-                {buttonState === 'login' && <h3 className='p-0 m-0'><h3 className='p-0 m-0'>EFFETTUA PRIMA IL LOGIN</h3></h3>}
+                {buttonState === 'login' && <div className='p-0 m-0'><h3 className='p-0 m-0'>EFFETTUA PRIMA IL LOGIN</h3></div>}
             </Button>
                                 
                                 <div style={{ width: '10px' }}></div>
                                 <Button className={`button-black-prod-nomon m-2 mt-4 mb-0 ${buttonStateDirect}`} onClick={() => DirectPay()} variant="outline-dark" size="lg">
                                 {buttonStateDirect === 'loading' && <div className="spinner "></div>}
-                                {buttonStateDirect === 'default' && <h3 className='p-0 m-0'><h3 className='p-0 m-0'>COMPRA ORA</h3></h3>}
-                                {buttonStateDirect === 'login' && <h3 className='p-0 m-0'><h3 className='p-0 m-0'>EFFETTUA PRIMA IL LOGIN</h3></h3>}
+                                {buttonStateDirect === 'default' && <div className='p-0 m-0'><h3 className='p-0 m-0'>COMPRA ORA</h3></div>}
+                                {buttonStateDirect === 'login' && <div className='p-0 m-0'><h3 className='p-0 m-0'>EFFETTUA PRIMA IL LOGIN</h3></div>}
 
                                 </Button>
                             </Col>
                         </Row>
                     
                         <Row className="justify-content-center m-0 mt-1 ml-0 p-0 mb-3">
-                            <h10 className="text-left text-black text-bold">SKU: {product[0]?._id}</h10>
+                            <h6 className="text-left text-black text-bold">SKU: {product[0]?._id}</h6>
                         </Row>
                     </div>
                 </Col>

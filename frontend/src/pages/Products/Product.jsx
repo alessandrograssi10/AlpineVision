@@ -182,7 +182,7 @@ export const Product = (addToStorage) => {
             <Link to={`/home`} className='text-navbar-box'>HOME</Link> /<Link to={`/products`} className='text-navbar-box'>PRODOTTI</Link> / <Link className='text-navbar-box'>{productInfo?.nome?.toUpperCase()}</Link>
     </div></Row>
                     <Row className="justify-content-center m-0 mt-3 ml-0 p-0">
-                            <h15 className="text-left text-black mb-2">{productInfo?.categoria?.toUpperCase()}</h15>
+                            <h6 className="text-left text-black mb-2">{productInfo?.categoria?.toUpperCase()}</h6>
                         </Row>
                  
                         <Row className="justify-content-center m-0 mt-1 ml-0 p-0">
@@ -224,22 +224,22 @@ export const Product = (addToStorage) => {
                                 <Button className={`button-black-prod m-2 mt-5 ${buttonState}`} onClick={addToCart} variant="outline-dark pl-0 ml-0" size="lg">
                 {buttonState === 'loading' && <div className="spinner "></div>}
                 {buttonState === 'confirmed' && <BsCheck className='icon-confirmed'/>}
-                {buttonState === 'default' && <h3 className='p-0 m-0'>AGGIUNGI AL CARRELLO</h3>}
-                {buttonState === 'login' && <h3 className='p-0 m-0'><h3 className='p-0 m-0'>EFFETTUA PRIMA IL LOGIN</h3></h3>}
+                {buttonState === 'default' && <div className='p-0 m-0'>AGGIUNGI AL CARRELLO</div>}
+                {buttonState === 'login' && <div className='p-0 m-0'><h3 className='p-0 m-0'>EFFETTUA PRIMA IL LOGIN</h3></div>}
             </Button>
                                 
                                 <div style={{ width: '10px' }}></div>
                                 <Button className={`button-black-prod-nomon m-2 mt-4 mb-0 ${buttonStateDirect}`} onClick={() => DirectPay()} variant="outline-dark" size="lg">
                                 {buttonStateDirect === 'loading' && <div className="spinner "></div>}
-                                {buttonStateDirect === 'default' && <h3 className='p-0 m-0'><h3 className='p-0 m-0'>COMPRA ORA</h3></h3>}
-                                {buttonStateDirect === 'login' && <h3 className='p-0 m-0'><h3 className='p-0 m-0'>EFFETTUA PRIMA IL LOGIN</h3></h3>}
+                                {buttonStateDirect === 'default' && <div className='p-0 m-0'><h3 className='p-0 m-0'>COMPRA ORA</h3></div>}
+                                {buttonStateDirect === 'login' && <div className='p-0 m-0'><h3 className='p-0 m-0'>EFFETTUA PRIMA IL LOGIN</h3></div>}
 
                                 </Button>
                             </Col>
                         </Row>
                     
                         <Row className="justify-content-center m-0 mt-1 ml-0 p-0 mb-3">
-                            <h10 className="text-left text-black text-bold">SKU: {productInfo._id}</h10>
+                            <h6 className="text-left text-black text-bold">SKU: {productInfo._id}</h6>
                         </Row>
                     </div>
                 </Col>

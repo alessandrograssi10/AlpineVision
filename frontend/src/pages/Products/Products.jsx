@@ -33,7 +33,6 @@ export const Products = () => {
                         const urls = {};
                         data.forEach((product, index) => {
                             urls[product._id] = imageUrls[index];
-                            console.log(imageUrls[index]);
                         });
                         setImageUrlsp(urls);
                     })
@@ -45,7 +44,6 @@ export const Products = () => {
                         const urls = {};
                         data.forEach((product, index) => {
                             urls[product._id] = imageUrls[index];
-                            console.log(imageUrls[index]);
                         });
                         setImageUrlspLat(urls);
                     })

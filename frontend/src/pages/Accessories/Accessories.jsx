@@ -36,7 +36,6 @@ export const Accessories = () => {
               data.forEach((product, index) => {
                 urls[product._id] = imageUrls[index][0];
                 urlsLat[product._id] = imageUrls[index][1];
-                console.log(imageUrls[index]);
               });
               setImageUrlsp(urls);
               setImageUrlspLat(urlsLat);

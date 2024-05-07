@@ -24,7 +24,6 @@ export const HeaderCart = ({ onChangeCart }) => {
     const fetchData = () => {
       const item = localStorage.getItem('Cart_Trig');
       if (item !== '') {
-        console.log("item", item);
 
         const myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
@@ -42,7 +41,6 @@ export const HeaderCart = ({ onChangeCart }) => {
             if (Array.isArray(result) && result) {
               const totalQuantita = result.reduce((sum, item) => sum + item.quantity, 0);
               setQnt(totalQuantita); 
-              console.log("quant", totalQuantita);
             }
 
           })
