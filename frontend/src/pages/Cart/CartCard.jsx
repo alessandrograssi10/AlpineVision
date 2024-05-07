@@ -3,7 +3,7 @@ import { Container, Row, Col, Button } from 'react-bootstrap';
 import { useEffect, useState } from 'react';
 import './CartCard.css';
 import trashBin from '../../assets/Images/trashBin.png';
-import { changeCart } from '../../assets/Scripts/Virtual_Cart.js';
+import { changeCart,deleteFromCart } from '../../assets/Scripts/Virtual_Cart.js';
 
 function CartCard({ quantity, updateTotalPrice, prodID, color, type, removeProd,}) {
 
@@ -113,7 +113,8 @@ function CartCard({ quantity, updateTotalPrice, prodID, color, type, removeProd,
 
     // rimuove un prodotto nel carrello
     const removeHandleClick = () => {
-        removeProd(prodID, price * qnt);
+       removeProd(prodID, price * qnt, prodID);
+       if(!userID) deleteFromCart(prodID,color);
     };
 
 

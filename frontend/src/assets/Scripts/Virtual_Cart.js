@@ -79,20 +79,11 @@ export function changeCart(elementId, qnt, color) {
     localStorage.setItem("virtualCart", JSON.stringify(cart));
 }
 
-export function deleteCart(elementId, qnt, color) {
+export function deleteFromCart(elementId, color) {
     var cart = JSON.parse(localStorage.getItem("virtualCart") || "[]");
 
-    // Cerca se l'elemento esiste già nel carrello in base al productId e al colore
-    var existingItem = cart.find(item => item.productId === elementId && item.color === color);
-
-    if (existingItem) {
-        // Se l'elemento esiste già, aggiorna la quantità e il totale
-        let newTotale = Math.floor(existingItem.total/existingItem.quantity) * qnt;
-        existingItem.quantity = qnt;
-        existingItem.total = newTotale;
-    } else {
-        return;
-    }
+    // Filtra l'array del carrello per rimuovere l'elemento con l'ID e il colore specificati
+    cart = cart.filter(item => !(item.productId === elementId && item.color === color));
 
     localStorage.setItem("virtualCart", JSON.stringify(cart));
 }
