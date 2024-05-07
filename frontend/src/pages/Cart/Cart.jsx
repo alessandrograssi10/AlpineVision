@@ -40,8 +40,10 @@ function Cart() {
             var cart = JSON.parse(localStorage.getItem("virtualCart")) || "[]";
             setCartItems(cart);
             //
-            const provTotalPrice = cart.reduce((total, cartItem) => total + cartItem.total, 0);
-            console.log("Tot",provTotalPrice)
+            let provTotalPrice = 0;
+            if (Array.isArray(cart)) {
+                provTotalPrice = cart.reduce((total, cartItem) => total + cartItem.total, 0);
+            } 
             setTotalPrice(provTotalPrice);
             setToggler(cart.length !== 0);
         }
