@@ -51,7 +51,7 @@ function Cart() {
     //  Aggiorna pulsante carrello
     useEffect(() => {
         if (cartItems.length == 0) {
-            //setTotalPrice(0); //se attivo rompe tutto
+            setTotalPrice(0); //se attivo rompe tutto
             console.log("Zero")
             setToggler(false);
         } else if (cartItems.length > 0) {
