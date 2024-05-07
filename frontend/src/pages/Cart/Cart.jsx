@@ -82,8 +82,10 @@ function Cart() {
 
         fetch("http://localhost:3000/api/carts/remove", requestOptionsrm)
             .then((response) => response.text())
-            .then((result) => console.log())
+            .then((result) => localStorage.setItem('Cart_Trig', "Trigger"))
             .catch((error) => console.error(error));
+        
+        localStorage.setItem('Cart_Trig', "Trigger");
     }
 
     console.log(cartItems);
