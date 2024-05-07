@@ -14,7 +14,7 @@ function Cart() {
 
     const userID = localStorage.getItem('userId');
 
-    //  Scarica carrello
+    // Scarica carrello
     useEffect(() => {
         if(userID){
         const myHeaders = new Headers();
