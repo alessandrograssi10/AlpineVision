@@ -37,10 +37,12 @@ function Cart() {
             .catch((error) => console.error(error));
         }
         else{
-            var cart = JSON.parse(localStorage.getItem("virtualCart") || "[]");
+            var cart = JSON.parse(localStorage.getItem("virtualCart"));
             setCartItems(cart);
             //
+            
             const provTotalPrice = cart.reduce((somma, cartItem) => somma + cartItem.total, 0);
+            console.log(provTotalPrice)
                 setTotalPrice(provTotalPrice);
                 setToggler(cart.length !== 0);
         }
@@ -49,7 +51,8 @@ function Cart() {
     //  Aggiorna pulsante carrello
     useEffect(() => {
         if (cartItems.length == 0) {
-            setTotalPrice(0);
+            //setTotalPrice(0); //se attivo rompe tutto
+            console.log("Zero")
             setToggler(false);
         } else if (cartItems.length > 0) {
             setToggler(true);
