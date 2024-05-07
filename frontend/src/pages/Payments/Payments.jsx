@@ -8,7 +8,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'react-credit-cards-2/dist/es/styles-compiled.css';
 import Cards from 'react-credit-cards-2';
 import money from '../../assets/Images/money.png';
-import { GetInfo} from '../../assets/Scripts/GetFromCart.js';
+import { GetInfo } from '../../assets/Scripts/GetFromCart.js';
 import './Payments.css';
 
 const Payments = () => {
@@ -27,8 +27,8 @@ const Payments = () => {
         focused: '',
         touchedScadenza: false,
         productDetails: JSON.parse(localStorage.getItem('productDetails')) || {},
-        paymentSuccess: false
-       
+        paymentSuccess: false,
+        shippingCost: 0 
     });
 
     const cartaValida = /^\d{16}$/.test(state.numeroCarta);
@@ -92,9 +92,6 @@ const Payments = () => {
             {
                 // Gestisci l'invio dell'ordine diretto
             }
-            else {
-                // Gestisci l'opzione 'cart'
-            }
         } 
     }
 
@@ -126,11 +123,14 @@ const Payments = () => {
     };
 
     const handleCountryChange = (val) => {
+        const randomShippingCost = (Math.random() * (30 - 5) + 5).toFixed(2);
+    
         setState(prevState => ({
             ...prevState,
             nazione: val,
             regione: '',
-            città: ''
+            città: '',
+            shippingCost: randomShippingCost 
         }));
     };
 
@@ -162,6 +162,9 @@ const Payments = () => {
     const { nome, cognome, nazione, regione, città, indirizzo, telefono, numeroCarta, scadenza, cvv, focused, touchedScadenza } = state;
 
     const isFormValid = nome && cognome && nazione && regione && città && indirizzo && numeroCarta && scadenza && cvv;
+; 
+    const totalProductsPrice = parseFloat(localStorage.getItem('totalPrice')) || 0;
+    const total = state.shippingCost + totalProductsPrice;
 
     return (
         <Container>
@@ -240,34 +243,43 @@ const Payments = () => {
                     </Form.Group>
                 </Col>
                 <Col xs={12} md={6}>
-                <h3 class="text-center m-5">Riepilogo Ordine</h3>
-                    {id === 'direct' && (
-                        <React.Fragment>
-                            <div className="product-details">
-                                <img src={state.productDetails.immagine} alt="Prodotto" className="product-image" />
-                                <h6>Prodotto: {state.productDetails.nome}, {state.productDetails.colore}</h6>
-                                <h6>Prezzo: {state.productDetails.prezzo} €</h6>
-                            </div>
-                        </React.Fragment>
-                    )}
-                    {id === 'cart' && (
-                         <div className="cart-container">
-                            {cartItems?.map((item) => (
-                                 <div className="cart-item m-3" key={item.productId}>
-                                     <img src={cartDetails[item.productId]?.immagine} alt="Prodotto" className="product-image" />
-          <div className='product-details'>
-            <h6>{cartDetails[item.productId]?.nome}, {cartDetails[item.productId]?.colore}</h6>
-            <h6>Quantità: {cartDetails[item.productId]?.quantita}</h6>
-            <h6>Prezzo: {cartDetails[item.productId]?.totale.toFixed(2)} €</h6>
-          </div>
-        </div>
-      ))}
-    </div>
-  )}
-                </Col>
-            </Row>
+    <h3 className="text-center m-5">Riepilogo Ordine</h3>
+    {id === 'direct' && (
+        <React.Fragment>
+            <div className="product-details">
+                <img src={state.productDetails.immagine} alt="Prodotto" className="product-image" />
+                <h6>Prodotto: {state.productDetails.nome}, {state.productDetails.colore}</h6>
+                <h6>Prezzo: {state.productDetails.prezzo} €</h6>
+            </div>
+        </React.Fragment>
+    )}
+    {id === 'cart' && (
+        <React.Fragment>
+            <div className="cart-container">
+                {cartItems?.map((item) => (
+                    <div className="cart-item m-3" key={item.productId}>
+                        <img src={cartDetails[item.productId]?.immagine} alt="Prodotto" className="product-image" />
+                        <div className='product-details'>
+                            <h6>{cartDetails[item.productId]?.nome}, {cartDetails[item.productId]?.colore}</h6>
+                            <h6>Quantità: {cartDetails[item.productId]?.quantita}</h6>
+                            <h6>Prezzo: {cartDetails[item.productId]?.totale.toFixed(2)} €</h6>
+                        </div>
+                    </div>
+                ))}
+            </div>
+            <div className="shipping-details m-5">
+                 {state.nazione !== '' && (
+                 <React.Fragment>
+                    <h6>Spese di spedizione da {state.nazione}: {state.shippingCost} €</h6>
+                <h6>Totale da pagare: {(parseFloat(totalProductsPrice) + parseFloat(state.shippingCost)).toFixed(2)} €</h6>
+                </React.Fragment>
+            )}</div>
+            </React.Fragment>
+         )}
+         </Col>
+        </Row>
 
-            <Row className="justify-content-md-center m-2">
+         <Row className="justify-content-md-center m-2">
                 <Col xs={12} md={6} >
                     <h3 className="text-center m-5">Informazioni di pagamento</h3>
                     <Row>
