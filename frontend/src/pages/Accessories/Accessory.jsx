@@ -239,8 +239,10 @@ export const Accessory = () => {
                     </div>
                 </Col>
             </Row>
-            <div style={{ backgroundColor: 'white', height: '50px' }}></div>
-            
+            <Row className="justify-content-center m-0 mt-5 ml-0 p-0 mb-3">
+                <h3 className="text-center text-black text-bold">{product[0]?.description}</h3>
+
+            </Row>
         </Container>
     );
 };
