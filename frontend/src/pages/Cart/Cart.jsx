@@ -37,7 +37,7 @@ function Cart() {
             .catch((error) => console.error(error));
         }
         else{
-            var cart = JSON.parse(localStorage.getItem("virtualCart"));
+            var cart = JSON.parse(localStorage.getItem("virtualCart")) || "[]";
             setCartItems(cart);
             //
             

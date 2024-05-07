@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 
-export const HeaderCart = ({ onChangeCart }) => {
+export const HeaderCart = () => {
   const [qnt, setQnt] = useState(0);
   const userId = localStorage.getItem('userId');
   const [isLargeScreen, setIsLargeScreen] = useState(window.innerWidth >= 992); //verifica la dimensione dello schermo
 
-   //evento che viene chiamato all ridimensionamento della schermata
+   // Evento che viene chiamato all ridimensionamento della schermata
    useEffect(() => {
     const handleResize = () => {
       setIsLargeScreen(window.innerWidth >= 992);

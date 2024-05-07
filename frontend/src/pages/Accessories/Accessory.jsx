@@ -119,7 +119,7 @@ export const Accessory = () => {
     }
 
     function DirectPay() {
-        if (userId) {
+     
             const quantity = 1;
     
            
@@ -135,13 +135,7 @@ export const Accessory = () => {
                 setButtonStateDirect('default');
                 navigate(`/payments/direct`);
             }, 500);
-        }
-        else{
-            setButtonStateDirect('login');
-            setTimeout(() => {
-                setButtonStateDirect('default');
-            }, 1000);
-        }
+       
     }
     return (
         <Container fluid className="p-0">

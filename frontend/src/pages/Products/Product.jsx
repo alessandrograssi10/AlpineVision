@@ -136,7 +136,6 @@ export const Product = (addToStorage) => {
     
 
     function DirectPay() {
-        if (userId) {
             const quantity = 1;
             const color = product[selectedSetIndex]?.colore;
     
@@ -153,13 +152,7 @@ export const Product = (addToStorage) => {
                 setButtonStateDirect('default');
                 navigate(`/payments/direct`);
             }, 500);
-        }
-        else{
-            setButtonStateDirect('login');
-            setTimeout(() => {
-                setButtonStateDirect('default');
-            }, 1000);
-        }
+       
     }
     
 
