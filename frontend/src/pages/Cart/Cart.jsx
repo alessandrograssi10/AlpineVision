@@ -137,13 +137,13 @@ function Cart() {
                         />
                     ))
                 )}
-            <Row className="p-2 mt-3 justify-content-between align-items-end">
+            <Row className="p-2 mt-5 justify-content-between align-items-end">
                 <Col className="d-flex justify-content-start">
                     {(toggler) ? (
                         <Row className="w-100">
                             <Col xs="6">
                                 <Link to="/Payments/cart" className="fs-4">
-                                    <Button id="buyButton" onClick={handleCheckout}>
+                                    <Button size="lg" id="buyButtonn" variant="outline-dark" className='button-black-prod' onClick={handleCheckout}>
                                         Procedi all'acquisto
                                     </Button>
                                 </Link>
@@ -154,8 +154,8 @@ function Cart() {
                         </Row>
                     ) : (
                         <Link to="/Products" className="invisible-link">
-                            <Button id="prodPageButton" className="fs-4">
-                                Shop
+                            <Button variant="outline-dark" id="prodPageButtonn" className="fs-4 button-black-prod">
+                                Continua con gli acquisti
                             </Button>
                         </Link>
                     )}

@@ -74,7 +74,7 @@
         font-size: 1.5rem; 
     }
 }
-
+/*
 .payments-buttons {
     display: flex;
     justify-content: space-between;
@@ -85,7 +85,7 @@
     flex: 1;
     margin: 0 10px;
     margin-bottom: 20px;
- }
+ }*/
 
 .enlarged-card {
     flex: 1 1 200px; 

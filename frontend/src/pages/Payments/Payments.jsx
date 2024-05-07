@@ -400,12 +400,13 @@ const Payments = () => {
                 <Row className="m-5 payments-buttons">
                     <Col className="text-center"> {/* Utilizziamo una colonna per allineare i pulsanti */}
                         <Link to="/cart">
-                            <Button type="submit">
+                            <Button type="submit" className='button-black-prod-nomon m-3 mt-5'  variant="outline-dark">
                                 <h5>Torna al Carrello</h5>
                             </Button>
                         </Link>
-                        <Button 
-                            variant="primary" 
+                                                    {/*variant="primary" */}
+                        <Button className='button-black-prod m-3 mt-5'
+                            variant="outline-dark"
                             type="submit" 
                             onClick={handleSubmit} 
                             disabled={!isFormValid || !scadenzaValida || (!userId ? !isFormVirtualValid : false)}
