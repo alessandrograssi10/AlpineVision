@@ -47,7 +47,8 @@ export function changeCart(elementId, qnt, color) {
 
     if (existingItem) {
         // Se l'elemento esiste già, aggiorna la quantità e il totale
-        let newTotale = Math.floor(existingItem.total/existingItem.quantity) * qnt;
+        let newTotale = ((existingItem.total/existingItem.quantity) * qnt).toFixed(2);
+        console.log(newTotale);
         existingItem.quantity = qnt;
         existingItem.total = newTotale;
     } else {
