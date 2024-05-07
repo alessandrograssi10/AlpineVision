@@ -19,9 +19,11 @@ export const HeaderCart = () => {
   //Caricamento della quantità nel carrello
   useEffect(() => {
      const fetchData = () => {
-        // 
+        // Caricamento di Cart_Trig ed in caso esce
         const item = localStorage.getItem('Cart_Trig');
         if (item !== null && item !== undefined && item !== '') {
+            // Se l'utente è loggato prende del informazioni dal backend
+            // Se l'utente non è loggato prendel le informazioni dal localstorage
             if (userId) {
                 const myHeaders = new Headers();
                 myHeaders.append("Content-Type", "application/json");
@@ -52,10 +54,11 @@ export const HeaderCart = () => {
         }
     };
 
-    const intervalId = setInterval(fetchData, 50); // Imposta l'intervallo a 5 secondi
-    fetchData(); // Esegui la prima richiesta immediatamente
-    return () => clearInterval(intervalId); // Pulisci l'intervallo quando l'effetto viene dismesso
-}, []); // Aggiungi userId come dipendenza per far sì che l'effetto venga eseguito quando userId cambia
+    // Imposta l'intervallo
+    const intervalId = setInterval(fetchData, 50);
+    fetchData();
+    return () => clearInterval(intervalId);
+  }, []);
 
 
   return (

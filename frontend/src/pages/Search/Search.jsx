@@ -1,27 +1,24 @@
 import React, { useState, useEffect } from 'react';
-import { useParams,useLocation } from 'react-router-dom';
-import { Image, Container,Form, Button, InputGroup,Card,Col,Row ,Tab,Tabs} from 'react-bootstrap';
+import { useLocation } from 'react-router-dom';
+import { Container,Form, InputGroup,Card,Col,Row } from 'react-bootstrap';
 import { Link ,useNavigate} from 'react-router-dom';
 import './Search.css';
 
 
 export const Search = () => {
     const location = useLocation();
-    const queryString = location.search;  // This includes the '?' character
-    let navigate = useNavigate();
+    const queryString = location.search;  // Metodo per prendere le informazione dall' URL
+    let navigate = useNavigate(); // Metodo per lo spostamento tra pagine
+    const cerca = queryString.substring(1);  // Vengo prese le informazione cerca dall' URL
 
-
-    // Remove the '?' to get everything after it
-    const cerca = queryString.substring(1);
-
-    const [searchElements, setSearchElements] = useState([]);
-    const [searchFilteredElements, setSearchFilteredElements] = useState([]);
-    const [imageUrls, setImageUrls] = useState({});
-    const [key, setKey] = useState('vetrina');
-    const [query, setQuery] = useState('');
+    const [searchElements, setSearchElements] = useState([]); // Tutti gli elementi del database
+    const [searchFilteredElements, setSearchFilteredElements] = useState([]); // Elementi filtrati in base alla ricerca
+    const [imageUrls, setImageUrls] = useState({}); // Set per tenere le immagini degli elementi
+    const [query, setQuery] = useState(''); // Stringa cerca
 
     useEffect(() => {
 
+        // Vengono recuperati tutti i prodotti
         const fetchProducts = async () => {
             try {
                 const response = await fetch('http://localhost:3000/api/products');
@@ -34,6 +31,7 @@ export const Search = () => {
             }
         };
 
+        // Vengono recuperati tutti gli articoli
         const fetchPosts = async () => {
             try {
                 const response = await fetch('http://localhost:3000/api/posts/getAllPosts');
@@ -45,6 +43,7 @@ export const Search = () => {
             }
         };
 
+        // Vengono recuperati tutti gli accessori
         const fetchAccessories = async () => {
             try {
                 const response = await fetch('http://localhost:3000/api/accessories');
@@ -56,6 +55,7 @@ export const Search = () => {
             }
         };
 
+        // Funzione per recuperare le immagini in base al tipo di elemento
         const loadImages = async (products) => {
             const urls = {};
             for (const product of products) {
@@ -93,10 +93,12 @@ export const Search = () => {
         
     }, [cerca]);
 
+    // Funzione per recuperare il nome dell' elemento in mase al tipo
     const getProductName = (product) => {
         return product.title || product.name || product.nome || "Unknown";
     };
 
+    // Funzione per recuperare il percorso della pagina a cui porta l'elemento in mase al tipo
     const getElementPath= (product) => {
         if (product.title) {
             return `/blogarticle/${product._id}`;
@@ -107,6 +109,8 @@ export const Search = () => {
         }
         return null;
     };
+
+    // Funzione per recuperare il tipo e mostrarlo a schermo in base all'elemento
     const getElementType= (product) => {
         if (product.title) {
             return `articolo blog`;
@@ -118,19 +122,22 @@ export const Search = () => {
         return null;
     };
 
+    // Funzione cerca
     const handleSearch = (event, all) => {
-        // Determine the source of the query based on input type
+        
+        // Se event è una stringa, prende la stringa.
+        // Se event è un evento, prende event.target.value per recuperare la stringa. 
+
         const Query = typeof event === 'string' ? event : event.target.value;
         setQuery(Query);
     
-        // Clear filtered results if the query is empty or only whitespace
+        // Se la stringa cercata è nulla
         if (!Query || Query.trim() === '') {
             setSearchFilteredElements([]);
-            console.log("reset", searchFilteredElements);
-            return; // Exit early if there's no query to process
+            return; 
         }
     
-        // Prepare to filter elements based on the query
+        // Viene portata la stringa di ricerca tutta in minuscolo
         const queryLower = Query.toLowerCase();
         let filteredElements = [];
     
