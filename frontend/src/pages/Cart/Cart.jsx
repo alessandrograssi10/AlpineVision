@@ -88,8 +88,11 @@ function Cart() {
         localStorage.setItem('Cart_Trig', "Trigger");
     }
 
-    console.log(cartItems);
+    const handleCheckout = () => {
+        localStorage.setItem('totalPrice', totalPrice.toFixed(2));
+    }
 
+    console.log(cartItems);
 
     return (
         <Container className="mb-5">
@@ -124,7 +127,7 @@ function Cart() {
                         <Row className="w-100">
                             <Col xs="6">
                                 <Link to="/Payments/cart" className="fs-4">
-                                    <Button id="buyButton" >
+                                    <Button id="buyButton" onClick={handleCheckout}>
                                         Procedi all'acquisto
                                     </Button>
                                 </Link>
