@@ -5,6 +5,7 @@ import { fetchBlogPosts, getSessionStorageOrDefault, fetchBlobFromUrl } from './
 
 
 export const BlogEdit = () => {
+  const ruolo = localStorage.getItem("ruoloUser");
   /*const [blogPosts, setBlogPosts] = useState(() => getSessionStorageOrDefault('blogPosts', [])); // Elementi*/
   const [blogPosts, setBlogPosts] = useState(() => getSessionStorageOrDefault('blogPosts', [])); // Elementi
 
@@ -13,7 +14,6 @@ export const BlogEdit = () => {
   const [Images, setImages] = useState(() => getSessionStorageOrDefault('blogImages', []));
   const [ImagesCopy, setImagesCopy] = useState(() => getSessionStorageOrDefault('blogImagesCopy', []));
   const [imagesLoaded, setImagesLoaded] = useState(false);
-  const ruolo = localStorage.getItem("ruoloUser");
   let firstOpen = false;
 
   useEffect(() => {
@@ -305,8 +305,8 @@ async function uploadImage(postId, file, uploadUrl) {
 }
 
 
-
-return (
+if(ruolo !== "admin"){ window.location.href = '/home'; }
+else return (
   <Container fluid className="p-0 m-0">
     {/* Alert per avvertire che si è in modalità editing */}
     <Alert variant={'warning'} className='m-3 mt-4'>
