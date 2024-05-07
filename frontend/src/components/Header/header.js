@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Navbar, Nav, Image, Form } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Link ,useNavigate} from 'react-router-dom';
 import Logo from '../../assets/Images/Asset 1.png';
 import SearchIcon from '../../assets/Images/Sicon.png';
 import Car from '../../assets/Images/shopping-cart.png';
@@ -20,6 +20,9 @@ export const Header = () => {
   const [isOpening, setIsOpening] = useState(false); //Variabile per l'animazione di apertura tendina
   const [timeoutId, setTimeoutId] = useState(null); //id timer
   const [isLargeScreen, setIsLargeScreen] = useState(window.innerWidth >= 992); //verifica la dimensione dello schermo
+  const [expanded, setExpanded] = useState(false); //variabile per apertura/chiusura collapse
+  const userID = localStorage.getItem('userId'); // ID utente
+  let navigate = useNavigate(); // per la navigazione tra i link
 
   //evento che viene chiamato all ridimensionamento della schermata
   useEffect(() => {
@@ -34,6 +37,7 @@ export const Header = () => {
 
   //chiusura delle tendine qunado viene cliccato un pulsante
   const handleLinkClick = () => {
+    setExpanded(false);
     closeAllBoxes();
   };
 
@@ -80,32 +84,51 @@ export const Header = () => {
     }, 200);
   };
 
-  //L'utente viene reindirizzato se è loggato
+  // L'utente viene reindirizzato se è loggato
   const handleLoginClick = () => {
     if (AuthServices.isLoggedIn()) {
-      window.location.href = "/areapersonale";
+      handleLinkClick('/areapersonale');
+      navigate(`/areapersonale`);
     } else {
-      window.location.href = "/login";
+      handleLinkClick('/login');
+      navigate(`/login`);
     }
   }
 
+  // Reindirizzamento sul carrello
   const handleCartClick = () => {
     if (AuthServices.isLoggedIn()) {
-      window.location.href = "/cart";
+      handleLinkClick('/cart');
+      navigate(`/cart`);
+    }
+    else{
+      handleLinkClick('/cart');
+      navigate(`/login`);
     }
   }
+
+  // Reindirizzamento su cerca
+  const handleSearchClick = () => {
+    if (isLargeScreen) {
+      toggleBox("showSearchBox");
+    } else {
+      handleLinkClick('/search');
+      console.log("diocan")
+      navigate(`/search`);
+    }
+  } 
 
   return (
     <>
       {/* Navbar */}
-      <Navbar id="top" expand="lg" className="custom-navbar" onMouseLeave={closeAllBoxes}>
+      <Navbar id="top" expand="lg" className="custom-navbar" expanded={expanded} onMouseLeave={closeAllBoxes}>
         {/* Logo e Scritta di AlpineVision */}
         <Navbar.Brand as={Link} to="/home" className="navbar-brand-bold">
           <Image src={Logo} width="50" className="d-inline-block align-center logo" alt="Logo" />
           ALPINE VISION
         </Navbar.Brand>
         {/* Toggle per gli elementi con lo schermo piccolo */}
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
+        <Navbar.Toggle aria-controls="basic-navbar-nav" onClick={() => setExpanded(expanded ? false : true)}/>
 
         {/* Elementi della navbar con schermo grande */}
         <Navbar.Collapse id="basic-navbar-nav">
@@ -160,10 +183,12 @@ export const Header = () => {
 
               {/* Box Cerca */}
               <div>
-                <Nav.Link as={Link} onMouseEnter={OpenAllBoxes} className={`bold ${currentBox === 'showSearchBox' ? 'hovered' : ''}`}>
-                  <Image onClick={() => toggleBox("showSearchBox")} src={SearchIcon} width="20" className="icon d-none d-lg-inline-block d-xl-inline-block" alt="Search" />
-                  <span className="d-inline-block d-lg-none d-xl-none align-center logo">CERCA</span>
-                </Nav.Link>
+                <div onClick={handleSearchClick}>
+                  <Nav.Link as={Link} onMouseEnter={OpenAllBoxes} className={`bold ${currentBox === 'showSearchBox' ? 'hovered' : ''}`} >
+                    <Image src={SearchIcon} width="20" className="icon d-none d-lg-inline-block d-xl-inline-block" alt="Search" />
+                    <span  className="d-inline-block d-lg-none d-xl-none align-center logo">CERCA</span>
+                  </Nav.Link>
+                </div>
                 {currentBox === 'showSearchBox' && (
                   <div className={`info-box ${isClosing ? 'closing' : isOpening ? 'opening' : ''}`}>
                     <HeaderSearch onCloseAllBoxes={closeAllBoxes} />
@@ -174,13 +199,13 @@ export const Header = () => {
             {/* Bottone carrello */}
             <Nav.Link onMouseEnter={closeAllBoxes} onClick={handleCartClick} className="position-relative">
               <Image src={Car} width="20" className="icon d-none d-lg-inline-block d-xl-inline-block" alt="Cart" />
-              <span className="d-inline-block d-lg-none d-xl-none align-center logo">CARRELLO</span>
+              <span className="hover-underline-animation bold d-inline-block d-lg-none d-xl-none align-center logo">CARRELLO</span>
               <HeaderCart />
             </Nav.Link>
             {/* Bottone login o areapersonale */}
             <Nav.Link onMouseEnter={closeAllBoxes} onClick={handleLoginClick}>
               <Image src={Skier} width="20" className="icon d-none d-lg-inline-block d-xl-inline-block" alt="Login" />
-              <span className="d-inline-block d-lg-none d-xl-none align-center logo">LOGIN</span>
+              <span className="hover-underline-animation bold d-inline-block d-lg-none d-xl-none align-center logo">{!userID ? "LOGIN" : "AREA PERSONALE"}</span>
             </Nav.Link>
           </Nav>
         </Navbar.Collapse>

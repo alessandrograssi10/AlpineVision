@@ -119,8 +119,11 @@ export const Product = (addToStorage) => {
 
             } catch (error) { console.error('Error:', error); }
             
-        } else {
-           
+        } else{
+            setButtonState('login');
+            setTimeout(() => {
+                setButtonState('default');
+            }, 1000);
         }
     }
 
@@ -149,7 +152,7 @@ export const Product = (addToStorage) => {
             setButtonStateDirect('login');
             setTimeout(() => {
                 setButtonStateDirect('default');
-            }, 2000);
+            }, 1000);
         }
     }
     
@@ -222,6 +225,7 @@ export const Product = (addToStorage) => {
                 {buttonState === 'loading' && <div className="spinner "></div>}
                 {buttonState === 'confirmed' && <BsCheck className='icon-confirmed'/>}
                 {buttonState === 'default' && <h3 className='p-0 m-0'>AGGIUNGI AL CARRELLO</h3>}
+                {buttonState === 'login' && <h3 className='p-0 m-0'><h3 className='p-0 m-0'>EFFETTUA PRIMA IL LOGIN</h3></h3>}
             </Button>
                                 
                                 <div style={{ width: '10px' }}></div>
@@ -269,9 +273,7 @@ export const Product = (addToStorage) => {
                     <Row className="m-0 p-0 w-100 h-100 d-flex justify-content-center align-items-center p-5 ">
                         <h3 className="text-left text-bold">{formatDescription(productInfo.caratteristiche)}</h3>
                     </Row>
-
                 </Tab>
-
             </Tabs>
         </Container>
     );

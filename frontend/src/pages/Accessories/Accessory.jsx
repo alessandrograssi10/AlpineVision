@@ -138,8 +138,11 @@ export const Accessory = () => {
 
             } catch (error) { console.error('Error:', error); }
             
-        } else {
-           
+        } else{
+            setButtonState('login');
+            setTimeout(() => {
+                setButtonState('default');
+            }, 1000);
         }
     }
 
@@ -165,7 +168,7 @@ export const Accessory = () => {
             setButtonStateDirect('login');
             setTimeout(() => {
                 setButtonStateDirect('default');
-            }, 2000);
+            }, 1000);
         }
     }
     return (
@@ -217,6 +220,7 @@ export const Accessory = () => {
                 {buttonState === 'loading' && <div className="spinner "></div>}
                 {buttonState === 'confirmed' && <BsCheck className='icon-confirmed'/>}
                 {buttonState === 'default' && <h3 className='p-0 m-0'>AGGIUNGI AL CARRELLO</h3>}
+                {buttonState === 'login' && <h3 className='p-0 m-0'><h3 className='p-0 m-0'>EFFETTUA PRIMA IL LOGIN</h3></h3>}
             </Button>
                                 
                                 <div style={{ width: '10px' }}></div>

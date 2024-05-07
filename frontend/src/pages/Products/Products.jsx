@@ -12,7 +12,6 @@ export const Products = () => {
     const [imageUrlspLat, setImageUrlspLat] = useState({}); // immagini laterali
     const [colorCount, setColorCount] = useState({}); // set per contare i colori
     const [hoverIndex, setHoverIndex] = useState(null); //elemento selezionato
-    const [toCart, setToCart] = useState([])
 
     useEffect(() => {
         fetch(`http://localhost:3000/api/products`)
