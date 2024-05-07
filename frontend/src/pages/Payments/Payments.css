@@ -75,16 +75,17 @@
     }
 }
 
- 
-.payment-button {
-    width:  20vh; 
-    height: 10vh; 
-    padding: 10px; 
-    border-radius: 10px;
-    font-size: 4vh;
-    margin-top: 10px; 
+.payments-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin: 0 auto; 
 }
 
+.payments-buttons button {
+    flex: 1;
+    margin: 0 10px;
+    margin-bottom: 20px;
+ }
 
 .enlarged-card {
     flex: 1 1 200px; 

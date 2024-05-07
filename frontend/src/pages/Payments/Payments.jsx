@@ -9,6 +9,7 @@ import 'react-credit-cards-2/dist/es/styles-compiled.css';
 import Cards from 'react-credit-cards-2';
 import money from '../../assets/Images/money.png';
 import { GetInfo } from '../../assets/Scripts/GetFromCart.js';
+import { Link } from 'react-router-dom';
 import './Payments.css';
 
 const Payments = () => {
@@ -251,6 +252,13 @@ const Payments = () => {
                 <h6>Prodotto: {state.productDetails.nome}, {state.productDetails.colore}</h6>
                 <h6>Prezzo: {state.productDetails.prezzo} €</h6>
             </div>
+            {/* Calcolo delle spese di spedizione e del totale */}
+            {state.nazione !== '' && (
+                <div className="shipping-details m-5">
+                    <h6>Spese di spedizione da {state.nazione}: {state.shippingCost} €</h6>
+                    <h6>Totale da pagare: {(parseFloat(state.productDetails.prezzo) + parseFloat(state.shippingCost)).toFixed(2)} €</h6>
+                </div>
+            )}
         </React.Fragment>
     )}
     {id === 'cart' && (
@@ -268,17 +276,18 @@ const Payments = () => {
                 ))}
             </div>
             <div className="shipping-details m-5">
-                 {state.nazione !== '' && (
-                 <React.Fragment>
-                    <h6>Spese di spedizione da {state.nazione}: {state.shippingCost} €</h6>
-                <h6>Totale da pagare: {(parseFloat(totalProductsPrice) + parseFloat(state.shippingCost)).toFixed(2)} €</h6>
-                </React.Fragment>
-            )}</div>
-            </React.Fragment>
-         )}
-         </Col>
-        </Row>
+                {state.nazione !== '' && (
+                    <React.Fragment>
+                        <h6>Spese di spedizione da {state.nazione}: {state.shippingCost} €</h6>
+                        <h6>Totale da pagare: {(parseFloat(totalProductsPrice) + parseFloat(state.shippingCost)).toFixed(2)} €</h6>
+                    </React.Fragment>
+                )}
+            </div>
+        </React.Fragment>
+    )}
+</Col>
 
+        </Row>
          <Row className="justify-content-md-center m-2">
                 <Col xs={12} md={6} >
                     <h3 className="text-center m-5">Informazioni di pagamento</h3>
@@ -330,11 +339,23 @@ const Payments = () => {
                     </div>
                 </Col>
             </Row>
-            <Row className=" justify-content-center m-5">
-                <Button variant="primary" type="submit" className="payment-button" onClick={handleSubmit} disabled={!isFormValid || !scadenzaValida}>
-                    <h5>Conferma Pagamento</h5>
+            <Col xs={12} className="d-flex justify-content-center">
+    <Row className="m-5 payments-buttons">
+        <Col className="text-center"> {/* Utilizziamo una colonna per allineare i pulsanti */}
+            <Link to="/cart">
+                <Button type="submit">
+                    <h5>Torna al Carrello</h5>
                 </Button>
-            </Row>
+            </Link>
+            <Button variant="primary" type="submit" onClick={handleSubmit} disabled={!isFormValid || !scadenzaValida}>
+                <h5>Conferma Pagamento</h5>
+            </Button>
+        </Col>
+    </Row>
+</Col>
+
+
+
         </Container>
     );
 };
