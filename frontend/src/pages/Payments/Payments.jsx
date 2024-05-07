@@ -8,6 +8,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'react-credit-cards-2/dist/es/styles-compiled.css';
 import Cards from 'react-credit-cards-2';
 import money from '../../assets/Images/money.png';
+import { GetInfo} from '../../assets/Scripts/GetFromCart.js';
 import './Payments.css';
 
 const Payments = () => {
@@ -34,6 +35,8 @@ const Payments = () => {
     const cvvValido = /^\d{3}$/.test(state.cvv);
     const scadenzaValida = /^(0[1-9]|1[0-2])\/(2[5-9]|[3-9]\d)$/.test(state.scadenza);
     const userId = localStorage.getItem("userId");
+    const [cartItems, setCartItems] = useState([]);
+    const [cartDetails, setCartDetails] = useState({});
 
     useEffect(() => {
         return () => {
@@ -41,6 +44,40 @@ const Payments = () => {
         };
     }, []);
     
+    useEffect(() => {
+        if (!userId) return;
+    
+        const requestOptions = {
+            method: "GET",
+        };
+    
+        const fetchCartData = async () => {
+            try {
+                const response = await fetch(`http://localhost:3000/api/carts/${userId}`, requestOptions);
+                const result = await response.json();
+                setCartItems(result);
+                console.log("Prodotti",result);
+                const fetchDetails = result.map(item => 
+                    GetInfo(item).then(info => ({ _id: item.productId, info }))
+                );
+                console.log("fetchDetails",fetchDetails);
+
+                const detailsArray = await Promise.all(fetchDetails);
+                const details = await detailsArray.reduce((acc, current) => {
+                    acc[current._id] = current.info;
+                    console.log("InfoFunzione",acc);
+
+                    return acc;
+                }, {});
+                console.log("DET",details);
+                setCartDetails(details);
+            } catch (error) {
+                console.error('Failed to fetch cart items:', error);
+            }
+        };
+    
+        fetchCartData();
+    }, []);
 
    
     async function sendOrder() {
@@ -216,7 +253,17 @@ const Payments = () => {
                     )}
                     {id === 'cart' && (
                         <React.Fragment>
-                            <h3 className="text-center m-5">Riepilogo del carrello(under construction)</h3>
+                           {cartItems?.map((item) => (
+                             <div className="m-3 flex-container-pay">
+                             <img src={cartDetails[item.productId]?.immagine} alt="Prodotto" className="product-image-direct m-5 ml-5" />
+                             <div>
+
+                             <h6>Prodotto: {cartDetails[item.productId]?.nome}, {cartDetails[item.productId]?.colore} x {cartDetails[item.productId]?.quantita}</h6>
+                             <h6>Prezzo: {cartDetails[item.productId]?.totale} €</h6>
+                             </div>
+
+                         </div>
+                             ))}
                         </React.Fragment>
                     )}
                 </Col>

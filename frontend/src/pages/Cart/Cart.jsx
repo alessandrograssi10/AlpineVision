@@ -5,6 +5,7 @@ import CartCard from './CartCard.jsx';
 import { Link } from 'react-router-dom';
 import './Cart.css';
 import cartimage from '../../assets/Images/cartimage.png';
+import { GetInfo} from '../../assets/Scripts/GetFromCart.js';
 
 function Cart() {
 
@@ -27,6 +28,7 @@ function Cart() {
             .then((response) => response.json())
             .then((result) => {
                 setCartItems(result);
+               console.log("Eeeee", GetInfo(result[0]))
                 const provTotalPrice = result.reduce((somma, cartItem) => somma + cartItem.total * cartItem.quantity, 0);
                 setTotalPrice(provTotalPrice);
                 setToggler(result.length !== 0);
@@ -36,7 +38,7 @@ function Cart() {
 
     const updateTotalPrice = (priceToAdd, incDec) => {
         let newTotalPrice;
-        if (incDec == true) {
+        if (incDec === true) {
             newTotalPrice = totalPrice + priceToAdd;
         } else {
             newTotalPrice = totalPrice - priceToAdd;
