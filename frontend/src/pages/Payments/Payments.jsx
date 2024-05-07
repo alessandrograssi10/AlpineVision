@@ -66,7 +66,6 @@ const Payments = () => {
                 const details = await detailsArray.reduce((acc, current) => {
                     acc[current._id] = current.info;
                     console.log("InfoFunzione",acc);
-
                     return acc;
                 }, {});
                 console.log("DET",details);
@@ -241,31 +240,30 @@ const Payments = () => {
                     </Form.Group>
                 </Col>
                 <Col xs={12} md={6}>
+                <h3 class="text-center m-5">Riepilogo Ordine</h3>
                     {id === 'direct' && (
                         <React.Fragment>
-                            <h3 className="text-center m-5">Acquisto Diretto</h3>
                             <div className="product-details">
-                                <img src={state.productDetails.immagine} alt="Prodotto" className="product-image-direct" />
+                                <img src={state.productDetails.immagine} alt="Prodotto" className="product-image" />
                                 <h6>Prodotto: {state.productDetails.nome}, {state.productDetails.colore}</h6>
                                 <h6>Prezzo: {state.productDetails.prezzo} €</h6>
                             </div>
                         </React.Fragment>
                     )}
                     {id === 'cart' && (
-                        <React.Fragment>
-                           {cartItems?.map((item) => (
-                             <div className="m-3 flex-container-pay">
-                             <img src={cartDetails[item.productId]?.immagine} alt="Prodotto" className="product-image-direct m-5 ml-5" />
-                             <div>
-
-                             <h6>Prodotto: {cartDetails[item.productId]?.nome}, {cartDetails[item.productId]?.colore} x {cartDetails[item.productId]?.quantita}</h6>
-                             <h6>Prezzo: {cartDetails[item.productId]?.totale} €</h6>
-                             </div>
-
-                         </div>
-                             ))}
-                        </React.Fragment>
-                    )}
+                         <div className="cart-container">
+                            {cartItems?.map((item) => (
+                                 <div className="cart-item m-3" key={item.productId}>
+                                     <img src={cartDetails[item.productId]?.immagine} alt="Prodotto" className="product-image" />
+          <div className='product-details'>
+            <h6>{cartDetails[item.productId]?.nome}, {cartDetails[item.productId]?.colore}</h6>
+            <h6>Quantità: {cartDetails[item.productId]?.quantita}</h6>
+            <h6>Prezzo: {cartDetails[item.productId]?.totale.toFixed(2)} €</h6>
+          </div>
+        </div>
+      ))}
+    </div>
+  )}
                 </Col>
             </Row>
 

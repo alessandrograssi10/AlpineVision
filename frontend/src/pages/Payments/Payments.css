@@ -110,21 +110,21 @@
     align-items: center;
 }
 
-.product-image-direct {
+.product-image {
     object-fit: fill;
-    width: 10vw;
+    width: 6vw;
     height: auto;
     border-radius: 50%;
     margin-top: 20px;
-    margin-bottom: 10px; /* Aggiunto margine inferiore */
-    transition: transform 0.3s ease; /* Aggiunto effetto di transizione */
+    margin-bottom: 10px; 
+    transition: transform 0.3s ease; 
 }
 
 
 
 .product-details h6 {
     font-size: 1rem;
-    margin: 5px 0; /* Aggiunto margine superiore e inferiore */
+    margin: 5px 0; 
 }
 
 
@@ -134,4 +134,35 @@
     gap: 10px !important;
     overflow-x: auto !important;  /* Permette allo scroll orizzontale se necessario */
     width: 100% !important;  /* Assicurati che occupi la larghezza piena */
+    margin: 5px 0 !important;
   }
+  
+  .cart-container {
+    overflow-x: scroll; /* Abilita lo scorrimento orizzontale */
+    white-space: nowrap;
+    padding: 20px;
+    display: flex; /* Permette lo scorrimento laterale */
+    border: 3px solid rgb(179, 206, 223); 
+    border-radius: 5px; /* Aggiunge un bordo arrotondato */
+    margin-left: 5vw;
+    margin-right: 30px;
+    margin-top: 75px;
+}
+
+  
+  /* Stile della barra di scorrimento per Chrome, Safari e Opera */
+  .cart-container::-webkit-scrollbar {
+    width: 12px; /* Larghezza della barra di scorrimento */
+  }
+  
+  /* Track */
+  .cart-container::-webkit-scrollbar-track {
+    background: transparent; /* Colore dello sfondo della barra di scorrimento */
+  }
+  
+  /* Handle */
+  .cart-container::-webkit-scrollbar-thumb {
+    background: rgba(179, 206, 223, 0.5); /* Colore del cursore della barra di scorrimento */
+    border-radius: 10px; /* Bordi arrotondati */
+  }
+  
