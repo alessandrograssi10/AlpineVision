@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { createProduct, createVariant, getVariantsByProductId, getAllProducts, deleteProduct, decrementVariantQuantity } = require('../models/products');
+const { createProduct, createVariant, getVariantsByProductId, getAllProducts, deleteProduct, deleteVariant,decrementVariantQuantity } = require('../models/products');
 const multer = require('multer');
 const fs = require('fs'); 
 const fsp = fs.promises;
@@ -138,6 +138,24 @@ router.delete('/:prodId', async (req, res) => {
 });
 
 
+router.delete('/:productId/:colore', async (req, res) => {
+    const { productId, colore } = req.params;
+    try {
+        const result = await deleteVariant(productId, colore);
+
+        if (result.success) {
+            res.status(200).json({ message: result.message });
+        } else {
+            res.status(404).json({ error: result.message });
+        }
+    } catch (error) {
+        console.error("Errore nell'eliminazione della variante o delle immagini:", error);
+        res.status(500).json({ error: "Errore interno del server" });
+    }
+});
+
+
+
 
 
 
@@ -169,9 +187,9 @@ router.patch('/:productId/:colore/decrement', async (req, res) => {
 
 // Crea prodotto
 router.post('/', async (req, res) => { //funziona
-    const {nome, prezzo, descrizione ,categoria} = req.body;
+    const {nome, prezzo, descrizione,categoria } = req.body;
     try {
-        const productId = await createProduct(nome, prezzo, descrizione, categoria);
+        const productId = await createProduct(nome, prezzo, descrizione,categoria);
         res.status(201).json({ _id: productId });
     } catch (error) {
         console.error("Errore nella creazione del prodotto:", error);

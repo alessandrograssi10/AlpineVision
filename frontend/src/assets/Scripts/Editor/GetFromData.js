@@ -224,7 +224,7 @@ async function addProduct(product) {
     try {
         const prod = {
             nome: product.nome,
-            prezzo: product.prezzo,
+            prezzo: Number(product.prezzo),
             descrizione: product.descrizione,
             categoria: product.categoria
         };
@@ -416,7 +416,7 @@ async function addAccessory(product) {
     try {
         const prod = {
             "name": product.nome,
-            "prezzo": product.prezzo,
+            "prezzo": Number(product.prezzo),
             "description": product.descrizione,
         };
 

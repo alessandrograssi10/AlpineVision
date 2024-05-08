@@ -9,7 +9,7 @@ const variantsCollectionName = 'Variants';
 
 async function createProduct(nome, prezzo, descrizione, categoria) {
     const db = getDb();
-    const productData = { nome, prezzo, descrizione, categoria };
+    const productData = { nome, prezzo, descrizione,categoria };
     const result = await db.collection(productsCollectionName).insertOne(productData);
 
     const productDirectory = path.join(__dirname, '..', 'images', 'products', result.insertedId.toString());
@@ -68,6 +68,26 @@ async function deleteProduct(prodId) {
     }
 }
 
+// Funzione per eliminare una variante di prodotto e la sua cartella di immagini
+async function deleteVariant(productId, colore) {
+    const db = getDb();
+    const variantsCollection = db.collection('Variants');
+    const result = await variantsCollection.deleteOne({
+        productId: new ObjectId(productId),
+        colore: colore
+    });
+
+    if (result.deletedCount === 0) {
+        return { success: false, message: "Variante non trovata" };
+    }
+
+    // Elimina la cartella delle immagini
+    const dirPath = path.join(__dirname, '..', 'images', 'products', productId, colore);
+    await fsp.rm(dirPath, { recursive: true, force: true });
+
+    return { success: true, message: "Variante e immagini eliminate con successo" };
+}
+
 
 
 async function decrementVariantQuantity(productId, colore, decrement) {
@@ -106,5 +126,6 @@ module.exports = {
     getVariantsByProductId,
     getAllProducts,
     deleteProduct,
-    decrementVariantQuantity
+    decrementVariantQuantity,
+    deleteVariant
 };
