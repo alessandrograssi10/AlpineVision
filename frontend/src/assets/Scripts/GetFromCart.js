@@ -36,6 +36,7 @@ async function getInfoAccessory(element) {
         const accessorio = accessories.find(acc => acc._id === element.productId);  // Trova l'accessorio corrispondente all'ID specificato nell'elemento
         // Assegna le informazioni dell'accessorio all'oggetto "info"
         info.nome = accessorio.name;
+        info.productId = element.productId + element.color;
         info.colore = null;  // Gli accessori non hanno colore
         info.immagine = `http://localhost:3000/api/accessories/${accessorio._id}/image1`;  // URL per l'immagine dell'accessorio
     } catch (error) {
@@ -56,6 +57,7 @@ async function getInfoProduct(element) {
         // Assegna le informazioni del prodotto all'oggetto "info"
         info.nome = prodotto.nome;
         info.colore = element.color;  // Assegna il colore
+        info.productId = element.productId + element.color;
         info.immagine = `http://localhost:3000/api/products/${prodotto._id}/${element.color}/frontale`; // URL per l'immagine del prodotto
     } catch (error) {
         console.error(error);  // Gestisce gli errori e li registra nella console

@@ -9,11 +9,12 @@ import 'react-credit-cards-2/dist/es/styles-compiled.css';
 import Cards from 'react-credit-cards-2';
 import money from '../../assets/Images/money.png';
 import { GetInfo } from '../../assets/Scripts/GetFromCart.js';
-import { Link } from 'react-router-dom';
+import { Link,useNavigate } from 'react-router-dom';
 import './Payments.css';
 
 const Payments = () => {
     const { id } = useParams();
+    let navigate = useNavigate();
     const [email, setEmail] = useState('');
     const [touchedEmail, setTouchedEmail] = useState(false);
     const [state, setState] = useState({
@@ -41,6 +42,7 @@ const Payments = () => {
     const userId = localStorage.getItem("userId");
     const [cartItems, setCartItems] = useState([]);
     const [cartDetails, setCartDetails] = useState({});
+    const [buttonStateDirect, setButtonStateDirect] = useState('default');
 
     useEffect(() => {
         return () => {
@@ -62,14 +64,15 @@ const Payments = () => {
                     console.log("Prodotti", result);
                     
                     const fetchDetails = result.map(item =>
-                        GetInfo(item).then(info => ({ _id: item.productId, info }))
+                        GetInfo(item).then(info => ({ _id: info.productId, info }))
                     );
                     console.log("fetchDetails", fetchDetails);
     
                     const detailsArray = await Promise.all(fetchDetails);
+                    console.log("detailsArray", detailsArray);
+
                     const details = detailsArray.reduce((acc, current) => {
-                        acc[current._id] = current.info;
-                        console.log("InfoFunzione", acc);
+                        acc[(current._id)] = current.info;
                         return acc;
                     }, {});
                     console.log("DET", details);
@@ -89,7 +92,7 @@ const Payments = () => {
                     console.log("Prodotti", result);
                     
                     const fetchDetails = result.map(item =>
-                        GetInfo(item).then(info => ({ _id: item.productId, info }))
+                        GetInfo(item).then(info => ({ _id: item.productId + item.color, info }))
                     );
                     console.log("fetchDetails", fetchDetails);
     
@@ -127,10 +130,16 @@ const Payments = () => {
     }
 
     const handleSubmit = (event) => {
-        event.preventDefault();
-        localStorage.removeItem('productDetails');
-        sendOrder();
-        console.log('Pagamento effettuato con successo');
+
+        setButtonStateDirect('loading');
+            setTimeout(() => {
+                setButtonStateDirect('default');
+                event.preventDefault();
+                localStorage.removeItem('productDetails');
+                 sendOrder();
+                console.log('Pagamento effettuato con successo');
+                navigate(`/confermpay`);
+            }, 1500);
     };
 
     const handleChange = (event) => {
@@ -320,15 +329,17 @@ const Payments = () => {
                         </React.Fragment>
                     )}
                     {id === 'cart' && (
+                        
                         <React.Fragment>
+                            
                             <div className="cart-container">
                                 {cartItems?.map((item) => (
                                     <div className="cart-item m-3" key={item.productId}>
-                                        <img src={cartDetails[item.productId]?.immagine} alt="Prodotto" className="product-image" />
+                                        <img src={cartDetails[item.productId +item.color ]?.immagine} alt="Prodotto" className="product-image" />
                                         <div className='product-details'>
-                                            <h6>{cartDetails[item.productId]?.nome}, {cartDetails[item.productId]?.colore}</h6>
-                                            <h6>Quantità: {cartDetails[item.productId]?.quantita}</h6>
-                                            <h6>Prezzo: {cartDetails[item.productId]?.totale.toFixed(2)} €</h6>
+                                            <h6>{cartDetails[item.productId +item.color ]?.nome}, {cartDetails[item.productId +item.color ]?.colore}</h6>
+                                            <h6>Quantità: {cartDetails[item.productId +item.color ]?.quantita}</h6>
+                                            <h6>Prezzo: {cartDetails[item.productId +item.color ]?.totale.toFixed(2)} €</h6>
                                         </div>
                                     </div>
                                 ))}
@@ -405,13 +416,14 @@ const Payments = () => {
                             </Button>
                         </Link>
                                                     {/*variant="primary" */}
-                        <Button className='button-black-prod m-3 mt-5'
+                        <Button className={`button-black-prod m-3 mt-5 ${buttonStateDirect}`}
                             variant="outline-dark"
                             type="submit" 
                             onClick={handleSubmit} 
                             disabled={!isFormValid || !scadenzaValida || (!userId ? !isFormVirtualValid : false)}
                         >
-                            <h5>Conferma Pagamento</h5>
+                                {buttonStateDirect === 'loading' && <div className="spinner "></div>}
+                                {buttonStateDirect === 'default' && <div className='p-0 m-0'><h3 className='p-0 m-0'>CONFERMA PAGAMENTO</h3></div>}
                         </Button>
                     </Col>
                 </Row>

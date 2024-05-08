@@ -22,6 +22,8 @@ import Footer from './components/Footer/Footer.js';
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import Login_Signin from './pages/Login_SignUp/Login_Signin';
+import Confirm from './pages/Payments/ConfirmPayment.jsx';
+
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -58,6 +60,7 @@ class App extends Component {
           <Route exact path ="/accessory/:id" element={<Accessory/>}/>
           <Route exact path="/login" Component={Login_Signin}/>
           <Route exact path="/editor" Component={Editor}/>
+          <Route exact path="/confermpay" Component={Confirm}/>
 
           </Routes>
 
