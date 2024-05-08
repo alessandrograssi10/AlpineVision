@@ -7,9 +7,9 @@ const path = require('path');
 const productsCollectionName = 'Products';
 const variantsCollectionName = 'Variants';
 
-async function createProduct(nome, prezzo, descrizione) {
+async function createProduct(nome, prezzo, descrizione, categoria) {
     const db = getDb();
-    const productData = { nome, prezzo, descrizione };
+    const productData = { nome, prezzo, descrizione, categoria };
     const result = await db.collection(productsCollectionName).insertOne(productData);
 
     const productDirectory = path.join(__dirname, '..', 'images', 'products', result.insertedId.toString());

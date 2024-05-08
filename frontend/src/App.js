@@ -10,16 +10,13 @@ import { BlogEdit } from './pages/Blog/BlogEditor/BlogEdit.jsx';
 import {BlogArticle} from './pages/Blog/BlogArticle.jsx';
 import {BlogArticleEdit} from './pages/Blog/BlogEditor/BlogArticleEdit.jsx';
 import {Search} from './pages/Search/Search.jsx';
-
+import {Editor} from './pages/Editor/Editor.jsx';
 import Payments from './pages/Payments/Payments.jsx';
-
 import  AboutUs  from './pages/About_Us/AboutUs.jsx';
 import PersonalArea from './pages/AreaPersonale/PersonalArea.jsx'
-
 import  Cart  from './pages/Cart/Cart.jsx'
 import { Product } from './pages/Products/Product.jsx'
 import { Accessory } from './pages/Accessories/Accessory.jsx'
-
 import Header from './components/Header/header.js';
 import Footer from './components/Footer/Footer.js';
 import { useEffect } from 'react';
@@ -60,6 +57,7 @@ class App extends Component {
           <Route exact path ="/product/:id" element={<Product/>}/>
           <Route exact path ="/accessory/:id" element={<Accessory/>}/>
           <Route exact path="/login" Component={Login_Signin}/>
+          <Route exact path="/editor" Component={Editor}/>
 
           </Routes>
 
