@@ -8,9 +8,9 @@ export async function GetAllProducts() {
         const data = await response.json();
 
         // Funzione per ottenere le immagini del prodotto (frontale e laterale)
-        const getImageUrls = async (id) => {
+        const getImageUrls = async (product) => {
             try {
-                const response = await fetch(`http://localhost:3000/api/products/${id}/variants`);
+                const response = await fetch(`http://localhost:3000/api/products/${product._id}/variants`);
                 if (!response.ok) {
                     throw new Error('Errore durante la richiesta');
                 }
@@ -19,27 +19,29 @@ export async function GetAllProducts() {
                 // Verifica che data2 contenga almeno un elemento
                 if (data2.length > 0) {
                     const colore = data2[0].colore;
-                    const frontRes = await fetch(`http://localhost:3000/api/products/${id}/${colore}/frontale`);
-                    const sideRes = await fetch(`http://localhost:3000/api/products/${id}/${colore}/sinistra`);
+                    const frontRes = await fetch(`http://localhost:3000/api/products/${product._id}/${colore}/frontale`);
+                    const sideRes = await fetch(`http://localhost:3000/api/products/${product._id}/${colore}/sinistra`);
                     const frontUrl = frontRes.ok ? await frontRes.url : '';
                     const sideUrl = sideRes.ok ? await sideRes.url : '';
                     const color = colore;
                     const variants = data2;
+                    const categoria = product.categoria;
+
         
                     return { frontUrl, sideUrl, color, variants };
                 } else {
-                    console.error("No variants found for product", id);
+                    console.error("No variants found for product", product._id);
                     return { frontUrl: '', sideUrl: '', color: '', variants: [] };
                 }
             } catch (error) {
-                console.error("Error fetching images for product", id, error);
+                console.error("Error fetching images for product", product._id, error);
                 return { frontUrl: '', sideUrl: '', color: '', variants: [] };
             }
         };
         
 
         // Ottieni le immagini per tutti i prodotti
-        const imageFetchPromises = data.map(product => getImageUrls(product._id));
+        const imageFetchPromises = data.map(product => getImageUrls(product));
         const images = await Promise.all(imageFetchPromises);
 
         // Costruisci i prodotti con le immagini corrispondenti
@@ -151,18 +153,37 @@ export async function saveAll(allElements, originalElements) {
         console.log("Agg")
 
         if (!originalElements.some(originalElement => originalElement._id === element._id)) {
-            await addProduct(element);
+            if(element.categoria === "occiale" || element.categoria === "machera" ) await addProduct(element);
+            else await addAccessory(element);
             console.log("Aggingo...")
-
         }
-
-        // Controlla le varianti del prodotto e aggiungi o elimina le varianti necessarie
-       // await handleVariants(element, originalElements);
     }));
+
+    
+    await Promise.all(allElements.map(async element => {
+        if(element.categoria === "occiale" || element.categoria === "machera" ){
+        // Trova l'elemento originale corrispondente
+        const originalElement = originalElements.find(originalElement => originalElement._id === element._id);
+    
+        // Se non ci sono elementi originali o le varianti sono state modificate
+        if (!originalElement || JSON.stringify(element.variants) !== JSON.stringify(originalElement.variants)) {
+            // Se l'elemento è nuovo, aggiungilo all'archivio
+        
+    
+            // Controlla le varianti del prodotto e aggiungi o elimina le varianti necessarie
+            if (!addedOrModifiedElements.some(e => e._id === element._id)) {
+             await handleVariants(element, originalElements);
+        }
+            //await handleVariants(element, originalElements);
+        }
+    }
+    }));
+    
 
     // Rimuovi i prodotti dall'archivio
     await Promise.all(removedElements.map(async element => {
-        await deleteProduct(element._id);
+        if(element.categoria === "occiale" || element.categoria === "machera" ) await deleteProduct(element._id);
+        else await deleteAccessory(element._id);
     }));
 }
 async function handleVariants(product,originalElements) {
@@ -178,7 +199,7 @@ async function handleVariants(product,originalElements) {
             // Se non trova un corrispondente originale o se la variante è stata modificata, restituisci true
             return !originalVariant || JSON.stringify(originalVariant) !== JSON.stringify(variant);
         });
-
+        console.log("VAR",addedOrModifiedVariants)
         // Filtra le varianti che sono state rimosse rispetto alle varianti originali
         const removedVariants = originalElements
             .find(originalElement => originalElement._id === product._id)
@@ -198,93 +219,14 @@ async function handleVariants(product,originalElements) {
 
 
 
-/*async function addProduct(product) {
-    try {
-        const prod = {
-            nome: product.nome,
-            prezzo: product.prezzo,
-            descrizione: product.descrizione,
-            categoria: 'maschera'
-        };
 
-        // Step 1: Aggiungi il prodotto principale
-        const productResponse = await fetch('http://localhost:3000/api/products/', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(prod)
-        });
-
-        if (!productResponse.ok) {
-            throw new Error('Errore durante l\'aggiunta del prodotto principale');
-        }
-
-        const { _id } = await productResponse.json();
-
-        // Step 2: Aggiungi le varianti del prodotto
-        const variantsResponses = await Promise.all(product.variants.map(async (variant) => {
-            const varia = {
-                colore: variant.colore,
-                quantita: variant.quantita,
-                productId: _id
-            };
-
-            const variantResponse = await fetch(`http://localhost:3000/api/products/${_id}/variants`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(varia)
-            });
-
-            if (!variantResponse.ok) {
-                console.log([varia])
-                throw new Error('Errore durante l\'aggiunta di una variante del prodotto',variantResponse);
-            }
-
-            const variantData = await variantResponse.json();
-
-            //
-            const formData = new FormData();
-
-            console.log("Immagini",variant)
-            console.log("Immagineee",variant.immagini[0])
-
-            formData.append('fileB', variant.immagini[0]);
-            formData.append('fileF', variant.immagini[1]);
-            formData.append('fileS', variant.immagini[2]);
-            formData.append('fileD', variant.immagini[3]);
-
-            const variantImageResponse = await fetch(`http://localhost:3000/api/products/${_id}/${variant.colore}`, {
-        method: 'POST',
-        body: formData
-    });
-
-    if (!variantImageResponse.ok) {
-        throw new Error('Errore durante l\'aggiunta delle immagini della variante del prodotto');
-    }
-
-    const variantImageData = await variantImageResponse.json();
-
-    return { variantData, variantImageData };
-        }));
-
-       
-        return { productId: _id, variantIds: variantsResponses.map(response => response._id) };
-    } catch (error) {
-        console.error('Si è verificato un errore durante l\'aggiunta del prodotto con le varianti:', error);
-        throw error;
-    }
-}
-*/
 async function addProduct(product) {
     try {
         const prod = {
             nome: product.nome,
             prezzo: product.prezzo,
             descrizione: product.descrizione,
-            categoria: 'maschera'
+            categoria: product.categoria
         };
 
         // Step 1: Aggiungi il prodotto principale
@@ -323,18 +265,24 @@ async function addProduct(product) {
             }
 
             const variantData = await variantResponse.json();
+            console.log(_id)
 
+            return variantData; // Ritorna i dati della variante
+        }));
+
+        // Step 3: Invia le immagini per le varianti del prodotto
+        await Promise.all(product.variants.map(async (variant, index) => {
             const formData = new FormData();
 
             formData.append('fileB', variant.immagini[0], variant.immagini[0].name);
-            formData.append('fileF', variant.immagini[1]);
-            formData.append('fileS', variant.immagini[2]);
-            formData.append('fileD', variant.immagini[3]);
-            console.log("formData",formData)
-            console.log("Dati",variant.immagini)
-            console.log("Dato",variant.immagini[0])
+            formData.append('fileF', variant.immagini[1], variant.immagini[1].name);
+            formData.append('fileS', variant.immagini[2], variant.immagini[2].name);
+            formData.append('fileD', variant.immagini[3], variant.immagini[3].name);
+            console.log(formData)
+            console.log(variant)
+            console.log(variant.colore)
 
-            const variantImageResponse = await fetch(`http://localhost:3000/api/products/${_id}/${variant.colore}`, {
+            const variantImageResponse = await fetch(`http://localhost:3000/api/products/upload/${_id}/${variant.colore}`, {
                 method: 'POST',
                 body: formData
             });
@@ -342,20 +290,41 @@ async function addProduct(product) {
             if (!variantImageResponse.ok) {
                 throw new Error('Errore durante l\'aggiunta delle immagini della variante del prodotto');
             }
-
-            const variantImageData = await variantImageResponse.json();
-
-            // Restituisci i dati della variante e dell'immagine della variante come oggetto
-            return { variantData, variantImageData };
         }));
 
+        //
+        // Step 4: Invia le immagini per le varianti del prodotto
+        await Promise.all([
+            (async () => {
+                const formData = new FormData();
+        
+                formData.append('file1', product.immagini[0], product.immagini[0].name);
+                formData.append('file2', product.immagini[1], product.immagini[1].name);
+                formData.append('fileS', product.immagini[2], product.immagini[2].name);
+                formData.append('fileI', product.immagini[3], product.immagini[3].name);
+                console.log("Faccio",formData)
+                console.log(product)
+        
+                const variantImageResponse = await fetch(`http://localhost:3000/api/products/uploadPic/${_id}`, {
+                    method: 'POST',
+                    body: formData
+                });
+        
+                if (!variantImageResponse.ok) {
+                    throw new Error('Errore durante l\'aggiunta delle immagini della variante del prodotto');
+                }
+            })()
+        ]);
+
+
         // Restituisci l'ID del prodotto principale e gli ID delle varianti aggiunte
-        return { productId: _id, variantIds: variantsResponses.map(response => response.variantData._id) };
+        return { productId: _id, variantIds: variantsResponses.map(response => response._id) };
     } catch (error) {
         console.error('Si è verificato un errore durante l\'aggiunta del prodotto con le varianti:', error);
         throw error;
     }
 }
+
 
 
 
@@ -379,13 +348,134 @@ async function deleteProduct(productId) {
 
 
 // Funzione per aggiungere una variante a un prodotto
+// Funzione per aggiungere una variante a un prodotto
 async function addVariant(productId, variant) {
-    // Implementa l'aggiunta della variante al prodotto nell'archivio (ad esempio, inviando i dati al server)
-    console.log("Aggiungi la variante al prodotto con ID:", productId, variant);
+    try {
+        const varia = {
+            colore: variant.colore,
+            quantita: variant.quantita,
+            productId: productId
+        };
+
+        // Aggiungi la variante al prodotto
+        const variantResponse = await fetch(`http://localhost:3000/api/products/${productId}/variants`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(varia)
+        });
+
+        if (!variantResponse.ok) {
+            throw new Error('Errore durante l\'aggiunta della variante al prodotto');
+        }
+
+        const variantData = await variantResponse.json();
+        console.log('Variante aggiunta con successo:', variantData);
+
+        // Carica le immagini per la variante
+        const formData = new FormData();
+        console.log(variant.immaginiVar)
+        if (variant.immaginiVar && variant.immaginiVar.length > 0) {
+            formData.append('fileB', variant.immaginiVar[0], variant.immaginiVar[0].name);
+            formData.append('fileF', variant.immaginiVar[1], variant.immaginiVar[1].name);
+            formData.append('fileS', variant.immaginiVar[2], variant.immaginiVar[2].name);
+            formData.append('fileD', variant.immaginiVar[3], variant.immaginiVar[3].name);
+        } else {
+            console.error('Array delle immagini della variante non definito o vuoto');
+        }
+
+        const variantImageResponse = await fetch(`http://localhost:3000/api/products/upload/${productId}/${variant.colore}`, {
+            method: 'POST',
+            body: formData
+        });
+
+        if (!variantImageResponse.ok) {
+            throw new Error('Errore durante l\'aggiunta delle immagini della variante del prodotto');
+        }
+
+        // Restituisci i dati della variante aggiunta
+        return variantData;
+    } catch (error) {
+        console.error('Si è verificato un errore durante l\'aggiunta della variante al prodotto:', error);
+        throw error;
+    }
 }
+
+
 
 // Funzione per eliminare una variante di un prodotto
 async function deleteVariant(productId, variantId) {
     // Implementa l'eliminazione della variante dal prodotto nell'archivio (ad esempio, inviando i dati al server)
     console.log("Elimina la variante dal prodotto con ID:", productId, "e ID variante:", variantId);
+}
+
+async function addAccessory(product) {
+    console.log("addAccessory",product)
+
+    try {
+        const prod = {
+            "name": product.nome,
+            "prezzo": product.prezzo,
+            "description": product.descrizione,
+        };
+
+        const productResponse = await fetch('http://localhost:3000/api/accessories', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(prod)
+        });
+
+        if (!productResponse.ok) {
+            throw new Error('Errore durante l\'aggiunta del prodotto principale');
+        }
+
+        //const aloa = await productResponse.json();
+        const { accessoryId } = await productResponse.json();
+        console.log("addAccessory Finito",accessoryId)
+
+        
+            const formData = new FormData();
+            console.log("Puerco",product.immagini)
+            console.log("Puerco",accessoryId)
+
+            formData.append('image1', product.immagini[0], product.immagini[0].name);
+            formData.append('image2', product.immagini[1], product.immagini[1].name);
+            formData.append('image3', product.immagini[2], product.immagini[2].name);
+            console.log(formData)
+
+            const variantImageResponse = await fetch(`http://localhost:3000/api/accessories/upload/${accessoryId}`, {
+                method: 'POST',
+                body: formData
+            });
+
+            if (!variantImageResponse.ok) {
+                throw new Error('Errore durante l\'aggiunta delle immagini della variante del prodotto');
+            }
+        
+
+        
+        return { productId: accessoryId };
+    } catch (error) {
+        console.error('Si è verificato un errore durante l\'aggiunta del prodotto con le varianti:', error);
+        throw error;
+    }
+}
+
+async function deleteAccessory(productId) {
+    try {
+        const response = await fetch(`http://localhost:3000/api/accessories/${productId}`, {
+            method: 'DELETE'
+        });
+
+        if (response.ok) {
+            console.log(`Prodotto con ID ${productId} eliminato con successo.`);
+        } else {
+            console.error(`Si è verificato un problema durante l'eliminazione del prodotto con ID ${productId}.`);
+        }
+    } catch (error) {
+        console.error('Si è verificato un errore durante la richiesta di eliminazione del prodotto:', error);
+    }
 }
