@@ -161,7 +161,7 @@ export async function saveAll(allElements, originalElements) {
 
     
     await Promise.all(allElements.map(async element => {
-        if(element.categoria === "occiale" || element.categoria === "machera" ){
+        if(element.categoria === "occiale" || element.categoria === "maschera" ){
         // Trova l'elemento originale corrispondente
         const originalElement = originalElements.find(originalElement => originalElement._id === element._id);
     
@@ -182,7 +182,7 @@ export async function saveAll(allElements, originalElements) {
 
     // Rimuovi i prodotti dall'archivio
     await Promise.all(removedElements.map(async element => {
-        if(element.categoria === "occiale" || element.categoria === "machera" ) await deleteProduct(element._id);
+        if(element.categoria === "occiale" || element.categoria === "maschera" ) await deleteProduct(element._id);
         else await deleteAccessory(element._id);
     }));
 }
@@ -406,6 +406,8 @@ async function addVariant(productId, variant) {
 
 // Funzione per eliminare una variante di un prodotto
 async function deleteVariant(productId, variantColor) {
+    //
+    console.log("DELETE VARIANT")
     try {
         const response = await fetch(`http://localhost:3000/api/products/${productId}/${variantColor}`, {
             method: 'DELETE'
