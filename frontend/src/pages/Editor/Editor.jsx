@@ -28,6 +28,10 @@ export const Editor = () => {
     const [colorCount, setColorCount] = useState({}); // set per contare i colori
     const [hoverIndex, setHoverIndex] = useState(null); //elemento selezionato
     const [addProd, setAddProd] = useState(false); //elemento selezionato
+    //
+    const [addMaskProd, setAddMaskProd] = useState(false);
+    const [addGlassProd, setAddGlassProd] = useState(false);
+    const [addAccessoryProd, setAddAccessoryProd] = useState(false);
 
     // Prendo i valori dal localstorage
     let Favorite = JSON.parse(localStorage.getItem("Favorite") || "[]");
@@ -170,7 +174,7 @@ export const Editor = () => {
             prezzo,
             descrizione,
             colore: colore,
-            categoria: type,
+            "categoria": type,
             quantita,
             "immagini": immaginiCop,
             motto,
@@ -187,7 +191,10 @@ export const Editor = () => {
         
         console.log(newProduct);
         setAllElements([...allElements, newProduct]);
-        setAddProd(false)
+        setAddMaskProd(false);
+        setAddGlassProd(false);
+        setAddAccessoryProd(false);
+
     };
     const toggleExpandProduct = (productId) => {
         if (expandedProductId === productId) {
@@ -337,7 +344,7 @@ export const Editor = () => {
                 </Col>
               );
             })}
-            {addProd ? (
+            {addMaskProd ? (
               <Col xs={12} sm={12} md={12} lg={12}>
                 <Card className='m-3 card-text-prod '>
                   <Card.Body>
@@ -352,7 +359,7 @@ export const Editor = () => {
                         <Col sm={4}>
                           <Form.Group controlId="productPrice">
                             <Form.Label>Prezzo</Form.Label>
-                            <Form.Control type="text" name="prezzo" value={product.prezzo} onChange={handleChange} />
+                            <Form.Control type="number" name="prezzo" value={product.prezzo} onChange={handleChange} />
                           </Form.Group>
                         </Col>
                         <Col sm={4}>
@@ -385,14 +392,14 @@ export const Editor = () => {
                       </Row>
                     </Form>
                     <div className='m-1 mt-3' style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <Button onClick={() => setAddProd(false)} variant='danger'>ELIMINA</Button>
+                      <Button onClick={() => setAddMaskProd(false)} variant='danger'>ELIMINA</Button>
                     </div>
                   </Card.Body>
                 </Card>
               </Col>
             ) : (
               <Col xs={12} sm={12} md={12} lg={12} className="d-flex align-items-center justify-content-center m-0 mt-5" style={{ height: '100%' }}>
-                <Button variant='primary' className='m-1 mb-5' onClick={() => setAddProd(true)}>ADD</Button>
+                <Button variant='primary' className='m-1 mb-5' onClick={() => setAddMaskProd(true)}>ADD</Button>
               </Col>
             )}
           </Row>
@@ -476,7 +483,7 @@ export const Editor = () => {
                 </Col>
               );
             })}
-            {addProd ? (
+            {addGlassProd ? (
               <Col xs={12} sm={12} md={12} lg={12}>
                 <Card className='m-3 card-text-prod '>
                   <Card.Body>
@@ -524,14 +531,14 @@ export const Editor = () => {
                       </Row>
                     </Form>
                     <div className='m-1 mt-3' style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <Button onClick={() => setAddProd(false)} variant='danger'>ELIMINA</Button>
+                      <Button onClick={() => setAddGlassProd(false)} variant='danger'>ELIMINA</Button>
                     </div>
                   </Card.Body>
                 </Card>
               </Col>
             ) : (
               <Col xs={12} sm={12} md={12} lg={12} className="d-flex align-items-center justify-content-center m-0 mt-5" style={{ height: '100%' }}>
-                <Button variant='primary' className='m-1 mb-5' onClick={() => setAddProd(true)}>ADD</Button>
+                <Button variant='primary' className='m-1 mb-5' onClick={() => setAddGlassProd(true)}>ADD</Button>
               </Col>
             )}
           </Row>
@@ -578,7 +585,7 @@ export const Editor = () => {
                 </Col>
               );
             })}
-            {addProd ? (
+            {addAccessoryProd ? (
               <Col xs={12} sm={12} md={12} lg={12}>
                 <Card className='m-3 card-text-prod '>
                   <Card.Body>
@@ -609,14 +616,14 @@ export const Editor = () => {
                       </Row>
                     </Form>
                     <div className='m-1 mt-3' style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <Button onClick={() => setAddProd(false)} variant='danger'>ELIMINA</Button>
+                      <Button onClick={() => setAddAccessoryProd(false)} variant='danger'>ELIMINA</Button>
                     </div>
                   </Card.Body>
                 </Card>
               </Col>
             ) : (
               <Col xs={12} sm={12} md={12} lg={12} className="d-flex align-items-center justify-content-center m-0 mt-5" style={{ height: '100%' }}>
-                <Button variant='primary' className='m-1 mb-5' onClick={() => setAddProd(true)}>ADD</Button>
+                <Button variant='primary' className='m-1 mb-5' onClick={() => setAddAccessoryProd(true)}>ADD</Button>
               </Col>
             )}
           </Row>

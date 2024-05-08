@@ -153,7 +153,7 @@ export async function saveAll(allElements, originalElements) {
         console.log("Agg")
 
         if (!originalElements.some(originalElement => originalElement._id === element._id)) {
-            if(element.categoria === "occiale" || element.categoria === "machera" ) await addProduct(element);
+            if(element.categoria === "occiale" || element.categoria === "maschera" ) await addProduct(element);
             else await addAccessory(element);
             console.log("Aggingo...")
         }
@@ -212,7 +212,7 @@ async function handleVariants(product,originalElements) {
 
         // Rimuovi le varianti
         await Promise.all(removedVariants.map(async variant => {
-            await deleteVariant(product._id, variant._id);
+            await deleteVariant(product._id, variant.colore);
         }));
     }
 }
@@ -405,10 +405,20 @@ async function addVariant(productId, variant) {
 
 
 // Funzione per eliminare una variante di un prodotto
-async function deleteVariant(productId, variantId) {
-    // Implementa l'eliminazione della variante dal prodotto nell'archivio (ad esempio, inviando i dati al server)
-    console.log("Elimina la variante dal prodotto con ID:", productId, "e ID variante:", variantId);
-}
+async function deleteVariant(productId, variantColor) {
+    try {
+        const response = await fetch(`http://localhost:3000/api/products/${productId}/${variantColor}`, {
+            method: 'DELETE'
+        });
+
+        if (response.ok) {
+            console.log(`Prodotto con ID ${productId} eliminato con successo.`);
+        } else {
+            console.error(`Si è verificato un problema durante l'eliminazione del prodotto con ID ${productId}.`);
+        }
+    } catch (error) {
+        console.error('Si è verificato un errore durante la richiesta di eliminazione del prodotto:', error);
+    }}
 
 async function addAccessory(product) {
     console.log("addAccessory",product)
