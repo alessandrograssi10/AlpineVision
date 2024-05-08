@@ -11,7 +11,8 @@ export const Editor = () => {
         colore: '',
         coloreVariante: '',
         quantita: '',
-        immagini: [],
+        immaginiCop: [],
+        immaginiVar: [],
         motto: ''
     });
     
@@ -137,19 +138,26 @@ export const Editor = () => {
     };
 
     // Gestione del caricamento delle immagini
-    const handleImageChange = (event) => {
+    const handleImageChangeCop = (event) => {
         const { files } = event.target;
         setProduct(prevState => ({
             ...prevState,
-            immagini: [...prevState.immagini, ...files]
+            immaginiCop: [...prevState.immaginiCop, ...files]
+        }));
+    };
+    const handleImageChangeVar = (event) => {
+        const { files } = event.target;
+        setProduct(prevState => ({
+            ...prevState,
+            immaginiVar: [...prevState.immaginiVar, ...files]
         }));
     };
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        
+        setElementsVerify(true)
         // Raccogli tutte le caratteristiche necessarie per il nuovo prodotto
-        const { nome, prezzo, descrizione, colore, quantita, immagini, motto } = product;
+        const { nome, prezzo, descrizione, colore, quantita, immaginiCop, immaginiVar, motto } = product;
         // Supponendo che allElements contenga tutte le caratteristiche necessarie per il nuovo prodotto
         const totalElements = allElements;
         
@@ -159,10 +167,10 @@ export const Editor = () => {
             nome,
             prezzo,
             descrizione,
-            color: colore,
+            colore: colore,
             categoria: 'maschera',
             quantita,
-            immagini,
+            "immagini": immaginiCop,
             motto,
             variants: [],
             totalElements
@@ -171,7 +179,7 @@ export const Editor = () => {
             _id: Math.random().toString(36).substring(2),
             productId:newProduct._id,
             colore: colore,
-            immagini,
+            "immagini": immaginiVar,
         };
         newProduct.variants.push(variant);
         
@@ -195,13 +203,13 @@ export const Editor = () => {
                 setExpandedProductIdVariant(true);
                 return;
             }
-            const { coloreVariante,immagini } = product;
+            const { coloreVariante,immaginiVar } = product;
 
             const newVariant = {
                 _id: Math.random().toString(36).substring(2),
                 productId:productId,
                 colore: coloreVariante,
-                immagini,
+                immaginiVar,
             };
         // Trova l'elemento corrispondente a productId in allElements
         const updatedAllElements = allElements.map(element => {
@@ -314,7 +322,7 @@ export const Editor = () => {
                                     <Form.Control type="text" name="coloreVariante" value={product.coloreVariante} onChange={handleChange} />
                                     <Form.Group controlId="productImages">
                                 <Form.Label>immagini variante</Form.Label>
-                                <Form.Control type="file" multiple onChange={handleImageChange} />
+                                <Form.Control type="file" multiple onChange={handleImageChangeVar} />
                             </Form.Group>
                                 </Form.Group>
                                 <Button className='m-2'onClick={() => setExpandedProductIdVariant(false)}  variant='danger'>Elimina</Button>  {/* Bottone a sinistra */}
@@ -367,8 +375,12 @@ export const Editor = () => {
                                 <Form.Control type="number" name="quantita" value={product.quantita} onChange={handleChange} />
                             </Form.Group>
                             <Form.Group controlId="productImages">
+                                <Form.Label>Immagini copertina</Form.Label>
+                                <Form.Control type="file" multiple onChange={handleImageChangeCop} />
+                            </Form.Group>
+                            <Form.Group controlId="productImages">
                                 <Form.Label>Immagini prodotto</Form.Label>
-                                <Form.Control type="file" multiple onChange={handleImageChange} />
+                                <Form.Control type="file" multiple onChange={handleImageChangeVar} />
                             </Form.Group>
                             <Form.Group controlId="productMotto">
                                 <Form.Label>Motto</Form.Label>
