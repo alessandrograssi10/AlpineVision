@@ -192,7 +192,7 @@ const LoginSignupForm = () => {
                         <p className="error-message">{errorMessage}</p>
                       )}
                       <div className="button-container">
-                        <Button variant="primary" type="submit" onClick={handleLoginSubmit}>
+                        <Button className='button-black-prod'variant="outline-dark" type="submit" onClick={handleLoginSubmit}>
                           ACCEDI
                         </Button>
                       </div>
@@ -204,7 +204,7 @@ const LoginSignupForm = () => {
                       <p className="paragraph-text">Prima volta su Alpine Vision?!</p>
                       <img src={Skier2} className="img-login" alt="Skier 2" />
                       <div className="button-container">
-                        <Button variant="primary" type="submit" onClick={() => handleTabChange("signup")}>
+                        <Button className='button-black-prod 'variant="outline-dark" type="submit" onClick={() => handleTabChange("signup")}>
                           REGISTRATI ORA &#x2192;
                         </Button>
                       </div>
@@ -219,7 +219,7 @@ const LoginSignupForm = () => {
                       <p className="paragraph-text">Benvenuto, Alpine Skier!</p>
                       <img src={Skier3} className="img-signup" alt="Skier 3" />
                       <div className="button-container">
-                        <Button variant="primary" type="submit" onClick={() => handleTabChange("login")}>
+                        <Button className='button-black-prod 'variant="outline-dark" type="submit" onClick={() => handleTabChange("login")}>
                           &#x2190; TORNA INDIETRO
                         </Button>
                       </div>
@@ -292,7 +292,7 @@ const LoginSignupForm = () => {
                         </>
                       )}
                       <div className="button-container">
-                        <Button variant="primary" type="submit" onClick={handleSignupSubmit}>
+                        <Button className='button-black-prod 'variant="outline-dark" type="submit" onClick={handleSignupSubmit}>
                           REGISTRATI
                         </Button>
                       </div>
