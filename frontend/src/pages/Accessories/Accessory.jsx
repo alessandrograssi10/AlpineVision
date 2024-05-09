@@ -165,13 +165,11 @@ export const Accessory = () => {
                       {buttonState === 'loading' && <div className="spinner "></div>}
                       {buttonState === 'confirmed' && <BsCheck className='icon-confirmed'/>}
                       {buttonState === 'default' && <h3 className='p-0 m-0'>AGGIUNGI AL CARRELLO</h3>}
-                      {/*{buttonState === 'login' && <div className='p-0 m-0'><h3 className='p-0 m-0'>EFFETTUA PRIMA IL LOGIN</h3></div>}*/}
                     </Button>
                     <div style={{ width: '10px' }}></div>
                     <Button className={`button-black-prod-nomon m-2 mt-4 mb-0 ${buttonStateDirect}`} onClick={() => DirectPay()} variant="outline-dark" size="lg">
                       {buttonStateDirect === 'loading' && <div className="spinner "></div>}
                       {buttonStateDirect === 'default' && <div className='p-0 m-0'><h3 className='p-0 m-0'>COMPRA ORA</h3></div>}
-                      {/*{buttonStateDirect === 'login' && <div className='p-0 m-0'><h3 className='p-0 m-0'>EFFETTUA PRIMA IL LOGIN</h3></div>}*/}
                     </Button>
                   </Col>
                 </Row>

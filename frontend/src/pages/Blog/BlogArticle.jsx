@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Container, Card, Row, Col, Button, Image } from 'react-bootstrap';
+import { Container, Row, Col, Button, Image } from 'react-bootstrap';
 import { useParams, Link } from 'react-router-dom';
 
 export const BlogArticle = () => {
@@ -83,7 +83,7 @@ export const BlogArticle = () => {
 
       <Row className="my-2 justify-content-center">
         <Col lg={6} className="d-flex justify-content-center mb-3">
-          <Button as={Link} to="/Blog" variant="primary" className="mt-3">
+          <Button as={Link} to="/Blog" variant="outline-dark" className=" button button-black-prod btn-lg mt-5">
             Torna ai post
           </Button>
         </Col>

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Container, Row, Form, Col, Carousel, Modal, Button, Tabs, Tab, Image } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
 import './Product.css';
-import { BsCheck } from 'react-icons/bs';  // Ensure you have react-icons installed
+import { BsCheck } from 'react-icons/bs';
 import { Link, useNavigate } from 'react-router-dom';
 import { addToVirtualCart } from '../../assets/Scripts/Virtual_Cart.js';
 
