@@ -118,7 +118,8 @@ const Payments = () => {
             let url = '';
             const arra = localStorage.getItem("riepilogoCart");
             const riepilogoDati = JSON.parse(arra);
-            if(id === 'cart')
+
+            if (id === 'cart')
             {
                 const productResponse = await fetch('http://localhost:3000/api/orders/createOrderFromCart', {
                 method: 'POST',
@@ -129,7 +130,9 @@ const Payments = () => {
                         "userId": userId,
                     })
                 });
+                localStorage.setItem('Cart_Trig', "Trigger");   
             }
+
             else if(id === 'direct')
             {
                 const productResponse = await fetch(`http://localhost:3000/api/orders/createOrder/${userId}`, {
@@ -146,6 +149,7 @@ const Payments = () => {
                     })
                 });
                 localStorage.setItem("riepilogoCart",[]);
+                localStorage.setItem('Cart_Trig', "Trigger");   
             }
         } 
     }
@@ -158,7 +162,6 @@ const Payments = () => {
                 event.preventDefault();
                 localStorage.removeItem('productDetails');
                  sendOrder();
-                console.log('Pagamento effettuato con successo');
                 navigate(`/confermpay`);
             }, 1500);
     };
@@ -441,8 +444,7 @@ const Payments = () => {
                             variant="outline-dark"
                             type="submit" 
                             onClick={handleSubmit} 
-                            disabled={!isFormValid || !scadenzaValida || (!userId ? !isFormVirtualValid : false)}
-                        >
+                            disabled={!isFormValid || !scadenzaValida || (!userId ? !isFormVirtualValid : false)}>
                                 {buttonStateDirect === 'loading' && <div className="spinner "></div>}
                                 {buttonStateDirect === 'default' && <div className='p-0 m-0'><h3 className='p-0 m-0'>CONFERMA PAGAMENTO</h3></div>}
                         </Button>

@@ -63,9 +63,6 @@ router.post('/createOrder', async (req, res) => {
 });
 
 
-
-
-
 router.post('/createOrderFromCart', async (req, res) => {
     const { userId } = req.body;
 
@@ -78,7 +75,7 @@ router.post('/createOrderFromCart', async (req, res) => {
             return res.status(404).json({ message: "Carrello non trovato o vuoto" });
         }
 
-        // Dovrai iterare sugli item per controllare la disponibilità nei rispettivi inventari
+        // Controlla la disponibilità degli item nel carrello
         for (const item of cart.items) {
             const collectionName = item.type === 'product' ? 'Variants' : 'Accessories';
             const collection = db.collection(collectionName);
@@ -86,12 +83,17 @@ router.post('/createOrderFromCart', async (req, res) => {
             const inventoryItem = await collection.findOne(query);
 
             /*if (!inventoryItem || inventoryItem.quantita < item.quantity) {
-                return res.status(400).json({ message: `Uno o più ${item.type === 'product' ? 'prodotti' : 'accessori'} non disponibili o con quantità insufficiente` });
+                return res.status(400).json({ message: Uno o più ${item.type === 'product' ? 'prodotti' : 'accessori'} non disponibili o con quantità insufficiente });
             }*/
         }
 
+        // Crea l'ordine
         const orderId = await createOrder(userId, cart.items);
 
+        // Rimuovi tutti gli item dal carrello
+        await cartsCollection.updateOne({ userId: userId }, { $set: { items: [], totalPrice: 0, updatedAt: new Date() } });
+
+        // Aggiornamenti di stato dell'ordine programmata
         setTimeout(async () => {
             await updateOrderStatus(orderId, 'shipped', 'shippedAt');
             console.log("shipped");
@@ -102,7 +104,7 @@ router.post('/createOrderFromCart', async (req, res) => {
             console.log("delivered");
         }, 24000); // 24 secondi
 
-        res.status(201).json({ message: "Ordine creato con successo", orderId: orderId });
+        res.status(201).json({ message: "Ordine creato con successo e carrello svuotato", orderId: orderId });
     } catch (error) {
         console.error("Errore nella creazione dell'ordine dal carrello:", error);
         res.status(500).json({ error: "Errore interno del server" });
