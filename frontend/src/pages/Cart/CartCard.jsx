@@ -113,7 +113,7 @@ function CartCard({ quantity, updateTotalPrice, prodID, color, type, removeProd,
 
     // rimuove un prodotto nel carrello
     const removeHandleClick = () => {
-       removeProd(prodID, price * qnt, prodID);
+       removeProd(prodID, price * qnt, color);
        if(!userID) deleteFromCart(prodID,color);
     };
 
