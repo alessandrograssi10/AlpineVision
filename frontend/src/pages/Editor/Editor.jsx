@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom';
 import { GetAllProducts,GetAllAccessory ,saveAll} from '../../assets/Scripts/Editor/GetFromData.js';
 
 export const Editor = () => {
+  const ruolo = localStorage.getItem("ruoloUser");
+
     const [product, setProduct] = useState({
         nome: '',
         prezzo: '',
@@ -245,8 +247,8 @@ export const Editor = () => {
             setRiavvia(!riavvia);
         }, 500); 
     };
-
-    return (
+    if(ruolo !== "admin"){ window.location.href = '/home'; }
+    else return (
         <Container fluid className="p-0 m-0">
           {/* Alert per avvertire che si è in modalità editing */}
           <Alert variant={'warning'} className='m-3 mt-4'>

@@ -136,6 +136,12 @@ function PersonalArea() {
                     </div>
                     )}
 
+                    {ruolo === 'admin' && (
+                        <div className="personal-area-text-center m-5">
+                        <Button as={Link} to="/editor" className="personal-area-button personal-area-button-danger" >Editor Prodotti</Button>
+                    </div>
+                    )}
+
                     {/* Sezione: Possibilità di logout */}
                     <div className="personal-area-text-center">
                         <button className="personal-area-button personal-area-button-danger" onClick={AuthServices.dologout}>Esci</button>
