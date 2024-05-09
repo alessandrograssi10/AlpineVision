@@ -120,11 +120,32 @@ const Payments = () => {
             const riepilogoDati = JSON.parse(arra);
             if(id === 'cart')
             {
-                // Gestisci l'invio dell'ordine dal carrello
+                const productResponse = await fetch('http://localhost:3000/api/orders/createOrderFromCart', {
+                method: 'POST',
+                headers: {
+                'Content-Type': 'application/json'
+                },
+                    body: JSON.stringify({
+                        "userId": userId,
+                    })
+                });
             }
             else if(id === 'direct')
             {
-                // Gestisci l'invio dell'ordine diretto
+                const productResponse = await fetch(`http://localhost:3000/api/orders/createOrder/${userId}`, {
+                method: 'POST',
+                headers: {
+                'Content-Type': 'application/json'
+                },
+                    body: JSON.stringify({
+                        "userId": userId,
+                        "productId": arra.productId,
+                        "quantity": arra.quantity,
+                        "color": arra.color,
+                        "type": arra.type,
+                    })
+                });
+                localStorage.setItem("riepilogoCart",[]);
             }
         } 
     }
