@@ -174,7 +174,7 @@ export const Home = () => {
 
                 <Row className="justify-content-center bg-black m-0 ">
                   <Col xs={12} className="d-flex justify-content-center align-items-center pb-5">
-                  <Button variant="outline-light" size="lg" href="/Blog">Esplora il Blog Ora</Button>
+                  <Button variant="outline-light" size="lg" href="/Blog" className=" button btn-outline-light btn-lg mt-5" >Esplora il Blog Ora</Button>
                   
                   </Col>
                 </Row>
