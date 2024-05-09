@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Form,Image, Container, Row, Col, Card, Button,Alert } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
 import { GetAllProducts,GetAllAccessory ,saveAll} from '../../assets/Scripts/Editor/GetFromData.js';
 
 export const Editor = () => {
@@ -247,6 +246,14 @@ export const Editor = () => {
             setRiavvia(!riavvia);
         }, 500); 
     };
+
+
+    const handleReload = () => {
+      setElementsVerify(false)
+        setTimeout(() => {
+            setRiavvia(!riavvia);
+        }, 500); 
+  };
     if(ruolo !== "admin"){ window.location.href = '/home'; }
     else return (
         <Container fluid className="p-0 m-0">
@@ -260,7 +267,7 @@ export const Editor = () => {
               VUOI SALVARE LE MODIFICHE?
               {/* Pulsanti per eliminare o salvare modifiche */}
               <div className="d-flex">
-                <Button variant="outline-danger" className="me-2">
+                <Button onClick={() => handleReload()} variant="outline-danger" className="me-2">
                   ELIMINA
                 </Button>
                 <Button onClick={() => handleSave()} variant="outline-success">
@@ -301,7 +308,7 @@ export const Editor = () => {
                         </div>
                         <div className='m-1 mt-3' style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                           <Button onClick={() => handleDelete(prodotto._id)} variant='danger'>ELIMINA</Button> {/* Bottone a sinistra */}
-                          <Button onClick={() => toggleExpandProduct(prodotto._id)} variant='success'>Varianti</Button> {/* Bottone a destra */}
+                          <Button onClick={() => toggleExpandProduct(prodotto._id)} variant='success'>MOSTRA VARIANTI</Button> {/* Bottone a destra */}
                         </div>
                       </Card.Body>
                     </Card>
@@ -500,7 +507,7 @@ export const Editor = () => {
                         <Col sm={4}>
                           <Form.Group controlId="productPrice">
                             <Form.Label>Prezzo</Form.Label>
-                            <Form.Control type="text" name="prezzo" value={product.prezzo} onChange={handleChange} />
+                            <Form.Control type="number" name="prezzo" value={product.prezzo} onChange={handleChange} />
                           </Form.Group>
                         </Col>
                         <Col sm={4}>
@@ -602,7 +609,7 @@ export const Editor = () => {
                         <Col sm={6}>
                           <Form.Group controlId="productPrice">
                             <Form.Label>Prezzo</Form.Label>
-                            <Form.Control type="text" name="prezzo" value={product.prezzo} onChange={handleChange} />
+                            <Form.Control type="number" name="prezzo" value={product.prezzo} onChange={handleChange} />
                           </Form.Group>
                         </Col>
                         <Form.Group controlId="productDescription">
