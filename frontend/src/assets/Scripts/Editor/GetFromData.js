@@ -170,6 +170,7 @@ export async function saveAll(allElements, originalElements) {
 
         //verifica di nuovo che non sia presente in originalElements e fa due chiamate diverse in base che sia prodotto o accessorio
         if (!originalElements.some(originalElement => originalElement._id === element._id)) {
+            console.log(element.categoria)
             if(element.categoria === "occiale" || element.categoria === "maschera" ) await addProduct(element);// (aggiungi prodotto)
             else await addAccessory(element);// (aggiungi accessorio)
         }
@@ -244,7 +245,8 @@ async function addProduct(product) {
             nome: product.nome,
             prezzo: Number(product.prezzo),
             descrizione: product.descrizione,
-            categoria: product.categoria
+            categoria: product.categoria,
+            motto: product.motto
         };
 
         // Viene chiamata l'api per l'aggiunta del prodotto

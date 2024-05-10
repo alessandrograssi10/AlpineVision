@@ -187,9 +187,9 @@ router.patch('/:productId/:colore/decrement', async (req, res) => {
 
 // Crea prodotto
 router.post('/', async (req, res) => { //funziona
-    const {nome, prezzo, descrizione,categoria } = req.body;
+    const {nome, prezzo, descrizione,categoria,motto } = req.body;
     try {
-        const productId = await createProduct(nome, prezzo, descrizione,categoria);
+        const productId = await createProduct(nome, prezzo,descrizione,categoria,motto);
         res.status(201).json({ _id: productId });
     } catch (error) {
         console.error("Errore nella creazione del prodotto:", error);
