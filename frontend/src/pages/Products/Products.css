@@ -112,3 +112,11 @@
 .card-prod-prod-ca:hover {
   transform: scale(1.05); /* Aumenta la dimensione del 5% quando il mouse è sopra */
 }
+
+.heart {
+  transition: transform 0.2s ease-in-out;
+}
+
+.heart.animate {
+  transform: scale(1.2);
+}

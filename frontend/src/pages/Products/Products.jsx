@@ -15,10 +15,22 @@ export const Products = () => {
     const [colorCount, setColorCount] = useState({}); // set per contare i colori
     const [hoverIndex, setHoverIndex] = useState(null); //elemento selezionato
     const [Favorite, setFavorite] = useState([]); // stato per i preferiti
+    const [animateFav, setAnimateFav] = useState({});
 
     // Prendo i valori dal localstorage
     //let Favorite = JSON.parse(localStorage.getItem("Favorite") || "[]");
     //let Favorite; // Dichiaro Favorite fuori dai blocchi condizionali per renderlo visibile in tutto lo scope
+    useEffect(() => {
+        const timers = Object.keys(animateFav).map(id => {
+            if (animateFav[id]) {
+                return setTimeout(() => {
+                    setAnimateFav(prev => ({ ...prev, [id]: false }));
+                }, 200); // duration should match the CSS transition duration
+            }
+            return null;
+        });
+        return () => timers.forEach(timer => clearTimeout(timer));
+    }, [animateFav]);
 
     useEffect(() => {
         if (userId) {
@@ -132,6 +144,7 @@ export const Products = () => {
         console.log("changeStarted")
         evento.preventDefault(); // Evita il comportamento predefinito dell'evento
         evento.stopPropagation(); // Evita la propagazione dell'evento ai genitori
+        setAnimateFav(prev => ({ ...prev, [prodotto._id]: true }));
 
         if(Favorite.includes(prodotto._id)) {
                
@@ -230,7 +243,7 @@ export const Products = () => {
                                     <Card.Title>{colorCount[prodotto._id]} {colorCount[prodotto._id] > 1 ? 'colori' : 'colore'}</Card.Title>
                                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                                         <Card.Text>{prodotto.prezzo} €</Card.Text>
-                                        <Image     key={`${prodotto._id}-${Favorite.includes(prodotto._id) ? 'filledHeart' : 'heart'}`}   onClick={(e) => {handleClickFavorite(prodotto,e)}} src={Favorite.includes(prodotto._id) ? filledHeart : heart} style={{ width: '25px', height: '25px' }} alt="Descrizione Immagine" />
+                                        <Image className={`heart ${animateFav[prodotto._id] ? 'animate' : ''}`}  key={`${prodotto._id}-${Favorite.includes(prodotto._id) ? 'filledHeart' : 'heart'}`}   onClick={(e) => {handleClickFavorite(prodotto,e)}} src={Favorite.includes(prodotto._id) ? filledHeart : heart} style={{ width: '25px', height: '25px' }} alt="Descrizione Immagine" />
                                     </div>
                                 </Card.Body>
                             </Card>
@@ -271,7 +284,7 @@ export const Products = () => {
                                     <Card.Title>{colorCount[prodotto._id]} colori</Card.Title>
                                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                                         <Card.Text>{prodotto.prezzo} €</Card.Text>
-                                        <Image key ={Favorite} onClick={(e) => {handleClickFavorite(prodotto,e);e.preventDefault();}} src={Favorite.includes(prodotto._id) ? filledHeart : heart} style={{ width: '25px', height: '25px' }} alt="Descrizione Immagine" />
+                                        <Image className={`heart ${animateFav[prodotto._id] ? 'animate' : ''}`}  key={`${prodotto._id}-${Favorite.includes(prodotto._id) ? 'filledHeart' : 'heart'}`}   onClick={(e) => {handleClickFavorite(prodotto,e)}} src={Favorite.includes(prodotto._id) ? filledHeart : heart} style={{ width: '25px', height: '25px' }} alt="Descrizione Immagine" />
                                     </div>
                                 </Card.Body>
                             </Card>

@@ -248,10 +248,10 @@ export const Product = (addToStorage) => {
                 id="controlled-tab-example"
                 activeKey={key}
                 onSelect={(k) => setKey(k)}
-                className="mb-5 mt-5 justify-content-center dark-prod p-0 buttonn   tab-text-color tabs-black"
-                variant='pills'
+                className="mb-0 mt-5 justify-content-center dark-prod p-0 buttonn   tab-text-color tabs-black"
+               // variant='pills'
             >
-                <Tab eventKey="vetrina" title="Vetrina" className='fade dark p-0 color-black mt-5 dark-prod '>
+                <Tab eventKey="vetrina" title="Vetrina" className='fade dark p-0 color-black mt-0 dark-prod '>
 
                     <Row className=" m-0 p-0 w-100 h-100 no-space-rowBg-prod ">
                         <Image src={ImgSimpatica} className="p-0 img-fluid-no-space w-100 darkness align-items-center" />
