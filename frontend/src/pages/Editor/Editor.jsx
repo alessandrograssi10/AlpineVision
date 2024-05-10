@@ -392,22 +392,23 @@ export const Editor = () => {
                           <Form.Label>Descrizione prodotto</Form.Label>
                           <Form.Control as="textarea" rows={1} type="text" name="descrizione" value={product.descrizione} onChange={handleChange} />
                         </Form.Group>
+                        <Form.Group controlId="productMotto">
+                          <Form.Label>Descrizione prodotto aggiuntiva</Form.Label>
+                          <Form.Control type="text" name="motto" value={product.motto} onChange={handleChange} />
+                        </Form.Group>
                         <Form.Group controlId="productQuantity">
                           <Form.Label>Quantità</Form.Label>
                           <Form.Control type="number" name="quantita" value={product.quantita} onChange={handleChange} />
                         </Form.Group>
                         <Form.Group controlId="productImages">
-                          <Form.Label>Immagini copertina</Form.Label>
+                          <Form.Label>Immagini copertina - 4 files richiesti (1,2,S,I)</Form.Label>
                           <Form.Control type="file" multiple onChange={handleImageChangeCop} />
                         </Form.Group>
                         <Form.Group controlId="productImages">
-                          <Form.Label>Immagini prodotto</Form.Label>
+                          <Form.Label>Immagini variante - 4 files richiesti (B,F,S,D)</Form.Label>
                           <Form.Control type="file" multiple onChange={handleImageChangeVar} />
                         </Form.Group>
-                        <Form.Group controlId="productMotto">
-                          <Form.Label>Motto</Form.Label>
-                          <Form.Control type="text" name="motto" value={product.motto} onChange={handleChange} />
-                        </Form.Group>
+                        
                         <Button className='m-0 mt-4' variant="primary" type="submit">Invia</Button>
                       </Row>
                     </Form>
