@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { getDb } = require('../config/database');
-const { createUser, deleteUser, updateUserPassword, setPhone, setAddress, findUserByEmail } = require('../models/user');
+const { createUser, deleteUser, updateUserPassword, setPhone, setAddress, findUserByEmail, updateUserRole } = require('../models/user');
 const jwt = require('jsonwebtoken');
 const { ObjectId } = require('mongodb');
 
@@ -179,6 +179,29 @@ router.patch('/:userId/password', async (req, res) => {//funziona
     }
 });
 
+// Route per modificare il ruolo di un utente
+router.patch('/:userId/role', async (req, res) => {
+    const userId = req.params.userId;
+    const { newRole } = req.body;
+
+    // Validate newRole input
+    const validRoles = ['user', 'editor-blog', 'editor-prodotti', 'admin'];
+    if (!validRoles.includes(newRole)) {
+        return res.status(400).json({ error: "Ruolo non valido" });
+    }
+
+    try {
+        const result = await updateUserRole(userId, newRole);
+        if (result.matchedCount === 1) {
+            res.status(200).json({ message: "Ruolo aggiornato con successo" });
+        } else {
+            res.status(404).json({ error: "Utente non trovato" });
+        }
+    } catch (error) {
+        console.error("Errore nell'aggiornamento del ruolo dell'utente:", error);
+        res.status(500).json({ error: "Errore nell'aggiornamento del ruolo dell'utente" });
+    }
+});
 
 /*
 
