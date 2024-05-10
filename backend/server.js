@@ -8,6 +8,7 @@ const postsRoutes = require('./routes/postRoutes');
 const cartRoutes = require('./routes/cartRoutes');
 const orderRoutes= require('./routes/orderRoutes');
 const accessoryRoutes = require('./routes/accessoryRoutes');
+const favouriteRoutes = require('./routes/favouriteRoutes');
 
 
 
@@ -24,6 +25,7 @@ connectToDatabase().then(() => {
     app.use('/api/carts',cartRoutes);
     app.use('/api/orders',orderRoutes);
     app.use('/api/accessories', accessoryRoutes);
+    app.use('/api/favourites', favouriteRoutes);
 
     app.listen(PORT, () => {
         console.log(`Server in ascolto sulla porta ${PORT}`);

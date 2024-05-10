@@ -2,21 +2,53 @@ import React, { useState, useEffect } from 'react';
 import { Image, Container, Row, Col, Card } from 'react-bootstrap';
 import ImmagineBg from '../../assets/Images/BgProd3.png';
 import heart from '../../assets/Images/heart-3.png';
-import filledHeart from '../../assets/Images/heart.png';
+import filledHeart from '../../assets/Images/heart-full.png';
 import { Link } from 'react-router-dom';
 import './Products.css';
 
 export const Products = () => {
+    const userId = localStorage.getItem('userId');
     const [productsMask, setProductsMask] = useState([]); // Maschere
     const [productsGlass, setProductsGlass] = useState([]); // Occhili
     const [imageUrlsp, setImageUrlsp] = useState({}); // immagini frontali
     const [imageUrlspLat, setImageUrlspLat] = useState({}); // immagini laterali
     const [colorCount, setColorCount] = useState({}); // set per contare i colori
     const [hoverIndex, setHoverIndex] = useState(null); //elemento selezionato
-    
+    const [Favorite, setFavorite] = useState([]); // stato per i preferiti
+
     // Prendo i valori dal localstorage
-    let Favorite = JSON.parse(localStorage.getItem("Favorite") || "[]");
-    const userId = localStorage.getItem('userId');
+    //let Favorite = JSON.parse(localStorage.getItem("Favorite") || "[]");
+    //let Favorite; // Dichiaro Favorite fuori dai blocchi condizionali per renderlo visibile in tutto lo scope
+
+    useEffect(() => {
+        if (userId) {
+            // Effettua la richiesta fetch
+            fetch(`http://localhost:3000/api/favourites/${userId}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Errore nella richiesta fetch');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log("Ricevo i data",data)
+
+                    // Aggiorna lo stato dei preferiti
+                    const favoriteIds = data.favourites.map(item => item.productId);
+                    setFavorite(favoriteIds);
+                    console.log("Ricevo i Favourites",favoriteIds)
+
+                })
+                .catch(error => {
+                    console.error('Si è verificato un errore:', error);
+                });
+        } else {
+            // Prendi i valori dal localStorage
+            const localFavorite = JSON.parse(localStorage.getItem("Favorite") || "[]");
+            setFavorite(localFavorite);
+        }
+    }, [userId]);
+
 
     useEffect(() => {
         fetch(`http://localhost:3000/api/products`)
@@ -92,28 +124,74 @@ export const Products = () => {
             return '';
         }
     };
-    const handleClickFavorite = (prodotto, evento) => {
-        if(userId)
-        {
-            //salva su server
-        }else{
-            if(Favorite.includes(prodotto._id)) 
-            {
-                let index = Favorite.indexOf(prodotto._id);
+
+
+    
+
+    async function handleClickFavorite (prodotto, evento)  {
+        console.log("changeStarted")
+        evento.preventDefault(); // Evita il comportamento predefinito dell'evento
+        evento.stopPropagation(); // Evita la propagazione dell'evento ai genitori
+
+        if(Favorite.includes(prodotto._id)) {
+               
+            if(userId)
+                {
+                    try {
+                        const response = await fetch("http://localhost:3000/api/favourites/remove", {
+                            method: 'DELETE',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                userId: userId,
+                                productId: prodotto._id,
+                                type: "product",
+                            })
+        
+                        });
+                        console.log("prodotto._id",prodotto._id)
+                    }
+                    catch (error) { console.error('Errore:', error); }
+                }
+                setFavorite(prevFavorites => prevFavorites.filter(id => id !== prodotto._id));
+
+               /* let index = Favorite.indexOf(prodotto._id);
                 if (index > -1) {
                     Favorite.splice(index, 1);
-                }
-                localStorage.setItem("Favorite",JSON.stringify(Favorite));
+                }*/
+                if(!userId)localStorage.setItem("Favorite",JSON.stringify(Favorite));
+
             }
             else{
-                Favorite.push(prodotto._id);
-                localStorage.setItem("Favorite",JSON.stringify(Favorite));
+                if(userId)
+                    {
+                        try {
+                            const response = await fetch("http://localhost:3000/api/favourites/add", {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify({
+                                    userId: userId,
+                                    productId: prodotto._id,
+                                    type: "product",
+                                })
+            
+                            });
+                        }
+                        catch (error) { console.error('Errore:', error); }
+                    }
+                
+                //Favorite.push(prodotto._id);
+                setFavorite(prevFavorites => [...prevFavorites, prodotto._id]);
+
+                if(!userId) localStorage.setItem("Favorite",JSON.stringify(Favorite));
             }
             console.log("change",Favorite);
-        }
-        if (evento.defaultPrevented) {
-            evento.stopPropagation();
-        }
+        
+       
+        console.log("changeFinisced")
     }
 
     return (
@@ -131,7 +209,7 @@ export const Products = () => {
                 {productsMask.map((prodotto) => {
                     return (
                         <Col xs={12} sm={6} md={4} lg={3} key={prodotto._id} >
-                            <Card as={Link} to={`/product/${prodotto._id}`} className='m-3 card-text-prod card-prod card-prod-prod-ca' onMouseEnter={() => setHoverIndex(prodotto._id)} onMouseLeave={() => setHoverIndex(null)}>
+                            <Card key= {prodotto._id } as={Link} to={`/product/${prodotto._id}`} className='m-3 card-text-prod card-prod card-prod-prod-ca' onMouseEnter={() => setHoverIndex(prodotto._id)} onMouseLeave={() => setHoverIndex(null)}>
                                 {/* Immagine della maschera */}
                                 {/*<Card.Img key={prodotto._id} variant="top" className='card-image-fit' onMouseEnter={() => setHoverIndex(prodotto._id)} onMouseLeave={() => setHoverIndex(null)} src={hoverIndex === prodotto._id ? imageUrlspLat[prodotto._id] : imageUrlsp[prodotto._id]} />*/}
                                 <div className="card-image-container">
@@ -149,10 +227,10 @@ export const Products = () => {
                                 {/* Dettagli della maschera */}
                                 <Card.Body>
                                     <Card.Title>{prodotto.nome}</Card.Title>
-                                    <Card.Title>{colorCount[prodotto._id]} colori</Card.Title>
+                                    <Card.Title>{colorCount[prodotto._id]} {colorCount[prodotto._id] > 1 ? 'colori' : 'colore'}</Card.Title>
                                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                                         <Card.Text>{prodotto.prezzo} €</Card.Text>
-                                        <Image key ={Favorite} onClick={(e) => {handleClickFavorite(prodotto,e);e.preventDefault();}} src={Favorite.includes(prodotto._id) ? filledHeart : heart} style={{ width: '25px', height: '25px' }} alt="Descrizione Immagine" />
+                                        <Image     key={`${prodotto._id}-${Favorite.includes(prodotto._id) ? 'filledHeart' : 'heart'}`}   onClick={(e) => {handleClickFavorite(prodotto,e)}} src={Favorite.includes(prodotto._id) ? filledHeart : heart} style={{ width: '25px', height: '25px' }} alt="Descrizione Immagine" />
                                     </div>
                                 </Card.Body>
                             </Card>
@@ -193,7 +271,7 @@ export const Products = () => {
                                     <Card.Title>{colorCount[prodotto._id]} colori</Card.Title>
                                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                                         <Card.Text>{prodotto.prezzo} €</Card.Text>
-                                        <img src={heart} style={{ width: '25px', height: '25px' }} alt="Descrizione Immagine" />
+                                        <Image key ={Favorite} onClick={(e) => {handleClickFavorite(prodotto,e);e.preventDefault();}} src={Favorite.includes(prodotto._id) ? filledHeart : heart} style={{ width: '25px', height: '25px' }} alt="Descrizione Immagine" />
                                     </div>
                                 </Card.Body>
                             </Card>

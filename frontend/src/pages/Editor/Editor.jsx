@@ -195,7 +195,18 @@ export const Editor = () => {
         setAddMaskProd(false);
         setAddGlassProd(false);
         setAddAccessoryProd(false);
-
+        //
+        setProduct({
+          nome: '',
+          prezzo: '',
+          descrizione: '',
+          colore: '',
+          coloreVariante: '',
+          quantita: '',
+          immaginiCop: [],
+          immaginiVar: [],
+          motto: ''
+      });
     };
     const toggleExpandProduct = (productId) => {
         if (expandedProductId === productId) {
