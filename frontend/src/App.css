@@ -17,3 +17,27 @@
   font-size: calc(10px + 2vmin);
   color: white;
 }
+
+h1 {
+  font-size: 6vw !important; /* 6% della larghezza del viewport */
+}
+
+h2 {
+  font-size: 5vw!important;/* 5% della larghezza del viewport */
+}
+
+h3 {
+  font-size: 4vw!important; /* 4% della larghezza del viewport */
+}
+
+h4 {
+  font-size: 3vw!important; /* 3% della larghezza del viewport */
+}
+
+h5 {
+  font-size: 2.5vw!important; /* 2.5% della larghezza del viewport */
+}
+
+h6 {
+  font-size: 2vw!important; /* 2% della larghezza del viewport */
+}

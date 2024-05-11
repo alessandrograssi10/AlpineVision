@@ -157,7 +157,7 @@ function Cart() {
                             <Col xs="6">
                                 <Link to="/Payments/cart" className="fs-4">
                                     <Button size="lg" id="buyButtonn" variant="outline-dark" className='button-black-prod' onClick={handleCheckout}>
-                                        Procedi all'acquisto
+                                    <h3 className='p-0 m-0'>Procedi all'acquisto</h3>
                                     </Button>
                                 </Link>
                             </Col>
@@ -168,7 +168,7 @@ function Cart() {
                     ) : (
                         <Link to="/Products" className="invisible-link">
                             <Button variant="outline-dark" id="prodPageButtonn" className="fs-4 button-black-prod">
-                                Continua con gli acquisti
+                            <h3 className='p-0 m-0'>Continua con gli acquisti</h3>
                             </Button>
                         </Link>
                     )}
