@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Container, Row, Form, Col, Carousel, Modal, Button, Tabs, Tab, Image } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
+import ImmagineBg from '../../assets/Images/BgProd3.png';
 import './Product.css';
 import { BsCheck } from 'react-icons/bs';
 import { Link, useNavigate } from 'react-router-dom';
@@ -21,6 +22,7 @@ export const Product = (addToStorage) => {
     let navigate = useNavigate();
     const [buttonState, setButtonState] = useState('default');
     const [buttonStateDirect, setButtonStateDirect] = useState('default');
+    const [showFixedInfo, setShowFixedInfo] = useState(false);
 
     useEffect(() => {
         fetch(`http://localhost:3000/api/products/${id}/variants`)
@@ -56,7 +58,27 @@ export const Product = (addToStorage) => {
             .catch(error => {
                 console.error("Errore nel recupero dell'articolo:", error);
             });
-    }, [id]);
+
+
+            const handleScroll = () => {
+                const scrollY = window.scrollY;
+                const threshold = 800; // Altezza in pixel per mostrare il rettangolo
+                const thresholdMax = 2500; // Altezza in pixel per mostrare il rettangolo
+
+                if (scrollY > threshold && scrollY < thresholdMax) {
+                    setShowFixedInfo(true);
+                } else {
+                    setShowFixedInfo(false);
+                }
+            };
+    
+            window.addEventListener('scroll', handleScroll);
+    
+            // Pulisci l'event listener
+            return () => {
+                window.removeEventListener('scroll', handleScroll);
+            };
+    }, [id,selectedSetIndex]);
 
     const handleRadioChange = (event) => {
         const newSetIndex = Number(event.target.value);
@@ -161,13 +183,17 @@ export const Product = (addToStorage) => {
             
             <Row className="d-flex align-items-center pl-0 pt-3 m-0 ml-0 mt-4 equal-height">
                 <Col lg={7} className="d-flex  flex-column p-3 pl-0 m-0" >
-                    <Carousel activeIndex={activeIndex} onSelect={(selectedIndex, e) => setActiveIndex(selectedIndex)} className=' m-0 mt-0 mb-0 mr-0'>
+                    <Carousel 
+                    activeIndex={activeIndex} 
+                    onSelect={(selectedIndex, e) => setActiveIndex(selectedIndex)} className=' m-0 mt-0 mb-0 mr-0 '
+                    indicators={false}  // Mostra gli indicatori                        
+
+                    >
                         {imageSets.map((imageSrc, idx) => (
                             <Carousel.Item key={idx}>
                                 <img
-                                    className="d-block w-100 img-prod align-items-center"
+                                    className="d-block w-100 img-prod align-items-center "
                                     src={imageSrc}
-
                                 />
                             </Carousel.Item>
                         ))}
@@ -248,20 +274,22 @@ export const Product = (addToStorage) => {
                 id="controlled-tab-example"
                 activeKey={key}
                 onSelect={(k) => setKey(k)}
-                className="mb-0 mt-5 justify-content-center dark-prod p-0 buttonn   tab-text-color tabs-black"
+                //className="mb-0 mt-5 justify-content-center dark-prod p-0 buttonn "
                // variant='pills'
+               className="mb-0 mt-3 justify-content-center dark-prod p-0 buttonn tabs-black" // Assicurati che tabs-black sia applicato
+
             >
                 <Tab eventKey="vetrina" title="Vetrina" className='fade dark p-0 color-black mt-0 dark-prod '>
 
                     <Row className=" m-0 p-0 w-100 h-100 no-space-rowBg-prod ">
                         <Image src={ImgSimpatica} className="p-0 img-fluid-no-space w-100 darkness align-items-center" />
-                        <div className="centered-text">{productInfo.nome}</div>
+                        <div className="centered-text-p">{productInfo.nome}</div>
                     </Row>
-                    <Row className="m-0 p-0 w-100 h-100 d-flex justify-content-center align-items-center p-5 ">
-                        <h3 className="text-center text-bold">{productInfo.motto}</h3>
+                    <Row className="m-0 p-0 w-100 h-100 d-flex justify-content-center align-items-center p-5 mt-2">
+                        <h2 className="text-center text-bold">{productInfo.motto}</h2>
                     </Row>
-                    <Row className="m-0 p-0 w-100 h-100 d-flex justify-content-center align-items-center p-5 ">
-                        <h4 className="text-center text-bold">{productInfo.descrizione}</h4>
+                    <Row className="m-0 p-0 w-100 h-100 d-flex justify-content-center align-items-center p-5 pt-2 ">
+                        <h5 className="text-center text-bold">{productInfo.descrizione}</h5>
 
                     </Row>
                     <Row className="m-0 p-0 w-100 h-100 no-space-rowBg-prod">
@@ -270,10 +298,27 @@ export const Product = (addToStorage) => {
                 </Tab>
                 <Tab eventKey="caratteristiche" title="Caratteristiche" className='fade  m-3'>
                     <Row className="m-0 p-0 w-100 h-100 d-flex justify-content-center align-items-center p-5 ">
-                        <h3 className="text-left text-bold">{formatDescription(productInfo.caratteristiche)}</h3>
+                        <h4 className="text-left text-bold">{formatDescription(productInfo.caratteristiche)}</h4>
                     </Row>
                 </Tab>
             </Tabs>
+            <div className={` fixed-bottom-info ${showFixedInfo ? 'show' : ''}`}>
+                <div className="info-text">
+                    <h5>{productInfo.nome}</h5>
+                    <p>{productInfo.prezzo} €</p>
+                </div>
+                <Button className={`button-black-prod-nomon ${buttonStateDirect}`} onClick={DirectPay} variant="outline-dark" size="sm">
+                    {buttonStateDirect === 'loading' && <div className="spinner"></div>}
+                    {buttonStateDirect === 'default' && <div className='p-0 m-0'><h5 className='p-2 m-0'>COMPRA ORA</h5></div>}
+                    {buttonStateDirect === 'login' && <div className='p-0 m-0'><h4 className='p-0 m-0'>EFFETTUA PRIMA IL LOGIN</h4></div>}
+                </Button>
+                
+            </div>
+            <Row className="m-0 p-0 w-100 h-100 no-space-rowBg">
+                <Image src={ImmagineBg} className="p-0 img-fluid-no-space w-100 darkness" />
+                <div className="centered-text">Le emozioni non finiscono mai:
+                Esplora le ultime uscite</div>
+            </Row>
         </Container>
     );
 };

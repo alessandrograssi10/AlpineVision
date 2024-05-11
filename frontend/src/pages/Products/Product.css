@@ -227,3 +227,111 @@
 .button-black-prod-nomon.loading {
   background-color: rgb(255, 255, 255); /* or any color when loading */
 }
+
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    background-color: rgb(255, 0, 0) !important; /* Cambia il colore delle icone */
+    width: 30px; /* Modifica la larghezza */
+    height: 30px; /* Modifica l'altezza */
+    background-size: 100%, 100%; /* Adatta l'icona al contenitore */
+}
+
+
+
+.fixed-bottom-info {
+  position: fixed;
+  bottom: 10px; /* Aggiungi un margine inferiore */
+  left: 10px;   /* Aggiungi un margine a sinistra */
+  right: 50px;  /* Aggiungi un margine a destra */ 
+  width: 98%;
+  background-color: white;
+  box-shadow: 0 -2px 10px rgba(0,0,0,0.5);
+  padding: 10px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 1000;
+  border: 2px solid lightgray; /* Contorno gr*/
+  transition: transform 0.3s ease-in-out;
+  transform: translateY(120%);
+}
+
+.fixed-bottom-info.show {
+  transform: translateY(0);
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    background-color: black !important; /* Colore delle icone */
+    width: 30px !important; /* Larghezza delle icone */
+    height: 30px !important; /* Altezza delle icone */
+    background-size: 100% 100% !important; /* Adatta l'icona al contenitore */
+    border-radius: 50% !important; /* Icone circolari */
+    margin: 10px !important; /* Aggiungi margine */
+}
+
+.carousel-control-prev-icon {
+   /* background-image: url('path-to-your-custom-left-arrow.svg') !important; /* Percorso dell'icona sinistra personalizzata */
+}
+
+.carousel-control-next-icon {
+   /* background-image: url('path-to-your-custom-right-arrow.svg') !important; /* Percorso dell'icona destra personalizzata */
+}
+
+.centered-text-p {
+  position: absolute;
+  font-weight:normal;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white; /* Cambia il colore del testo come preferisci */
+  font-size: 8vw; /* Aggiusta la dimensione del testo secondo necessità */
+  z-index: 10; /* Assicurati che il testo sia visibile sopra l'immagine */
+  text-align: center;
+  width: 100%;
+}
+
+.nav-tabs {
+  padding-left: 15px;
+  margin-bottom: 0;
+  border: none;
+}
+.tab-content {
+  border: 2px solid #000000;
+  border-left: 0px solid #000000;
+  border-right: 0px solid #000000;
+
+  border-radius: 0px;
+  padding: 3px;
+  padding-left: 0px;
+  padding-right: 0px;
+
+}
+
+.tabs-black .nav-link {
+  border-top: 1px solid rgb(214, 214, 214) !important; /* Bordo superiore nero */
+  border-left: 1px solid  rgb(214, 214, 214) !important; /* Bordo sinistro nero */
+  border-right: 1px solid  rgb(214, 214, 214) !important; /* Bordo destro nero */
+  margin: 0 2px;
+  border-bottom: none !important; /* Rimuovi bordo inferiore */
+  background-color: rgb(255, 255, 255) !important; /* Sfondo bianco per contrasto */
+  color: black !important; /* Colore testo nero */
+  margin-bottom: -2px !important; /* Sovrapponi bordo inferiore */
+  font-weight: none;
+}
+
+.tabs-black .nav-link.active {
+  border-top: 2px solid black !important; /* Bordo superiore nero */
+  border-left: 2px solid black !important; /* Bordo sinistro nero */
+  border-right: 2px solid black !important; /* Bordo destro nero */
+  background-color: #ffffff !important; /* Sfondo leggermente diverso per l'attivo */
+  border-bottom: 2px solid white !important; /* Per mantenere attivo il bordo inferiore */
+  color: black !important; /* Colore testo nero */
+  font-weight: bold;
+
+}
+
+.tabs-black .nav-link:hover {
+  background-color: #ffffff !important; 
+}
