@@ -17,7 +17,7 @@ export const BlogEdit = () => {
   let firstOpen = false;
 
   useEffect(() => {
-    if(ruolo !== "admin"){ window.location.href = '/home'; }
+    if(ruolo !== "admin" && ruolo !== "editor-blog"){ window.location.href = '/home'; }
       if(!firstOpen){
           firstOpen = true;
       if(localStorage.getItem("prevPage") !== "Edit")
@@ -305,7 +305,7 @@ async function uploadImage(postId, file, uploadUrl) {
 }
 
 
-if(ruolo !== "admin"){ window.location.href = '/home'; }
+if(ruolo !== "admin" && ruolo !== "editor-blog"){ window.location.href = '/home'; }
 else return (
   <Container fluid className="p-0 m-0">
     {/* Alert per avvertire che si è in modalità editing */}

@@ -17,7 +17,7 @@ export const BlogArticleEdit = () => {
 
   // Vai alla home se non sei admin
   useEffect(() => {
-    if(ruolo !== "admin"){ window.location.href = '/home'; }
+    if(ruolo !== "admin" && ruolo !== "editor-blog"){ window.location.href = '/home'; }
   }, []);
 
   // Recupero l'immagine copertina tramite l'Id

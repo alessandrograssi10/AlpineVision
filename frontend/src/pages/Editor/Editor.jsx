@@ -265,7 +265,7 @@ export const Editor = () => {
             setRiavvia(!riavvia);
         }, 500); 
   };
-    if(ruolo !== "admin"){ window.location.href = '/home'; }
+    if(ruolo !== "admin" && ruolo !== "editor-prodotti"){ window.location.href = '/home'; }
     else return (
         <Container fluid className="p-0 m-0">
           {/* Alert per avvertire che si è in modalità editing */}

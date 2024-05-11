@@ -223,7 +223,7 @@ export const Product = (addToStorage) => {
                                 <Button className={`button-black-prod m-2 mt-5 ${buttonState}`} onClick={addToCart} variant="outline-dark pl-0 ml-0" size="lg">
                 {buttonState === 'loading' && <div className="spinner "></div>}
                 {buttonState === 'confirmed' && <BsCheck className='icon-confirmed'/>}
-                {buttonState === 'default' && <div className='p-0 m-0'>AGGIUNGI AL CARRELLO</div>}
+                {buttonState === 'default' && <div className='p-0 m-0'><h3 className='p-0 m-0'>AGGIUNGI AL CARRELLO</h3></div>}
                 {buttonState === 'login' && <div className='p-0 m-0'><h3 className='p-0 m-0'>EFFETTUA PRIMA IL LOGIN</h3></div>}
             </Button>
                                 
