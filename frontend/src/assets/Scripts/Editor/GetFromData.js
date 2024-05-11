@@ -171,7 +171,7 @@ export async function saveAll(allElements, originalElements) {
         //verifica di nuovo che non sia presente in originalElements e fa due chiamate diverse in base che sia prodotto o accessorio
         if (!originalElements.some(originalElement => originalElement._id === element._id)) {
             console.log(element.categoria)
-            if(element.categoria === "occiale" || element.categoria === "maschera" ) await addProduct(element);// (aggiungi prodotto)
+            if(element.categoria === "occhiale" || element.categoria === "maschera" ) await addProduct(element);// (aggiungi prodotto)
             else await addAccessory(element);// (aggiungi accessorio)
         }
     }));
@@ -180,7 +180,7 @@ export async function saveAll(allElements, originalElements) {
     await Promise.all(allElements.map(async element => {
 
         // Funziona solo per i prodotti (cchiali e maschere)
-        if(element.categoria === "occiale" || element.categoria === "maschera" ){
+        if(element.categoria === "occhiale" || element.categoria === "maschera" ){
 
         // Trova l'elemento originale corrispondente
         const originalElement = originalElements.find(originalElement => originalElement._id === element._id);
@@ -199,7 +199,7 @@ export async function saveAll(allElements, originalElements) {
     
     // Promise.all per la rimozione degli elementi nel database (Aspetta il completamento di tutte le chiamate)
     await Promise.all(removedElements.map(async element => {
-        if(element.categoria === "occiale" || element.categoria === "maschera" ) await deleteProduct(element._id);// (rimuovo prodotto)
+        if(element.categoria === "occhiale" || element.categoria === "maschera" ) await deleteProduct(element._id);// (rimuovo prodotto)
         else await deleteAccessory(element._id);// (rimuovo prodotto)
     }));
 }
@@ -246,7 +246,8 @@ async function addProduct(product) {
             prezzo: Number(product.prezzo),
             descrizione: product.descrizione,
             categoria: product.categoria,
-            motto: product.motto
+            motto: product.motto,
+            caratteristiche: product.caratteristiche
         };
 
         // Viene chiamata l'api per l'aggiunta del prodotto
