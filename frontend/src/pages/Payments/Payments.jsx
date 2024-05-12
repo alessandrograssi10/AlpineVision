@@ -113,46 +113,44 @@ const Payments = () => {
         }
     }, [userId]);
 
+
     async function sendOrder() {
         if (userId) {
             let url = '';
-            const arra = localStorage.getItem("riepilogoCart");
-            const riepilogoDati = JSON.parse(arra);
-
-            if (id === 'cart')
-            {
-                const productResponse = await fetch('http://localhost:3000/api/orders/createOrderFromCart', {
-                method: 'POST',
-                headers: {
-                'Content-Type': 'application/json'
-                },
-                    body: JSON.stringify({
-                        "userId": userId,
-                    })
-                });
-                localStorage.setItem('Cart_Trig', "Trigger");   
+            const array= localStorage.getItem("riepilogoCart");
+            const riepilogoDati = JSON.parse(array);
+    
+                if (id === 'cart') {
+                    const productResponse = await fetch('http://localhost:3000/api/orders/createOrderFromCart', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            "userId": userId,
+                        })
+                    });
+                    localStorage.setItem('Cart_Trig', "Trigger");
+                } else if (id === 'direct'&&riepilogoDati) {
+                    const productResponse = await fetch(`http://localhost:3000/api/orders/createOrder/${userId}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            "userId": userId,
+                            "productId": riepilogoDati.productId,
+                            "quantity": riepilogoDati.quantity,
+                            "color": riepilogoDati.color,
+                            "type": riepilogoDati.type,
+                        })
+                    });
+                    localStorage.setItem("riepilogoCart", JSON.stringify({}));
+                    localStorage.setItem('Cart_Trig', "Trigger");
+                }
             }
-
-            else if(id === 'direct')
-            {
-                const productResponse = await fetch(`http://localhost:3000/api/orders/createOrder/${userId}`, {
-                method: 'POST',
-                headers: {
-                'Content-Type': 'application/json'
-                },
-                    body: JSON.stringify({
-                        "userId": userId,
-                        "productId": arra.productId,
-                        "quantity": arra.quantity,
-                        "color": arra.color,
-                        "type": arra.type,
-                    })
-                });
-                localStorage.setItem("riepilogoCart",[]);
-                localStorage.setItem('Cart_Trig', "Trigger");   
-            }
-        } 
     }
+    
 
     const handleSubmit = (event) => {
 
