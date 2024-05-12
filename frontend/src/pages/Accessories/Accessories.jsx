@@ -3,13 +3,16 @@ import { Image,Container, Row, Col,Card } from 'react-bootstrap';
 import ImmagineBg from '../../assets/Images/BgProd3.png';
 import { Link } from 'react-router-dom';
 import heart from '../../assets/Images/heart-3.png';
+import filledHeart from '../../assets/Images/heart-full.png';
 
 export const Accessories = () => {
-
+    const userId = localStorage.getItem('userId');
     const [accessories, setAccessories] = useState([]); // accessori
     const [imageUrlsp, setImageUrlsp] = useState({}); // immagini frontali
     const [imageUrlspLat, setImageUrlspLat] = useState({}); // immagini laterali
     const [hoverIndex, setHoverIndex] = useState(null); //elemento selezionato
+    const [Favorite, setFavorite] = useState([]); // stato per i preferiti
+    const [animateFav, setAnimateFav] = useState({});
 
     // Vengono recupeate le informazioni degli accessori dal backend
     useEffect(() => {
@@ -42,6 +45,73 @@ export const Accessories = () => {
         })
         .catch(error => console.error("Errore nel recupero degli accessori", error));
     }, []);
+
+    async function handleClickFavorite (prodotto, evento)  {
+      console.log("changeStarted")
+      evento.preventDefault(); // Evita il comportamento predefinito dell'evento
+      evento.stopPropagation(); // Evita la propagazione dell'evento ai genitori
+      setAnimateFav(prev => ({ ...prev, [prodotto._id]: true }));
+
+      if(Favorite.includes(prodotto._id)) {
+             
+          if(userId)
+              {
+                  try {
+                      const response = await fetch("http://localhost:3000/api/favourites/remove", {
+                          method: 'DELETE',
+                          headers: {
+                              'Content-Type': 'application/json'
+                          },
+                          body: JSON.stringify({
+                              userId: userId,
+                              productId: prodotto._id,
+                              type: "product",
+                          })
+      
+                      });
+                      console.log("prodotto._id",prodotto._id)
+                  }
+                  catch (error) { console.error('Errore:', error); }
+              }
+              setFavorite(prevFavorites => prevFavorites.filter(id => id !== prodotto._id));
+
+             /* let index = Favorite.indexOf(prodotto._id);
+              if (index > -1) {
+                  Favorite.splice(index, 1);
+              }*/
+              if(!userId)localStorage.setItem("Favorite",JSON.stringify(Favorite));
+
+          }
+          else{
+              if(userId)
+                  {
+                      try {
+                          const response = await fetch("http://localhost:3000/api/favourites/add", {
+                              method: 'POST',
+                              headers: {
+                                  'Content-Type': 'application/json'
+                              },
+                              body: JSON.stringify({
+                                  userId: userId,
+                                  productId: prodotto._id,
+                                  type: "product",
+                              })
+          
+                          });
+                      }
+                      catch (error) { console.error('Errore:', error); }
+                  }
+              
+              //Favorite.push(prodotto._id);
+              setFavorite(prevFavorites => [...prevFavorites, prodotto._id]);
+
+              if(!userId) localStorage.setItem("Favorite",JSON.stringify(Favorite));
+          }
+          console.log("change",Favorite);
+      
+     
+      console.log("changeFinisced")
+  }
 
     // Recupera l'immagini tramite l'id
     const getImageById = async (id) => {
@@ -92,7 +162,7 @@ export const Accessories = () => {
                   <Card.Title>{prodotto.name}</Card.Title>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <Card.Text>{prodotto.prezzo} €</Card.Text>
-                    <img src={heart} style={{ width: '25px', height: '25px' }} alt="Descrizione Immagine" />
+                    <Image className={`heart ${animateFav[prodotto._id] ? 'animate' : ''}`}  key={`${prodotto._id}-${Favorite.includes(prodotto._id) ? 'filledHeart' : 'heart'}`}   onClick={(e) => {handleClickFavorite(prodotto,e)}} src={Favorite.includes(prodotto._id) ? filledHeart : heart} style={{ width: '25px', height: '25px' }} alt="Descrizione Immagine" />
                   </div>
                 </Card.Body>
               </Card>
