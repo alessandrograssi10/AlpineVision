@@ -1,5 +1,5 @@
 .button-small-width {
-    width: 150px; /* Puoi modificare questa larghezza in base alle tue esigenze */
+    width: 150px !important; /* Puoi modificare questa larghezza in base alle tue esigenze */
 }
 .responsive-buttons {
     display: flex;

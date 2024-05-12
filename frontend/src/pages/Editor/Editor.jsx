@@ -43,6 +43,7 @@ export const Editor = () => {
   const [riavvia, setRiavvia] = useState(false);
   const [errors, setErrors] = useState({});
 
+  // Effettua una copia iniziale degli elementi una sola volta
   useEffect(() => {
     if (!copiedOnce) {
       setAllElementsCopy(allElements);
@@ -51,6 +52,7 @@ export const Editor = () => {
     }
   }, [allElements]);
 
+  // Carica i dati dal server all'avvio
   useEffect(() => {
     console.log("Loading from server");
     setAllElements([]);
@@ -92,6 +94,7 @@ export const Editor = () => {
     console.log("all", allElements);
   }, [riavvia]);
 
+  // Gestione cambiamento del form
   const handleChange = (event) => {
     const { name, value } = event.target;
     setProduct(prevState => ({
@@ -100,6 +103,7 @@ export const Editor = () => {
     }));
   };
 
+  // Funzione per eliminare una variante di prodotto
   const handleDeleteVariant = (productId, variante) => {
     setElementsVerify(true);
     const updatedAllElements = allElements.map(element => {
@@ -125,12 +129,14 @@ export const Editor = () => {
     setAllElements(filteredElements);
   };
 
+  // Funzione per eliminare un prodotto
   const handleDelete = (productId) => {
     setElementsVerify(true);
     const updatedAllElements = allElements.filter(element => element._id !== productId);
     setAllElements(updatedAllElements);
   };
 
+  // Gestione cambio immagini copertina
   const handleImageChangeCop = (event) => {
     const { files } = event.target;
     setProduct(prevState => ({
@@ -139,20 +145,59 @@ export const Editor = () => {
     }));
   };
 
+  // Gestione cambio immagini variante
   const handleImageChangeVar = (event) => {
     const { files } = event.target;
     setProduct(prevState => ({
       ...prevState,
-      immaginiVar: [ ...files]
+      immaginiVar: [...files]
     }));
   };
 
+  // Apertura form di aggiunta prodotto
+  const OpenAdd = (type) => {
+    if(type === "maschera") {
+      setAddMaskProd(true);
+      setAddGlassProd(false);
+      setAddAccessoryProd(false);
+    } else if(type === "occhiale") {
+      setAddMaskProd(false);
+      setAddGlassProd(true);
+      setAddAccessoryProd(false);
+    } else if(type === "accessorio") {
+      setAddMaskProd(false);
+      setAddGlassProd(false);
+      setAddAccessoryProd(true);
+    }
+    // Reset del form
+    setProduct({
+      nome: '',
+      prezzo: '',
+      descrizione: '',
+      colore: '',
+      coloreVariante: '',
+      quantita: '',
+      immaginiCop: [],
+      immaginiVar: [],
+      motto: ''
+    });
+    setErrors({});
+  }
+
+  // Gestione invio form
   const handleSubmit = (event, type) => {
     console.log("Submit Type:", type);
     event.preventDefault();
 
     if (type === 'maschera' || type === 'occhiale') {
-      const validationErrors = validateFormProdAndAcc();
+      const validationErrors = validateFormProd();
+
+      if (Object.keys(validationErrors).length > 0) {
+        setErrors(validationErrors);
+        return;
+      }
+    } else {
+      const validationErrors = validateFormAcc();
 
       if (Object.keys(validationErrors).length > 0) {
         setErrors(validationErrors);
@@ -171,7 +216,7 @@ export const Editor = () => {
       descrizione,
       colore: colore,
       categoria: type,
-      quantita,
+      quantita: 100000,
       immagini: immaginiCop,
       motto,
       caratteristiche,
@@ -192,6 +237,7 @@ export const Editor = () => {
     setAddGlassProd(false);
     setAddAccessoryProd(false);
 
+    // Reset del form
     setProduct({
       nome: '',
       prezzo: '',
@@ -205,6 +251,7 @@ export const Editor = () => {
     });
   };
 
+  // Toggle espansione prodotto
   const toggleExpandProduct = (productId) => {
     if (expandedProductId === productId) {
       setExpandedProductId(null);
@@ -214,10 +261,18 @@ export const Editor = () => {
     }
   };
 
+  // Aggiungi variante al prodotto
   const addVariantToProduct = (productId) => {
     setElementsVerify(true);
     if (!expandedProductIdVariant) {
       setExpandedProductIdVariant(true);
+      setErrors({});
+      return;
+    }
+    const validationErrors = validateFormVar();
+
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
       return;
     }
     const { coloreVariante, immaginiVar } = product;
@@ -244,6 +299,7 @@ export const Editor = () => {
     setExpandedProductIdVariant(false);
   };
 
+  // Salva modifiche
   const handleSave = () => {
     setElementsVerify(false);
     saveAll(allElements, allElementsCopy);
@@ -252,6 +308,7 @@ export const Editor = () => {
     }, 500);
   };
 
+  // Ricarica pagina
   const handleReload = () => {
     setElementsVerify(false);
     setTimeout(() => {
@@ -259,22 +316,39 @@ export const Editor = () => {
     }, 500);
   };
 
-  const validateFormProdAndAcc = () => {
+  // Validazione form prodotti
+  const validateFormProd = () => {
     const newErrors = {};
     if (!product.nome) newErrors.nome = 'Nome del prodotto è richiesto.';
     if (!product.prezzo || product.prezzo <= 0) newErrors.prezzo = 'Prezzo valido è richiesto.';
     if (!product.colore) newErrors.colore = 'Colore del prodotto è richiesto.';
     if (!product.descrizione) newErrors.descrizione = 'Descrizione del prodotto è richiesta.';
-    if (!product.quantita || product.quantita <= 0) newErrors.quantita = 'Quantità valida è richiesta.';
-    //Da finire
-    if (!product.quantita || product.quantita <= 0) newErrors.quantita = 'Quantità valida è richiesta.';
-    if (!product.quantita || product.quantita <= 0) newErrors.quantita = 'Quantità valida è richiesta.';
-//
+    if (!product.motto || product.motto <= 0) newErrors.motto = 'Titolo descrizione del prodotto è richiesta.';
+    if (!product.caratteristiche || product.caratteristiche <= 0) newErrors.caratteristiche = 'Caratteristiche del prodotto è richiesta.';
     if (!product.immaginiCop || product.immaginiCop.length !== 2) newErrors.immaginiCop = '2 immagini richieste.';
     if (!product.immaginiVar || product.immaginiVar.length !== 4) newErrors.immaginiVar = '4 immagini richieste.';
     return newErrors;
   };
 
+  // Validazione form varianti
+  const validateFormVar = () => {
+    const newErrors = {};
+    if (!product.coloreVariante) newErrors.coloreVariante = 'Colore del prodotto è richiesto.';
+    if (!product.immaginiVar || product.immaginiVar.length !== 4) newErrors.immaginiVar = '4 immagini richieste.';
+    return newErrors;
+  };
+
+  // Validazione form accessori
+  const validateFormAcc = () => {
+    const newErrors = {};
+    if (!product.nome) newErrors.nome = 'Nome del prodotto è richiesto.';
+    if (!product.prezzo || product.prezzo <= 0) newErrors.prezzo = 'Prezzo valido è richiesto.';
+    if (!product.descrizione) newErrors.descrizione = 'Descrizione del prodotto è richiesta.';
+    if (!product.immaginiCop || product.immaginiCop.length !== 4) newErrors.immaginiCop = '4 immagini richieste.';
+    return newErrors;
+  };
+
+  // Verifica ruolo utente
   if (ruolo !== "admin" && ruolo !== "editor-prodotti") {
     window.location.href = '/home';
     return null;
@@ -338,10 +412,9 @@ export const Editor = () => {
                   <Card className='m-3 card-text-prod card-prod card-prod-prod-ca'>
                     <Card.Body>
                       <Card.Title><h2>{prodotto?.nome?.toUpperCase()}</h2></Card.Title>
-                      <div className="border-bottom"></div>
-
                       {prodotto?.variants?.map((variante) => (
                         <Row key={variante._id} className='m-0 mb-2'>
+                          <div className="border-bottom"></div>
                           <div className='m-1 mt-3' style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                             <Card.Title>{variante?.colore?.toLowerCase()}</Card.Title>
                             <Button onClick={() => handleDeleteVariant(prodotto._id, variante)} variant='danger'>Elimina</Button>
@@ -349,15 +422,16 @@ export const Editor = () => {
                         </Row>
                       ))}
                       <div className="border-bottom"></div>
-
                       {expandedProductIdVariant && (
                         <Row className="border-top m-2">
                           <Form.Group controlId="productName m-2">
-                            <Form.Label>colore variante</Form.Label>
-                            <Form.Control type="text" name="coloreVariante" value={product.coloreVariante} onChange={handleChange} />
+                            <Form.Label>Colore variante</Form.Label>
+                            <Form.Control isInvalid={!!errors.coloreVariante} type="text" name="coloreVariante" value={product.coloreVariante} onChange={handleChange} />
+                            <Form.Control.Feedback type="invalid">{errors.coloreVariante}</Form.Control.Feedback>
                             <Form.Group controlId="productImages">
-                              <Form.Label>immagini variante</Form.Label>
-                              <Form.Control type="file" multiple onChange={handleImageChangeVar} />
+                              <Form.Label>Immagini variante - 4 files richiesti (Posteriore, Frontale, Sinistra, Destra)</Form.Label>
+                              <Form.Control isInvalid={!!errors.immaginiVar} type="file" multiple onChange={handleImageChangeVar} />
+                              <Form.Control.Feedback type="invalid">{errors.immaginiVar}</Form.Control.Feedback>
                             </Form.Group>
                           </Form.Group>
                           <Button className='m-2' onClick={() => setExpandedProductIdVariant(false)} variant='danger'>Elimina</Button>
@@ -401,25 +475,20 @@ export const Editor = () => {
                         <Form.Control.Feedback type="invalid">{errors.colore}</Form.Control.Feedback>
                       </Form.Group>
                     </Col>
+                    <Form.Group controlId="productMotto">
+                      <Form.Label>Titolo descrizione</Form.Label>
+                      <Form.Control isInvalid={!!errors.motto} type="text" name="motto" value={product.motto} onChange={handleChange} />
+                      <Form.Control.Feedback type="invalid">{errors.motto}</Form.Control.Feedback>
+                    </Form.Group>
                     <Form.Group controlId="productDescription">
                       <Form.Label>Descrizione prodotto</Form.Label>
                       <Form.Control isInvalid={!!errors.descrizione} as="textarea" rows={1} type="text" name="descrizione" value={product.descrizione} onChange={handleChange} />
                       <Form.Control.Feedback type="invalid">{errors.descrizione}</Form.Control.Feedback>
                     </Form.Group>
-                    <Form.Group controlId="productMotto">
-                      <Form.Label>Titolo descrizione prodotto aggiuntiva</Form.Label>
-                      <Form.Control isInvalid={!!errors.motto} type="text" name="motto" value={product.motto} onChange={handleChange} />
-                      <Form.Control.Feedback type="invalid">{errors.motto}</Form.Control.Feedback>
-                    </Form.Group>
                     <Form.Group controlId="productCaratteristiche">
                       <Form.Label>Caratteristiche prodotto</Form.Label>
                       <Form.Control isInvalid={!!errors.caratteristiche} as="textarea" type="text" rows={1} name="caratteristiche" value={product.caratteristiche} onChange={handleChange} />
                       <Form.Control.Feedback type="invalid">{errors.caratteristiche}</Form.Control.Feedback>
-                    </Form.Group>
-                    <Form.Group controlId="productQuantity">
-                      <Form.Label>Quantità</Form.Label>
-                      <Form.Control isInvalid={!!errors.quantita} type="number" name="quantita" value={product.quantita} onChange={handleChange} />
-                      <Form.Control.Feedback type="invalid">{errors.quantita}</Form.Control.Feedback>
                     </Form.Group>
                     <Form.Group controlId="productImages">
                       <Form.Label>Immagini copertina - 2 files richiesti (1,2,S,I)</Form.Label>
@@ -427,29 +496,31 @@ export const Editor = () => {
                       <Form.Control.Feedback type="invalid">{errors.immaginiCop}</Form.Control.Feedback>
                     </Form.Group>
                     <Form.Group controlId="productImages">
-                      <Form.Label>Immagini variante - 4 files richiesti (B,F,S,D)</Form.Label>
+                      <Form.Label>Immagini variante - 4 files richiesti (Posteriore, Frontale, Sinistra, Destra)</Form.Label>
                       <Form.Control isInvalid={!!errors.immaginiVar} type="file" multiple onChange={handleImageChangeVar} />
                       <Form.Control.Feedback type="invalid">{errors.immaginiVar}</Form.Control.Feedback>
                     </Form.Group>
-                    
-                    <Button className='m-0 mt-4' variant="primary" type="submit">Invia</Button>
+                    <div className="d-flex justify-content-center">
+                      <Button className='m-0 mt-4 button-small-width' variant="outline-success" type="submit">
+                        Invia
+                      </Button>
+                    </div>
                   </Row>
                 </Form>
                 <div className='m-1 mt-3' style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <Button onClick={() => setAddMaskProd(false)} variant='danger'>ELIMINA</Button>
+                  <Button onClick={() => setAddMaskProd(false)} variant='outline-danger'>ELIMINA</Button>
                 </div>
               </Card.Body>
             </Card>
           </Col>
         ) : (
           <Col xs={12} sm={12} md={12} lg={12} className="d-flex align-items-center justify-content-center m-0 mt-5" style={{ height: '100%' }}>
-            <Button variant="outline-dark" className='m-1 mb-5 button-black-prod button-small-width' onClick={() => setAddMaskProd(true)}>Aggiungi</Button>
+            <Button variant="outline-dark" className='m-1 mb-5 button-black-prod button-small-width' onClick={() => OpenAdd("maschera")}>Aggiungi</Button>
           </Col>
         )}
       </Row>
 
       {/* Occhiali */}
-
       <Row className="ml-0 mr-0 no-space-row mt-3">
         <h3 className="m-4 mb-1 boldText">Occhiali</h3>
       </Row>
@@ -500,19 +571,21 @@ export const Editor = () => {
                       {expandedProductIdVariant && (
                         <Row className="border-top m-2">
                           <Form.Group controlId="productName m-2">
-                            <Form.Label>colore variante</Form.Label>
-                            <Form.Control type="text" name="coloreVariante" value={product.coloreVariante} onChange={handleChange} />
+                            <Form.Label>Colore variante</Form.Label>
+                            <Form.Control isInvalid={!!errors.coloreVariante} type="text" name="coloreVariante" value={product.coloreVariante} onChange={handleChange} />
+                            <Form.Control.Feedback type="invalid">{errors.coloreVariante}</Form.Control.Feedback>
                             <Form.Group controlId="productImages">
-                              <Form.Label>immagini variante</Form.Label>
-                              <Form.Control type="file" multiple onChange={handleImageChangeVar} />
+                              <Form.Label>Immagini variante - 4 files richiesti (Posteriore, Frontale, Sinistra, Destra)</Form.Label>
+                              <Form.Control isInvalid={!!errors.immaginiVar} type="file" multiple onChange={handleImageChangeVar} />
+                              <Form.Control.Feedback type="invalid">{errors.immaginiVar}</Form.Control.Feedback>
                             </Form.Group>
                           </Form.Group>
                           <Button className='m-2' onClick={() => setExpandedProductIdVariant(false)} variant='danger'>Elimina</Button>
                         </Row>
                       )}
                       <div className='m-1 mt-3' style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                        <Button onClick={() => toggleExpandProduct(prodotto._id)} variant='danger'>Indietro</Button>
-                        <Button onClick={() => addVariantToProduct(prodotto._id)} variant='success'>Aggiungi</Button>
+                        <Button onClick={() => toggleExpandProduct(prodotto._id)} variant='outline-danger'>Indietro</Button>
+                        <Button onClick={() => addVariantToProduct(prodotto._id)} variant='outline-success'>Aggiungi</Button>
                       </div>
                     </Card.Body>
                   </Card>
@@ -554,7 +627,7 @@ export const Editor = () => {
                       <Form.Control.Feedback type="invalid">{errors.descrizione}</Form.Control.Feedback>
                     </Form.Group>
                     <Form.Group controlId="productMotto">
-                      <Form.Label>Motto</Form.Label>
+                      <Form.Label>Titolo Caratteristiche</Form.Label>
                       <Form.Control isInvalid={!!errors.motto} type="text" name="motto" value={product.motto} onChange={handleChange} />
                       <Form.Control.Feedback type="invalid">{errors.motto}</Form.Control.Feedback>
                     </Form.Group>
@@ -563,23 +636,21 @@ export const Editor = () => {
                       <Form.Control isInvalid={!!errors.caratteristiche} as="textarea" type="text" rows={1} name="caratteristiche" value={product.caratteristiche} onChange={handleChange} />
                       <Form.Control.Feedback type="invalid">{errors.caratteristiche}</Form.Control.Feedback>
                     </Form.Group>
-                    <Form.Group controlId="productQuantity">
-                      <Form.Label>Quantità</Form.Label>
-                      <Form.Control isInvalid={!!errors.quantita} type="number" name="quantita" value={product.quantita} onChange={handleChange} />
-                      <Form.Control.Feedback type="invalid">{errors.quantita}</Form.Control.Feedback>
-                    </Form.Group>
                     <Form.Group controlId="productImages">
-                      <Form.Label>Immagini copertina - 2 files richiesti (1,2,S,I)</Form.Label>
+                      <Form.Label>Immagini copertina - 2 files richiesti (S,I)</Form.Label>
                       <Form.Control isInvalid={!!errors.immaginiCop} type="file" multiple onChange={handleImageChangeCop} />
                       <Form.Control.Feedback type="invalid">{errors.immaginiCop}</Form.Control.Feedback>
                     </Form.Group>
                     <Form.Group controlId="productImages">
-                      <Form.Label>Immagini variante - 4 files richiesti (B,F,S,D)</Form.Label>
+                      <Form.Label>Immagini variante - 4 files richiesti (Posteriore, Frontale, Sinistra, Destra)</Form.Label>
                       <Form.Control isInvalid={!!errors.immaginiVar} type="file" multiple onChange={handleImageChangeVar} />
                       <Form.Control.Feedback type="invalid">{errors.immaginiVar}</Form.Control.Feedback>
                     </Form.Group>
-                    
-                    <Button className='m-0 mt-4' variant="primary" type="submit">Invia</Button>
+                    <div className="d-flex justify-content-center">
+                      <Button className='m-0 mt-4 button-small-width' variant="outline-success" type="submit">
+                        Invia
+                      </Button>
+                    </div>
                   </Row>
                 </Form>
                 <div className='m-1 mt-3' style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -590,13 +661,12 @@ export const Editor = () => {
           </Col>
         ) : (
           <Col xs={12} sm={12} md={12} lg={12} className="d-flex align-items-center justify-content-center m-0 mt-5" style={{ height: '100%' }}>
-            <Button variant="outline-dark" className='m-1 mb-5 button-black-prod button-small-width' onClick={() => setAddGlassProd(true)}>Aggiungi</Button>
+            <Button variant="outline-dark" className='m-1 mb-5 button-black-prod button-small-width' onClick={() => OpenAdd("occhiale")}>Aggiungi</Button>
           </Col>
         )}
       </Row>
 
       {/* Accessori */}
-
       <Row className="ml-0 mr-0 no-space-row mt-3">
         <h3 className="m-4 mb-1 boldText">Accessori</h3>
       </Row>
@@ -642,25 +712,32 @@ export const Editor = () => {
                     <Col sm={6}>
                       <Form.Group controlId="productName">
                         <Form.Label>Nome prodotto</Form.Label>
-                        <Form.Control type="text" name="nome" value={product.nome} onChange={handleChange} />
+                        <Form.Control isInvalid={!!errors.nome} type="text" name="nome" value={product.nome} onChange={handleChange} />
+                        <Form.Control.Feedback type="invalid">{errors.nome}</Form.Control.Feedback>
                       </Form.Group>
                     </Col>
                     <Col sm={6}>
                       <Form.Group controlId="productPrice">
                         <Form.Label>Prezzo</Form.Label>
-                        <Form.Control type="number" name="prezzo" value={product.prezzo} onChange={handleChange} />
+                        <Form.Control isInvalid={!!errors.prezzo} type="number" name="prezzo" value={product.prezzo} onChange={handleChange} />
+                        <Form.Control.Feedback type="invalid">{errors.prezzo}</Form.Control.Feedback>
                       </Form.Group>
                     </Col>
                     <Form.Group controlId="productDescription">
                       <Form.Label>Descrizione prodotto</Form.Label>
-                      <Form.Control as="textarea" rows={1} type="text" name="descrizione" value={product.descrizione} onChange={handleChange} />
+                      <Form.Control isInvalid={!!errors.descrizione} as="textarea" rows={1} type="text" name="descrizione" value={product.descrizione} onChange={handleChange} />
+                      <Form.Control.Feedback type="invalid">{errors.descrizione}</Form.Control.Feedback>
                     </Form.Group>
                     <Form.Group controlId="productImages">
-                      <Form.Label>Immagini copertina</Form.Label>
-                      <Form.Control type="file" multiple onChange={handleImageChangeCop} />
+                      <Form.Label>Immagini copertina - 4 files (Posteriore, Frontale, Sinistra, Destra)</Form.Label>
+                      <Form.Control isInvalid={!!errors.immaginiCop} type="file" multiple onChange={handleImageChangeCop} />
+                      <Form.Control.Feedback type="invalid">{errors.immaginiCop}</Form.Control.Feedback>
                     </Form.Group>
-                   
-                    <Button className='m-0 mt-4' variant="primary" type="submit">Invia</Button>
+                    <div className="d-flex justify-content-center">
+                      <Button className='m-0 mt-4 button-small-width' variant="outline-success" type="submit">
+                        Invia
+                      </Button>
+                    </div>
                   </Row>
                 </Form>
                 <div className='m-1 mt-3' style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -671,7 +748,7 @@ export const Editor = () => {
           </Col>
         ) : (
           <Col xs={12} sm={12} md={12} lg={12} className="d-flex align-items-center justify-content-center m-0 mt-5" style={{ height: '100%' }}>
-            <Button variant="outline-dark" className='m-1 mb-5 button-black-prod button-small-width' onClick={() => setAddAccessoryProd(true)}>Aggiungi</Button>
+            <Button variant="outline-dark" className='m-1 mb-5 button-black-prod button-small-width' onClick={() => OpenAdd("accessorio")}>Aggiungi</Button>
           </Col>
         )}
       </Row>
