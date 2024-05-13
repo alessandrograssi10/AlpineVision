@@ -139,4 +139,62 @@ router.get('/getOrdersByUserId/:userId', async (req, res) => {
 });
 
 
+router.post('/createOrderGuest', async (req, res) => {
+    const { userId, productId, color, quantity, type } = req.body;
+
+    try {
+        const db = getDb();
+        let itemDetails, productDetails;
+
+        if (type === 'product') {
+            // Ottieni dettagli della variante
+            itemDetails = await db.collection('Variants').findOne({
+                productId: new ObjectId(productId),
+                colore: color
+            });
+            // Ottieni dettagli del prodotto per il prezzo
+            productDetails = await db.collection('Products').findOne({ _id: new ObjectId(productId) });
+        } else if (type === 'accessory') {
+            // Gli accessori hanno prezzo nel loro documento
+            itemDetails = await db.collection('Accessories').findOne({ _id: new ObjectId(productId) });
+            productDetails = itemDetails;
+        }
+
+        if (!itemDetails || itemDetails.quantita < quantity) {
+            return res.status(400).json({ message: `${type} non disponibile o quantità non sufficiente` });
+        }
+
+        if (!productDetails || !productDetails.prezzo) {
+            return res.status(404).json({ message: `Prezzo per il ${type} non trovato` });
+        }
+
+        const items = [{
+            productId: productId,
+            color: type === 'product' ? color : undefined,
+            quantity: quantity,
+            total: productDetails.prezzo * quantity,
+            type: type,
+        }];
+
+        const orderId = await createOrder(userId, items);
+
+        // Aggiornamento dello stato dell'ordine con delay
+        setTimeout(async () => {
+            await updateOrderStatus(userId, 'shipped', 'shippedAt');
+            console.log("shipped");
+        }, 6000); // 6 secondi
+
+        setTimeout(async () => {
+            await updateOrderStatus(userId, 'delivered', 'deliveredAt');
+            console.log("delivered");
+        }, 24000); // 24 secondi
+
+        res.status(201).json({ message: "Ordine creato con successo", userId: orderId });
+    } catch (error) {
+        console.error("Errore nella creazione dell'ordine:", error);
+        res.status(500).json({ error: "Errore interno del server" });
+    }
+});
+
+
 module.exports = router;

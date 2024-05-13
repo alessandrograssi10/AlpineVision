@@ -166,8 +166,13 @@ export const Product = (addToStorage) => {
                 nome: productInfo.nome,
                 colore: color,
                 immagine: imageSets[0], 
-                prezzo: productInfo.prezzo.toFixed(2)
+                prezzo: productInfo.prezzo.toFixed(2),
+                type: color ? "product" : 'accessory',
+                productId: id,
+                quantity: 1
+
             };
+            console.log("IIIIInfo",productDetails)
             localStorage.setItem("productDetails", JSON.stringify(productDetails));
             setButtonStateDirect('loading');
             setTimeout(() => {
