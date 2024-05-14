@@ -73,12 +73,21 @@ function Cart() {
 
     //  Rimuove un prodotto dal db
     const removeProd = (delProductId, priceToDel,colore) => {
-        const newCartItems = cartItems.filter(product => product.productId !== delProductId);
+        let newCartItems = [];
+        //cart.items.filter(item => !(item.productId === productId && (type === 'product' ? item.color === color : true)));
+        if(colore)  newCartItems = cartItems.filter(product => !(product.productId === delProductId && product.color === colore))
+        else newCartItems = cartItems.filter(product => product.productId !== delProductId);
+        
+       console.log("Nuovo Carrello",newCartItems)
+
         setCartItems(newCartItems);
         const newPrice = totalPrice - priceToDel;
         setTotalPrice(newPrice);
 
         if(userID){
+            console.log("Entrsto ");
+            console.log("Colore ",colore);
+
         const myHeadersrm = new Headers();
         myHeadersrm.append("Content-Type", "application/json");
 
@@ -86,7 +95,9 @@ function Cart() {
             "userId": `${userID}`,
             "productId": `${delProductId}`,
             "color": `${colore}`,
+            "type": colore ? 'product' : '', 
         });
+        console.log("DIO", rawrm)
 
         const requestOptionsrm = {
             method: "DELETE",
@@ -94,14 +105,16 @@ function Cart() {
             body: rawrm,
             redirect: "follow"
         };
+        console.log("Prima Fetch ");
 
         fetch("http://localhost:3000/api/carts/remove", requestOptionsrm)
-            .then((response) => response.text())
+            .then((response) => console.log("GGGGGGG",rawrm,"",response.text()))
             .then((result) => localStorage.setItem('Cart_Trig', "Trigger"))
+
             .catch((error) => console.error(error));
     }
         localStorage.setItem('Cart_Trig', "Trigger");
-
+        console.log("Nuovo Carrello",newCartItems)
     }
 
     const handleCheckout = () => {
@@ -126,7 +139,7 @@ function Cart() {
                 ) : (
                     cartItems.map((cartItem) => (
                         <CartCard
-                            key={cartItem.productId}
+                            key={cartItem.productId + cartItem.color}
                             quantity={cartItem.quantity}
                             updateTotalPrice={updateTotalPrice}
                             prodID={cartItem.productId}
@@ -144,7 +157,7 @@ function Cart() {
                             <Col xs="6">
                                 <Link to="/Payments/cart" className="fs-4">
                                     <Button size="lg" id="buyButtonn" variant="outline-dark" className='button-black-prod' onClick={handleCheckout}>
-                                        Procedi all'acquisto
+                                    <h3 className='p-0 m-0'>Procedi all'acquisto</h3>
                                     </Button>
                                 </Link>
                             </Col>
@@ -155,7 +168,7 @@ function Cart() {
                     ) : (
                         <Link to="/Products" className="invisible-link">
                             <Button variant="outline-dark" id="prodPageButtonn" className="fs-4 button-black-prod">
-                                Continua con gli acquisti
+                            <h3 className='p-0 m-0'>Continua con gli acquisti</h3>
                             </Button>
                         </Link>
                     )}

@@ -1,4 +1,4 @@
-import React, { useEffect, useState ,useLayoutEffect} from 'react';
+import React, {useState ,useLayoutEffect} from 'react';
 import { Container, Card, Row, Col } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import './Blog.css';

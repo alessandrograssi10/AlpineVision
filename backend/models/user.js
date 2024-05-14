@@ -98,6 +98,20 @@ async function findUserByEmail(email) {
     }
 }
 
+async function updateUserRole(userId, newRole) {
+    try {
+        const db = getDb();
+        const usersCollection = db.collection('Users');
+        const result = await usersCollection.updateOne(
+            { _id: new ObjectId(userId) },
+            { $set: { ruolo: newRole } }
+        );
+        return result;
+    } catch (error) {
+        console.error("Errore nell'aggiornamento del ruolo dell'utente:", error);
+        throw error;
+    }
+}
 
 module.exports = {
     createUser,
@@ -105,5 +119,6 @@ module.exports = {
     updateUserPassword,
     setAddress,
     setPhone,
-    findUserByEmail
+    findUserByEmail,
+    updateUserRole
 };

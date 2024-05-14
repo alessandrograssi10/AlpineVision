@@ -24,7 +24,7 @@ import { useLocation } from 'react-router-dom';
 import Login_Signin from './pages/Login_SignUp/Login_Signin';
 import Confirm from './pages/Payments/ConfirmPayment.jsx';
 
-
+// Funzione per tornare in cima alla pagina quando si cambia pagina
 function ScrollToTop() {
   const { pathname } = useLocation();
 
@@ -40,33 +40,30 @@ class App extends Component {
   return (
     <React.Fragment>
       <Router>
-      <ScrollToTop />
-      <Header/>
-      <Routes>
-          <Route exact path ="/" Component={Home}/>
-          <Route exact path ="/home" Component={Home}/>
-          <Route exact path ="/products" Component={Products}/>
-          <Route exact path ="/accessories" Component={Accessories}/>
-          <Route exact path ="/blog" Component={Blog}/>
-          <Route exact path ="/blogEdit" Component={BlogEdit}/>
-          <Route  path ="/search" element={<Search/>}/>
-          <Route path="/BlogArticle/:id" element={<BlogArticle/>} />
-          <Route path="/BlogArticleEdit/:id" element={<BlogArticleEdit/>} />
-          <Route exact path="/AreaPersonale" Component={PersonalArea}/>
-          <Route path="/Payments/:id" element={<Payments/>} />
-          <Route exact path ="/Support" Component={AboutUs}/>
-          <Route exact path ="/cart" Component={Cart}/>
-          <Route exact path ="/product/:id" element={<Product/>}/>
-          <Route exact path ="/accessory/:id" element={<Accessory/>}/>
-          <Route exact path="/login" Component={Login_Signin}/>
-          <Route exact path="/editor" Component={Editor}/>
-          <Route exact path="/confermpay" Component={Confirm}/>
-
+        <ScrollToTop />
+        <Header/>
+          <Routes>
+            <Route exact path ="/" Component={Home}/>
+            <Route exact path ="/home" Component={Home}/>
+            <Route exact path ="/products" Component={Products}/>
+            <Route exact path ="/accessories" Component={Accessories}/>
+            <Route exact path ="/blog" Component={Blog}/>
+            <Route exact path ="/blogEdit" Component={BlogEdit}/>
+            <Route  path ="/search" element={<Search/>}/>
+            <Route path="/BlogArticle/:id" element={<BlogArticle/>} />
+            <Route path="/BlogArticleEdit/:id" element={<BlogArticleEdit/>} />
+            <Route exact path="/AreaPersonale" Component={PersonalArea}/>
+            <Route path="/Payments/:id" element={<Payments/>} />
+            <Route exact path ="/Support" Component={AboutUs}/>
+            <Route exact path ="/cart" Component={Cart}/>
+            <Route exact path ="/product/:id" element={<Product/>}/>
+            <Route exact path ="/accessory/:id" element={<Accessory/>}/>
+            <Route exact path="/login" Component={Login_Signin}/>
+            <Route exact path="/editor" Component={Editor}/>
+            <Route exact path="/confermpay" Component={Confirm}/>
           </Routes>
-
-      <Footer/>
+        <Footer/>
       </Router>
-
     </React.Fragment>
   );
   }

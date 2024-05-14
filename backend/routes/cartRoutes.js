@@ -53,6 +53,8 @@ router.post('/add', async (req, res) => {
         
         if (!cart) {
             // Se non esiste un carrello, crealo con un singolo prodotto
+            //                productId,
+
             const newItem = {
                 type,
                 productId,

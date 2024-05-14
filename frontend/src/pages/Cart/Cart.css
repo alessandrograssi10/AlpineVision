@@ -42,7 +42,7 @@
     width: 10vw;
     margin-top: -50px;
     transition: transform 0.3s ease-in-out;
-    animation: moveImage 5s infinite alternate;
+    animation: movecartimage 5s infinite alternate;
 }
 
 
@@ -56,7 +56,7 @@
     margin-left: -10px;
 }
 
-@keyframes moveImage {
+@keyframes movecartimage {
     from {
         transform: translateX(0);
     }

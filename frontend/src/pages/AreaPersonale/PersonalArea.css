@@ -104,3 +104,22 @@
         opacity: 1;
     }
 }
+
+.scrollable-container-pa {
+    max-height: 400px; /* Adjust height as needed */
+    overflow-y: auto;
+    border: 1px solid #ccc; /* Optional: to visually distinguish the container */
+    padding: 10px;
+}
+
+.scroll-item-pa {
+    background: #f9f9f9; /* Optional: background color for items */
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+}
+
+.user-details-pa h6 {
+    margin: 0;
+    padding: 2px 0;
+}

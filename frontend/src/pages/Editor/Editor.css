@@ -1,0 +1,23 @@
+.button-small-width {
+    width: 150px !important; /* Puoi modificare questa larghezza in base alle tue esigenze */
+}
+.responsive-buttons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap; /* Permette ai pulsanti di andare su una nuova riga se lo spazio è limitato */
+    gap: 10px; /* Spazio tra i pulsanti */
+}
+
+.responsive-buttons .btn {
+    flex: 1 1 auto; /* Permette ai pulsanti di espandersi e contrarsi equamente */
+    min-width: 120px; /* Larghezza minima per evitare che i pulsanti diventino troppo piccoli */
+}
+
+/* Media query per schermi più piccoli */
+@media (max-width: 576px) {
+    .responsive-buttons .btn {
+        flex: 1 1 100%; /* I pulsanti occupano l'intera larghezza su schermi molto piccoli */
+        text-align: center; /* Centra il testo del pulsante */
+    }
+}

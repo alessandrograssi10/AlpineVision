@@ -44,14 +44,16 @@ const Payments = () => {
     const [cartDetails, setCartDetails] = useState({});
     const [buttonStateDirect, setButtonStateDirect] = useState('default');
 
-    useEffect(() => {
+    /*useEffect(() => {
         return () => {
             localStorage.removeItem('productDetails');
         };
-    }, []);
+    }, []);*/
     
     useEffect(() => {
         if (userId) {
+            if(id === "cart")
+                {
             const requestOptions = {
                 method: "GET",
             };
@@ -83,6 +85,7 @@ const Payments = () => {
             };
             
             fetchCartData();
+            }
         } else {
             var cart = JSON.parse(localStorage.getItem("virtualCart")) || [];
             const fetchCartData = async () => {
@@ -113,21 +116,97 @@ const Payments = () => {
         }
     }, [userId]);
 
+
     async function sendOrder() {
         if (userId) {
+            console.log("UserId passato",id)
             let url = '';
-            const arra = localStorage.getItem("riepilogoCart");
-            const riepilogoDati = JSON.parse(arra);
-            if(id === 'cart')
-            {
-                // Gestisci l'invio dell'ordine dal carrello
+            //const array= localStorage.getItem("riepilogoCart");
+            const array= localStorage.getItem("productDetails");
+            console.log("UserId passato details",array)
+
+            const riepilogoDati = JSON.parse(array);
+            console.log("UserId passato details riep",riepilogoDati)
+
+                if (id === 'cart') {
+                    const productResponse = await fetch('http://localhost:3000/api/orders/createOrderFromCart', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            "userId": userId,
+                        })
+                    });
+                    localStorage.setItem('Cart_Trig', "Trigger");
+                } else if (id === 'direct'&&riepilogoDati) {
+                    console.log("ProdDetails",riepilogoDati)
+                    const productResponse = await fetch(`http://localhost:3000/api/orders/createOrder`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            "userId": userId,
+                            "productId": riepilogoDati.productId,
+                            "quantity": riepilogoDati.quantity,
+                            "color": riepilogoDati.colore,
+                            "type": riepilogoDati.type,
+                        })
+                    });
+
+                    localStorage.setItem("riepilogoCart", JSON.stringify({}));
+                    localStorage.setItem('Cart_Trig', "Trigger");
+                    localStorage.removeItem('productDetails');
+
+                }
+        }
+        else{
+            console.log("UserId passato",id)
+            let url = '';
+            //const array= localStorage.getItem("riepilogoCart");
+            const array= localStorage.getItem("productDetails");
+            console.log("UserId passato details",array)
+
+            const riepilogoDati = JSON.parse(array);
+            console.log("UserId passato details riep",riepilogoDati)
+                // DA FARE 
+                if (id === 'cart') {
+                    /*
+                    const productResponse = await fetch('http://localhost:3000/api/orders/createOrderFromCart', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            "userId": userId,
+                        })
+                    });
+                    localStorage.setItem('Cart_Trig', "Trigger");*/
+                } else if (id === 'direct'&&riepilogoDati) {
+                    console.log("ProdDetails",riepilogoDati)
+                    const productResponse = await fetch(`http://localhost:3000/api/orders/createOrder`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            "userId": state.email,
+                            "productId": riepilogoDati.productId,
+                            "quantity": riepilogoDati.quantity,
+                            "color": riepilogoDati.colore,
+                            "type": riepilogoDati.type,
+                        })
+                    });
+
+                    localStorage.setItem("riepilogoCart", JSON.stringify({}));
+                    localStorage.setItem('Cart_Trig', "Trigger");
+                    localStorage.removeItem('productDetails');
+
+                }
             }
-            else if(id === 'direct')
-            {
-                // Gestisci l'invio dell'ordine diretto
-            }
-        } 
     }
+    
 
     const handleSubmit = (event) => {
 
@@ -135,9 +214,7 @@ const Payments = () => {
             setTimeout(() => {
                 setButtonStateDirect('default');
                 event.preventDefault();
-                localStorage.removeItem('productDetails');
                  sendOrder();
-                console.log('Pagamento effettuato con successo');
                 navigate(`/confermpay`);
             }, 1500);
     };
@@ -420,8 +497,7 @@ const Payments = () => {
                             variant="outline-dark"
                             type="submit" 
                             onClick={handleSubmit} 
-                            disabled={!isFormValid || !scadenzaValida || (!userId ? !isFormVirtualValid : false)}
-                        >
+                            disabled={!isFormValid || !scadenzaValida || (!userId ? !isFormVirtualValid : false)}>
                                 {buttonStateDirect === 'loading' && <div className="spinner "></div>}
                                 {buttonStateDirect === 'default' && <div className='p-0 m-0'><h3 className='p-0 m-0'>CONFERMA PAGAMENTO</h3></div>}
                         </Button>

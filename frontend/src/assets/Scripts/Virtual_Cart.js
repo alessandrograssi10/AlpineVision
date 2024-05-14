@@ -11,7 +11,6 @@ export function addToVirtualCart(element, color) {
     // Se l'elemento esiste già, aggiorna la quantità e il totale
     // Se l'elemento non esiste, crea un nuovo oggetto e aggiungilo al carrello
     if (existingItem) {
-
         existingItem.quantity += 1;
         existingItem.total = element.prezzo * existingItem.quantity;
     } else {
