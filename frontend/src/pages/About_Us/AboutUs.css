@@ -1,4 +1,4 @@
-#mainContainer{
+/* #mainContainer{
     width:100%;
 }
 
@@ -58,4 +58,138 @@
 #mateImg{
     margin-top:80px;
     margin-bottom:100px;
+} */
+.MyAwesomeParallax {
+    text-align: center;
+    padding: 50px 20px;
+}
+
+
+.motivationalText {
+    position: absolute; /* Position absolutely within the parallax background */
+    width: 100%; /* Full width to align text center */
+    /* text-align: center;  */
+    transform: translateX(300px); /* Start off-screen to the right */
+    opacity: 0; /* Start invisible */
+}
+
+
+.teamParallax {
+    height: 100vh;
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* Changed to start to avoid vertical centering */
+    padding-top: 10vh; /* Added padding top to lower the header a bit */
+    color: black;
+}
+
+.coreValues {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    overflow: hidden; /* Add this to hide any overflowing content */
+}
+.backgroundParallax {
+    background-size: cover;
+    background-position: center;
+    padding: 20px 0; /* Add padding to avoid touching the edges */
+}
+
+
+
+
+.valueBox {
+    height: 48vh; /* Limits the height of the card */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    width: 100%; /* Takes full width of its container */
+    background-color: rgba(0, 0, 0, 0.6); /* Semi-transparent black */
+    color: white;
+    padding: 5px;
+    border-radius: 8px;
+    margin: 10px 0;
+}
+
+.valueBox .card {
+    background-color: transparent;
+    border: none;
+    width: 100%; /* Ensures the card takes the full width of the .valueBox */
+    height: 100%; /* Ensures the card takes the full height of the .valueBox */
+    display: flex;
+    flex-direction: column; /* Changes the flex direction to column */
+    justify-content: center; /* Centers content vertically in the card */
+    align-items: center; /* Centers content horizontally */
+    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+}
+
+.valueBox .card-body {
+    background-color: transparent;
+    padding: 1rem;
+    color: white;
+    display: flex;
+    flex-direction: column; /* Aligns child elements (title, text) in a column */
+    justify-content: center; /* Ensures vertical centering of the content */
+    align-items: center; /* Ensures horizontal centering */
+    width: 100%; /* Full width of the parent card */
+    height: 100%; /* Full height to use all available space */
+    overflow: hidden; /* Prevents text from overflowing */
+    text-overflow: ellipsis; /* Adds an ellipsis if the text overflows */
+}
+
+.valueBox .card-title, .valueBox .card-text {
+    
+    overflow: hidden; /* Hides overflow */
+    text-overflow: ellipsis; /* Shows an ellipsis (...) if text overflows */
+}
+
+
+.backgroundParallax {
+    background-size: cover;
+    background-position: center;
+    padding: 20px 0; /* Adjusts padding for aesthetic spacing */
+}
+
+.teamMember.card {
+    border: none; /* Removes borders from the card */
+    box-shadow: none; /* Removes any shadow to make the card flat */
+    background-color: rgba(0, 0, 0, 0.2); /* Very light semi-transparent black background for slight visibility */
+}
+
+.teamMember .card-body {
+    background-color: transparent; /* Ensures the card body has no distinct background */
+}
+
+.teamMember .card-title,
+.teamMember .card-text {
+    color: black; /* Changes text color to black for readability */
+}
+.teamMember img {
+    display: block; /* Changes display to block */
+    margin: 0 auto; /* Automatically centers the image horizontally */
+    width: 100px; /* Fixed width for consistency */
+    height: 100px; /* Fixed height for consistency */
+    border-radius: 50%; /* Keeps the rounded-circle appearance */
+}
+.teamMember.card {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centers all children including img and card-body */
+}
+
+.map-container iframe {
+    width: 100%; /* Ensures the iframe takes the full width of its container */
+    height: 450px; /* Adjust height as necessary */
+    border: none; /* Removes border around iframe */
+}
+.pageTitle {
+    font-size: 10vh; /* Adjust the size as needed */
 }

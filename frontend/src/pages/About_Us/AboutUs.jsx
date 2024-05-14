@@ -1,213 +1,151 @@
-import 'bootstrap/dist/css/bootstrap.min.css';
-import { Container, Row, Col } from 'react-bootstrap';
-import './AboutUs.css';
+import React, { useState, useEffect } from 'react';
 import Plx from 'react-plx';
-import skiGoggles from '../../assets/AboutUsPhoto/skiGoggles.jpg';
-import leaf from '../../assets/AboutUsPhoto/leaf2.jpg';
+
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { Container, Row, Col, Card } from 'react-bootstrap';
+import './AboutUs.css'; // Ensure your styles are set up correctly
+import backgroundImage from '../../assets/AboutUsPhoto/uomoCheSaltaConScii.jpg'; // Ensure this path is correct
+import happyTeam from '../../assets/AboutUsPhoto/team.jpg'; // Correct the image path and extension
+import Matteo from '../../assets/AboutUsPhoto/matteo.jpeg';
+import Alessandro from '../../assets/AboutUsPhoto/Alessandro.avif';
+import Gianluca from '../../assets/AboutUsPhoto/Gianluca.jpg';
+import Alessio from '../../assets/AboutUsPhoto/Alessio.webp';
+import chalet from '../../assets/AboutUsPhoto/chalet.jpg';
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import 'leaflet/dist/leaflet.css';
+
 
 function AboutUs() {
 
+  const position = [41.8902, 12.4922];
+  const parallaxData = [
+    {
+      start: 'self',
+      duration: 300,
+      properties: [
+        {
+          startValue: -100, // Il valore di partenza, fuori dallo schermo a sinistra
+          endValue: 0,      // Il valore di arrivo, centro dello schermo
+          property: 'translateX', // Proprietà CSS per spostare l'elemento sull'asse X
+          unit: '%' // L'unità di misura
+        }
+      ]
+    }
+  ];
+  
+    const parallaxDataText = [
+        {
+            start: 0,
+            duration: 600, // Duration of the effect as the user scrolls
+            properties: [
+                {
+                    startValue: 0.85,
+                    endValue: 0.5,
+                    property: "opacity",
+                }
+            ],
+        },
+    ];
+
+    const parallaxDataBackground = [
+        {
+            start: 0,
+            duration: 100,
+            properties: [
+                {
+                    startValue: -50,
+                    endValue: 0,
+                    property: "translateY",
+                }
+            ],
+        }
+    ];
+
+  
+
+    const coreValues = [
+      { title: "Trust", description: "Rafforziamo la vostra fiducia dedicandovi la massima disponibità garantendo un' assistenza di 24 ore al giorno 7 giorni a settimana.", parallaxData: { start: 0, end: 500, properties: [{ startValue: -20, endValue: 20, property: "translateY" }, { startValue: 0, endValue: 1, property: "opacity" }] } },
+      { title: "Innovation", description: "Siamo pionieri delle tecnologie future. I nostri esperti si aggiornano costantemente per adattare ai nostri prodotti le ultime migliorie del settore.", parallaxData: { start: 0, end: 600, properties: [{ startValue: -20, endValue: 20, property: "translateY" }, { startValue: 0, endValue: 1, property: "opacity" }] } },
+      { title: "Safety", description: "I nostri prodotti garantiscono una vera e completa protezione al sole del 90% più efficace di ogni altro prodotto.", parallaxData: { start: 300, end: 500, properties: [{ startValue: -20, endValue: 20, property: "translateY" }, { startValue: 0, endValue: 1, property: "opacity" }] } },
+      { title: "Quality", description: "La nostra non si discute. Abbiamo numerosi ingegneri che testano giornalmente l'usabilità, il comfort e la durabilità dei nostri prodotti.", parallaxData: { start: 300, end: 600, properties: [{ startValue: -20, endValue: 20, property: "translateY" }, { startValue: 0, endValue: 1, property: "opacity" }] } }
+  ];
+  const teamMembers = [
+    { name: "Matteo", role: "Product Manager", image: Matteo },
+    { name: "Alessandro", role: "Technical Lead", image: Alessandro },
+    { name: "Gianluca", role: "Marketing Director", image: Gianluca },
+    { name: "Alessio", role: "Chief Executive Officer", image: Alessio }
+];
+
+return (
+    <>
+        <Plx className="teamParallax" parallaxData={parallaxDataText} style={{ backgroundImage: `url(${happyTeam})` }}>
+  <h1 className="display-2 display-1-md display-1-sm" >Un team di professionisti</h1>
+</Plx>
+    <Plx className="backgroundParallax" parallaxData={parallaxDataBackground} style={{ backgroundImage: `url(${backgroundImage})` }}>
+    <Container>
+    <Row className="justify-content-center align-items-center" style={{ minHeight: '100vh' }}> 
+        {coreValues.map((value, index) => (
+            <Col key={index} xs={6} className="mb-4"> {/* This will put two cards per row on all screen sizes */}
+                <Plx className="valueBox" parallaxData={[value.parallaxData]}>
+                    <Card className="h-100 shadow-sm">
+                        <Card.Body>
+                            <Card.Title>{value.title}</Card.Title>
+                            <Card.Text>{value.description}</Card.Text>
+                        </Card.Body>
+                    </Card>
+                </Plx>
+            </Col>
+        ))}
+    </Row>
+</Container>
+
+</Plx>
 
 
-    return (
-        <>
-            <div id="mainContainer" fluid className='mb-5 w-100'>
-                {/* Immagine */}
-                <div id="hdDIV" className=''>
-                    <div>
-                        <h1 id="knowUsH1">INIZIA A CONOSCERCI!</h1>
+<div className="backgroundParallax">
+    <Container>
+        <Plx parallaxData={parallaxData}>
+        <h1 className="text-center mb-4">Il nostro Team</h1>
+        </Plx>
+        <Row className="justify-content-center">
+            {teamMembers.map((member, index) => (
+                <Col key={index} xs={6} md={3} className="mb-4">
+                    <div className="teamMember card bg-transparent text-white text-center">
+                        <img src={member.image} alt={member.name} className="img-fluid rounded-circle" style={{ width: '100px', height: '100px' }} />
+                        <div className="card-body">
+                            <h3 className="card-title">{member.name}</h3>
+                            <p className="card-text">{member.role}</p>
+                        </div>
                     </div>
-                    <div>
-                        <img id="mountainPH" src="https://images.unsplash.com/photo-1483728642387-6c3bdd6c93e5?q=80&w=1476&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="" />
-                        <Container id="hdH1Container" className="text-center">
-                            <Plx
-                                parallaxData={[
-                                    {
-                                        start: 0,
-                                        end: 210,
-                                        easing: "linear",
-                                        properties: [
-                                            {
-                                                startValue: 0,
-                                                endValue: 1,
-                                                property: "opacity"
-                                            },
-                                            {
-                                                startValue: 40,
-                                                endValue: 0,
-                                                property: "translateY"
-                                            }
+                </Col>
+            ))}
+        </Row>
+    </Container>
+</div>
 
-                                        ]
-                                    }
-                                ]}>
-                                {/* Problema */}
-                                <Container className="">
-                                    <h1 id="infoProblemH1" className='display-4'> Sapevi che la neve può riflettere fino all'80% della luce solare?</h1>
-                                </Container>
-
-                            </Plx>
-
-                        </Container>
-                    </div>
-                </div>
-
-
-                <div className='bg-black'>
-                    <Row className='d-flex align-items-center'>
-                        {/* Descrizione */}
-                        <Col xs="12" md="6" className="text-end d-flex align-items-center bg-black">
-                            <Plx
-                                parallaxData={[
-                                    {
-                                        start: 0,
-                                        end: 500,
-                                        easing: "linear",
-                                        properties: [
-                                            {
-                                                startValue: -740,
-                                                endValue: 0,
-                                                property: "translateX"
-                                            }
-                                        ]
-                                    }
-                                ]}>
-
-                                <div id="skiGogglesPlus" className='pe-2 overflow-hidden'>
-                                    <h1 className='text-light display-6'>Alpine Vision realizza maschere da sci ed altri accessori che proteggono i tuoi occhi dai raggi solari </h1>
-                                </div>
-
-                            </Plx>
-
-                        </Col>
-                        {/* Soluzione */}
-                        <Col xs="12" md="6" className="d-flex justify-content-center">
-                            <img id="skiGogglesImg" className='img-resizing' fluid src={skiGoggles} alt="" />
-                        </Col>
-                    </Row>
-                </div>
-
-                {/* Perchè scegliere Alpine Vision */}
-                <div className='bg-light'>
-                    <Row id="greenBg" className='pt-5'>
-                        <Col xs="12" md="6" className='d-flex justify-content-center'>
-                            <img id="pollutionImg" className='img-resizing' src={leaf} alt="" />
-                        </Col>
-                        <Col xs="12" md="6" className='text-center p-3 overflow-hidden'>
-                            <h1 className='mb-5'>Alpine Vision rispetta
-                                <Plx
-                                    parallaxData={[
-                                        {
-                                            start: 750,
-                                            end: 950,
-                                            easing: "linear",
-                                            properties: [
-                                                {
-                                                    startValue: 1,
-                                                    endValue: 1.5,
-                                                    property: "scale"
-                                                },
-                                                {
-                                                    startValue: 0,
-                                                    endValue: 20,
-                                                    property: "translateY"
-                                                },
-                                                {
-                                                    startValue: '#000',
-                                                    endValue: '#368156',
-                                                    property: "color"
-                                                }
-
-                                            ]
-                                        }
-                                    ]}>
-                                    <h1>l'ambiente!</h1>
-                                </Plx>
-
-                            </h1>
-                            <p className='lead'> Il 75% del materiale utilizzato per realizzare maschere deriva da plastica riciclata</p>
-                        </Col>
-                    </Row>
-
-                    <Row className='ps-4 bg-black pt-4 pb-4 mb-5 d-flex align-items-center '>
-                        <Col >
-                            <img className='img-resizing rounded' src="https://images.unsplash.com/photo-1491895200222-0fc4a4c35e18?q=80&w=1548&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="" />
-                        </Col>
-                        <Col className='d-flex align-items-center overflow-hidden'>
-                            <Plx
-                                parallaxData={[
-                                    {
-                                        start: 550,
-                                        end: 900,
-                                        properties: [
-                                            {
-                                                startValue: -0.5,
-                                                endValue: 1,
-                                                property: "opacity"
-                                            },
-                                            {
-                                                startValue: -200,
-                                                endValue: 0,
-                                                property: "translateY"
-                                            }
-                                        ]
-                                    },
-                                ]}>
-                                <p className='lead text-center text-light'>Una volta lavorata, la plastica, assume una struttura robusta, ma anche elastica, che ci permette di realizzare prodotti resistenti e durevoli</p>
-                            </Plx>
-
-                        </Col>
-                    </Row>
-
-                    <Row id="mateImg" className=''>
-                        <h1 className='display-5 text-center'>Il nostro team lavora costantemente per garantire il massimo della qualità</h1>
-                    </Row>
-                    <Row>
-                        <Plx
-                            parallaxData={[
-                                {
-                                    start: 1780,
-                                    end: 2000,
-                                    easing: "linear",
-                                    properties: [
-                                        {
-                                            startValue: 1,
-                                            endValue: 1.2,
-                                            property: "scale"
-                                        }
-                                    ]
-                                },
-                            
-                            ]}>
-                            <img className="img-resizing" src="https://images.unsplash.com/photo-1532498551838-b7a1cfac622e?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="" />
-                        </Plx>
-                    </Row>
-                </div>
-                {/* Info sede */}
-                <Container>
-                    <Row className='mt-5'>
-                        <Col className=''>
-                            <h1 className='text-center'>Vieni nella nostra sede a provare le nostre maschere!</h1>
-                            <div className='d-flex justify-content-center'>
-                                <iframe
-                                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d47440.254917304446!2d12.581962666449565!3d41.99993362032668!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x132f7ab2a9d56b83%3A0x9b4d6a45d56e8d91!2s00013%20Tor%20Lupara%20RM!5e0!3m2!1sit!2sit!4v1713824779747!5m2!1sit!2sit"
-                                    width="500"
-                                    height="350"
-                                    style={{ border: "0" }}
-                                    allowfullscreen=""
-                                    loading="lazy"
-                                    referrerpolicy="no-referrer-when-downgrade">
-                                </iframe>
-                            </div>
-                        </Col>
-                    </Row>
-                </Container>
-            </div>
-
-        </>
-
-
-    )
+<Container className="mt-4 mb-4">
+                <Plx parallaxData={parallaxData}>
+                <h2 className="text-center">Dove trovarci</h2>
+                </Plx>
+                
+                <MapContainer center={position} zoom={13} scrollWheelZoom={false} style={{ height: '450px', width: '100%' }}>
+                    <TileLayer
+                        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                    />
+                    <Marker position={position}>
+                    <Popup>
+                      <div>
+                          <img src={chalet} alt="Chalet Image" style={{ width: '100%', height: 'auto' }} />
+                          <p>Our beautiful factory!</p>
+                      </div>
+                    </Popup>
+                    </Marker>
+                </MapContainer>
+                <p>Via dei Fori Imperiali, 10</p>
+            </Container>
+    </>
+);
 }
 
 export default AboutUs;
