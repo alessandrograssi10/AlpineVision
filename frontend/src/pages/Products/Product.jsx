@@ -209,7 +209,7 @@ export const Product = (addToStorage) => {
                     <div className="shadow-box mx-0">
                     <Row className="d-flex mt-3 ml-4 align-items-center">
             <div className='m-3 mt-1 mb-1'>
-            <Link to={`/home`} className='text-navbar-box'>HOME</Link> /<Link to={`/products`} className='text-navbar-box'>PRODOTTI</Link> / <Link className='text-navbar-box'>{productInfo?.nome?.toUpperCase()}</Link>
+            <Link to={`/home`} className='text-box-prod'>HOME / </Link><Link to={`/products`} className='text-box-prod'>PRODOTTI / </Link><Link className='text-box-prod'>{productInfo?.nome?.toUpperCase()}</Link>
     </div></Row>
                     <Row className="justify-content-center m-0 mt-3 ml-0 p-0">
                             <h6 className="text-left text-black mb-2">{productInfo?.categoria?.toUpperCase()}</h6>
@@ -290,10 +290,10 @@ export const Product = (addToStorage) => {
                 onSelect={(k) => setKey(k)}
                 //className="mb-0 mt-5 justify-content-center dark-prod p-0 buttonn "
                // variant='pills'
-               className="mb-0 mt-3 justify-content-center dark-prod p-0 buttonn tabs-black" // Assicurati che tabs-black sia applicato
+               className="mb-0 mt-0 justify-content-center dark-prod p-0 buttonn tabs-black" // Assicurati che tabs-black sia applicato
 
             >
-                <Tab eventKey="vetrina" title="Vetrina" className='fade dark p-0 color-black mt-0 dark-prod '>
+                <Tab eventKey="vetrina" title="VETRINA" className='fade dark p-0 color-black mt-0 dark-prod '>
 
                     <Row className=" m-0 p-0 w-100 h-100 no-space-rowBg-prod ">
                         <Image src={ImgSimpatica} className="p-0 img-fluid-no-space w-100 darkness align-items-center" />
@@ -310,7 +310,7 @@ export const Product = (addToStorage) => {
                         <Image src={ImgInnovativa} className="p-0 m-0 img-fluid-no-space w-100" />
                     </Row>
                 </Tab>
-                <Tab eventKey="caratteristiche" title="Caratteristiche" className='fade  m-3'>
+                <Tab eventKey="caratteristiche" title="CARATTERISTICHE" className='fade  m-3'>
                     <Row className="m-0 p-0 w-100 h-100 d-flex justify-content-center align-items-center p-5 ">
                         <h4 className="text-left text-bold">{formatDescription(productInfo.caratteristiche)}</h4>
                     </Row>
@@ -321,10 +321,9 @@ export const Product = (addToStorage) => {
                     <h5>{productInfo.nome}</h5>
                     <p>{productInfo.prezzo} €</p>
                 </div>
-                <Button className={`button-black-prod-nomon ${buttonStateDirect}`} onClick={DirectPay} variant="outline-dark" size="sm">
+                <Button className={`button-black-prod-nomon ${buttonStateDirect}`} onClick={addToCart} variant="outline-dark" size="sm">
                     {buttonStateDirect === 'loading' && <div className="spinner"></div>}
-                    {buttonStateDirect === 'default' && <div className='p-0 m-0'><h5 className='p-2 m-0'>COMPRA ORA</h5></div>}
-                    {buttonStateDirect === 'login' && <div className='p-0 m-0'><h4 className='p-0 m-0'>EFFETTUA PRIMA IL LOGIN</h4></div>}
+                    {buttonStateDirect === 'default' && <div className='p-0 m-0'><h5 className='p-2 m-0'>AGGIUNGI AL CARRELLO</h5></div>}
                 </Button>
                 
             </div>

@@ -24,7 +24,7 @@ export const HeaderBlog = ({ onCloseAllBoxes }) => {
                     {/* Visualizzazioni in link degli articoli */}
 
                     {articoli.map(product => (
-                    <Link className='text-navbar-box' to={`/BlogArticle/${product._id}`} onClick={onCloseAllBoxes} key={product._id}><div className='text-navbar-box'>{product.title}</div></Link>
+                    <Link className='text-navbar-box' to={`/BlogArticle/${product._id}`} onClick={onCloseAllBoxes} key={product._id}><div className="text-box-prod">{product.title}</div></Link>
                 ))}
                 </Col>
             </Row>

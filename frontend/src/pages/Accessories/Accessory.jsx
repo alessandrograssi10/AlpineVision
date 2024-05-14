@@ -38,6 +38,7 @@ export const Accessory = () => {
             .then(data => {
                 const filteredData = data.filter(item => item._id === id);
                 setProduct(filteredData);
+                console.log(filteredData)
             })
             .catch(error => {
                 console.error("Errore nel recupero dell'accessorio", error);
@@ -131,7 +132,7 @@ export const Accessory = () => {
         <Container fluid className="p-0">
           <Row className="d-flex align-items-center pl-3 pt-3 ml-0 mt-4 equal-height">
             <Col lg={7} className="d-flex  flex-column p-3 pl-0 m-0">
-              <Carousel activeIndex={activeIndex} onSelect={(selectedIndex, e) => setActiveIndex(selectedIndex)} className=' m-0 mt-0 mb-0 mr-0'>
+              <Carousel   indicators={false}  activeIndex={activeIndex} onSelect={(selectedIndex, e) => setActiveIndex(selectedIndex)} className=' m-0 mt-0 mb-0 mr-0'>
                 {imageUrls.map((imageSrc, idx) => (
                   <Carousel.Item key={idx}>
                     <img
@@ -146,7 +147,7 @@ export const Accessory = () => {
               <div className="shadow-box mx-0">
                 <Row className="d-flex mt-3 ml-4 align-items-center">
                   <div className='m-3 mt-1 mb-1'>
-                    <Link to={`/home`} className='text-navbar-box'>HOME</Link> /<Link to={`/accessories`} className='text-navbar-box'>ACCESSORI</Link> / <Link className='text-navbar-box'>{product[0]?.name?.toUpperCase()}</Link>
+                    <Link to={`/home`} className='text-box-prod'>HOME / </Link> <Link to={`/accessories`} className='text-box-prod'>ACCESSORI / </Link> <Link className='text-box-prod'>{product[0]?.name?.toUpperCase()}</Link>
                   </div>
                 </Row>
                 <Row className="justify-content-center m-0 mt-3 ml-0 p-0">
@@ -159,6 +160,9 @@ export const Accessory = () => {
                   <h3 className="text-left text-black text-bold price-text-prod">{product[0]?.prezzo} €</h3>
                 </Row>
                 <div className="border-bottom"></div>
+
+                {product[0]?.quantita > 0 && (
+
                 <Row className="justify-content-center m-0 mt-1 ml-0 p-0 mb-0">
                   <Col xs={12} className="justify-content-left align-items-center pb-4 m-0 mt-1 ml-0 p-0">
                     <Button className={`button-black-prod m-2 mt-5 ${buttonState}`} onClick={addToCart} variant="outline-dark pl-0 ml-0" size="lg">
@@ -173,6 +177,14 @@ export const Accessory = () => {
                     </Button>
                   </Col>
                 </Row>
+                )}
+                 {product[0]?.quantita <= 0 && (
+                        <Row className="justify-content-center m-3 mt-4 ml-2 p-0 mb-0">
+                            <Col xs={12} className="justify-content-left align-items-center pb-4 m-0 mt-1 ml-2 p-0 " >
+                            <h5 className='p-0 ml-5 m-0'>PRODOTTO NON DISPONIBILE</h5>
+                            </Col>
+                        </Row>
+                        )}
                 <Row className="justify-content-center m-0 mt-1 ml-0 p-0 mb-3">
                   <h6 className="text-left text-black text-bold">SKU: {product[0]?._id}</h6>
                 </Row>

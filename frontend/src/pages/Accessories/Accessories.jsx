@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Image,Container, Row, Col,Card } from 'react-bootstrap';
 import ImmagineBg from '../../assets/Images/BgProd3.png';
-import { Link } from 'react-router-dom';
+import { Link ,useNavigate} from 'react-router-dom';
 import heart from '../../assets/Images/heart-3.png';
 import filledHeart from '../../assets/Images/heart-full.png';
 
 export const Accessories = () => {
+  let navigate = useNavigate();
     const userId = localStorage.getItem('userId');
     const [accessories, setAccessories] = useState([]); // accessori
     const [imageUrlsp, setImageUrlsp] = useState({}); // immagini frontali
@@ -14,6 +15,46 @@ export const Accessories = () => {
     const [Favorite, setFavorite] = useState([]); // stato per i preferiti
     const [animateFav, setAnimateFav] = useState({});
 
+
+    useEffect(() => {
+      const timers = Object.keys(animateFav).map(id => {
+          if (animateFav[id]) {
+              return setTimeout(() => {
+                  setAnimateFav(prev => ({ ...prev, [id]: false }));
+              }, 200); // duration should match the CSS transition duration
+          }
+          return null;
+      });
+      return () => timers.forEach(timer => clearTimeout(timer));
+  }, [animateFav]);
+  useEffect(() => {
+    if (userId) {
+        // Effettua la richiesta fetch
+        fetch(`http://localhost:3000/api/favourites/${userId}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Errore nella richiesta fetch');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log("Ricevo i data",data)
+
+                // Aggiorna lo stato dei preferiti
+                const favoriteIds = data.favourites.map(item => item.productId);
+                setFavorite(favoriteIds);
+                console.log("Ricevo i Favourites",favoriteIds)
+
+            })
+            .catch(error => {
+                console.error('Si è verificato un errore:', error);
+            });
+    } else {
+        // Prendi i valori dal localStorage
+        const localFavorite = JSON.parse(localStorage.getItem("Favorite") || "[]");
+        setFavorite(localFavorite);
+    }
+}, [userId]);
     // Vengono recupeate le informazioni degli accessori dal backend
     useEffect(() => {
       fetch(`http://localhost:3000/api/accessories`)
@@ -51,7 +92,11 @@ export const Accessories = () => {
       evento.preventDefault(); // Evita il comportamento predefinito dell'evento
       evento.stopPropagation(); // Evita la propagazione dell'evento ai genitori
       setAnimateFav(prev => ({ ...prev, [prodotto._id]: true }));
-
+      if(!userId)
+      {
+          navigate(`/login`);
+          return;
+      }
       if(Favorite.includes(prodotto._id)) {
              
           if(userId)
@@ -65,7 +110,7 @@ export const Accessories = () => {
                           body: JSON.stringify({
                               userId: userId,
                               productId: prodotto._id,
-                              type: "product",
+                              type: "accessory",
                           })
       
                       });

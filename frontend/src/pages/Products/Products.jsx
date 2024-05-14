@@ -3,10 +3,11 @@ import { Image, Container, Row, Col, Card } from 'react-bootstrap';
 import ImmagineBg from '../../assets/Images/BgProd3.png';
 import heart from '../../assets/Images/heart-3.png';
 import filledHeart from '../../assets/Images/heart-full.png';
-import { Link } from 'react-router-dom';
+import { Link ,useNavigate} from 'react-router-dom';
 import './Products.css';
 
 export const Products = () => {
+    let navigate = useNavigate();
     const userId = localStorage.getItem('userId');
     const [productsMask, setProductsMask] = useState([]); // Maschere
     const [productsGlass, setProductsGlass] = useState([]); // Occhili
@@ -145,7 +146,11 @@ export const Products = () => {
         evento.preventDefault(); // Evita il comportamento predefinito dell'evento
         evento.stopPropagation(); // Evita la propagazione dell'evento ai genitori
         setAnimateFav(prev => ({ ...prev, [prodotto._id]: true }));
-
+        if(!userId)
+        {
+            navigate(`/login`);
+            return;
+        }
         if(Favorite.includes(prodotto._id)) {
                
             if(userId)
@@ -281,7 +286,7 @@ export const Products = () => {
                                 {/* Dettagli della maschera */}
                                 <Card.Body>
                                     <Card.Title>{prodotto.nome}</Card.Title>
-                                    <Card.Title>{colorCount[prodotto._id]} colori</Card.Title>
+                                    <Card.Title>{colorCount[prodotto._id]} {colorCount[prodotto._id] > 1 ? 'colori' : 'colore'}</Card.Title>
                                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                                         <Card.Text>{prodotto.prezzo} €</Card.Text>
                                         <Image className={`heart ${animateFav[prodotto._id] ? 'animate' : ''}`}  key={`${prodotto._id}-${Favorite.includes(prodotto._id) ? 'filledHeart' : 'heart'}`}   onClick={(e) => {handleClickFavorite(prodotto,e)}} src={Favorite.includes(prodotto._id) ? filledHeart : heart} style={{ width: '25px', height: '25px' }} alt="Descrizione Immagine" />

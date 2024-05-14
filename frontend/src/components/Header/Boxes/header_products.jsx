@@ -37,7 +37,7 @@ export const HeaderProducts = ({ onCloseAllBoxes }) => {
             onClick={onCloseAllBoxes}
             key={product._id}
           >
-            <div className="text-navbar-box">{product.nome}</div>
+            <div className="text-box-prod">{product.nome}</div>
           </Link>
         ))}
       </Col>
@@ -51,7 +51,7 @@ export const HeaderProducts = ({ onCloseAllBoxes }) => {
             onClick={onCloseAllBoxes}
             key={product._id}
           >
-            <h7>{product.nome}</h7>
+            <h7 className="text-box-prod">{product.nome}</h7>
           </Link>
         ))}
       </Col>
