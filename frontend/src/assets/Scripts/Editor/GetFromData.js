@@ -324,14 +324,14 @@ async function addProduct(product) {
                 //formData.append('file1', ImmagineBg, ImmagineBg.name);
                 //formData.append('file2', ImmagineBg2, ImmagineBg2.name);
                     // Fetch the first image and append it as a Blob
-    const response1 = await fetch(ImmagineBg);
-    const blob1 = await response1.blob();
-    formData.append('file1', blob1, 'BgProd3.png');
+                const response1 = await fetch(ImmagineBg);
+                const blob1 = await response1.blob();
+                formData.append('file1', blob1, 'BgProd3.png');
 
-    // Fetch the second image and append it as a Blob
-    const response2 = await fetch(ImmagineBg2);
-    const blob2 = await response2.blob();
-    formData.append('file2', blob2, 'Bg.png');
+                // Fetch the second image and append it as a Blob
+                const response2 = await fetch(ImmagineBg2);
+                const blob2 = await response2.blob();
+                formData.append('file2', blob2, 'Bg.png');
                 formData.append('fileS', product.immagini[0], product.immagini[0].name);
                 formData.append('fileI', product.immagini[1], product.immagini[1].name);
                 console.log("Faccio",formData)

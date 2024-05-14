@@ -186,7 +186,7 @@ export const Product = (addToStorage) => {
     return (
         <Container fluid className="p-0">
             
-            <Row className="d-flex align-items-center pl-0 pt-3 m-0 ml-0 mt-4 equal-height">
+            <Row className="d-flex align-items-center pl-0 pt-3 m-0 ml-0 mt-2 equal-height">
                 <Col lg={7} className="d-flex  flex-column p-3 pl-0 m-0" >
                     <Carousel 
                     activeIndex={activeIndex} 
@@ -219,6 +219,7 @@ export const Product = (addToStorage) => {
                             <h1 className="text-left text-black title-text-prod">{productInfo.nome} / {product[selectedSetIndex]?.colore.toUpperCase() ?? ''}</h1>
                             
                         </Row>
+                     
                         
                        
                         <Row className="justify-content-center m-0 mt-1 ml-0 p-0 mb-3">
@@ -248,6 +249,7 @@ export const Product = (addToStorage) => {
                         </Row>
                         <div className="border-bottom"></div>
 
+                        {product[selectedSetIndex]?.quantita > 0 && (
                         <Row className="justify-content-center m-0 mt-1 ml-0 p-0 mb-0">
                             <Col xs={12} className="justify-content-left align-items-center pb-4 m-0 mt-1 ml-0 p-0 " >
                                 {/*<Button className='button-black-prod  m-2 mt-5' onClick={() => AddToCart()} variant="outline-dark pl-0 ml-0" size="lg"><h3 className='p-0 m-0'>AGGIUNGI AL CARRELLO</h3 ></Button>*/}
@@ -267,7 +269,14 @@ export const Product = (addToStorage) => {
                                 </Button>
                             </Col>
                         </Row>
-                    
+                        )}
+                        {product[selectedSetIndex]?.quantita <= 0 && (
+                        <Row className="justify-content-center m-3 mt-4 ml-2 p-0 mb-0">
+                            <Col xs={12} className="justify-content-left align-items-center pb-4 m-0 mt-1 ml-2 p-0 " >
+                            <h5 className='p-0 ml-5 m-0'>PRODOTTO NON DISPONIBILE</h5>
+                            </Col>
+                        </Row>
+                        )}
                         <Row className="justify-content-center m-0 mt-1 ml-0 p-0 mb-3">
                             <h6 className="text-left text-black text-bold">SKU: {productInfo._id}</h6>
                         </Row>
@@ -319,11 +328,7 @@ export const Product = (addToStorage) => {
                 </Button>
                 
             </div>
-            <Row className="m-0 p-0 w-100 h-100 no-space-rowBg">
-                <Image src={ImmagineBg} className="p-0 img-fluid-no-space w-100 darkness" />
-                <div className="centered-text">Le emozioni non finiscono mai:
-                Esplora le ultime uscite</div>
-            </Row>
+            
         </Container>
     );
 };

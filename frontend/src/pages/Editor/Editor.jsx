@@ -216,7 +216,7 @@ export const Editor = () => {
       descrizione,
       colore: colore,
       categoria: type,
-      quantita: 100000,
+      quantita,
       immagini: immaginiCop,
       motto,
       caratteristiche,
@@ -228,6 +228,7 @@ export const Editor = () => {
       productId: newProduct._id,
       colore: colore,
       immagini: immaginiVar,
+      quantita,
     };
     newProduct.variants.push(variant);
 
@@ -244,7 +245,7 @@ export const Editor = () => {
       descrizione: '',
       colore: '',
       coloreVariante: '',
-      quantita: '',
+      quantita: 0,
       immaginiCop: [],
       immaginiVar: [],
       motto: ''
@@ -282,6 +283,7 @@ export const Editor = () => {
       productId: productId,
       colore: coloreVariante,
       immaginiVar,
+      quantita: product.quantita,
     };
 
     const updatedAllElements = allElements.map(element => {
@@ -321,6 +323,7 @@ export const Editor = () => {
     const newErrors = {};
     if (!product.nome) newErrors.nome = 'Nome del prodotto è richiesto.';
     if (!product.prezzo || product.prezzo <= 0) newErrors.prezzo = 'Prezzo valido è richiesto.';
+    if (!product.quantita || product.quantita <= 0) newErrors.quantita = 'Quantità valida è richiesto.';
     if (!product.colore) newErrors.colore = 'Colore del prodotto è richiesto.';
     if (!product.descrizione) newErrors.descrizione = 'Descrizione del prodotto è richiesta.';
     if (!product.motto || product.motto <= 0) newErrors.motto = 'Titolo descrizione del prodotto è richiesta.';
@@ -335,6 +338,7 @@ export const Editor = () => {
     const newErrors = {};
     if (!product.coloreVariante) newErrors.coloreVariante = 'Colore del prodotto è richiesto.';
     if (!product.immaginiVar || product.immaginiVar.length !== 4) newErrors.immaginiVar = '4 immagini richieste.';
+    if (!product.quantita || product.quantita <= 0) newErrors.quantita = 'Quantità valida è richiesto.';
     return newErrors;
   };
 
@@ -345,6 +349,7 @@ export const Editor = () => {
     if (!product.prezzo || product.prezzo <= 0) newErrors.prezzo = 'Prezzo valido è richiesto.';
     if (!product.descrizione) newErrors.descrizione = 'Descrizione del prodotto è richiesta.';
     if (!product.immaginiCop || product.immaginiCop.length !== 4) newErrors.immaginiCop = '4 immagini richieste.';
+    if (!product.quantita || product.quantita <= 0) newErrors.quantita = 'Quantità valida è richiesto.';
     return newErrors;
   };
 
@@ -417,8 +422,12 @@ export const Editor = () => {
                           <div className="border-bottom"></div>
                           <div className='m-1 mt-3' style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                             <Card.Title>{variante?.colore?.toLowerCase()}</Card.Title>
+                            <Card.Title>x {variante?.quantita}</Card.Title>
+
                             <Button onClick={() => handleDeleteVariant(prodotto._id, variante)} variant='danger'>Elimina</Button>
+                          
                           </div>
+
                         </Row>
                       ))}
                       <div className="border-bottom"></div>
@@ -433,6 +442,11 @@ export const Editor = () => {
                               <Form.Control isInvalid={!!errors.immaginiVar} type="file" multiple onChange={handleImageChangeVar} />
                               <Form.Control.Feedback type="invalid">{errors.immaginiVar}</Form.Control.Feedback>
                             </Form.Group>
+                            <Form.Group controlId="productQuantity">
+                      <Form.Label>Quantità prodotto</Form.Label>
+                      <Form.Control isInvalid={!!errors.quantita} type="number" name="quantita" value={product.quantita} onChange={handleChange} />
+                      <Form.Control.Feedback type="invalid">{errors.quantita}</Form.Control.Feedback>
+                    </Form.Group>
                           </Form.Group>
                           <Button className='m-2' onClick={() => setExpandedProductIdVariant(false)} variant='danger'>Elimina</Button>
                         </Row>
@@ -490,8 +504,13 @@ export const Editor = () => {
                       <Form.Control isInvalid={!!errors.caratteristiche} as="textarea" type="text" rows={1} name="caratteristiche" value={product.caratteristiche} onChange={handleChange} />
                       <Form.Control.Feedback type="invalid">{errors.caratteristiche}</Form.Control.Feedback>
                     </Form.Group>
+                    <Form.Group controlId="productQuantity">
+                      <Form.Label>Quantità prodotto</Form.Label>
+                      <Form.Control isInvalid={!!errors.quantita} type="number" name="quantita" value={product.quantita} onChange={handleChange} />
+                      <Form.Control.Feedback type="invalid">{errors.quantita}</Form.Control.Feedback>
+                    </Form.Group>
                     <Form.Group controlId="productImages">
-                      <Form.Label>Immagini copertina - 2 files richiesti (1,2,S,I)</Form.Label>
+                      <Form.Label>Immagini copertina - 2 files richiesti (S,I)</Form.Label>
                       <Form.Control isInvalid={!!errors.immaginiCop} type="file" multiple onChange={handleImageChangeCop} />
                       <Form.Control.Feedback type="invalid">{errors.immaginiCop}</Form.Control.Feedback>
                     </Form.Group>
@@ -579,6 +598,11 @@ export const Editor = () => {
                               <Form.Control isInvalid={!!errors.immaginiVar} type="file" multiple onChange={handleImageChangeVar} />
                               <Form.Control.Feedback type="invalid">{errors.immaginiVar}</Form.Control.Feedback>
                             </Form.Group>
+                            <Form.Group controlId="productQuantity">
+                      <Form.Label>Quantità prodotto</Form.Label>
+                      <Form.Control isInvalid={!!errors.quantita} type="number" name="quantita" value={product.quantita} onChange={handleChange} />
+                      <Form.Control.Feedback type="invalid">{errors.quantita}</Form.Control.Feedback>
+                    </Form.Group>
                           </Form.Group>
                           <Button className='m-2' onClick={() => setExpandedProductIdVariant(false)} variant='danger'>Elimina</Button>
                         </Row>
@@ -635,6 +659,11 @@ export const Editor = () => {
                       <Form.Label>Caratteristiche prodotto</Form.Label>
                       <Form.Control isInvalid={!!errors.caratteristiche} as="textarea" type="text" rows={1} name="caratteristiche" value={product.caratteristiche} onChange={handleChange} />
                       <Form.Control.Feedback type="invalid">{errors.caratteristiche}</Form.Control.Feedback>
+                    </Form.Group>
+                    <Form.Group controlId="productQuantity">
+                      <Form.Label>Quantità prodotto</Form.Label>
+                      <Form.Control isInvalid={!!errors.quantita} type="number" name="quantita" value={product.quantita} onChange={handleChange} />
+                      <Form.Control.Feedback type="invalid">{errors.quantita}</Form.Control.Feedback>
                     </Form.Group>
                     <Form.Group controlId="productImages">
                       <Form.Label>Immagini copertina - 2 files richiesti (S,I)</Form.Label>
@@ -727,6 +756,11 @@ export const Editor = () => {
                       <Form.Label>Descrizione prodotto</Form.Label>
                       <Form.Control isInvalid={!!errors.descrizione} as="textarea" rows={1} type="text" name="descrizione" value={product.descrizione} onChange={handleChange} />
                       <Form.Control.Feedback type="invalid">{errors.descrizione}</Form.Control.Feedback>
+                    </Form.Group>
+                    <Form.Group controlId="productQuantity">
+                      <Form.Label>Quantità prodotto</Form.Label>
+                      <Form.Control isInvalid={!!errors.quantita} type="number" name="quantita" value={product.quantita} onChange={handleChange} />
+                      <Form.Control.Feedback type="invalid">{errors.quantita}</Form.Control.Feedback>
                     </Form.Group>
                     <Form.Group controlId="productImages">
                       <Form.Label>Immagini copertina - 4 files (Posteriore, Frontale, Sinistra, Destra)</Form.Label>
