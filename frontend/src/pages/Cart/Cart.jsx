@@ -124,7 +124,7 @@ function Cart() {
     console.log(cartItems);
 
     return (
-        <Container className="mb-5">
+        <Container fluid className="mb-5">
             <Row className="mt-5 mb-5">
                 <Col className="d-flex align-items-center">
                     <h1 className="fw-bold">IL TUO CARRELLO</h1>
@@ -157,7 +157,7 @@ function Cart() {
                             <Col xs="6">
                                 <Link to="/Payments/cart" className="fs-4">
                                     <Button size="lg" id="buyButtonn" variant="outline-dark" className='button-black-prod' onClick={handleCheckout}>
-                                    <h3 className='p-0 m-0'>Procedi all'acquisto</h3>
+                                    <h4 className='p-0 m-0'>Procedi all'acquisto</h4>
                                     </Button>
                                 </Link>
                             </Col>

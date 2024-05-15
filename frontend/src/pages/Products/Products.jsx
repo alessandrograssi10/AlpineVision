@@ -33,6 +33,9 @@ export const Products = () => {
         return () => timers.forEach(timer => clearTimeout(timer));
     }, [animateFav]);
 
+    
+
+
     useEffect(() => {
         if (userId) {
             // Effettua la richiesta fetch

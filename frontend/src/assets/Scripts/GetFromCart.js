@@ -10,6 +10,7 @@ const requestOptions = {
 // Funzione per ottenere le informazioni sull'elemento (prodotto o accessorio)
 export async function GetInfo(element) {
     const idProd = (element.type === "product"); // Determina se l'elemento è un prodotto o un accessorio in base al tipo
+    console.log("elementos", element);
     var info;
 
     // Se l'elemento è un prodotto, ottieni le informazioni sul prodotto, altrimenti sul accessorio

@@ -10,9 +10,9 @@ import { GetInfo } from '../../assets/Scripts/GetFromCart.js';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons';
 
+
 function PersonalArea() {
     const [orders, setOrders] = useState([]);
-    const [favorites, setFavorites] = useState([]);
     const [userData, setUserData] = useState(null); 
     const [walking, setWalking] = useState(true);
     const ruolo = localStorage.getItem("ruoloUser");
@@ -21,6 +21,7 @@ function PersonalArea() {
     const [itemsInfo, setItemsInfo] = useState({});
     const [users, setUsers] = useState([]);
     const [roles, setRoles] = useState({});
+    const [Favorite, setFavorite] = useState([]);
 
     const handleRoleChange = async (userId, newRole) => {
         setRoles(prevRoles => ({ ...prevRoles, [userId]: newRole }));
@@ -153,8 +154,70 @@ function PersonalArea() {
         }
     };
 
+
+    useEffect(() => {
+        if (userId) {
+            // Effettua la richiesta fetch
+            fetch(`http://localhost:3000/api/favourites/${userId}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Errore nella richiesta fetch');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log("Ricevo i data",data)
+
+                    // Aggiorna lo stato dei preferiti
+                    const favoriteIds = data.favourites.map(item => item.productId&&item.type);
+
+                    //setFavorite(favoriteIds);
+                    console.log("Ricevo i FavouritesFINAL",data)
+
+                    const fetchCartData = async () => {
+                        try {
+                            const fetchDetails = favoriteIds.map(item =>
+                                GetInfo(item)
+                                    .then(info => ({ _id: info.productId, info }))
+                                    .catch(error => {
+                                        console.error('Errore nel recuperare i dettagli dell\'articolo:', error);
+                                        return null; // Ritorna null se non è possibile recuperare i dettagli
+                                    })
+                            );
+                    
+                            const detailsArray = await Promise.all(fetchDetails);
+                            console.log("detailsArray", detailsArray);
+                    
+                            const details = detailsArray.reduce((acc, current) => {
+                                if (current && current.info) {
+                                    acc[(current._id)] = current.info;
+                                }
+                                return acc;
+                            }, {});
+                            console.log("FAVOURITE DETAILS", details);
+                            setFavorite(details);
+                        } catch (error) {
+                            console.error('Si è verificato un errore durante il recupero dei dettagli degli articoli preferiti:', error);
+                        }
+                    };
+                    
+                    
+                    fetchCartData();
+
+                })
+                .catch(error => {
+                    console.error('Si è verificato un errore:', error);
+                });
+        }
+       
+        
+    }, [userId]);
+
+
+    
+
     return (
-        <div className="personal-area-container mt-5">
+        <div fluid className="personal-area-container m-0 p-0 mt-5">
             <div className="personal-area-row justify-content-center">
                 <div className="personal-area-col">
                     <h1 className="personal-area-text-center mb-4">{saluto}, {userData ? `${userData.nome}` : 'USER SCONOSCIUTO'}!</h1>
@@ -225,21 +288,23 @@ function PersonalArea() {
 
                     
 
-                    {/* Sezione: Articoli preferiti */}
-                    <div className="personal-area-margin-bottom">
-                        <div className="personal-area-container personal-area-border personal-area-rounded personal-area-padding">
-                            <h2>Articoli preferiti</h2>
-                            {favorites.length > 0 ? (
-                                favorites.map(item => (
-                                    <div key={item.id}>
-                                        {/* Visualizza dettagli articolo */}
-                                    </div>
-                                ))
-                            ) : (
-                                <p>Nessun articolo preferito al momento.</p>
-                            )}
+                   
+        <div className="personal-area-margin-bottom">
+            <div className="personal-area-container personal-area-border personal-area-rounded personal-area-padding">
+                <h2>Articoli preferiti</h2>
+                {Favorite.length > 0 ? (
+                    Favorite.map(productId => (
+                        <div key={productId}>
+                            {/* Qui dovresti recuperare il dettaglio dell'articolo usando il productId */}
+                            <p>Dettagli articolo con productId: {productId}</p>
                         </div>
-                    </div>
+                    ))
+                ) : (
+                    <p>Nessun articolo preferito al momento.</p>
+                )}
+            </div>
+        </div>
+    
 
                     
 
