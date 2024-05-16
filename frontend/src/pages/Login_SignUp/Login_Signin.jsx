@@ -22,6 +22,7 @@ const LoginSignupForm = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setsuccessMessage] = useState("");
   const [birthdateTouched, setBirthdateTouched] = useState(false);
+  
 
   const handleLoginSubmit = (event) => {
     event.preventDefault();
@@ -60,6 +61,7 @@ const LoginSignupForm = () => {
         localStorage.setItem("token", result.token);
         localStorage.setItem("userId", result.userId);
         localStorage.setItem("ruoloUser", result.ruolo);
+        localStorage.setItem("emailuser", loginEmail);
         window.location.href = "/AreaPersonale";
       })
       .catch((error) => {
@@ -135,6 +137,7 @@ const LoginSignupForm = () => {
       .then((result) => {
         localStorage.setItem("token", result.token);
         localStorage.setItem("userId", result.userId);
+        localStorage.setItem("emailuser", loginEmail);
         setsuccessMessage('Registrazione avvenuta con successo. Reindirizzamento in corso');
         setTimeout(() => {
           window.location.href = "/AreaPersonale";

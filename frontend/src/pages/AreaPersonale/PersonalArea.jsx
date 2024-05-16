@@ -29,6 +29,11 @@ function PersonalArea() {
     const [Favorite, setFavorite] = useState([]);
     const [animateFav, setAnimateFav] = useState({});
 
+    const [oldPassword, setOldPassword] = useState('');
+    const [newPassword, setNewPassword] = useState('');
+    const [showChangePassword, setShowChangePassword] = useState(false);
+    const [showChangeEmail, setShowChangeEmail] = useState(false);
+
 
     useEffect(() => {
         const timers = Object.keys(animateFav).map(id => {
@@ -248,6 +253,37 @@ function PersonalArea() {
         }
     };
 
+
+
+    const updateUserPassword = async () => {
+        if (showChangePassword) {
+            try {
+                
+                const response = await fetch(`http://localhost:3000/api/users/${userId}/password`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        "oldPassword":oldPassword,
+                        "newPassword":newPassword
+                    }),
+                });
+                if (response.ok) {
+                    showChangeEmail(true);
+                    setOldPassword('');
+                    setNewPassword('');
+                    setShowChangePassword(false);
+                } else {
+                    throw new Error('Errore durante l\'aggiornamento della password');
+                }
+            } catch (error) {
+                console.error('Errore durante l\'aggiornamento della password:', error);
+                alert('Si è verificato un errore durante l\'aggiornamento della password.');
+            }
+        }
+    };
+
     return (
         <div className="personal-area-container m-0 p-0 mt-5">
             <div className="personal-area-row justify-content-center">
@@ -363,6 +399,35 @@ function PersonalArea() {
                             )}
                         </div>
                     </div>
+
+
+
+                    <div className="personal-area-margin-bottom">
+            <div className="personal-area-container personal-area-border personal-area-rounded personal-area-padding">
+                <h2>Impostazioni Profilo</h2>
+                <div className="profile-settings-container">
+                    <p>Email: {localStorage.getItem("emailuser")}</p>
+                    <button onClick={() => setShowChangePassword(true)}>Modifica Password</button>
+                </div>
+                {showChangePassword && (
+                    <form>
+                        <label>
+                            Vecchia Password:
+                            <input type="password" value={oldPassword} onChange={(e) => setOldPassword(e.target.value)} />
+                        </label>
+                        <label>
+                            Nuova Password:
+                            <input type="password" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} />
+                        </label>
+                        <button onClick={updateUserPassword} type="submit">Aggiorna Password</button>
+                    </form>
+                )}
+            </div>
+        </div>
+
+
+
+
 
 
     

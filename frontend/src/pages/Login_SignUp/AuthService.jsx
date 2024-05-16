@@ -18,6 +18,7 @@ const AuthServices = {
     localStorage.removeItem('token');
     localStorage.removeItem('userId');
     localStorage.removeItem('ruoloUser');
+    localStorage.removeItem('emailUser');
     window.location.href = '/';
   }
 };
