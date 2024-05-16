@@ -165,9 +165,9 @@ PATCH
 // Route per modificare la password di un utente
 router.patch('/:userId/password', async (req, res) => {//funziona
     const userId = req.params.userId;
-    const { newPassword } = req.body;
+    const { newPassword , oldPassword} = req.body;
     try {
-        const result = await updateUserPassword(userId, newPassword);
+        const result = await updateUserPassword(userId,oldPassword, newPassword);
         if (result.matchedCount === 1) {
             res.status(200).json({ message: "Password aggiornata con successo" });
         } else {
