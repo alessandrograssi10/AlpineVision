@@ -221,6 +221,32 @@ function PersonalArea() {
 
 
     
+    const handleRemoveFavorite = async (item) => {
+        try {
+            const response = await fetch("http://localhost:3000/api/favourites/remove", {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    userId: userId,
+                    productId: item.productId,
+                    type: item.type,
+                })
+            });
+
+            if (response.ok) {
+                // Rimuove l'articolo dalla lista dei preferiti localmente
+                const newFavorites = { ...Favorite };
+                delete newFavorites[item.productId];
+                setFavorite(newFavorites);
+            } else {
+                console.error("Failed to remove favorite");
+            }
+        } catch (error) {
+            console.error("An error occurred while removing favorite:", error);
+        }
+    };
 
     return (
         <div className="personal-area-container m-0 p-0 mt-5">
@@ -323,7 +349,10 @@ function PersonalArea() {
                                                     Colore: {item.colore || 'N/D'}<br />
                                                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                                         <Card.Text>{item.prezzo} €</Card.Text>
-                                        <Image className={`heart ${animateFav[item._id] ? 'animate' : ''}`}  key={`${item._id}-${'filledHeart'}`}   src={filledHeart} style={{ width: '25px', height: '25px' }} alt="Descrizione Immagine" />
+                                        <Image className={`heart ${animateFav[item._id] ? 'animate' : ''}`}  key={`${item._id}-${'filledHeart'}`} onClick={(e) => {
+                                                    e.preventDefault();
+                                                    handleRemoveFavorite(item);
+                                                }}  src={filledHeart} style={{ width: '25px', height: '25px' }} alt="Descrizione Immagine" />
                                     </div>                                                </Card.Text>
                                             </Card.Body>
                                         </Card>
