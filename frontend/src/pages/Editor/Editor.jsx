@@ -1,10 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Image, Container, Row, Col, Card, Button, Alert } from 'react-bootstrap';
 import { GetAllProducts, GetAllAccessory, saveAll } from '../../assets/Scripts/Editor/GetFromData.js';
+import { getUserRole } from '../../assets/Scripts/GetUserInfo.js';
+
 import './Editor.css';
 
 export const Editor = () => {
-  const ruolo = localStorage.getItem("ruoloUser");
+  
+  const userId = localStorage.getItem('userId'); 
+  const [ruolo, setRuolo] = useState(null);
+
+  console.log("Ruolo", ruolo)
 
   const [product, setProduct] = useState({
     nome: '',
@@ -35,13 +41,38 @@ export const Editor = () => {
   const [addAccessoryProd, setAddAccessoryProd] = useState(false);
 
   let Favorite = JSON.parse(localStorage.getItem("Favorite") || "[]");
-  const userId = localStorage.getItem('userId');
   const [expandedProductId, setExpandedProductId] = useState(null);
   const [expandedProductIdVariant, setExpandedProductIdVariant] = useState(false);
 
   const [copiedOnce, setCopiedOnce] = useState(false);
   const [riavvia, setRiavvia] = useState(false);
   const [errors, setErrors] = useState({});
+
+
+  useEffect(() => {
+    console.log("useEffect eseguito con userId:", userId);
+    if (!userId) {
+      console.log('UserID non disponibile');
+      return;
+    }
+  
+    (async () => {
+      try {
+        console.log("Chiamata a getUserRole iniziata con userId:", userId);
+        const fetchedRole = await getUserRole(userId);
+        setRuolo(fetchedRole);
+      } catch (error) {
+        console.error('Errore durante il recupero del ruolo:', error);
+      }
+    })();
+  }, [userId]);
+
+  // Controlli basati sul ruolo
+  useEffect(() => {
+    if (ruolo && ruolo !== "admin" && ruolo !== "editor-prodotti") {
+      window.location.href = '/home';
+    }
+  }, [ruolo]);
 
   // Effettua una copia iniziale degli elementi una sola volta
   useEffect(() => {
@@ -354,8 +385,11 @@ export const Editor = () => {
   };
 
   // Verifica ruolo utente
+  /*if (!ruolo) {
+    // Potresti mostrare un loader qui o null se non vuoi renderizzare nulla fino al caricamento del ruolo
+    return null;
+  }*/
   if (ruolo !== "admin" && ruolo !== "editor-prodotti") {
-    window.location.href = '/home';
     return null;
   } else return (
     <Container fluid className="p-0 m-0">

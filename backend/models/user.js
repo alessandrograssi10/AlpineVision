@@ -136,6 +136,19 @@ async function updateUserRole(userId, newRole) {
     }
 }
 
+
+// Funzione per ottenere il ruolo di un utente dal database
+async function getUserRole(userId) {
+    const db = getDb(); // Assicurati di avere una funzione per connetterti al DB
+    const user = await db.collection('Users').findOne({ _id: new ObjectId(userId) });
+    if (user && user.ruolo) {
+        return user.ruolo;
+    } else {
+        throw new Error('Utente non trovato');
+    }
+}
+
+
 module.exports = {
     createUser,
     deleteUser,
@@ -143,5 +156,6 @@ module.exports = {
     setAddress,
     setPhone,
     findUserByEmail,
-    updateUserRole
+    updateUserRole,
+    getUserRole,   
 };

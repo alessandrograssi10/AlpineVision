@@ -1,10 +1,29 @@
 const express = require('express');
 const router = express.Router();
 const { getDb } = require('../config/database');
-const { createUser, deleteUser, updateUserPassword, setPhone, setAddress, findUserByEmail, updateUserRole } = require('../models/user');
+const { createUser, deleteUser, updateUserPassword, setPhone, setAddress, findUserByEmail, updateUserRole,getUserRole } = require('../models/user');
 const jwt = require('jsonwebtoken');
 const { ObjectId } = require('mongodb');
 
+// Middleware per autenticare il token JWT
+function authenticateToken(req, res, next) {
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split(' ')[1];
+    if (!token) return res.sendStatus(401);
+
+    console.log("Verifying token:", token);
+    console.log("Using secret:", process.env.JWT_SECRET);  // Ensure this variable matches your .env
+
+    jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+        if (err) {
+            console.error("Token verification error:", err);
+            return res.sendStatus(403); // Forbidden or invalid token
+        }
+        req.user = user;
+        console.log("dioooo SUccesso")
+        next();
+    });
+}
 
 /*
 
@@ -244,7 +263,22 @@ router.put('/setAddress/:userId', async (req, res) => { //funziona
 
 
 
+router.get('/:userId/role', authenticateToken, async (req, res) => {
+    const userId = req.params.userId;
+    console.log("dioooo",userId)
 
+    try {
+        const role = await getUserRole(userId);
+        res.status(200).json({ role: role, message: "Ruolo recuperato con successo" });
+    } catch (error) {
+        console.error("Errore nel recupero del ruolo dell'utente:",error.message);
+        if (error.message === 'Utente non trovato') {
+            res.status(404).json({ error: "Utente non trovato" });
+        } else {
+            res.status(500).json({ error: "Errore interno del server" });
+        }
+    }
+});
 
 
 module.exports = router;
