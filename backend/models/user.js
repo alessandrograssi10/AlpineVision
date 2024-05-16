@@ -46,17 +46,40 @@ async function deleteUser(userId) {
     }
 }
 
-async function updateUserPassword(userId, newPassword) {
+async function updateUserPassword(userId, oldPassword, newPassword) {
     try {
         const db = getDb();
         const usersCollection = db.collection('Users');
+
+        // Trova l'utente e verifica che la vecchia password corrisponda
+        const user = await usersCollection.findOne({ _id: new ObjectId(userId) });
+        if (!user) {
+            console.error("Utente non trovato.");
+            return { success: false, message: "Utente non trovato." };
+        }
+
+        // Controlla se la vecchia password corrisponde a quella salvata
+        if (user.password !== oldPassword) {
+            console.error("La vecchia password non corrisponde.");
+            return { success: false, message: "La vecchia password non corrisponde." };
+        }
+
+        // Aggiorna la password
         const result = await usersCollection.updateOne({ _id: new ObjectId(userId) }, { $set: { password: newPassword } });
-        return result;
+        if (result.modifiedCount === 1) {
+            console.log("Password aggiornata con successo.");
+            return { success: true, message: "Password aggiornata con successo." };
+        } else {
+            console.error("Nessun aggiornamento effettuato.");
+            return { success: false, message: "Nessun aggiornamento effettuato." };
+        }
     } catch (error) {
         console.error("Errore nell'aggiornamento della password dell'utente:", error);
-        throw error;
+        throw error; // Rilancia l'errore per gestioni esterne
     }
 }
+
+
 async function setPhone(userId, newPhone) {
     try {
         const db = getDb();
