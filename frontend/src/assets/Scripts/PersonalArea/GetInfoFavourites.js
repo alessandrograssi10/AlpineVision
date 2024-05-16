@@ -30,7 +30,8 @@ export const getProductInfo = async (productId, type) => {
             colore: type === 'product' ? imageInfo.colore : null,
             linkImmagine: imageInfo.imageUrl,
             type: type,
-            prezzo: product.prezzo
+            prezzo: product.prezzo,
+            productId: productId
         };
     } catch (error) {
         console.error("Errore nel recupero delle informazioni", error);

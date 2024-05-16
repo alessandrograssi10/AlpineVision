@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Button ,Form,Col,Row,Card} from 'react-bootstrap';
+import { Button ,Form,Col,Row,Card,Image} from 'react-bootstrap';
 
 import './PersonalArea.css'; // Importa il file CSS per gli stili
 import shopping from '../../assets/Images/shopping2.png';
@@ -10,6 +10,8 @@ import { GetInfo } from '../../assets/Scripts/GetFromCart.js';
 import { getProductInfo } from '../../assets/Scripts/PersonalArea/GetInfoFavourites.js';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons';
+import heart from '../../assets/Images/heart-3.png';
+import filledHeart from '../../assets/Images/heart-full.png';
 
 
 function PersonalArea() {
@@ -23,7 +25,20 @@ function PersonalArea() {
     const [users, setUsers] = useState([]);
     const [roles, setRoles] = useState({});
     const [Favorite, setFavorite] = useState([]);
+    const [animateFav, setAnimateFav] = useState({});
 
+
+    useEffect(() => {
+        const timers = Object.keys(animateFav).map(id => {
+            if (animateFav[id]) {
+                return setTimeout(() => {
+                    setAnimateFav(prev => ({ ...prev, [id]: false }));
+                }, 200); // duration should match the CSS transition duration
+            }
+            return null;
+        });
+        return () => timers.forEach(timer => clearTimeout(timer));
+    }, [animateFav]);
     const handleRoleChange = async (userId, newRole) => {
         setRoles(prevRoles => ({ ...prevRoles, [userId]: newRole }));
 
@@ -284,14 +299,16 @@ function PersonalArea() {
                             {Object.keys(Favorite).length > 0 ? (
                                 <div className="favorite-cards-container">
                                     {Object.values(Favorite).map((item, index) => (
-                                        <Card key={index} className="card">
+                                        <Card as = {Link} to={item.type === 'product' ? `/product/${item.productId}` : `/accessory/${item.productId}`} key={index} className="card">
                                             <Card.Img variant="top" src={item.linkImmagine} alt={item.nome} />
                                             <Card.Body>
                                                 <Card.Title>{item.nome}</Card.Title>
                                                 <Card.Text>
                                                     Colore: {item.colore || 'N/D'}<br />
-                                                    Prezzo: {item.prezzo} €
-                                                </Card.Text>
+                                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                        <Card.Text>{item.prezzo} €</Card.Text>
+                                        <Image className={`heart ${animateFav[item._id] ? 'animate' : ''}`}  key={`${item._id}-${'filledHeart'}`}   src={filledHeart} style={{ width: '25px', height: '25px' }} alt="Descrizione Immagine" />
+                                    </div>                                                </Card.Text>
                                             </Card.Body>
                                         </Card>
                                     ))}
