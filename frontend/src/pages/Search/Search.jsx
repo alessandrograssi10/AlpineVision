@@ -158,7 +158,6 @@ export const Search = () => {
     
         // Update the state with the filtered results and log the action
         setSearchFilteredElements(filteredElements);
-        console.log("search", filteredElements);
     };
     
     const getImageById = async (id) => {

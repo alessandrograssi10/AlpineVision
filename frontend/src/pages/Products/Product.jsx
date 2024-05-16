@@ -172,7 +172,6 @@ export const Product = (addToStorage) => {
                 quantity: 1
 
             };
-            console.log("IIIIInfo",productDetails)
             localStorage.setItem("productDetails", JSON.stringify(productDetails));
             setButtonStateDirect('loading');
             setTimeout(() => {

@@ -77,10 +77,3 @@
     transition: transform 0.3s ease; /* Aggiunge una transizione fluida al passaggio del mouse */
 }
 
-.cartproductimage:hover {
-    /*transform: scale(1.2); /* Ingrandisce leggermente l'immagine al passaggio del mouse */
-}
-
-.remove-cart {
-    /*margin-top: 20px;*/
-}

@@ -25,7 +25,7 @@ export const Header = () => {
   let navigate = useNavigate(); // per la navigazione tra i link
 
   
-  const [isLargeScreen, setIsLargeScreen] = useState(window.innerWidth >= 992 && !isMobile); // verifica la dimensione dello schermo
+  const [isLargeScreen, setIsLargeScreen] = useState(window.innerWidth >= 992 && !isMobile); // verifica la dimensione dello schermo e se è di tipo mobile
 
 
    // Evento che viene chiamato al ridimensionamento della schermata
@@ -123,21 +123,29 @@ export const Header = () => {
 
   return (
     <>
+
       {/* Navbar */}
+
       <Navbar id="top" expand="lg" className="custom-navbar" expanded={expanded} onMouseLeave={closeAllBoxes}>
+        
         {/* Logo e Scritta di AlpineVision */}
+
         <Navbar.Brand as={Link} to="/home" className="navbar-brand-bold">
           <Image src={Logo} width="50" className="d-inline-block align-center logo" alt="Logo" />
           ALPINE VISION
         </Navbar.Brand>
+
         {/* Toggle per gli elementi con lo schermo piccolo */}
+
         <Navbar.Toggle aria-controls="basic-navbar-nav" onClick={() => setExpanded(expanded ? false : true)}/>
 
         {/* Elementi della navbar con schermo grande */}
+
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto" onMouseEnter={OpenAllBoxes} onMouseLeave={closeAllBoxes}>
 
             {/* Box Prodotti */}
+
             <div onMouseEnter={() => toggleBox("showProductBox")} onMouseLeave={cancelToggleBox}>
               <Nav.Link as={Link} to="/products" onClick={() => handleLinkClick('Products')} className={`bold ${currentBox === 'showProductBox' ? 'hovered' : ''}`}>
                 <div className="hover-underline-animation">PRODOTTI</div>
@@ -150,6 +158,7 @@ export const Header = () => {
             </div>
 
             {/* Box Accessori */}
+
             <div onMouseEnter={() => toggleBox("showAccessoriesBox")} onMouseLeave={cancelToggleBox}>
               <Nav.Link as={Link} to="/accessories" onClick={() => handleLinkClick('Accessories')} className={`bold ${currentBox === 'showAccessoriesBox' ? 'hovered' : ''}`}>
                 <div className="hover-underline-animation">ACCESSORI</div>
@@ -162,6 +171,7 @@ export const Header = () => {
             </div>
 
             {/*Box Blog*/}
+
             <div onMouseEnter={() => toggleBox('showBlogBox')} onMouseLeave={cancelToggleBox}>
               <Nav.Link as={Link} to="/blog" onClick={() => handleLinkClick('Blog')} className={`bold ${currentBox === 'showBlogBox' ? 'hovered' : ''}`}>
                 <div className="hover-underline-animation">BLOG</div>
@@ -174,6 +184,7 @@ export const Header = () => {
             </div>
 
             {/* Box Chi siamo */}
+
             <Nav>
               <Nav.Link as={Link} to="/support" onMouseLeave={OpenAllBoxes} onMouseEnter={() => closeAllBoxes()} onClick={() => handleLinkClick('Support')} className={`justify-content-center bold ${currentBox === 'showAboutUs' ? 'hovered' : ''}`}>
                 <div className="hover-underline-animation">CHI SIAMO</div>
@@ -185,6 +196,7 @@ export const Header = () => {
             <Nav>
 
               {/* Box Cerca */}
+
               <div>
                 <div onClick={handleSearchClick}>
                   <Nav.Link as={Link} onMouseEnter={OpenAllBoxes} className={`bold ${currentBox === 'showSearchBox' ? 'hovered' : ''}`} >
@@ -200,12 +212,14 @@ export const Header = () => {
               </div>
             </Nav>
             {/* Bottone carrello */}
+
             <Nav.Link onMouseEnter={closeAllBoxes} onClick={handleCartClick} className="position-relative">
               <Image src={Car} width="20" className="icon d-none d-lg-inline-block d-xl-inline-block" alt="Cart" />
               <span className="hover-underline-animation bold d-inline-block d-lg-none d-xl-none align-center logo">CARRELLO</span>
               <HeaderCart />
             </Nav.Link>
             {/* Bottone login o areapersonale */}
+
             <Nav.Link onMouseEnter={closeAllBoxes} onClick={handleLoginClick}>
               <Image src={Skier} width="20" className="icon d-none d-lg-inline-block d-xl-inline-block" alt="Login" />
               <span className="hover-underline-animation bold d-inline-block d-lg-none d-xl-none align-center logo">{!userID ? "LOGIN" : "AREA PERSONALE"}</span>
@@ -215,6 +229,7 @@ export const Header = () => {
       </Navbar>
 
       {/*Componente per la chiusura delle tendine e per le animazioni*/}
+      
       {(currentBox || isClosing) && <div className={`backdrop ${isClosing ? 'closing' : 'opening'}`} onClick={closeAllBoxes}></div>}
     </>
   );

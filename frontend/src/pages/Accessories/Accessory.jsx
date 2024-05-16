@@ -38,7 +38,6 @@ export const Accessory = () => {
             .then(data => {
                 const filteredData = data.filter(item => item._id === id);
                 setProduct(filteredData);
-                console.log(filteredData)
             })
             .catch(error => {
                 console.error("Errore nel recupero dell'accessorio", error);

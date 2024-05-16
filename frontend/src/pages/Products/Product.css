@@ -2,14 +2,14 @@
     display: flex;
     overflow-x: auto;
     white-space: nowrap;
-    align-items: center; /* Centra le immagini verticalmente se desiderato */
+    align-items: center;
     padding: 20px 0;
 }
 
 .horizontal-scroll .small-img {
-    flex: 0 0 auto; /* Impedisce alle immagini di restringersi */
-    width: auto; /* Mantiene il rapporto dell'immagine */
-    height: 150px; /* Imposta un'altezza fissa per tutte le immagini */
+    flex: 0 0 auto; 
+    width: auto;
+    height: 150px; 
     margin-right: 10px;
 }
 
@@ -35,7 +35,7 @@
 
 .shadow-box {
     position: relative;
-    padding: 20px; /* Aggiungi un padding per assicurare spazio intorno al contenuto */
+    padding: 20px; 
     overflow: hidden; 
     left: 10px;
     right: 10px;
@@ -46,7 +46,7 @@
     border-radius: 5px;
     display: flex;
     flex-direction: column;
-    justify-content: center; /* Centra il contenuto verticalmente */
+    justify-content: center; 
 }
 .image-radio-label {
     display: inline-block;
@@ -55,56 +55,46 @@
     border-radius: 50%;
     background-size: cover;
     cursor: pointer;
-    border: 2.5px solid #dbd9d9;/*transparent;*/
+    border: 2.5px solid #dbd9d9;
     background-position: center;
     margin: 10px;
 }
 
 .image-radio-label.selected {
-    border-color: #000000; /* Colore del bordo per il pulsante selezionato */
+    border-color: #000000; 
 }
 .image-radio-button input[type="radio"] {
-    display: none; /* Nasconde visivamente l'input radio ma lo mantiene nel DOM */
+    display: none; 
 }
 
 .ombra{
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05), 0 5px 5px rgba(0, 0, 0, 0.19);
-
 }
-  .img-prod {
 
-    /*object-fit: scale-down; /* Assicura che le immagini coprano l'area disponibile senza perdere le proporzioni */
-    object-fit: contain; /* Assicura che le immagini coprano l'area disponibile mantenendo le proporzioni, tagliando se necessario */
-    object-position: center;
-    width: 100%; /* Assicura che l'immagine si estenda per tutta la larghezza del contenitore */
-
-    height: 48vw !important; /* Usa 100vh per far sì che copra tutto il viewport verticalmente */
-     /*margin: 0 auto; /* Centra l'immagine orizzontalmente */
-
+.img-prod {
+  object-fit: contain;
+  object-position: center;
+  width: 100%; 
+  height: 48vw !important; 
 }
 .tabs-black .nav-link.active {
-  background-color: #000000; /* Nero */
-  color: #ffffff; /* Bianco */
+  background-color: #000000; 
+  color: #ffffff; 
 }
 
-/* Colore di sfondo e del testo per i tab non attivi */
 .tabs-black .nav-link {
   background-color: #f8f9fa; 
   color: #000000; 
 }
-.carosello-prod{
-    /*height: 60vh !important; /* Usa 100vh per far sì che copra tutto il viewport verticalmente */
-
-}
 
 .no-space-rowBg-prod {
     display: flex;
-    align-items: center; /* Allinea verticalmente */
-    justify-content: center; /* Allinea orizzontalmente */
+    align-items: center; 
+    justify-content: center; 
     width: 100%;
     margin: 0;
     padding: 0;
-    position: relative; /* Posizione relativa per il contenimento del testo assoluto */
+    position: relative;
   }
 
   .button-black-prod {
@@ -116,7 +106,7 @@
     cursor: pointer;
     text-align: center;
     width: 30vw; 
-    border-radius: 5px; /* Rimuove i bordi arrotondati */
+    border-radius: 5px;
   }
   
   .button-black-prod::before, .button-black-prod::after {
@@ -133,9 +123,9 @@
     right:5px;
     top: -15px;
     border-bottom-color: #4CAF50;
-    border-left: 15px solid transparent; /* Aumento la dimensione per un triangolo più largo */
-    border-right: 15px solid transparent; /* Aumento la dimensione per un triangolo più largo */
-    border-bottom: 15px solid rgb(0, 0, 0); /* Aumento la dimensione per un triangolo più alto */
+    border-left: 15px solid transparent; 
+    border-right: 15px solid transparent; 
+    border-bottom: 15px solid rgb(0, 0, 0); 
   
   }
 
@@ -148,7 +138,7 @@
     cursor: pointer;
     text-align: center;
     width: 30vw; 
-    border-radius: 5px; /* Rimuove i bordi arrotondati */
+    border-radius: 5px; 
   }
   
   
@@ -178,11 +168,11 @@
 
 
   .button-black-prod.loading {
-    background-color: rgb(255, 255, 255); /* or any color when loading */
+    background-color: rgb(255, 255, 255);
 }
 
 .button-black-prod.confirmed {
-    background-color: rgb(0, 0, 0); /* or any color when confirmed */
+    background-color: rgb(0, 0, 0); 
 }
 
 .balck-back{
@@ -206,44 +196,38 @@
 }
 
 .icon-confirmed {
-  color: rgb(0, 0, 0);        /* Sets the icon color to green */
-  font-size: 24px;     /* Sets the icon size to be larger, adjust as needed */
+  color: rgb(0, 0, 0);
+  font-size: 24px;
   margin: 0;
   padding: 0;
   width: auto;
   height: 100%;
 
 }
-/*.button-black-prod.loading {
-  background-color: black; /* Set the background color to black when loading */
-  /*color: white; /* Optional: Change text color for better visibility on black background *//*
-}*/
 
 .button-black-prod.confirmed {
-  background-color: rgb(255, 255, 255); /* Set the background color to black when loading */
-  color: rgb(0, 0, 0) !important; /* Optional: Change text color for better visibility on black background */
+  background-color: rgb(255, 255, 255); 
+  color: rgb(0, 0, 0) !important; 
 }
 
 .button-black-prod-nomon.loading {
-  background-color: rgb(255, 255, 255); /* or any color when loading */
+  background-color: rgb(255, 255, 255);
 }
 
 
 .carousel-control-prev-icon,
 .carousel-control-next-icon {
-    background-color: rgb(255, 0, 0) !important; /* Cambia il colore delle icone */
-    width: 30px; /* Modifica la larghezza */
-    height: 30px; /* Modifica l'altezza */
-    background-size: 100%, 100%; /* Adatta l'icona al contenitore */
+    background-color: rgb(255, 0, 0) !important; 
+    width: 30px; 
+    height: 30px; 
+    background-size: 100%, 100%;
 }
-
-
 
 .fixed-bottom-info {
   position: fixed;
-  bottom: 10px; /* Aggiungi un margine inferiore */
-  left: 10px;   /* Aggiungi un margine a sinistra */
-  right: 50px;  /* Aggiungi un margine a destra */ 
+  bottom: 10px; 
+  left: 10px;   
+  right: 50px;  
   width: 98%;
   background-color: white;
   box-shadow: 0 -2px 10px rgba(0,0,0,0.5);
@@ -252,7 +236,7 @@
   justify-content: space-between;
   align-items: center;
   z-index: 1000;
-  border: 2px solid lightgray; /* Contorno gr*/
+  border: 2px solid lightgray; 
   transition: transform 0.3s ease-in-out;
   transform: translateY(120%);
 }
@@ -263,20 +247,12 @@
 
 .carousel-control-prev-icon,
 .carousel-control-next-icon {
-    background-color: black !important; /* Colore delle icone */
-    width: 30px !important; /* Larghezza delle icone */
-    height: 30px !important; /* Altezza delle icone */
-    background-size: 100% 100% !important; /* Adatta l'icona al contenitore */
-    border-radius: 50% !important; /* Icone circolari */
-    margin: 10px !important; /* Aggiungi margine */
-}
-
-.carousel-control-prev-icon {
-   /* background-image: url('path-to-your-custom-left-arrow.svg') !important; /* Percorso dell'icona sinistra personalizzata */
-}
-
-.carousel-control-next-icon {
-   /* background-image: url('path-to-your-custom-right-arrow.svg') !important; /* Percorso dell'icona destra personalizzata */
+    background-color: black !important;
+    width: 30px !important; 
+    height: 30px !important; 
+    background-size: 100% 100% !important; 
+    border-radius: 50% !important; 
+    margin: 10px !important; 
 }
 
 .centered-text-p {
@@ -285,9 +261,9 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  color: white; /* Cambia il colore del testo come preferisci */
-  font-size: 8vw; /* Aggiusta la dimensione del testo secondo necessità */
-  z-index: 10; /* Assicurati che il testo sia visibile sopra l'immagine */
+  color: white;
+  font-size: 8vw; 
+  z-index: 10; 
   text-align: center;
   width: 100%;
 }
@@ -310,24 +286,24 @@
 }
 
 .tabs-black .nav-link {
-  border-top: 1px solid rgb(214, 214, 214) !important; /* Bordo superiore nero */
-  border-left: 1px solid  rgb(214, 214, 214) !important; /* Bordo sinistro nero */
-  border-right: 1px solid  rgb(214, 214, 214) !important; /* Bordo destro nero */
+  border-top: 1px solid rgb(214, 214, 214) !important; 
+  border-left: 1px solid  rgb(214, 214, 214) !important; 
+  border-right: 1px solid  rgb(214, 214, 214) !important; 
   margin: 0 2px;
-  border-bottom: none !important; /* Rimuovi bordo inferiore */
-  background-color: rgb(255, 255, 255) !important; /* Sfondo bianco per contrasto */
-  color: black !important; /* Colore testo nero */
-  margin-bottom: -2px !important; /* Sovrapponi bordo inferiore */
+  border-bottom: none !important;
+  background-color: rgb(255, 255, 255) !important; 
+  color: black !important; 
+  margin-bottom: -2px !important; 
   font-weight: none;
 }
 
 .tabs-black .nav-link.active {
-  border-top: 2px solid black !important; /* Bordo superiore nero */
-  border-left: 2px solid black !important; /* Bordo sinistro nero */
-  border-right: 2px solid black !important; /* Bordo destro nero */
-  background-color: #ffffff !important; /* Sfondo leggermente diverso per l'attivo */
-  border-bottom: 2px solid white !important; /* Per mantenere attivo il bordo inferiore */
-  color: black !important; /* Colore testo nero */
+  border-top: 2px solid black !important; 
+  border-left: 2px solid black !important;
+  border-right: 2px solid black !important; 
+  background-color: #ffffff !important;
+  border-bottom: 2px solid white !important; 
+  color: black !important; 
   font-weight: bold;
 
 }
@@ -336,7 +312,6 @@
   background-color: #ffffff !important; 
 }
 
-/**/
 
 .text-box-prod {
   position: relative;
@@ -362,7 +337,7 @@
 
 .text-box-prod::after {
   bottom: 0;
-  transform-origin: left; /* Cambia l'origine della trasformazione a sinistra */
+  transform-origin: left; 
 }
 
 .text-box-prod::before {
@@ -371,7 +346,7 @@
 }
 
 .text-box-prod:hover {
-  font-weight: bold; /* Cambia il font-weight a bold quando si passa sopra */
+  font-weight: bold;
 }
 
 .text-box-prod:hover::before {
@@ -384,10 +359,10 @@
 
 .text-box-prod:not(:hover)::before {
   transform: scaleX(0);
-  transform-origin: right; /* Quando non hoverato, scompare verso destra */
+  transform-origin: right;
 }
 
 .text-box-prod:not(:hover)::after {
   transform: scaleX(0);
-  transform-origin: right; /* Quando non hoverato, scompare verso destra */
+  transform-origin: right;
 }

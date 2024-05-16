@@ -16,17 +16,20 @@ export const Accessories = () => {
     const [animateFav, setAnimateFav] = useState({});
 
 
-    useEffect(() => {
+  // useEffect per l'animazione dei cuori (Prodotti preferiti)
+  useEffect(() => {
       const timers = Object.keys(animateFav).map(id => {
           if (animateFav[id]) {
               return setTimeout(() => {
                   setAnimateFav(prev => ({ ...prev, [id]: false }));
-              }, 200); // duration should match the CSS transition duration
+              }, 200); 
           }
           return null;
       });
       return () => timers.forEach(timer => clearTimeout(timer));
   }, [animateFav]);
+
+  // useEffect per prendere gli elementi preferiti dal database
   useEffect(() => {
     if (userId) {
         // Effettua la richiesta fetch
@@ -38,22 +41,19 @@ export const Accessories = () => {
                 return response.json();
             })
             .then(data => {
-                console.log("Ricevo i data",data)
 
                 // Aggiorna lo stato dei preferiti
                 const favoriteIds = data.favourites.map(item => item.productId);
                 setFavorite(favoriteIds);
-                console.log("Ricevo i Favourites",favoriteIds)
-
             })
             .catch(error => {
                 console.error('Si è verificato un errore:', error);
             });
-    } else {
+    } /*else {
         // Prendi i valori dal localStorage
         const localFavorite = JSON.parse(localStorage.getItem("Favorite") || "[]");
         setFavorite(localFavorite);
-    }
+    }*/
 }, [userId]);
     // Vengono recupeate le informazioni degli accessori dal backend
     useEffect(() => {
@@ -88,9 +88,8 @@ export const Accessories = () => {
     }, []);
 
     async function handleClickFavorite (prodotto, evento)  {
-      console.log("changeStarted")
-      evento.preventDefault(); // Evita il comportamento predefinito dell'evento
-      evento.stopPropagation(); // Evita la propagazione dell'evento ai genitori
+      evento.preventDefault();
+      evento.stopPropagation();
       setAnimateFav(prev => ({ ...prev, [prodotto._id]: true }));
       if(!userId)
       {
@@ -114,7 +113,6 @@ export const Accessories = () => {
                           })
       
                       });
-                      console.log("prodotto._id",prodotto._id)
                   }
                   catch (error) { console.error('Errore:', error); }
               }
@@ -152,10 +150,6 @@ export const Accessories = () => {
 
               if(!userId) localStorage.setItem("Favorite",JSON.stringify(Favorite));
           }
-          console.log("change",Favorite);
-      
-     
-      console.log("changeFinisced")
   }
 
     // Recupera l'immagini tramite l'id

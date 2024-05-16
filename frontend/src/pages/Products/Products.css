@@ -1,23 +1,25 @@
 .motto2 {
-    font-weight: bold; /* Rende il testo in grassetto */
-    position: absolute;
-    font-style: italic; /* Rende il testo in corsivo */
-    left: 40vw;
-    margin-top: 0.5em;
-    color: #046586;
-    font-size: 5vw;
-  }
-  .darkness {
-    filter: brightness(35%);
+  font-weight: bold; 
+  position: absolute;
+  font-style: italic; 
+  left: 40vw;
+  margin-top: 0.5em;
+  color: #046586;
+  font-size: 5vw;
 }
+
+.darkness {
+  filter: brightness(35%);
+}
+
 .no-space-rowBg {
   display: flex;
-  align-items: center; /* Allinea verticalmente */
-  justify-content: center; /* Allinea orizzontalmente */
+  align-items: center; 
+  justify-content: center; 
   width: 100%;
   margin: 0;
   padding: 0;
-  position: relative; /* Posizione relativa per il contenimento del testo assoluto */
+  position: relative; 
 }
 
 .centered-text {
@@ -26,26 +28,29 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  color: white; /* Cambia il colore del testo come preferisci */
-  font-size: 5vw; /* Aggiusta la dimensione del testo secondo necessità */
-  z-index: 10; /* Assicurati che il testo sia visibile sopra l'immagine */
+  color: white; 
+  font-size: 5vw; 
+  z-index: 10; 
   text-align: center;
   width: 100%;
 }
+
 .boldText {
-  font-weight: bold; /* Rende il testo in grassetto */
+  font-weight: bold; 
 }
 
 .img-fluid {
-  width: 100%; /* Assicura che l'immagine si adatti alla larghezza del contenitore */
-  height: auto; /* Mantiene il rapporto dell'immagine */
+  width: 100%; 
+  height: auto;
 }
+
 .title-centered {
-  text-align: left; /* Centra il testo orizzontalmente */
-  font-weight: bold; /* Rende il testo in grassetto */
-  width: 100%; /* Estende il titolo all'intera larghezza del contenitore */
-  margin: 0; /* Rimuove margini predefiniti */
+  text-align: left;
+  font-weight: bold; 
+  width: 100%;
+  margin: 0; 
 }
+
 .card-text-prod {
   font-weight: bold;
   text-decoration: none;
@@ -59,19 +64,14 @@
 
 }
 
-
-
-
-
 .card-image-fit {
-  width: auto; /* Imposta la larghezza desiderata */
-  height: auto; /* Imposta l'altezza desiderata */
-  object-fit: cover; /* Assicura che l'immagine sia ridimensionata per coprire l'intera area mantenendo le proporzioni */
-
+  width: auto; 
+  height: auto; 
+  object-fit: cover; 
 }
 
 .card-prod {
-  box-shadow: 15px 15px 15px 5px rgba(0,0,0,0.2); /* Orizzontale e verticale */
+  box-shadow: 15px 15px 15px 5px rgba(0,0,0,0.2); 
   border: none !important; 
   background: #ffffff;
 }
@@ -83,7 +83,6 @@
   padding-right: 0 !important;
 }
 
-/**/
 .card-image-container {
   position: relative;
   overflow: hidden;
@@ -106,11 +105,11 @@
 }
 
 .card-prod-prod-ca {
-  transition: transform 0.3s ease-in-out; /* Transizione fluida per l'animazione */
+  transition: transform 0.3s ease-in-out; 
 }
 
 .card-prod-prod-ca:hover {
-  transform: scale(1.05); /* Aumenta la dimensione del 5% quando il mouse è sopra */
+  transform: scale(1.05); 
 }
 
 .heart {

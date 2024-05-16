@@ -47,22 +47,18 @@ export const Products = () => {
                     return response.json();
                 })
                 .then(data => {
-                    console.log("Ricevo i data",data)
-
                     // Aggiorna lo stato dei preferiti
                     const favoriteIds = data.favourites.map(item => item.productId);
                     setFavorite(favoriteIds);
-                    console.log("Ricevo i Favourites",favoriteIds)
-
                 })
                 .catch(error => {
                     console.error('Si è verificato un errore:', error);
                 });
-        } else {
+        } /*else {
             // Prendi i valori dal localStorage
             const localFavorite = JSON.parse(localStorage.getItem("Favorite") || "[]");
             setFavorite(localFavorite);
-        }
+        }*/
     }, [userId]);
 
 
@@ -131,9 +127,7 @@ export const Products = () => {
             }
             const data = await response.json();
             const colore = data[0]?.colore;
-            //const count = data.length;
             const imageUrl = `http://localhost:3000/api/products/${id}/${colore}/sinistra`;
-            //console.log(count);
             return imageUrl;
         } catch (error) {
             console.error("Errore nel recupero dei prodotti", error);
@@ -145,7 +139,6 @@ export const Products = () => {
     
 
     async function handleClickFavorite (prodotto, evento)  {
-        console.log("changeStarted")
         evento.preventDefault(); // Evita il comportamento predefinito dell'evento
         evento.stopPropagation(); // Evita la propagazione dell'evento ai genitori
         setAnimateFav(prev => ({ ...prev, [prodotto._id]: true }));
@@ -171,7 +164,6 @@ export const Products = () => {
                             })
         
                         });
-                        console.log("prodotto._id",prodotto._id)
                     }
                     catch (error) { console.error('Errore:', error); }
                 }
@@ -209,10 +201,6 @@ export const Products = () => {
 
                 if(!userId) localStorage.setItem("Favorite",JSON.stringify(Favorite));
             }
-            console.log("change",Favorite);
-        
-       
-        console.log("changeFinisced")
     }
 
     return (
