@@ -174,42 +174,55 @@ const Payments = () => {
         }
         else{
             console.log("UserId passato",id)
-            let url = '';
             //const array= localStorage.getItem("riepilogoCart");
             const array= localStorage.getItem("productDetails");
             console.log("UserId passato details",array)
 
             const riepilogoDati = JSON.parse(array);
             console.log("UserId passato details riep",riepilogoDati)
-                // DA FARE 
                 if (id === 'cart') {
-                    /*
-                    const productResponse = await fetch('http://localhost:3000/api/orders/createOrderFromCart', {
+                    var cart = JSON.parse(localStorage.getItem("virtualCart")) || [];
+                    console.log("Cartttttt",cart)
+                    const productResponse = await fetch('http://localhost:3000/api/orders/createOrderFromCartGuest', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
                         },
                         body: JSON.stringify({
-                            "userId": userId,
+                            "nome": state.nome,
+                            "cognome": state.cognome,
+                            "città": state.città,
+                            "indirizzo": state.indirizzo,
+                            "telefono": state.telefono,
+                            "email": email,
+                            "virtualCart": cart,
+
                         })
                     });
-                    localStorage.setItem('Cart_Trig', "Trigger");*/
+                    localStorage.setItem("virtualCart","[]");
+                    localStorage.setItem('Cart_Trig', "Trigger");
+
                 } else if (id === 'direct'&&riepilogoDati) {
                     console.log("ProdDetails",riepilogoDati)
-                    const productResponse = await fetch(`http://localhost:3000/api/orders/createOrder`, {
+                    const productResponse = await fetch(`http://localhost:3000/api/orders/createOrderGuest`, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
                         },
                         body: JSON.stringify({
-                            "userId": state.email,
                             "productId": riepilogoDati.productId,
                             "quantity": riepilogoDati.quantity,
                             "color": riepilogoDati.colore,
                             "type": riepilogoDati.type,
+                            "nome": state.nome,
+                            "cognome": state.cognome,
+                            "città": state.città,
+                            "indirizzo": state.indirizzo,
+                            "telefono": state.telefono,
+                            "email": email,
                         })
                     });
-
+                    console.log("Email",email)
                     localStorage.setItem("riepilogoCart", JSON.stringify({}));
                     localStorage.setItem('Cart_Trig', "Trigger");
                     localStorage.removeItem('productDetails');

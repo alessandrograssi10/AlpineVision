@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { getDb } = require('../config/database');
 const { ObjectId } = require('mongodb'); // Assicurati di avere questo import
-const { createOrder, updateOrderStatus } = require('../models/orders');
+const { createOrder, updateOrderStatus,createOrderGuest } = require('../models/orders');
 
 
 router.post('/createOrder', async (req, res) => {
@@ -103,6 +103,68 @@ router.post('/createOrderFromCart', async (req, res) => {
             await updateOrderStatus(orderId, 'delivered', 'deliveredAt');
             console.log("delivered");
         }, 24000); // 24 secondi
+
+        res.status(201).json({ message: "Ordine creato con successo e carrello svuotato", orderId: orderId });
+    } catch (error) {
+        console.error("Errore nella creazione dell'ordine dal carrello:", error);
+        res.status(500).json({ error: "Errore interno del server" });
+    }
+});
+
+router.post('/createOrderGuest', async (req, res) => {
+    const { productId, color, quantity, type, nome, cognome, città, indirizzo, telefono, email } = req.body;
+
+    try {
+        const db = getDb();
+        let itemDetails, productDetails;
+
+        if (type === 'product') {
+            itemDetails = await db.collection('Variants').findOne({
+                productId: new ObjectId(productId),
+                colore: color
+            });
+            productDetails = await db.collection('Products').findOne({ _id: new ObjectId(productId) });
+        } else if (type === 'accessory') {
+            itemDetails = await db.collection('Accessories').findOne({ _id: new ObjectId(productId) });
+            productDetails = itemDetails;
+        }
+
+        if (!itemDetails || itemDetails.quantita < quantity) {
+            return res.status(400).json({ message: `${type} non disponibile o quantità non sufficiente` });
+        }
+
+        if (!productDetails || !productDetails.prezzo) {
+            return res.status(404).json({ message: `Prezzo per il ${type} non trovato` });
+        }
+
+        const items = [{
+            productId: productId,
+            color: type === 'product' ? color : undefined,
+            quantity: quantity,
+            total: productDetails.prezzo * quantity,
+            type: type,
+        }];
+
+        const orderId = await createOrderGuest( items, nome, cognome, città, indirizzo, telefono, email);
+
+        res.status(201).json({ message: "Ordine creato con successo", orderId: orderId });
+    } catch (error) {
+        console.error("Errore nella creazione dell'ordine:", error);
+        res.status(500).json({ error: "Errore interno del server" });
+    }
+});
+
+router.post('/createOrderFromCartGuest', async (req, res) => {
+    const { virtualCart,nome, cognome, città, indirizzo, telefono, email } = req.body;
+
+    try {
+        const cart = { items: virtualCart };//await cartsCollection.findOne({ userId: userId });
+
+        if (!cart || !cart.items || cart.items.length === 0) {
+            return res.status(404).json({ message: "Carrello non trovato o vuoto" });
+        }
+
+        const orderId = await createOrderGuest( cart.items, nome, cognome, città, indirizzo, telefono, email);
 
         res.status(201).json({ message: "Ordine creato con successo e carrello svuotato", orderId: orderId });
     } catch (error) {
