@@ -107,7 +107,7 @@ function PersonalArea() {
         return name && name.trim().toLowerCase().endsWith('a');
     };
 
-    const saluto = userData && isNameFemale(userData.nome) ? 'Bentornata nella tua Area Personale' : 'Bentornato nella tua Area Personale';
+    const saluto = userData && isNameFemale(userData.nome) ? 'Felice di rivederti nella tua Area Personale' : 'Felice di rivederti nella tua Area Personale';
 
     const handleAnimationEnd = () => {
         setWalking(walking => !walking);
@@ -300,7 +300,7 @@ function PersonalArea() {
                     </div>
                 ))
             ) : (
-                <p>Nessun ordine disponibile al momento.</p>
+                <p>Nessun ordine effettuato al momento.</p>
             )}
         </div>
     </div>

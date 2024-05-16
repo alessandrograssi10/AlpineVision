@@ -159,7 +159,7 @@
 
 .personal-area-order-card {
     flex: 0 0 auto;
-    width: 30vh; /* Larghezza fissa per le card degli ordini */
+    width: 17em; /* Larghezza fissa per le card degli ordini */
     margin: 10px;
 }
 
