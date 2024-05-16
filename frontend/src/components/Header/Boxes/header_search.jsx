@@ -48,13 +48,13 @@ export const HeaderSearch = ({ onCloseAllBoxes }) => {
             <Row>
                 <p className='m-3 mt-2 mb-2 text-search-find'>Collegamenti Rapidi</p>
                 <Link className="text-navbar-box" to={`/products/`} onClick={onCloseAllBoxes}>
-                    <h7> - Prodotti</h7>
+                    <h7 className='text-box-prod'> - Prodotti</h7>
                 </Link>
                 <Link className="text-navbar-box" to={`/accessories/`} onClick={onCloseAllBoxes}>
-                    <h7> - Accessori</h7>
+                    <h7 className='text-box-prod'> - Accessori</h7>
                 </Link>
                 <Link className="text-navbar-box" to={`/blog/`} onClick={onCloseAllBoxes}>
-                    <h7> - Blog</h7>
+                    <h7 className='text-box-prod'> - Blog</h7>
                 </Link>
             </Row>
         </Row>

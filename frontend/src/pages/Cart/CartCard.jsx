@@ -11,6 +11,7 @@ function CartCard({ quantity, updateTotalPrice, prodID, color, type, removeProd,
     const [prodName, setProdName] = useState("");
     const [frontalImg, setFrontalImg] = useState({});
     const [price, setPrice] = useState(0);
+    const [Maxqnt, setMaxQnt] = useState(0);
     const userID = localStorage.getItem('userId');
 
 
@@ -34,9 +35,21 @@ function CartCard({ quantity, updateTotalPrice, prodID, color, type, removeProd,
                     const product = result.find(product => product._id === prodID);
                     setPrice(product.prezzo);
                     setProdName(product.nome);
+                    fetch(`http://localhost:3000/api/products/${prodID}/variants`, requestOptions)
+                        .then((response) => response.json())
+                        .then((result) => {
+                        const variante = result.find(variante => variante.colore === color);
+                        setMaxQnt(variante.quantita)
+                        if(variante.quantita <= 0) removeHandleClick();
+                        if(qnt > variante.quantita) setQnt(variante.quantita);
+                        localStorage.setItem('Cart_Trig', "Trigger");
+                    })
+                .catch((error) => console.error(error));
+                    setMaxQnt(product.quantita)
                 })
                 .catch((error) => console.error(error));
-
+            
+            
             setFrontalImg(`http://localhost:3000/api/products/${prodID}/${color}/frontale`);
 
         } else if (type === "accessry") {
@@ -56,6 +69,10 @@ function CartCard({ quantity, updateTotalPrice, prodID, color, type, removeProd,
                     const product = result.find(product => product._id === prodID);
                     setProdName(product.name);
                     setPrice(product.prezzo);
+                    setMaxQnt(product.quantita)
+                    if(product.quantita <= 0) removeHandleClick();
+                    if(qnt > product.quantita) setQnt(product.quantita);
+                    localStorage.setItem('Cart_Trig', "Trigger");
                 })
                 .catch((error) => console.error(error));
 
@@ -65,6 +82,7 @@ function CartCard({ quantity, updateTotalPrice, prodID, color, type, removeProd,
 
     //  Modifica la quantità nel db
     useEffect(() => {
+        //if(qnt > Maxqnt) setQnt(Maxqnt);
         if(userID){
         const myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
@@ -86,7 +104,7 @@ function CartCard({ quantity, updateTotalPrice, prodID, color, type, removeProd,
 
         fetch("http://localhost:3000/api/carts/updateQuantity", requestOptions)
             .then((response) => response.text())
-            .then((result) => console.log())
+            .then((result) =>         localStorage.setItem('Cart_Trig', "Trigger"))
             .catch((error) => console.error(error));
     }else{
         changeCart(prodID,qnt,color);
@@ -97,11 +115,12 @@ function CartCard({ quantity, updateTotalPrice, prodID, color, type, removeProd,
     //  Modifica la quantità e modifica il prezzo totale
     const qntClickHandle = (e) => {
         if (e.target.id === "increaseButton") {
+            if((qnt + 1) > Maxqnt) return
             setQnt(qnt + 1);
             updateTotalPrice(price, true);
 
         } else {
-            if (qnt === 1) {
+            if (qnt <= 1) {
                 // Se la quantità è già 1, non fare nulla
             } else {
                 setQnt(qnt - 1);

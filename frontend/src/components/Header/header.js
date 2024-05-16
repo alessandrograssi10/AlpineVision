@@ -11,6 +11,7 @@ import HeaderAccessories from './Boxes/header_accessories';
 import HeaderSearch from './Boxes/header_search';
 import HeaderCart from './Boxes/header_cart';
 import HeaderBlog from './Boxes/header_blog';
+import {isMobile} from 'react-device-detect';
 
 import AuthServices from '../../pages/Login_SignUp/AuthService';
 
@@ -19,15 +20,18 @@ export const Header = () => {
   const [isClosing, setIsClosing] = useState(false); //Variabile per l'animazione di chiusura tendina
   const [isOpening, setIsOpening] = useState(false); //Variabile per l'animazione di apertura tendina
   const [timeoutId, setTimeoutId] = useState(null); //id timer
-  const [isLargeScreen, setIsLargeScreen] = useState(window.innerWidth >= 992); //verifica la dimensione dello schermo
   const [expanded, setExpanded] = useState(false); //variabile per apertura/chiusura collapse
   const userID = localStorage.getItem('userId'); // ID utente
   let navigate = useNavigate(); // per la navigazione tra i link
 
-  //evento che viene chiamato all ridimensionamento della schermata
-  useEffect(() => {
+  
+  const [isLargeScreen, setIsLargeScreen] = useState(window.innerWidth >= 992 && !isMobile); // verifica la dimensione dello schermo
+
+
+   // Evento che viene chiamato al ridimensionamento della schermata
+   useEffect(() => {
     const handleResize = () => {
-      setIsLargeScreen(window.innerWidth >= 992);
+      setIsLargeScreen(window.innerWidth >= 992 && !isMobile);
     };
     window.addEventListener('resize', handleResize);
     return () => {

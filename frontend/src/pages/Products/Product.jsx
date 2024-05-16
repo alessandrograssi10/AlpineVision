@@ -63,9 +63,9 @@ export const Product = (addToStorage) => {
             const handleScroll = () => {
                 const scrollY = window.scrollY;
                 const threshold = 800; // Altezza in pixel per mostrare il rettangolo
-                const thresholdMax = 2500; // Altezza in pixel per mostrare il rettangolo
+                //const thresholdMax = 2500; // Altezza in pixel per mostrare il rettangolo
 
-                if (scrollY > threshold && scrollY < thresholdMax) {
+                if (scrollY > threshold ) {
                     setShowFixedInfo(true);
                 } else {
                     setShowFixedInfo(false);
@@ -316,15 +316,17 @@ export const Product = (addToStorage) => {
                     </Row>
                 </Tab>
             </Tabs>
-            <div className={` fixed-bottom-info ${showFixedInfo ? 'show' : ''}`}>
+            <div className={` fixed-bottom-info ${(showFixedInfo && product[selectedSetIndex]?.quantita > 0) ? 'show' : ''}`}>
                 <div className="info-text">
                     <h5>{productInfo.nome}</h5>
                     <p>{productInfo.prezzo} €</p>
                 </div>
-                <Button className={`button-black-prod-nomon ${buttonStateDirect}`} onClick={addToCart} variant="outline-dark" size="sm">
-                    {buttonStateDirect === 'loading' && <div className="spinner"></div>}
-                    {buttonStateDirect === 'default' && <div className='p-0 m-0'><h5 className='p-2 m-0'>AGGIUNGI AL CARRELLO</h5></div>}
-                </Button>
+                <Button className={`button-black-prod-nomon m-2 mt-0 ${buttonState}`} onClick={addToCart} variant="outline-dark pl-0 ml-0" size="lg">
+                {buttonState === 'loading' && <div className="spinner "></div>}
+                {buttonState === 'confirmed' && <BsCheck className='icon-confirmed'/>}
+                {buttonState === 'default' && <div className='p-0 m-0'><h4 className='p-0 m-0'>AGGIUNGI AL CARRELLO</h4></div>}
+                {buttonState === 'login' && <div className='p-0 m-0'><h4 className='p-0 m-0'>EFFETTUA PRIMA IL LOGIN</h4></div>}
+            </Button>
                 
             </div>
             

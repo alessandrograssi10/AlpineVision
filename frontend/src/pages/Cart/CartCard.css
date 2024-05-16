@@ -73,14 +73,14 @@
 .cartproductimage {
     width: 40px;
     border-radius: 70%; /* Rende l'immagine del prodotto circolare */
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Aggiunge una leggera ombra */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Aggiunge una leggera ombra */
     transition: transform 0.3s ease; /* Aggiunge una transizione fluida al passaggio del mouse */
 }
 
 .cartproductimage:hover {
-    transform: scale(1.2); /* Ingrandisce leggermente l'immagine al passaggio del mouse */
+    /*transform: scale(1.2); /* Ingrandisce leggermente l'immagine al passaggio del mouse */
 }
 
 .remove-cart {
-    margin-top: 20px;
+    /*margin-top: 20px;*/
 }
