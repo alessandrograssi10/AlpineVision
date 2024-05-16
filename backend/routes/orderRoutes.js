@@ -6,7 +6,7 @@ const { createOrder, updateOrderStatus } = require('../models/orders');
 
 
 router.post('/createOrder', async (req, res) => {
-    const { userId, productId, color, quantity, type } = req.body;
+    const { userId, productId, color, quantity, type , nome, cognome, città, indirizzo, telefono} = req.body;
 
     try {
         const db = getDb();
@@ -39,10 +39,10 @@ router.post('/createOrder', async (req, res) => {
             color: type === 'product' ? color : undefined,
             quantity: quantity,
             total: productDetails.prezzo * quantity,
-            type: type
+            type: type,
         }];
 
-        const orderId = await createOrder(userId, items);
+        const orderId = await createOrder(userId, items, nome, cognome, città, indirizzo, telefono);
 
         // Aggiornamento dello stato dell'ordine con delay
         setTimeout(async () => {
@@ -64,7 +64,7 @@ router.post('/createOrder', async (req, res) => {
 
 
 router.post('/createOrderFromCart', async (req, res) => {
-    const { userId } = req.body;
+    const { userId, nome, cognome,città, indirizzo,telefono } = req.body;
 
     try {
         const db = getDb();
@@ -88,7 +88,7 @@ router.post('/createOrderFromCart', async (req, res) => {
         }
 
         // Crea l'ordine
-        const orderId = await createOrder(userId, cart.items);
+        const orderId = await createOrder(userId, cart.items, nome, cognome, città, indirizzo, telefono);
 
         // Rimuovi tutti gli item dal carrello
         await cartsCollection.updateOne({ userId: userId }, { $set: { items: [], totalPrice: 0, updatedAt: new Date() } });

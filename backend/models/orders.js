@@ -1,7 +1,7 @@
 const { ObjectId } = require('mongodb');
 const { getDb } = require('../config/database');
 
-async function createOrder(userId, items) {
+async function createOrder(userId, items, nome, cognome, città, indirizzo, telefono) {
     const db = getDb();
     const order = {
         userId: new ObjectId(userId),
@@ -9,7 +9,14 @@ async function createOrder(userId, items) {
         status: 'received', 
         createdAt: new Date(),
         shippedAt: null,
-        deliveredAt: null
+        deliveredAt: null,
+        nome: nome,
+        cognome: cognome,
+        città: città,
+        indirizzo: indirizzo,
+        telefono: telefono
+
+        
     };
     const result = await db.collection('Orders').insertOne(order);
     return result.insertedId;

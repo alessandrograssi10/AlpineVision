@@ -239,55 +239,59 @@ function PersonalArea() {
                         onAnimationEnd={handleAnimationEnd}
                     />
 
-                    <div className="personal-area-margin-bottom">
-                        <div className="personal-area-container personal-area-border personal-area-rounded personal-area-padding">
-                            <h2>I miei ordini</h2>
-                            <hr />
-                            {orders && orders.length > 0 ? (
-                                orders.map(order => (
-                                    <div key={order._id}>
-                                        {/* Visualizza dettagli ordine */}
-                                        <div style={{ cursor: 'pointer' }} onClick={() => toggleOrderDetails(order._id)}>
-                                            <h4 style={{ display: 'inline-block', marginRight: '5px' }}>Ordine n°{order._id}</h4>
-                                            {expandedOrderIds.includes(order._id) ? (
-                                                <FontAwesomeIcon icon={faAngleUp} />
-                                            ) : (
-                                                <FontAwesomeIcon icon={faAngleDown} />
-                                            )}
-                                        </div>
-                                        {expandedOrderIds.includes(order._id) && (
-                                            <div>
-                                                <p>Stato: {order.status}</p>
-                                                <p>Ordinato il: {new Date(order.createdAt).toLocaleString()}</p>
-                                                {order.shippedAt && <p>Spedito il: {new Date(order.shippedAt).toLocaleString()}</p>}
-                                                {order.deliveredAt && <p>Consegnato il: {new Date(order.deliveredAt).toLocaleString()}</p>}
-                                                <p>Totale: {order.items.reduce((total, item) => total + item.total, 0).toFixed(2)} €</p>
-                                                <p>Prodotti:</p>
-                                                <ul>
-                                                    {order.items.map(item => (
-                                                        <li key={item.productId}>
-                                                            {itemsInfo[item.productId] ? (
-                                                                <>
-                                                                    {itemsInfo[item.productId].nome} - Colore: {itemsInfo[item.productId].colore || 'N/D'} - Quantità: {item.quantity} - Prezzo: {item.total.toFixed(2)} €
-                                                                </>
-                                                            ) : (
-                                                                <>
-                                                                    Caricamento...
-                                                                </>
-                                                            )}
-                                                        </li>
-                                                    ))}
-                                                </ul>
-                                                <hr />
-                                            </div>
-                                        )}
-                                    </div>
-                                ))
-                            ) : (
-                                <p>Nessun ordine disponibile al momento.</p>
-                            )}
-                        </div>
+<div className="personal-area-margin-bottom">
+    <div className="personal-area-container personal-area-border personal-area-rounded personal-area-padding">
+        <h2>I miei ordini</h2>
+        <hr />
+        {orders && orders.length > 0 ? (
+            orders.map(order => (
+                <div key={order._id}>
+                    {/* Visualizza dettagli ordine */}
+                    <div style={{ cursor: 'pointer' }} onClick={() => toggleOrderDetails(order._id)}>
+                        <h4 style={{ display: 'inline-block', marginRight: '5px' }}>Ordine n°{order._id}</h4>
+                        {expandedOrderIds.includes(order._id) ? (
+                            <FontAwesomeIcon icon={faAngleUp} />
+                        ) : (
+                            <FontAwesomeIcon icon={faAngleDown} />
+                        )}
                     </div>
+                    {expandedOrderIds.includes(order._id) && (
+                        <div>
+                            <p>Stato: {order.status}</p>
+                            <p>Ordinato il: {new Date(order.createdAt).toLocaleString()}</p>
+                            {order.shippedAt && <p>Spedito il: {new Date(order.shippedAt).toLocaleString()}</p>}
+                            {order.deliveredAt && <p>Consegnato il: {new Date(order.deliveredAt).toLocaleString()}</p>}
+                            <p>Totale: {order.items.reduce((total, item) => total + item.total, 0).toFixed(2)} €</p>
+                            <p>Prodotti:</p>
+                            <ul>
+                                {order.items.map(item => (
+                                    <li key={item.productId}>
+                                        {itemsInfo[item.productId] ? (
+                                            <>
+                                                {itemsInfo[item.productId].nome} - Colore: {itemsInfo[item.productId].colore || 'N/D'} - Quantità: {item.quantity} - Prezzo: {item.total.toFixed(2)} €
+                                            </>
+                                        ) : (
+                                            <>
+                                                Caricamento...
+                                            </>
+                                        )}
+                                    </li>
+                                ))}
+                            </ul>
+                            <hr />
+                            {/* Aggiungi sezioni aggiuntive */}
+                            <p>Ordine effettuato da: {order.nome} {order.cognome}</p>
+                            <p>Spedito a: {order.città}, {order.indirizzo}</p>
+                            <p>Informazioni di contatto: {order.telefono}</p>
+                        </div>
+                    )}
+                </div>
+            ))
+        ) : (
+            <p>Nessun ordine disponibile al momento.</p>
+        )}
+    </div>
+</div>
 
 
                     

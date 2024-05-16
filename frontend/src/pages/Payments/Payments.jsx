@@ -136,6 +136,11 @@ const Payments = () => {
                         },
                         body: JSON.stringify({
                             "userId": userId,
+                            "nome": state.nome,
+                            "cognome": state.cognome,
+                            "città": state.città,
+                            "indirizzo": state.indirizzo,
+                            "telefono": state.telefono,
                         })
                     });
                     localStorage.setItem('Cart_Trig', "Trigger");
@@ -152,6 +157,12 @@ const Payments = () => {
                             "quantity": riepilogoDati.quantity,
                             "color": riepilogoDati.colore,
                             "type": riepilogoDati.type,
+                            "nome": state.nome,
+                            "cognome": state.cognome,
+                            "città": state.città,
+                            "indirizzo": state.indirizzo,
+                            "telefono": state.telefono,
+
                         })
                     });
 
