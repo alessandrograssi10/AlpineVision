@@ -276,7 +276,7 @@ function PersonalArea() {
             {orders && orders.length > 0 ? (
                 orders.map(order => (
                     <div key={order._id} className="personal-area-order-card">
-                        <Card>
+                        <Card className=" card-text-prod card-prod ">
                             <Card.Body>
                                 <div className="personal-area-order-header" onClick={() => toggleOrderDetails(order._id)}>
                                 <img src= {boxordine} alt="Box Ordine" className="boxordine-img" />
@@ -341,7 +341,7 @@ function PersonalArea() {
                             {Object.keys(Favorite).length > 0 ? (
                                 <div className="favorite-cards-container">
                                     {Object.values(Favorite).map((item, index) => (
-                                        <Card as = {Link} to={item.type === 'product' ? `/product/${item.productId}` : `/accessory/${item.productId}`} key={index} className="card">
+                                        <Card as = {Link} to={item.type === 'product' ? `/product/${item.productId}` : `/accessory/${item.productId}`} key={index} className="card card-text-prod card-prod card-prod-prod-ca">
                                             <Card.Img variant="top" src={item.linkImmagine} alt={item.nome} />
                                             <Card.Body>
                                                 <Card.Title>{item.nome}</Card.Title>
