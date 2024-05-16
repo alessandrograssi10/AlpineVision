@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Button ,Form,Col,Row} from 'react-bootstrap';
+import { Button ,Form,Col,Row,Card} from 'react-bootstrap';
 
 import './PersonalArea.css'; // Importa il file CSS per gli stili
 import shopping from '../../assets/Images/shopping2.png';
@@ -7,6 +7,7 @@ import shoppingrev from '../../assets/Images/shopping2rev.png';
 import AuthServices from '../Login_SignUp/AuthService';
 import { Link } from 'react-router-dom';
 import { GetInfo } from '../../assets/Scripts/GetFromCart.js';
+import { getProductInfo } from '../../assets/Scripts/PersonalArea/GetInfoFavourites.js';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons';
 
@@ -167,19 +168,18 @@ function PersonalArea() {
                 .then(async data => {
                     console.log("Ricevo i data", data);
 
-                    const favoriteIds = data.favourites.map(item => item.productId);
-                    console.log("favoriteIds", favoriteIds);
+                    const favoriteItems = data.favourites;
+                    console.log("favoriteItems", favoriteItems);
 
                     try {
-                        const fetchDetails = favoriteIds.map(item =>
-                            GetInfo(item)
-                                .then(info => ({ _id: info.productId, info }))
+                        const fetchDetails = favoriteItems.map(item =>
+                            getProductInfo(item.productId, item.type)
+                                .then(info => ({ _id: item.productId, info }))
                                 .catch(error => {
                                     console.error('Errore nel recuperare i dettagli dell\'articolo:', error);
                                     return null;
                                 })
                         );
-
                         const detailsArray = await Promise.all(fetchDetails);
                         console.log("detailsArray", detailsArray);
 
@@ -202,10 +202,11 @@ function PersonalArea() {
         }
     }, [userId]);
 
+
     
 
     return (
-        <div fluid className="personal-area-container m-0 p-0 mt-5">
+        <div className="personal-area-container m-0 p-0 mt-5">
             <div className="personal-area-row justify-content-center">
                 <div className="personal-area-col">
                     <h1 className="personal-area-text-center mb-4">{saluto}, {userData ? `${userData.nome}` : 'USER SCONOSCIUTO'}!</h1>
@@ -277,21 +278,31 @@ function PersonalArea() {
                     
 
                    
-        <div className="personal-area-margin-bottom">
-            <div className="personal-area-container personal-area-border personal-area-rounded personal-area-padding">
-                <h2>Articoli preferiti</h2>
-                {Favorite.length > 0 ? (
-                    Favorite.map(productId => (
-                        <div key={productId}>
-                            {/* Qui dovresti recuperare il dettaglio dell'articolo usando il productId */}
-                            <p>Dettagli articolo con productId: {productId}</p>
+                    <div className="personal-area-margin-bottom">
+                        <div className="personal-area-container personal-area-border personal-area-rounded personal-area-padding">
+                            <h2>Articoli preferiti</h2>
+                            {Object.keys(Favorite).length > 0 ? (
+                                <div className="favorite-cards-container">
+                                    {Object.values(Favorite).map((item, index) => (
+                                        <Card key={index} className="card">
+                                            <Card.Img variant="top" src={item.linkImmagine} alt={item.nome} />
+                                            <Card.Body>
+                                                <Card.Title>{item.nome}</Card.Title>
+                                                <Card.Text>
+                                                    Colore: {item.colore || 'N/D'}<br />
+                                                    Prezzo: {item.prezzo} €
+                                                </Card.Text>
+                                            </Card.Body>
+                                        </Card>
+                                    ))}
+                                </div>
+                            ) : (
+                                <p>Nessun articolo preferito al momento.</p>
+                            )}
                         </div>
-                    ))
-                ) : (
-                    <p>Nessun articolo preferito al momento.</p>
-                )}
-            </div>
-        </div>
+                    </div>
+
+
     
 
                     

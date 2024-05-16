@@ -139,7 +139,7 @@ export const Accessories = () => {
                               body: JSON.stringify({
                                   userId: userId,
                                   productId: prodotto._id,
-                                  type: "product",
+                                  type: "accessory",
                               })
           
                           });

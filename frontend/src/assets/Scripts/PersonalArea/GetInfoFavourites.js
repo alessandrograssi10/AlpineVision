@@ -1,37 +1,36 @@
-const getProductInfo = async (productId, type) => {
+export const getProductInfo = async (productId, type) => {
     try {
         let response;
         let data;
-        let imageUrl;
+        let product;
+        let imageInfo;
 
         if (type === 'product') {
-            // Recupera le informazioni del prodotto
-            response = await fetch(`http://localhost:3000/api/products/${productId}`);
+            // Recupera tutti i prodotti e trova quello specifico
+            response = await fetch(`http://localhost:3000/api/products`);
             if (!response.ok) throw new Error('Errore durante la richiesta dei prodotti');
             data = await response.json();
-            
-            // Recupera l'immagine del prodotto
-            imageUrl = await getProductImageById(productId);
+            product = data.find(prod => prod._id === productId);
+            if (!product) throw new Error('Prodotto non trovato');
+            imageInfo = await getProductImageById(productId);
 
         } else if (type === 'accessory') {
-            // Recupera le informazioni dell'accessorio
-            response = await fetch(`http://localhost:3000/api/accessories/${productId}`);
+            response = await fetch(`http://localhost:3000/api/accessories`);
             if (!response.ok) throw new Error('Errore durante la richiesta degli accessori');
             data = await response.json();
-            
-            // Recupera l'immagine dell'accessorio
-            imageUrl = await getAccessoryImageById(productId);
+            product = data.find(access => access._id === productId);
+            if (!product) throw new Error('Accessorio non trovato');
+            imageInfo = await getAccessoryImageById(productId);
         } else {
             throw new Error('Tipo non valido');
         }
 
-        // Restituisce l'oggetto con le informazioni richieste
         return {
-            nome: data.nome,
-            colore: type === 'product' ? data.colore : null,
-            linkImmagine: imageUrl,
+            nome: product.nome || product.name || 'Nome non disponibile',
+            colore: type === 'product' ? imageInfo.colore : null,
+            linkImmagine: imageInfo.imageUrl,
             type: type,
-            prezzo: data.prezzo
+            prezzo: product.prezzo
         };
     } catch (error) {
         console.error("Errore nel recupero delle informazioni", error);
@@ -46,19 +45,19 @@ const getProductImageById = async (id) => {
         const data = await response.json();
         const colore = data[0]?.colore;
         const imageUrl = `http://localhost:3000/api/products/${id}/${colore}/frontale`;
-        return imageUrl;
+        return { imageUrl, colore };
     } catch (error) {
         console.error("Errore nel recupero delle immagini del prodotto", error);
-        return '';
+        return { imageUrl: '', colore: '' };
     }
 };
 
 const getAccessoryImageById = async (id) => {
     try {
         const imageUrl = `http://localhost:3000/api/accessories/${id}/image1`;
-        return imageUrl;
+        return { imageUrl, colore: '' };
     } catch (error) {
         console.error("Errore nel recupero delle immagini dell'accessorio", error);
-        return '';
+        return { imageUrl: '', colore: '' };
     }
 };
