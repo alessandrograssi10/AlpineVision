@@ -149,3 +149,22 @@
 .favorite-cards-container::-webkit-scrollbar-thumb:hover {
     background-color: #555;
 }
+
+
+.personal-area-order-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.personal-area-order-card {
+    flex: 0 0 auto;
+    width: 30vh; /* Larghezza fissa per le card degli ordini */
+    margin: 10px;
+}
+
+.boxordine-img {
+    width: 15vh;
+    height: 100%;
+    object-fit: cover;
+}
