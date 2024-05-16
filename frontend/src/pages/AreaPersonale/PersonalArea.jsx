@@ -157,7 +157,6 @@ function PersonalArea() {
 
     useEffect(() => {
         if (userId) {
-            // Effettua la richiesta fetch
             fetch(`http://localhost:3000/api/favourites/${userId}`)
                 .then(response => {
                     if (!response.ok) {
@@ -165,54 +164,43 @@ function PersonalArea() {
                     }
                     return response.json();
                 })
-                .then(data => {
-                    console.log("Ricevo i data",data)
+                .then(async data => {
+                    console.log("Ricevo i data", data);
 
-                    // Aggiorna lo stato dei preferiti
-                    const favoriteIds = data.favourites.map(item => item.productId&&item.type);
+                    const favoriteIds = data.favourites.map(item => item.productId);
+                    console.log("favoriteIds", favoriteIds);
 
-                    //setFavorite(favoriteIds);
-                    console.log("Ricevo i FavouritesFINAL",data)
+                    try {
+                        const fetchDetails = favoriteIds.map(item =>
+                            GetInfo(item)
+                                .then(info => ({ _id: info.productId, info }))
+                                .catch(error => {
+                                    console.error('Errore nel recuperare i dettagli dell\'articolo:', error);
+                                    return null;
+                                })
+                        );
 
-                    const fetchCartData = async () => {
-                        try {
-                            const fetchDetails = favoriteIds.map(item =>
-                                GetInfo(item)
-                                    .then(info => ({ _id: info.productId, info }))
-                                    .catch(error => {
-                                        console.error('Errore nel recuperare i dettagli dell\'articolo:', error);
-                                        return null; // Ritorna null se non è possibile recuperare i dettagli
-                                    })
-                            );
-                    
-                            const detailsArray = await Promise.all(fetchDetails);
-                            console.log("detailsArray", detailsArray);
-                    
-                            const details = detailsArray.reduce((acc, current) => {
-                                if (current && current.info) {
-                                    acc[(current._id)] = current.info;
-                                }
-                                return acc;
-                            }, {});
-                            console.log("FAVOURITE DETAILS", details);
-                            setFavorite(details);
-                        } catch (error) {
-                            console.error('Si è verificato un errore durante il recupero dei dettagli degli articoli preferiti:', error);
-                        }
-                    };
-                    
-                    
-                    fetchCartData();
+                        const detailsArray = await Promise.all(fetchDetails);
+                        console.log("detailsArray", detailsArray);
 
+                        const details = detailsArray.reduce((acc, current) => {
+                            if (current && current.info) {
+                                acc[current._id] = current.info;
+                            }
+                            return acc;
+                        }, {});
+                        console.log("FAVOURITE DETAILS", details);
+
+                        setFavorite(details);
+                    } catch (error) {
+                        console.error('Si è verificato un errore durante il recupero dei dettagli degli articoli preferiti:', error);
+                    }
                 })
                 .catch(error => {
                     console.error('Si è verificato un errore:', error);
                 });
         }
-       
-        
     }, [userId]);
-
 
     
 
