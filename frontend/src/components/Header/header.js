@@ -130,8 +130,8 @@ export const Header = () => {
         
         {/* Logo e Scritta di AlpineVision */}
 
-        <Navbar.Brand as={Link} to="/home" className="navbar-brand-bold">
-          <Image src={Logo} width="50" className="d-inline-block align-center logo" alt="Logo" />
+        <Navbar.Brand as={Link} to="/home" className="navbar-brand-bold" onClick={handleLinkClick}>
+          <Image src={Logo} width="50"  className="d-inline-block align-center logo" alt="Logo" />
           ALPINE VISION
         </Navbar.Brand>
 
@@ -201,7 +201,7 @@ export const Header = () => {
                 <div onClick={handleSearchClick}>
                   <Nav.Link as={Link} onMouseEnter={OpenAllBoxes} className={`bold ${currentBox === 'showSearchBox' ? 'hovered' : ''}`} >
                     <Image src={SearchIcon} width="20" className="icon d-none d-lg-inline-block d-xl-inline-block" alt="Search" />
-                    <span  className="d-inline-block d-lg-none d-xl-none align-center logo">CERCA</span>
+                    <span  className="d-inline-block d-lg-none d-xl-none align-center logo"><h5 className='text-box-prod'>CERCA</h5></span>
                   </Nav.Link>
                 </div>
                 {currentBox === 'showSearchBox' && (
@@ -215,14 +215,14 @@ export const Header = () => {
 
             <Nav.Link onMouseEnter={closeAllBoxes} onClick={handleCartClick} className="position-relative">
               <Image src={Car} width="20" className="icon d-none d-lg-inline-block d-xl-inline-block" alt="Cart" />
-              <span className="hover-underline-animation bold d-inline-block d-lg-none d-xl-none align-center logo">CARRELLO</span>
+              <span className="hover-underline-animation bold d-inline-block d-lg-none d-xl-none align-center logo "><h5 className='text-box-prod'>CARRELLO</h5></span>
               <HeaderCart />
             </Nav.Link>
             {/* Bottone login o areapersonale */}
 
             <Nav.Link onMouseEnter={closeAllBoxes} onClick={handleLoginClick}>
               <Image src={Skier} width="20" className="icon d-none d-lg-inline-block d-xl-inline-block" alt="Login" />
-              <span className="hover-underline-animation bold d-inline-block d-lg-none d-xl-none align-center logo">{!userID ? "LOGIN" : "AREA PERSONALE"}</span>
+              <span className="hover-underline-animation bold d-inline-block d-lg-none d-xl-none align-center logo"><h5 className='text-box-prod'>{!userID ? "LOGIN" : "AREA PERSONALE"}</h5></span>
             </Nav.Link>
           </Nav>
         </Navbar.Collapse>

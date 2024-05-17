@@ -263,7 +263,7 @@ router.put('/setAddress/:userId', async (req, res) => { //funziona
 
 
 
-router.get('/:userId/role', authenticateToken, async (req, res) => {
+router.get('/:userId/role', verifyTokenAndUserId, async (req, res) => {
     const userId = req.params.userId;
     console.log("dioooo",userId)
 
@@ -280,6 +280,52 @@ router.get('/:userId/role', authenticateToken, async (req, res) => {
     }
 });
 
+//Rotte e funzioni aggiuntive (sicurezza)
 
+function verifyTokenAndUserId(req, res, next) {
+    const userId = req.params.userId;
+    const token = req.headers['authorization']?.split(' ')[1]; // Estrae il token dall'header 'Authorization'
+
+    if (!token) {
+        return res.status(401).json({ error: "Token non fornito" });
+    }
+
+    jwt.verify(token, process.env.JWT_SECRET, async (err, decoded) => {
+        if (err) {
+            return res.status(403).json({ error: "Token non valido o scaduto" });
+        }
+
+        // Verifica se l'ID nel token decodificato corrisponde all'ID nella richiesta
+        if (decoded.userId !== userId) {
+            return res.status(403).json({ error: "ID utente non corrisponde al token fornito" });
+        }
+
+        try {
+            const db = getDb();
+            const usersCollection = db.collection('Users');
+            const user = await usersCollection.findOne({ _id: new ObjectId(userId) });
+
+            if (!user) {
+                return res.status(404).json({ error: "Utente non trovato" });
+            }
+
+            req.user = user; // Salva l'utente nella richiesta per uso in downstream middlewares o handlers
+            next();
+        } catch (error) {
+            console.error("Errore durante la verifica dell'utente:", error);
+            res.status(500).json({ error: "Errore interno del server" });
+        }
+    });
+}
+
+// Rotta GET per verificare l'ID utente e il token JWT
+router.get('/verify/:userId', verifyTokenAndUserId, (req, res) => {
+    // Se il middleware non termina la richiesta, significa che l'ID e il token sono validi
+    res.status(200).json({
+        message: "ID utente e token sono validi",
+        userId: req.params.userId,
+        userInfo: req.user
+    });
+});
 module.exports = router;
 

@@ -1,5 +1,4 @@
 
-
 export async function getUserRole(userId) {
 
     console.log("entrato", userId)
@@ -28,5 +27,48 @@ export async function getUserRole(userId) {
         // Gestisce eventuali errori nella richiesta o nella risposta e li rilancia
         console.error('Errore durante il recupero del ruolo:', error);
         throw error;
+    }
+}
+
+export async function verifyTokenAndUserId() {
+    const userId = localStorage.getItem('userId');
+    const jwtToken = localStorage.getItem('token');
+    
+    if (!userId || !jwtToken) {
+        console.log("No user ID or JWT token found in local storage.");
+        localStorage.removeItem('token');
+        localStorage.removeItem('userId');
+        localStorage.removeItem('ruoloUser');
+        localStorage.removeItem('emailUser');
+        return false;
+    }
+
+    try {
+        const response = await fetch(`http://localhost:3000/api/users/verify/${userId}`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${jwtToken}`
+            }
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            console.log("Verification successful:", data);
+            return true;
+        } else {
+            console.error("Verification failed. Status:", response.status);
+            localStorage.removeItem('token');
+            localStorage.removeItem('userId');
+            localStorage.removeItem('ruoloUser');
+            localStorage.removeItem('emailUser');
+            return false;
+        }
+    } catch (error) {
+        console.error("Error during verification:", error);
+        localStorage.removeItem('token');
+        localStorage.removeItem('userId');
+        localStorage.removeItem('ruoloUser');
+        localStorage.removeItem('emailUser');
+        return false;
     }
 }

@@ -1,6 +1,8 @@
 //import logo from './assets/Images/logo.svg';
 import './App.css';
 import React, { Component , useState} from 'react';
+import { verifyTokenAndUserId } from './assets/Scripts/GetUserInfo.js';
+
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { Home } from './pages/Home/Home.jsx';
 import { Products } from './pages/Products/Products.jsx';
@@ -31,11 +33,14 @@ function ScrollToTop() {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [pathname]);
+  
 
   return null;
 }
+
  
 class App extends Component {
+  componentDidMount() {verifyTokenAndUserId()} // verifica se il token e id sono validi
   render(){
   return (
     <React.Fragment>

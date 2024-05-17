@@ -53,6 +53,7 @@ export const Editor = () => {
     console.log("useEffect eseguito con userId:", userId);
     if (!userId) {
       console.log('UserID non disponibile');
+      window.location.href = '/home';
       return;
     }
   
@@ -60,9 +61,11 @@ export const Editor = () => {
       try {
         console.log("Chiamata a getUserRole iniziata con userId:", userId);
         const fetchedRole = await getUserRole(userId);
-        setRuolo(fetchedRole);
+        if(!fetchedRole) setRuolo("user");
+        else setRuolo(fetchedRole);
       } catch (error) {
         console.error('Errore durante il recupero del ruolo:', error);
+        setRuolo("user");
       }
     })();
   }, [userId]);
@@ -384,11 +387,7 @@ export const Editor = () => {
     return newErrors;
   };
 
-  // Verifica ruolo utente
-  /*if (!ruolo) {
-    // Potresti mostrare un loader qui o null se non vuoi renderizzare nulla fino al caricamento del ruolo
-    return null;
-  }*/
+  
   if (ruolo !== "admin" && ruolo !== "editor-prodotti") {
     return null;
   } else return (
