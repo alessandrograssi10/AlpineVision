@@ -1,63 +1,148 @@
-.custom-h1 {
-    font-size: 50px; /* Imposta la dimensione del font a 32px, modificabile in base alle tue esigenze */
-    font-weight: bold; /* Rende il testo in grassetto */
-  }
+body {
+  margin: 0;
+}
 
-  #explore-btn {
-    width: 15vw;
-    height: 8vh;
-    font-size: 1.1vw;
-    border: 2px solid white; /* Outline bianco */
-    background-color: transparent; /* Sfondo trasparente */
-    color: white; /* Colore del testo */
-    font-weight: bold; /* Rende il testo in grassetto */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transition: background-color 0.3s ease, color 0.3s ease; /* Transizione morbida per hover */
-  }
-  
-  #explore-btn:hover, #explore-btn:focus {
-    background-color: white; /* Cambia lo sfondo al passaggio del mouse o focus */
-    color: #000000; /* Cambia il colore del testo per contrastare con lo sfondo */
-  }
-  
-  #explore-text {
-    pointer-events: none; /* Impedisce l'interazione diretta con il testo, se necessario */
-  }
+.Home {
+  font-family: sans-serif;
+  text-align: center;
+  margin: 0px;
+}
 
-#explore-text{
-  font-size:1.5em;
+.intro-text {
+  text-transform: uppercase;
+  color: white;
   margin-top: 5px;
+  margin-bottom: 5px;
+  font-weight: 300;
+}
+.intro-text-video {
+  text-transform: uppercase;
+  color: black;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  font-weight: 400;
+}
+.text-big {
+  font-size: 5rem;
+  font-weight: 800 !important;
 }
 
-.no-space {
-  margin: 0 !important;
-  padding: 0 !important;
+.blur-text {
+  text-transform: uppercace;
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  color: white;
+  margin: 5;
+  letter-spacing: 2.5px;
+  line-height: 50px;
 }
-  
-.no-space-row > [class^="col"] {
-  padding-right: 0 !important;
-  padding-left: 0 !important;
+
+.blur-plx {
+  width: 100vw;
+  height: 200vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
 }
-  
-.img-fluid-no-space {
-  display: block;
-  max-width: 100%;
-  height: auto;
-  margin: 0 auto;
+
+.background-image {
+  background: url('../../assets/AboutUsPhoto/uomoUrla&Scia.jpg');
+
+  background-size: cover;
+  z-index: 0;
+  background-repeat: no-repeat;
+  color: #fff;
+  height: 100vh;
+  width: 100vw;
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  opacity: 1;
+  /* transfom: scale(0.8);  */
 }
-  
-.motto {
-  font-weight: bold; /* Rende il testo in grassetto */
+.background-video {
+  background-size: cover;
+  background-repeat: no-repeat;
+  color: #fff;
+  height: 100vh;
+  width: 100vw;
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  overflow: hidden; /* Ensure the video does not overflow */
+}
+
+.background-video video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+
+
+
+.Main{
+  width: 100%;
+  height: 100vh;
+}
+
+video{
+  opacity: 1;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.content{
   position: absolute;
-  font-style: italic; /* Rende il testo in corsivo */
-  left: 15vw;
-  margin-top: 1.5em;
-  color: #46626e;
-  font-size: 2vw;
+  width: 100%;
+  height: 100%;
+  top:0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: black;
 }
 
+
+.full-width-row {
+  width: 100%;
+  margin: 0 !important; /* Rimuove qualsiasi margine */
+  padding: 0; /* Rimuove padding se necessario */
+  background-color: black; /* Imposta lo sfondo bianco */
+}
+
+.custom-h1 {
+  margin: 0; /* Garantisce che l'h1 non abbia margini */
+}
+
+.img-aura{
+  width: 70%;
+  /* height: 70vh; */
+}
+
+
+#explore-btn {
+  width: 15vw;
+  height: 8vh;
+  font-size: 1.1vw;
+  border: 2px solid white; /* Outline bianco */
+  background-color: transparent; /* Sfondo trasparente */
+  color: white; /* Colore del testo */
+  font-weight: bold; /* Rende il testo in grassetto */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: background-color 0.3s ease, color 0.3s ease; /* Transizione morbida per hover */
+}
+
+#explore-btn:hover, #explore-btn:focus {
+  background-color: white; /* Cambia lo sfondo al passaggio del mouse o focus */
+  color: #000000; /* Cambia il colore del testo per contrastare con lo sfondo */
+}
 .button {
   position: relative;
   padding: 10px 20px;
@@ -87,3 +172,42 @@
   border-bottom: 15px solid white; /* Aumento la dimensione per un triangolo più alto */
 
 }
+
+
+
+.text-container {
+  text-transform: uppercase;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  color: white;
+  margin: 5;
+  letter-spacing: 2.5px;
+  line-height: 50px;
+   /* Semi-transparent background */
+  padding: 20px; /* Add some padding for better readability */
+}
+.text-container-video {
+  text-transform: uppercase;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  color: black;
+  margin: 5;
+  letter-spacing: 2.5px;
+  line-height: 50px;
+   /* Semi-transparent background */
+  padding: 20px; /* Add some padding for better readability */
+}
+.blur-text {
+  text-transform: uppercace;
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  color: white;
+  margin: 5;
+  letter-spacing: 2.5px;
+  line-height: 50px;
+}
+
+

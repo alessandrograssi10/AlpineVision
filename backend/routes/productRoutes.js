@@ -25,6 +25,8 @@ router.get('/:productId/variants', async (req, res) => {
 });
 
 
+
+
 //ritorna tutti i prodotti
 router.get('/', async (req, res) => { //funziona
     try {
