@@ -33,8 +33,13 @@ function Cart() {
                 const provTotalPrice = result.reduce((somma, cartItem) => somma + cartItem.total, 0);
                 setTotalPrice(provTotalPrice);
                 setToggler(result.length !== 0);
+                console.log("PRese da fetch")
             })
-            .catch((error) => console.error(error));
+            
+            .catch((error) => {
+                setCartItems([]);
+                console.error(error)}
+            );
         }
         else{
             var cart = JSON.parse(localStorage.getItem("virtualCart")) || [];
@@ -49,10 +54,10 @@ function Cart() {
         }
     }, []);
 
-    
+    //  Aggiorna pulsante carrello
     useEffect(() => {
         if (cartItems.length == 0) {
-            if(userID) setTotalPrice(0); 
+            if(userID) setTotalPrice(0); //se attivo rompe tutto
             console.log("Zero")
             setToggler(false);
         } else if (cartItems.length > 0) {
@@ -85,7 +90,9 @@ function Cart() {
         setTotalPrice(newPrice);
 
         if(userID){
-            
+            console.log("Entrsto ");
+            console.log("Colore ",colore);
+
         const myHeadersrm = new Headers();
         myHeadersrm.append("Content-Type", "application/json");
 
@@ -95,7 +102,6 @@ function Cart() {
             "color": `${colore}`,
             "type": colore ? 'product' : '', 
         });
-       
 
         const requestOptionsrm = {
             method: "DELETE",
@@ -103,7 +109,7 @@ function Cart() {
             body: rawrm,
             redirect: "follow"
         };
-       
+        console.log("Prima Fetch ");
 
         fetch("http://localhost:3000/api/carts/remove", requestOptionsrm)
             .then((response) => console.log("GGGGGGG",rawrm,"",response.text()))
@@ -112,7 +118,7 @@ function Cart() {
             .catch((error) => console.error(error));
     }
         localStorage.setItem('Cart_Trig', "Trigger");
-       
+        console.log("Nuovo Carrello",newCartItems)
     }
 
     const handleCheckout = () => {
@@ -123,9 +129,9 @@ function Cart() {
 
     return (
         <Container fluid className="mb-5">
-            <Row className="mt-5 mb-5 m-5">
+            <Row className="mt-5 mb-5">
                 <Col className="d-flex align-items-center">
-                    <h2 className="fw-bold ">IL TUO CARRELLO</h2>
+                    <h1 className="fw-bold">IL TUO CARRELLO</h1>
                     <img id="cartimage" src={cartimage} alt="cartimage" />
                 </Col>
             </Row>
@@ -154,13 +160,13 @@ function Cart() {
                         <Row className="w-100">
                             <Col xs="6">
                                 <Link to="/Payments/cart" className="fs-4">
-                                    <Button size="lg" id="buyButtonn" variant="outline-dark" className='button-black-prod m-2 mx-5' onClick={handleCheckout}>
+                                    <Button size="lg" id="buyButtonn" variant="outline-dark" className='button-black-prod' onClick={handleCheckout}>
                                     <h4 className='p-0 m-0'>Procedi all'acquisto</h4>
                                     </Button>
                                 </Link>
                             </Col>
-                            <Col xs="6" className="d-flex align-items-center justify-content-end ">
-                                <h3 className="fw-bold fs-3 m-2 mx-3">Totale: {!isNaN(totalPrice) ? totalPrice.toFixed(2) + ' €' : '0€'}</h3>
+                            <Col xs="6" className="d-flex align-items-center justify-content-end">
+                                <h3 className="fw-bold fs-3">Totale: {!isNaN(totalPrice) ? totalPrice.toFixed(2) + ' €' : '0€'}</h3>
                             </Col>
                         </Row>
                     ) : (

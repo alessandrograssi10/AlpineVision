@@ -31,6 +31,10 @@ export async function getUserRole(userId) {
 }
 
 export async function verifyTokenAndUserId() {
+
+    //Verify Cart 
+    //if(!localStorage.getItem("virtualCart")) localStorage.setItem("virtualCart","[]");
+    //
     const userId = localStorage.getItem('userId');
     const jwtToken = localStorage.getItem('token');
     
