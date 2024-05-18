@@ -154,13 +154,13 @@ function Cart() {
                         <Row className="w-100">
                             <Col xs="6">
                                 <Link to="/Payments/cart" className="fs-4">
-                                    <Button size="lg" id="buyButtonn" variant="outline-dark" className='button-black-prod' onClick={handleCheckout}>
-                                    <h4 className='p-0 m-0 '>Procedi all'acquisto</h4>
+                                    <Button size="lg" id="buyButtonn" variant="outline-dark" className='button-black-prod m-2 mx-5' onClick={handleCheckout}>
+                                    <h4 className='p-0 m-0'>Procedi all'acquisto</h4>
                                     </Button>
                                 </Link>
                             </Col>
-                            <Col xs="6" className="d-flex align-items-center justify-content-end">
-                                <h3 className="fw-bold fs-3">Totale: {!isNaN(totalPrice) ? totalPrice.toFixed(2) + ' €' : '0€'}</h3>
+                            <Col xs="6" className="d-flex align-items-center justify-content-end ">
+                                <h3 className="fw-bold fs-3 m-2 mx-3">Totale: {!isNaN(totalPrice) ? totalPrice.toFixed(2) + ' €' : '0€'}</h3>
                             </Col>
                         </Row>
                     ) : (
