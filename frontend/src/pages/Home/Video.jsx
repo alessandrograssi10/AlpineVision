@@ -6,9 +6,9 @@ export const Video = () => {
    
     return (
         <div className="Main">
-            <video src={Alvaro} style={{opacity: '0.8'}} autoPlay loop muted />
+            <video src={Alvaro} style={{opacity: '0.7'}} autoPlay loop muted />
                 <div className="content">
-                    <h2>Costruiamo l'eccellenza <br /> per ogni tua discesa.</h2>
+                    <h1 className='text-style'>COSTRUIAMO L'ECCELLENZA <br /> PER OGNI TUA DISCESA.</h1>
                 </div>
         </div>
 

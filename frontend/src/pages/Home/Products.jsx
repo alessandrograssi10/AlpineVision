@@ -58,8 +58,8 @@ const ProductCard = ({ product }) => (
 
 export const Products = () => {
   return (
-    <Container fluid className="p-0 m-0">
-      <Row className="m-0 p-0 w-100" style={{ height: 'auto', minHeight: '80vh' }}>
+    <Container fluid className="p-0 m-0 mt-5">
+      <Row className="m-0 p-0 w-100 mb-5" style={{ height: 'auto', minHeight: '80vh' }}>
         <Col xs={12} className="m-0 p-0">
           <h2 className="text-center my-4">Trend della settimana</h2>
         </Col>

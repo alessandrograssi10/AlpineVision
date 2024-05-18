@@ -5,25 +5,6 @@ const { createUser, deleteUser, updateUserPassword, setPhone, setAddress, findUs
 const jwt = require('jsonwebtoken');
 const { ObjectId } = require('mongodb');
 
-// Middleware per autenticare il token JWT
-function authenticateToken(req, res, next) {
-    const authHeader = req.headers['authorization'];
-    const token = authHeader && authHeader.split(' ')[1];
-    if (!token) return res.sendStatus(401);
-
-    console.log("Verifying token:", token);
-    console.log("Using secret:", process.env.JWT_SECRET);  // Ensure this variable matches your .env
-
-    jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
-        if (err) {
-            console.error("Token verification error:", err);
-            return res.sendStatus(403); // Forbidden or invalid token
-        }
-        req.user = user;
-        console.log("dioooo SUccesso")
-        next();
-    });
-}
 
 /*
 
@@ -265,8 +246,7 @@ router.put('/setAddress/:userId', async (req, res) => { //funziona
 
 router.get('/:userId/role', verifyTokenAndUserId, async (req, res) => {
     const userId = req.params.userId;
-    console.log("dioooo",userId)
-
+    
     try {
         const role = await getUserRole(userId);
         res.status(200).json({ role: role, message: "Ruolo recuperato con successo" });

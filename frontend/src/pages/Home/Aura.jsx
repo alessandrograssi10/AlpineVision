@@ -21,7 +21,7 @@ export const Aura = () => {
     return (
         <>
        <Row className="p-0 m-0 bg-black" style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-          <h2 style={{color: 'white', margin: '5vh'}}>Eternal Aura</h2>
+          <h1 style={{color: 'white', margin: '5vh',marginTop: '10vh'}}>Eternal Aura</h1>
       </Row>
       
       <Row className="m-0 p-0 w-100 bg-black">
@@ -41,7 +41,7 @@ export const Aura = () => {
         <Button 
           as={Link} 
           to="/product/664367419b98ac33f5ef2b38" 
-          className="custom-button btn-lg btn-md"
+          className="custom-button btn-lg btn-md m-5"
         >
           <div id="explore-text">Acquista ora</div>
         </Button>
