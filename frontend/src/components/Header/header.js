@@ -5,6 +5,7 @@ import Logo from '../../assets/Images/Asset 1.png';
 import SearchIcon from '../../assets/Images/Sicon.png';
 import Car from '../../assets/Images/shopping-cart.png';
 import Skier from '../../assets/Images/skier.png';
+import BurgerBar from '../../assets/Images/burger-bar.png';
 import './Header.css';
 import HeaderProducts from './Boxes/header_products';
 import HeaderAccessories from './Boxes/header_accessories';
@@ -137,7 +138,7 @@ export const Header = () => {
 
         {/* Toggle per gli elementi con lo schermo piccolo */}
 
-        <Navbar.Toggle aria-controls="basic-navbar-nav" onClick={() => setExpanded(expanded ? false : true)}/>
+        <Navbar.Toggle className='no-border' aria-controls="basic-navbar-nav" onClick={() => setExpanded(expanded ? false : true)}/>
 
         {/* Elementi della navbar con schermo grande */}
 

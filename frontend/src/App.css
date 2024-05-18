@@ -20,6 +20,10 @@
 
 /* gestione font-size */
 
+hsup {
+  font-size: 4rem !important;
+}
+
 h1 {
   font-size: 3rem !important;
 }
@@ -45,6 +49,9 @@ h6 {
 }
 
 @media (max-width: 1200px) {
+  hsup {
+    font-size: 3.5rem !important;
+  }
   h1 {
     font-size: 2.5rem !important;
   }
@@ -66,6 +73,12 @@ h6 {
 }
 
 @media (max-width: 992px) {
+  hsup {
+    font-size: 3rem !important;
+  }
+  h1 {
+    font-size: 2rem !important;
+  }
   h1 {
     font-size: 2rem !important;
   }
@@ -87,6 +100,9 @@ h6 {
 }
 
 @media (max-width: 768px) {
+  hsup {
+    font-size: 1.8rem !important;
+  }
   h1 {
     font-size: 1.75rem !important;
   }

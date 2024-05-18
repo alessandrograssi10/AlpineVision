@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Image, Container, Row, Col, Card } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
-import ImmagineBg from '../../assets/Images/BgProd3.png';
+import ImmagineBg from '../../assets/Images/BgAccessori.png';
 import heart from '../../assets/Images/heart-3.png';
 import filledHeart from '../../assets/Images/heart-full.png';
 

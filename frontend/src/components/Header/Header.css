@@ -219,3 +219,9 @@
 .hover-underline-animation-text:hover {
   font-weight: bold;
 }
+
+.no-border {
+  border: none !important;
+  background: none !important;
+  box-shadow: none !important;
+}

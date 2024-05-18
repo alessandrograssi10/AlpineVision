@@ -8,7 +8,7 @@ export const Video = () => {
         <div className="Main">
             <video src={Alvaro} style={{opacity: '0.7'}} autoPlay loop muted />
                 <div className="content">
-                    <h1 className='text-style'>COSTRUIAMO L'ECCELLENZA <br /> PER OGNI TUA DISCESA.</h1>
+                    <hsup className='text-style'>COSTRUIAMO L'ECCELLENZA <br /> PER OGNI TUA DISCESA.</hsup>
                 </div>
         </div>
 
