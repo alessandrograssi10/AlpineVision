@@ -12,6 +12,14 @@
     z-index: 2;
 
 }
+.centered-text-blog-edit {
+  color: white !important; /* Imposta il colore del testo su bianco */
+  font-weight: bold; /* Imposta lo stile del font su grassetto */
+  text-align: center;
+  width: 100%;
+  z-index: 2;
+  top: 30%
+}
 .img-cop-blog {
     max-height: 35vw; /* Set the maximum height */
     width: 100%;

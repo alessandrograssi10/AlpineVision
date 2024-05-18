@@ -55,7 +55,6 @@ const LoginSignupForm = () => {
           throw new Error('Errore durante il login');
         }
         return response.json();
-        console.log(response);
       })
       .then((result) => {
         localStorage.setItem("token", result.token);

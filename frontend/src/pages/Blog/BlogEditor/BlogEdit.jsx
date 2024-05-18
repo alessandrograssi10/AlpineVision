@@ -348,11 +348,11 @@ async function uploadImage(postId, file, uploadUrl) {
 
     {/* Pulsante per aggiungere un nuovo articolo */}
     <Button 
-      variant="success"
+      variant="outline-success"
       className='m-3'
       onClick={handleAddArticleClick} // Aggiungi l'evento onClick qui
     >
-      Aggiungi articolo
+      AGGIUNGI ARTICOLO
     </Button>
 
     {/* Griglia per visualizzare gli articoli */}
@@ -367,7 +367,7 @@ async function uploadImage(postId, file, uploadUrl) {
                 {/* Immagine di copertina del post */}
                 <Card.Img className='zoom-image m-0 p-0 img-car-blog' variant="top" src={getImageById(post._id)} />
               </div>
-              <Card.Title className='centered-text centered-text-blog'>
+              <Card.Title className='centered-text centered-text-blog-edit p-1' >
                 <h2>{post.title}</h2>
               </Card.Title>
                  <Card.Body>
@@ -386,12 +386,14 @@ async function uploadImage(postId, file, uploadUrl) {
                   >
                     Carica
                   </Button>
+                  <div className="text-center mb-3">
+        <Button className=' button-green-prod mt-4'as={Link} to={`/BlogArticleEdit/${post._id}`} variant='outline-success '>Apri articolo</Button>
+    </div>
                   {/* Dettagli del post */}
-                  <Form.Group className="mb-3">
+                  <Form.Group className="mb-1">
                     <Form.Control type="text" value={post.title} placeholder="Title" onChange={(event) => handleTitleChange(event, position)} />
                   </Form.Group>
                
-                  <Link to={`/BlogArticleEdit/${post._id}`}>Apri articolo</Link>
                 </Card.Body>
                
                 <Row>
@@ -399,7 +401,7 @@ async function uploadImage(postId, file, uploadUrl) {
                   <Col md={6} className="d-flex justify-content-center align-items-center">
                     <Button 
                       onClick={() => handleMoveUpClick(position)} // Passa l'indice corrente
-                      variant="primary"
+                      variant="outline-dark"
                       className='m-2 d-inline-block w-100' 
                     >
                       Sposta in alto
@@ -408,7 +410,7 @@ async function uploadImage(postId, file, uploadUrl) {
                   <Col md={6} className="d-flex justify-content-center align-items-center">
                     <Button 
                       onClick={() => handleMoveDownClick(position)} // Passa l'indice corrente
-                      variant="primary"
+                      variant="outline-dark"
                       className='m-2 d-inline-block w-100' 
                     >
                       Sposta in basso
@@ -418,7 +420,7 @@ async function uploadImage(postId, file, uploadUrl) {
                 {/* Pulsante per eliminare il post */}
                 <Button 
                   onClick={() => handleDeleteClick(position)} // Passa l'indice corrente
-                  variant="danger"
+                  variant="outline-danger"
                   className='m-2'
                 >
                   Elimina

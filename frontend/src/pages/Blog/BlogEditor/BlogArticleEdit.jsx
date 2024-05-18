@@ -142,20 +142,19 @@ export const BlogArticleEdit = () => {
   if (ruolo !== "admin" && ruolo !== "editor-blog") {
     return null;
   } else return (
-    <Container fluid className="m-1 p-0">
-      {/* Pulsante per tornare all'area editor */}
-      <Button as={Link} to={`/BlogEdit`} onClick={() => handleSavePost()} className="mt-3" variant="outline-success">
-        Torna Area Editor
-      </Button>
+    <Container fluid className="m-0 p-0">
+     
       {/* Avviso per la modalità di modifica */}
-      <Alert variant={'warning'} className='m-0 mt-4'>
+      <Alert variant={'warning'} className='m-2 mt-4'>
         SEI IN EDIT MODE!!!!!
       </Alert>
       {/* Avviso per salvare le modifiche */}
-      <Alert variant={'danger'} className='m-0 mt-4'>
-        Tutte le modifiche devono essere salvate nell'area blog!!!!!
-      </Alert>
-
+      <Alert variant={'danger'} className='m-2 mt-4'>
+      TUTTE LE MODIFICHE DEVONO ESSERE SALVATE NELL'AREA BLOG!!!!!      </Alert>
+      {/* Pulsante per tornare all'area editor */}
+      <Button as={Link} to={`/BlogEdit`} onClick={() => handleSavePost()} className="mt-3 mx-2 button-green-prod" variant="outline-success">
+        Torna Area Editor
+      </Button>
       <Row className="m-0  mt-4 p-0 h-10 no-space-rowBg img-cop-blog">
         <Image
           src={getImageByIdCop(post._id)}
@@ -209,7 +208,7 @@ export const BlogArticleEdit = () => {
                     top: '-50px',
                     left: '0',
                     zIndex: 5,
-                    backgroundColor: 'blue',
+                    
                     width: '10%', 
 
                   }}
@@ -274,7 +273,7 @@ export const BlogArticleEdit = () => {
 
       <Row className="my-2 justify-content-center">
         <Col lg={6} className="d-flex justify-content-center mb-3">
-          <Button as={Link} to={`/BlogEdit`} variant="primary" className="mt-3">Torna area editor</Button>
+          <Button as={Link} to={`/BlogEdit`} variant="outline-success" className="mt-3 button-green-prod">Torna area editor</Button>
         </Col>
       </Row>
     </Container>

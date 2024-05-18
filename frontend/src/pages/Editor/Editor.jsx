@@ -356,12 +356,12 @@ export const Editor = () => {
   const validateFormProd = () => {
     const newErrors = {};
     if (!product.nome) newErrors.nome = 'Nome del prodotto è richiesto.';
-    if (!product.prezzo || product.prezzo <= 0) newErrors.prezzo = 'Prezzo valido è richiesto.';
-    if (!product.quantita || product.quantita <= 0) newErrors.quantita = 'Quantità valida è richiesto.';
-    if (!product.colore) newErrors.colore = 'Colore del prodotto è richiesto.';
-    if (!product.descrizione) newErrors.descrizione = 'Descrizione del prodotto è richiesta.';
-    if (!product.motto || product.motto <= 0) newErrors.motto = 'Titolo descrizione del prodotto è richiesta.';
-    if (!product.caratteristiche || product.caratteristiche <= 0) newErrors.caratteristiche = 'Caratteristiche del prodotto è richiesta.';
+    if (!product.prezzo || product.prezzo <= 0) newErrors.prezzo = 'Prezzo non valido.';
+    if (!product.quantita || product.quantita <= 0) newErrors.quantita = 'Quantità non valida.';
+    if (!product.colore) newErrors.colore = 'Colore del prodotto non valido.';
+    if (!product.descrizione) newErrors.descrizione = 'Descrizione del prodotto non valida.';
+    if (!product.motto || product.motto <= 0) newErrors.motto = 'Titolo descrizione del prodotto non valido.';
+    if (!product.caratteristiche || product.caratteristiche <= 0) newErrors.caratteristiche = 'Caratteristiche del prodotto non valide.';
     if (!product.immaginiCop || product.immaginiCop.length !== 2) newErrors.immaginiCop = '2 immagini richieste.';
     if (!product.immaginiVar || product.immaginiVar.length !== 4) newErrors.immaginiVar = '4 immagini richieste.';
     return newErrors;
@@ -370,20 +370,20 @@ export const Editor = () => {
   // Validazione form varianti
   const validateFormVar = () => {
     const newErrors = {};
-    if (!product.coloreVariante) newErrors.coloreVariante = 'Colore del prodotto è richiesto.';
+    if (!product.coloreVariante) newErrors.coloreVariante = 'Colore del prodotto non valida.';
     if (!product.immaginiVar || product.immaginiVar.length !== 4) newErrors.immaginiVar = '4 immagini richieste.';
-    if (!product.quantita || product.quantita <= 0) newErrors.quantita = 'Quantità valida è richiesto.';
+    if (!product.quantita || product.quantita <= 0) newErrors.quantita = 'Quantità non valida.';
     return newErrors;
   };
 
   // Validazione form accessori
   const validateFormAcc = () => {
     const newErrors = {};
-    if (!product.nome) newErrors.nome = 'Nome del prodotto è richiesto.';
-    if (!product.prezzo || product.prezzo <= 0) newErrors.prezzo = 'Prezzo valido è richiesto.';
-    if (!product.descrizione) newErrors.descrizione = 'Descrizione del prodotto è richiesta.';
+    if (!product.nome) newErrors.nome = 'Nome del prodotto non valido.';
+    if (!product.prezzo || product.prezzo <= 0) newErrors.prezzo = 'Prezzo non valido.';
+    if (!product.descrizione) newErrors.descrizione = 'Descrizione del prodotto non valida.';
     if (!product.immaginiCop || product.immaginiCop.length !== 4) newErrors.immaginiCop = '4 immagini richieste.';
-    if (!product.quantita || product.quantita <= 0) newErrors.quantita = 'Quantità valida è richiesto.';
+    if (!product.quantita || product.quantita <= 0) newErrors.quantita = 'Quantità non valida.';
     return newErrors;
   };
 
@@ -439,8 +439,8 @@ export const Editor = () => {
                     </div>
                     <div className="border-bottom"></div>
                     <div className='m-1 mt-3 responsive-buttons' style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <Button className='m-1' onClick={() => toggleExpandProduct(prodotto._id)} variant='outline-success'>VARIANTI</Button>
                       <Button className='m-1' onClick={() => handleDelete(prodotto._id)} variant='outline-danger'>ELIMINA</Button>
+                      <Button className='m-1' onClick={() => toggleExpandProduct(prodotto._id)} variant='outline-success'>VARIANTI</Button>
                     </div>
                   </Card.Body>
                 </Card>
@@ -449,7 +449,7 @@ export const Editor = () => {
                 <Row key={prodotto._id}>
                   <Card className='m-3 card-text-prod card-prod card-prod-prod-ca'>
                     <Card.Body>
-                      <Card.Title><h2>{prodotto?.nome?.toUpperCase()}</h2></Card.Title>
+                      <Card.Title><h3>{prodotto?.nome}</h3></Card.Title>
                       {prodotto?.variants?.map((variante) => (
                         <Row key={variante._id} className='m-0 mb-2'>
                           <div className="border-bottom"></div>
@@ -457,7 +457,7 @@ export const Editor = () => {
                             <Card.Title>{variante?.colore?.toLowerCase()}</Card.Title>
                             <Card.Title>x {variante?.quantita}</Card.Title>
 
-                            <Button onClick={() => handleDeleteVariant(prodotto._id, variante)} variant='danger'>Elimina</Button>
+                            <Button onClick={() => handleDeleteVariant(prodotto._id, variante)} variant='outline-danger'>Elimina</Button>
                           
                           </div>
 
@@ -481,12 +481,12 @@ export const Editor = () => {
                       <Form.Control.Feedback type="invalid">{errors.quantita}</Form.Control.Feedback>
                     </Form.Group>
                           </Form.Group>
-                          <Button className='m-2' onClick={() => setExpandedProductIdVariant(false)} variant='danger'>Elimina</Button>
+                          <Button className='m-2' onClick={() => setExpandedProductIdVariant(false)} variant='outline-danger'>Elimina</Button>
                         </Row>
                       )}
                       <div className='m-1 mt-3 responsive-buttons' style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                        <Button onClick={() => toggleExpandProduct(prodotto._id)} variant='outline-danger'>Indietro</Button>
-                        <Button onClick={() => addVariantToProduct(prodotto._id)} variant='outline-success'>Aggiungi</Button>
+                        <Button onClick={() => toggleExpandProduct(prodotto._id)} variant='outline-dark'>Indietro</Button>
+                        <Button onClick={() => addVariantToProduct(prodotto._id)} variant='outline-success'>AGGIUNGI</Button>
                       </div>
                     </Card.Body>
                   </Card>
@@ -567,12 +567,13 @@ export const Editor = () => {
           </Col>
         ) : (
           <Col xs={12} sm={12} md={12} lg={12} className="d-flex align-items-center justify-content-center m-0 mt-5" style={{ height: '100%' }}>
-            <Button variant="outline-dark" className='m-1 mb-5 button-black-prod button-small-width' onClick={() => OpenAdd("maschera")}>Aggiungi</Button>
+            <Button variant="outline-dark" className='m-1 mb-5 button-black-prod button-small-width' onClick={() => OpenAdd("maschera")}>AGGIUNGI</Button>
           </Col>
         )}
       </Row>
 
       {/* Occhiali */}
+
       <Row className="ml-0 mr-0 no-space-row mt-3">
         <h3 className="m-4 mb-1 boldText">Occhiali</h3>
       </Row>
@@ -600,9 +601,9 @@ export const Editor = () => {
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                       <Card.Text>{prodotto.prezzo} €</Card.Text>
                     </div>
-                    <div className='m-1 mt-3' style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <Button onClick={() => handleDelete(prodotto._id)} variant='danger'>ELIMINA</Button>
-                      <Button onClick={() => toggleExpandProduct(prodotto._id)} variant='success'>Varianti</Button>
+                    <div className='m-1 mt-3 responsive-buttons' style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <Button className='m-1' onClick={() => handleDelete(prodotto._id)} variant='outline-danger'>ELIMINA</Button>
+                      <Button className='m-1' onClick={() => toggleExpandProduct(prodotto._id)} variant='outline-success'>VARIANTI</Button>
                     </div>
                   </Card.Body>
                 </Card>
@@ -611,15 +612,21 @@ export const Editor = () => {
                 <Row key={prodotto._id}>
                   <Card className='m-3 card-text-prod card-prod card-prod-prod-ca'>
                     <Card.Body>
-                      <Card.Title>{prodotto?.nome?.toUpperCase()}</Card.Title>
+                      <Card.Title><h3>{prodotto?.nome}</h3></Card.Title>
                       {prodotto?.variants?.map((variante) => (
-                        <Row key={variante._id}>
+                        <Row key={variante._id} className='m-0 mb-2'>
+                          <div className="border-bottom"></div>
                           <div className='m-1 mt-3' style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                             <Card.Title>{variante?.colore?.toLowerCase()}</Card.Title>
-                            <Button onClick={() => handleDeleteVariant(prodotto._id, variante)} variant='danger'>Elimina</Button>
+                            <Card.Title>x {variante?.quantita}</Card.Title>
+
+                            <Button onClick={() => handleDeleteVariant(prodotto._id, variante)} variant='outline-danger'>Elimina</Button>
+                          
                           </div>
+
                         </Row>
                       ))}
+                      <div className="border-bottom"></div>
                       {expandedProductIdVariant && (
                         <Row className="border-top m-2">
                           <Form.Group controlId="productName m-2">
@@ -637,12 +644,12 @@ export const Editor = () => {
                       <Form.Control.Feedback type="invalid">{errors.quantita}</Form.Control.Feedback>
                     </Form.Group>
                           </Form.Group>
-                          <Button className='m-2' onClick={() => setExpandedProductIdVariant(false)} variant='danger'>Elimina</Button>
+                          <Button className='m-2' onClick={() => setExpandedProductIdVariant(false)} variant='outline-danger'>Elimina</Button>
                         </Row>
                       )}
-                      <div className='m-1 mt-3' style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                        <Button onClick={() => toggleExpandProduct(prodotto._id)} variant='outline-danger'>Indietro</Button>
-                        <Button onClick={() => addVariantToProduct(prodotto._id)} variant='outline-success'>Aggiungi</Button>
+                         <div className='m-1 mt-3 responsive-buttons' style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <Button onClick={() => toggleExpandProduct(prodotto._id)} variant='outline-dark'>Indietro</Button>
+                        <Button onClick={() => addVariantToProduct(prodotto._id)} variant='outline-success'>AGGIUNGI</Button>
                       </div>
                     </Card.Body>
                   </Card>
@@ -716,14 +723,14 @@ export const Editor = () => {
                   </Row>
                 </Form>
                 <div className='m-1 mt-3' style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <Button onClick={() => setAddGlassProd(false)} variant='danger'>ELIMINA</Button>
+                  <Button onClick={() => setAddGlassProd(false)} variant='outline-danger'>ELIMINA</Button>
                 </div>
               </Card.Body>
             </Card>
           </Col>
         ) : (
           <Col xs={12} sm={12} md={12} lg={12} className="d-flex align-items-center justify-content-center m-0 mt-5" style={{ height: '100%' }}>
-            <Button variant="outline-dark" className='m-1 mb-5 button-black-prod button-small-width' onClick={() => OpenAdd("occhiale")}>Aggiungi</Button>
+            <Button variant="outline-dark" className='m-1 mb-5 button-black-prod button-small-width' onClick={() => OpenAdd("occhiale")}>AGGIUNGI</Button>
           </Col>
         )}
       </Row>
@@ -757,7 +764,7 @@ export const Editor = () => {
                       <Card.Text>{prodotto.prezzo} €</Card.Text>
                     </div>
                     <div className='m-1 mt-3' style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <Button onClick={() => handleDelete(prodotto._id)} variant='danger'>ELIMINA</Button>
+                      <Button onClick={() => handleDelete(prodotto._id)} variant='outline-danger'>ELIMINA</Button>
                     </div>
                   </Card.Body>
                 </Card>
@@ -808,14 +815,14 @@ export const Editor = () => {
                   </Row>
                 </Form>
                 <div className='m-1 mt-3' style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <Button onClick={() => setAddAccessoryProd(false)} variant='danger'>ELIMINA</Button>
+                  <Button onClick={() => setAddAccessoryProd(false)} variant='outline-danger'>ELIMINA</Button>
                 </div>
               </Card.Body>
             </Card>
           </Col>
         ) : (
           <Col xs={12} sm={12} md={12} lg={12} className="d-flex align-items-center justify-content-center m-0 mt-5" style={{ height: '100%' }}>
-            <Button variant="outline-dark" className='m-1 mb-5 button-black-prod button-small-width' onClick={() => OpenAdd("accessorio")}>Aggiungi</Button>
+            <Button variant="outline-dark" className='m-1 mb-5 button-black-prod button-small-width' onClick={() => OpenAdd("accessorio")}>AGGIUNGI</Button>
           </Col>
         )}
       </Row>

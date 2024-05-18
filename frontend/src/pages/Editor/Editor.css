@@ -23,3 +23,96 @@
         text-align: center; 
     }
 }
+
+/**/
+
+/**/ /*red*/
+
+.button-green-prod {
+    position: relative;
+    padding: 10px 20px;
+    background-color: white;
+    color: #198754;
+    border: 2px solid #198754;
+    cursor: pointer;
+    text-align: center;
+    /*width: 30vw; */
+    width: auto;
+    border-radius: 5px;
+  }
+  
+  .button-green-prod::before, .button-green-prod::after {
+    content: "";
+    position: absolute;
+    top: -10px;
+    right: 20px;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 10px solid #198754;
+  }
+  
+  .button-green-prod::after {
+    right:5px;
+    top: -15px;
+    border-bottom-color: #198754;
+    border-left: 15px solid transparent; 
+    border-right: 15px solid transparent; 
+    border-bottom: 15px solid #198754; 
+  
+  }
+  
+  .button-green-prod-nomon {
+    position: relative;
+    padding: 10px 20px;
+    background-color: white;
+    color: rgb#198754;
+    border: 2px solid #198754;
+    cursor: pointer;
+    text-align: center;
+    width: 30vw; 
+    border-radius: 5px; 
+  }
+
+  .button-green-prod-nomon {
+    position: relative;
+    padding: 10px 20px;
+    background-color: white;
+    color: #198754;
+    border: 2px solid #198754;
+    cursor: pointer;
+    text-align: center;
+    width: 30vw; 
+    border-radius: 5px; 
+  }
+
+  .btn-outline-danger {
+    border-width: 2px!important;  /* Makes the border thicker */
+    font-weight: 600!important;   /* Makes the text bolder */
+    border-radius: 5px!important;
+}
+.btn-outline-success {
+    border-width: 2px!important;  /* Makes the border thicker */
+    font-weight: 600!important;   /* Makes the text bolder */
+    border-radius: 5px!important;
+}
+.btn-outline-dark {
+    border-width: 2px!important;  /* Makes the border thicker */
+    font-weight: 600!important;   /* Makes the text bolder */
+    border-radius: 5px!important;
+}
+
+.btn-primary {
+    border-width: 2px !important;  /* Makes the border thicker */
+    font-weight: 600!important;   /* Makes the text bolder */
+    border-radius: 5px!important;
+}
+.btn-outline-primary {
+    border-width: 2px !important;  /* Makes the border thicker */
+    font-weight: 600!important;   /* Makes the text bolder */
+    border-radius: 5px!important;
+}
+.form-control {
+    border-width: 2px !important; /* Makes the border thicker */
+    font-weight: 600 !important;  /* Makes the text bolder */
+    border-radius: 5px !important; /* Rounds the corners */
+}
