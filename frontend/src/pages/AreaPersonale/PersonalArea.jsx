@@ -33,6 +33,7 @@ function PersonalArea() {
     const [newPassword, setNewPassword] = useState('');
     const [showChangePassword, setShowChangePassword] = useState(false);
     const [showChangeEmail, setShowChangeEmail] = useState(false);
+    const [buttonVisible, setButtonVisible] = useState(true);
 
 
     useEffect(() => {
@@ -284,6 +285,13 @@ function PersonalArea() {
         }
     };
 
+    
+    
+    const modifypassbuttonclick = () => {
+        setShowChangePassword(true);
+        setButtonVisible(false);
+      };
+
     return (
         <div className="personal-area-container m-0 p-0 mt-5">
             <div className="personal-area-row justify-content-center">
@@ -403,29 +411,46 @@ function PersonalArea() {
 
 
                     <div className="personal-area-margin-bottom">
-            <div className="personal-area-container personal-area-border personal-area-rounded personal-area-padding">
-                <h2>Impostazioni Profilo</h2>
-                <div className="profile-settings-container">
-                    <p>Email: {localStorage.getItem("emailuser")}</p>
-                    <button onClick={() => setShowChangePassword(true)}>Modifica Password</button>
-                </div>
-                {showChangePassword && (
-                    <form>
-                        <label>
-                            Vecchia Password:
-                            <input type="password" value={oldPassword} onChange={(e) => setOldPassword(e.target.value)} />
-                        </label>
-                        <label>
-                            Nuova Password:
-                            <input type="password" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} />
-                        </label>
-                        <button onClick={updateUserPassword} type="submit">Aggiorna Password</button>
-                    </form>
-                )}
-            </div>
+      <div className="personal-area-container personal-area-border personal-area-rounded personal-area-padding">
+        <h2 className="personal-area-text-center">Impostazioni Profilo</h2>
+        <div className="profile-settings-container personal-area-text-center">
+          {buttonVisible && (
+            <Button className="button-black-prod-nomon m-2 mb-2" variant="outline-dark pl-0 ml-0" size="lg" onClick={modifypassbuttonclick}>
+              Modifica Password
+            </Button>
+          )}
         </div>
-
-
+        {showChangePassword && (
+          <form className="personal-area-form" onSubmit={updateUserPassword}>
+            <div className="personal-area-margin-bottom mt-3">
+              <label>
+                Vecchia Password:
+                <input
+                  className="personal-area-input"
+                  type="password"
+                  value={oldPassword}
+                  onChange={(e) => setOldPassword(e.target.value)}
+                />
+              </label>
+            </div>
+            <div className="personal-area-margin-bottom">
+              <label>
+                Nuova Password:
+                <input
+                  className="personal-area-input "
+                  type="password"
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                />
+              </label>
+            </div>
+            <Button className="button-black-prod w-100 "variant="outline-dark " size="lg" type="submit">
+              Aggiorna Password
+            </Button>
+          </form>
+        )}
+      </div>
+    </div>
 
 
 
@@ -441,19 +466,21 @@ function PersonalArea() {
                                 <div className="personal-area-container personal-area-border personal-area-rounded personal-area-padding">
 
                                 {(ruolo === 'admin' || ruolo === 'editor-blog') && (
-                                    <div className="personal-area-margin-bottom m-2" >
-                                        <Button as = {Link} to = "/blogedit" className={`button-black-prod-nomon m-2 mb-2 `} variant="outline-dark pl-0 ml-0" size="lg">
-                                            <h4>EDITOR BLOG</h4>
-                                        </Button>
-                                </div>
-                                )}
-                                {(ruolo === 'admin' || ruolo === 'editor-prodotti') && (
-                                    <div className="personal-area-margin-bottom m-2" >
-                                        <Button as = {Link} to = "/editor"className={`button-black-prod-nomon m-2 MB-2  `} variant="outline-dark" size="lg">
-                                            <h4>EDITOR PRODOTTI</h4>
-                                        </Button>
-                                </div>
-                                )}
+    <div className="personal-area-margin-bottom d-flex justify-content-center align-items-center m-2">
+        <Button as={Link} to="/blogedit" className="button-black-prod-nomon m-2 mb-2" variant="outline-dark pl-0 ml-0" size="lg">
+            <h4>EDITOR BLOG</h4>
+        </Button>
+    </div>
+)}
+{(ruolo === 'admin' || ruolo === 'editor-prodotti') && (
+    <div className="personal-area-margin-bottom d-flex justify-content-center align-items-center m-2 mb-5">
+        <Button as={Link} to="/editor" className="button-black-prod-nomon m-2 MB-2" variant="outline-dark" size="lg">
+            <h4>EDITOR PRODOTTI</h4>
+        </Button>
+    </div>
+)}
+
+
                                  {(ruolo === 'admin') && (
                                     <div className="personal-area-container personal-area-border personal-area-rounded personal-area-padding">
                                     <h4>GESTIONE UTENTI</h4>
@@ -519,8 +546,9 @@ function PersonalArea() {
                     )}
 
                     {/* Sezione: Possibilità di logout */}
-                    <div className="personal-area-text-center">
-                        <button className="personal-area-button personal-area-button-danger" onClick={AuthServices.dologout}>Esci</button>
+                    <div className="personal-area-text-center mb-5">
+                        <Button className="button-red-prod esci-personalarea " variant= "outline-danger" onClick={AuthServices.dologout}>
+                            <h4>Esci</h4></Button>
                     </div>
                 </div>
             </div>

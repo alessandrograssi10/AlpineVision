@@ -49,10 +49,10 @@ function Cart() {
         }
     }, []);
 
-    //  Aggiorna pulsante carrello
+    
     useEffect(() => {
         if (cartItems.length == 0) {
-            if(userID) setTotalPrice(0); //se attivo rompe tutto
+            if(userID) setTotalPrice(0); 
             console.log("Zero")
             setToggler(false);
         } else if (cartItems.length > 0) {
@@ -85,9 +85,7 @@ function Cart() {
         setTotalPrice(newPrice);
 
         if(userID){
-            console.log("Entrsto ");
-            console.log("Colore ",colore);
-
+            
         const myHeadersrm = new Headers();
         myHeadersrm.append("Content-Type", "application/json");
 
@@ -97,7 +95,7 @@ function Cart() {
             "color": `${colore}`,
             "type": colore ? 'product' : '', 
         });
-        console.log("DIO", rawrm)
+       
 
         const requestOptionsrm = {
             method: "DELETE",
@@ -105,7 +103,7 @@ function Cart() {
             body: rawrm,
             redirect: "follow"
         };
-        console.log("Prima Fetch ");
+       
 
         fetch("http://localhost:3000/api/carts/remove", requestOptionsrm)
             .then((response) => console.log("GGGGGGG",rawrm,"",response.text()))
@@ -114,7 +112,7 @@ function Cart() {
             .catch((error) => console.error(error));
     }
         localStorage.setItem('Cart_Trig', "Trigger");
-        console.log("Nuovo Carrello",newCartItems)
+       
     }
 
     const handleCheckout = () => {
@@ -125,9 +123,9 @@ function Cart() {
 
     return (
         <Container fluid className="mb-5">
-            <Row className="mt-5 mb-5">
+            <Row className="mt-5 mb-5 m-5">
                 <Col className="d-flex align-items-center">
-                    <h1 className="fw-bold">IL TUO CARRELLO</h1>
+                    <h2 className="fw-bold ">IL TUO CARRELLO</h2>
                     <img id="cartimage" src={cartimage} alt="cartimage" />
                 </Col>
             </Row>
@@ -157,7 +155,7 @@ function Cart() {
                             <Col xs="6">
                                 <Link to="/Payments/cart" className="fs-4">
                                     <Button size="lg" id="buyButtonn" variant="outline-dark" className='button-black-prod' onClick={handleCheckout}>
-                                    <h4 className='p-0 m-0'>Procedi all'acquisto</h4>
+                                    <h4 className='p-0 m-0 '>Procedi all'acquisto</h4>
                                     </Button>
                                 </Link>
                             </Col>

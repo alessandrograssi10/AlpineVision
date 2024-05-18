@@ -22,7 +22,9 @@
 }
 
 .personal-area-margin-bottom {
-    margin-bottom: 1.5rem;
+    margin-bottom: 5rem;
+
+  
 }
 
 .personal-area-border {
@@ -72,7 +74,7 @@
 .shopping-image-walk {
     animation: walkAnimation1 10s infinite alternate; 
     position: relative;
-    width: 25vw;
+    width: 20vw;
     top: 0vh; 
    
 }
@@ -80,9 +82,9 @@
 .shopping-image-walk2 {
     animation: walkAnimation2 10s infinite alternate; 
     position: relative;
-    width: 25vw;
+    width: 20vw;
     top: 0vh; 
-    right:-30vw;
+    right:-40vw;
 }
 
 @keyframes walkAnimation1 {
@@ -167,4 +169,41 @@
     width: 15vh;
     height: 100%;
     object-fit: cover;
+}
+
+
+.personal-area-form {
+    max-width: 400px ;
+    margin-top: 2rem;
+    margin:  2rem auto;
+    padding: 20px;
+
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 0.25rem;
+}
+
+.personal-area-input {
+    width: 20vw; 
+    padding: 1rem;
+    margin-top: 0.5rem;
+    border: 2px solid #ced4da;
+    border-radius: 0.25rem;
+    box-sizing: border-box;
+}
+
+/* Se desideri applicare margini diversi per la visualizzazione mobile */
+@media (max-width: 768px) {
+    .personal-area-input {
+        width: 60vw ; 
+        margin-right: 0; /* Rimuovi il margine destro nella visualizzazione mobile */
+    }
+}
+
+.esci-personalarea{
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    width: 20vw !important;
+    
+
 }
