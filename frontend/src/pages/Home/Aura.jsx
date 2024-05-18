@@ -20,23 +20,34 @@ export const Aura = () => {
       ];
     return (
         <>
-        
-        <Row className="p-0 m-0 bg-black">
-                <h2 style={{color: 'white', margin: '3vh',alignItems: 'center'}}>Eternal Aura</h2>
-        </Row>
-         <Row className="m-0 p-0 bg-black">
-ù           <Plx parallaxData={zoomOut} >
-                <img src={Mask} className="img-aura" alt="mask" style={{ position: 'relative', zIndex: 1 }} />
-            </Plx>
-            
-        </Row>
-        <Row className="justify-content-center bg-black m-0">
-            <Col xs={12} className="d-flex justify-content-center align-items-center pb-5">
-                <Button id="explore-btn" as={Link} to="/product/664367419b98ac33f5ef2b38" className="button btn-outline-light btn-lg mt-5">
-                    <div id="explore-text">Acquista ora</div>
-                </Button>
-            </Col>
-        </Row>
+       <Row className="p-0 m-0 bg-black" style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+          <h2 style={{color: 'white', margin: '5vh'}}>Eternal Aura</h2>
+      </Row>
+      
+      <Row className="m-0 p-0 w-100 bg-black">
+        <Plx parallaxData={zoomOut}>
+
+          <img
+            src={Mask}
+            alt="mask"
+            style={{ width: '100%', height: 'auto', position: 'relative', zIndex: 1, transform: 'scale(1.1)' }}
+          />
+        </Plx>
+
+      </Row>
+
+      <Row className="justify-content-center m-0 bg-black d-flex">
+      <Col xs={12} sm={6} md={4} lg={3} className="d-flex justify-content-center">
+        <Button 
+          as={Link} 
+          to="/product/664367419b98ac33f5ef2b38" 
+          className="custom-button btn-lg btn-md"
+        >
+          <div id="explore-text">Acquista ora</div>
+        </Button>
+      </Col>
+      </Row>
+
     </>
     );
 }

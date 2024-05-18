@@ -11,10 +11,10 @@ const exampleParallaxData = [
     duration: '150vh',
     properties: [
       {
-        startValue: 0.85,
+        startValue: 0.8,
         endValue: 1,
         property: "scale",
-        easing: "ease-in-out"
+        easing: "ease-in"
       },
       {
         startValue: 1,
@@ -64,12 +64,12 @@ export const Tumblr = () => {
           <p className="intro-text">Alla ricerca di ciò che ami</p>
           <Row className="justify-content-center m-0">
             <Col xs="auto">
-              <Button id="explore-btn" as={Link} to="/blog" className="button btn-outline-light btn-lg mt-5">
+              <Button  as={Link} to="/blog" className="custom-button btn-outline-light btn-lg mt-5">
                 <div id="explore-text">Blog</div>
               </Button>
             </Col>
             <Col xs="auto">
-              <Button id="explore-btn" as={Link} to="/products" className="button btn-outline-light btn-lg mt-5">
+              <Button  as={Link} to="/products" className="custom-button btn-outline-light btn-lg mt-5">
                 <div id="explore-text">Acquista ora</div>
               </Button>
             </Col>

@@ -11,10 +11,10 @@ const exampleParallaxData = [
     duration: '150vh',
     properties: [
       {
-        startValue: 0.85,
+        startValue: 0.8,
         endValue: 1,
         property: "scale",
-        easing: "ease-in-out"
+        easing: "ease-in"
       },
       {
         startValue: 1,

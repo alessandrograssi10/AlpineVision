@@ -79,7 +79,7 @@ function AboutUs() {
 return (
     <>
         <Plx className="teamParallax" parallaxData={parallaxDataText} style={{ backgroundImage: `url(${happyTeam})` }}>
-  <h1 className="display-2 display-1-md display-1-sm" >Un team di professionisti</h1>
+  <h1 className="display-2 display-1-md display-1-sm" style={{fontWeight: '500'}}>Un team di professionisti</h1>
 </Plx>
     <Plx className="backgroundParallax" parallaxData={parallaxDataBackground} style={{ backgroundImage: `url(${backgroundImage})` }}>
     <Container>

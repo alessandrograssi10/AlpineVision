@@ -37,48 +37,48 @@ const products = [
 ];
 
 const ProductCard = ({ product }) => (
-    <Col xs={12} sm={6} md={4} lg={3}>
-    <Link to={product.link} style={{ textDecoration: 'none' }}>
-    <Card className="m-3 border-0" >
-      <div style={{ width: '100%', paddingTop: '100%', position: 'relative' }}>
-        <Card.Img 
-          variant="top" 
-          src={product.imageUrl} 
-          style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', objectFit: 'cover' }} 
-        />
-      </div>
-      <Card.Body style={{ flex: '3', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-        <Card.Title>{product.name}</Card.Title>
-        <Card.Text style={{ marginTop: '0.5rem' }}>{product.price}</Card.Text>
-      </Card.Body>
-    </Card>
+  <Col xs={12} sm={6} md={4} lg={3} className="d-flex justify-content-center">
+    <Link to={product.link} style={{ textDecoration: 'none', width: '100%' }}>
+      <Card className="m-3 border-0 h-100">
+        <div style={{ width: '100%', paddingTop: '100%', position: 'relative' }}>
+          <Card.Img
+            variant="top"
+            src={product.imageUrl}
+            style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', objectFit: 'cover' }}
+          />
+        </div>
+        <Card.Body style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', textAlign: 'center' }}>
+          <Card.Title>{product.name}</Card.Title>
+          <Card.Text style={{ marginTop: '0.5rem' }}>{product.price}</Card.Text>
+        </Card.Body>
+      </Card>
     </Link>
   </Col>
-
 );
 
 export const Products = () => {
   return (
     <Container fluid className="p-0 m-0">
-        <Row style={{ height: '80vh' }} className="m-0 p-0">
-      <Row className=" m-0 p-0" style={{height: '10vh'}}>
-        <h2 className="text-center my-4 w-100">Trend della settimana</h2>
+      <Row className="m-0 p-0 w-100" style={{ height: 'auto', minHeight: '80vh' }}>
+        <Col xs={12} className="m-0 p-0">
+          <h2 className="text-center my-4">Trend della settimana</h2>
+        </Col>
+        <Row className="w-100 m-0 p-0">
+          {products.map((product, index) => (
+            <ProductCard key={index} product={product} />
+          ))}
+        </Row>
       </Row>
-      <Row className="w-100 m-0 p-0">
-        {products.map((product, index) => (
-          <ProductCard key={index} product={product} />
-        ))}
+      <Row className="m-0 p-0 w-100">
+        <Col xs={12} className="p-0">
+          <img
+            src={Uomo}
+            alt="mask"
+            className="img-fluid"
+            style={{ width: '100%', height: 'auto', transform: 'scale(1.1)' }}
+          />
+        </Col>
       </Row>
-    </Row>
-    <Row className="m-0 p-0 w-100">
-      <img
-        src={Uomo}
-        alt="mask"
-        style={{ width: '100%', height: 'auto', position: 'relative', zIndex: 1, transform: 'scale(1.1)' }}
-      />
-    </Row>
-
     </Container>
   );
 };
-
