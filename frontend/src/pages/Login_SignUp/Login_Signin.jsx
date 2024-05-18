@@ -60,7 +60,6 @@ const LoginSignupForm = () => {
       .then((result) => {
         localStorage.setItem("token", result.token);
         localStorage.setItem("userId", result.userId);
-        localStorage.setItem("ruoloUser", result.ruolo);
         localStorage.setItem("emailuser", loginEmail);
         window.location.href = "/AreaPersonale";
       })

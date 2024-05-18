@@ -1,7 +1,7 @@
 
-export async function getUserRole(userId) {
+export async function getUserRole() {
 
-    console.log("entrato", userId)
+    const userId = localStorage.getItem('userId');
     const url = `http://localhost:3000/api/users/${userId}/role`;
     const jwtToken = localStorage.getItem('token');
     console.log("jwtToken", jwtToken)

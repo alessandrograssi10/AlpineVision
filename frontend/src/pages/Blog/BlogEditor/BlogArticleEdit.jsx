@@ -2,11 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { Container, Row, Col, Button, Image, Form, Alert } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
 import { Link } from 'react-router-dom';
+import { getUserRole } from '../../../assets/Scripts/GetUserInfo.js';
 
 export const BlogArticleEdit = () => {
   const { id } = useParams(); //prendo l'id dall'url
   localStorage.setItem("prevPage","Edit"); //setto che sono nella pagina editing
-  const ruolo = localStorage.getItem("ruoloUser");
+  const [ruolo, setRuolo] = useState(null);
 
   // Se esistono prendo gli elementi dall'localstorage senno prendo un elemneto vuoto per le seguenti variabili
   const [blogPosts, setBlogPosts] = useState(() => {const savedPosts = sessionStorage.getItem('blogPosts');return savedPosts ? JSON.parse(savedPosts) : [];}); 
@@ -17,7 +18,17 @@ export const BlogArticleEdit = () => {
 
   // Vai alla home se non sei admin
   useEffect(() => {
-    if(ruolo !== "admin" && ruolo !== "editor-blog"){ window.location.href = '/home'; }
+    (async () => {
+      try {
+        const fetchedRole = await getUserRole();
+        if(!fetchedRole) setRuolo("user");
+        else setRuolo(fetchedRole);
+        if(fetchedRole !== "admin" && fetchedRole !== "editor-blog"){ window.location.href = '/home'; }
+      } catch (error) {
+        console.error('Errore durante il recupero del ruolo:', error);
+        setRuolo("user");
+      }
+    })();
   }, []);
 
   // Recupero l'immagine copertina tramite l'Id
@@ -128,7 +139,9 @@ export const BlogArticleEdit = () => {
     return <div>Caricamento...</div>;
   }
 
-  return (
+  if (ruolo !== "admin" && ruolo !== "editor-blog") {
+    return null;
+  } else return (
     <Container fluid className="m-1 p-0">
       {/* Pulsante per tornare all'area editor */}
       <Button as={Link} to={`/BlogEdit`} onClick={() => handleSavePost()} className="mt-3" variant="outline-success">

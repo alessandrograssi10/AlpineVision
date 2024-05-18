@@ -12,6 +12,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons';
 import heart from '../../assets/Images/heart-3.png';
 import boxordine from '../../assets/Images/boxordine.png';
+import { getUserRole } from '../../assets/Scripts/GetUserInfo.js';
 
 import filledHeart from '../../assets/Images/heart-full.png';
 
@@ -20,7 +21,7 @@ function PersonalArea() {
     const [orders, setOrders] = useState([]);
     const [userData, setUserData] = useState(null); 
     const [walking, setWalking] = useState(true);
-    const ruolo = localStorage.getItem("ruoloUser");
+    const [ruolo, setRuolo] = useState(null);
     const userId = localStorage.getItem('userId'); 
     const [expandedOrderIds, setExpandedOrderIds] = useState([]);
     const [itemsInfo, setItemsInfo] = useState({});
@@ -35,6 +36,18 @@ function PersonalArea() {
     const [showChangeEmail, setShowChangeEmail] = useState(false);
     const [buttonVisible, setButtonVisible] = useState(true);
 
+    useEffect(() => {
+        (async () => {
+          try {
+            const fetchedRole = await getUserRole();
+            if(!fetchedRole) setRuolo("user");
+            else setRuolo(fetchedRole);
+          } catch (error) {
+            console.error('Errore durante il recupero del ruolo:', error);
+            setRuolo("user");
+          }
+        })();
+      }, [userId]);
 
     useEffect(() => {
         const timers = Object.keys(animateFav).map(id => {
@@ -47,6 +60,8 @@ function PersonalArea() {
         });
         return () => timers.forEach(timer => clearTimeout(timer));
     }, [animateFav]);
+
+
     const handleRoleChange = async (userId, newRole) => {
         setRoles(prevRoles => ({ ...prevRoles, [userId]: newRole }));
 

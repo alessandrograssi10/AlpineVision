@@ -2,10 +2,11 @@ import React, { useEffect, useState,useLayoutEffect } from 'react';
 import { Container, Card, Row, Col, Button, Alert, Form } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { fetchBlogPosts, getSessionStorageOrDefault, fetchBlobFromUrl } from './BlogEditLogic';
+import { getUserRole } from '../../../assets/Scripts/GetUserInfo.js';
 
 
 export const BlogEdit = () => {
-  const ruolo = localStorage.getItem("ruoloUser");
+  const [ruolo, setRuolo] = useState(null);
   /*const [blogPosts, setBlogPosts] = useState(() => getSessionStorageOrDefault('blogPosts', [])); // Elementi*/
   const [blogPosts, setBlogPosts] = useState(() => getSessionStorageOrDefault('blogPosts', [])); // Elementi
 
@@ -17,7 +18,21 @@ export const BlogEdit = () => {
   let firstOpen = false;
 
   useEffect(() => {
-    if(ruolo !== "admin" && ruolo !== "editor-blog"){ window.location.href = '/home'; }
+    (async () => {
+      try {
+        const fetchedRole = await getUserRole();
+        if(!fetchedRole) setRuolo("user");
+        else setRuolo(fetchedRole);
+        if(fetchedRole !== "admin" && fetchedRole !== "editor-blog"){ window.location.href = '/home'; }
+      } catch (error) {
+        console.error('Errore durante il recupero del ruolo:', error);
+        setRuolo("user");
+      }
+    })();
+  }, []);
+
+  useEffect(() => {
+
       if(!firstOpen){
           firstOpen = true;
       if(localStorage.getItem("prevPage") !== "Edit")
@@ -34,7 +49,7 @@ export const BlogEdit = () => {
           localStorage.setItem("prevPage","");
         }
       }
-  }, []);
+  }, [ruolo]);
 
   useLayoutEffect(() => {
     if (blogPosts.length === 0) {
@@ -305,8 +320,10 @@ async function uploadImage(postId, file, uploadUrl) {
 }
 
 
-if(ruolo !== "admin" && ruolo !== "editor-blog"){ window.location.href = '/home'; }
-else return (
+ 
+  if (ruolo !== "admin" && ruolo !== "editor-blog") {
+    return null;
+  } else return (
   <Container fluid className="p-0 m-0">
     {/* Alert per avvertire che si è in modalità editing */}
     <Alert variant={'warning'} className='m-3 mt-4'>
