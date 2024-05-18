@@ -366,3 +366,50 @@
   transform: scaleX(0);
   transform-origin: right;
 }
+
+
+/**/ /*red*/
+
+.button-red-prod {
+  position: relative;
+  padding: 10px 20px;
+  background-color: white;
+  color: rgb(255, 0, 0);
+  border: 2px solid rgb(255, 0, 0);
+  cursor: pointer;
+  text-align: center;
+  width: 30vw; 
+  border-radius: 5px;
+}
+
+.button-red-prod::before, .button-red-prod::after {
+  content: "";
+  position: absolute;
+  top: -10px;
+  right: 20px;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-bottom: 10px solid rgb(255, 0, 0);
+}
+
+.button-red-prod::after {
+  right:5px;
+  top: -15px;
+  border-bottom-color: #4CAF50;
+  border-left: 15px solid transparent; 
+  border-right: 15px solid transparent; 
+  border-bottom: 15px solid rgb(255, 0, 0); 
+
+}
+
+.button-red-prod-nomon {
+  position: relative;
+  padding: 10px 20px;
+  background-color: white;
+  color: rgb(255, 0, 0);
+  border: 2px solid rgb(255, 0, 0);
+  cursor: pointer;
+  text-align: center;
+  width: 30vw; 
+  border-radius: 5px; 
+}
