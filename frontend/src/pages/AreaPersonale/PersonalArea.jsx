@@ -81,8 +81,6 @@ function PersonalArea() {
             }
 
             const data = await response.json();
-            console.log('Success:', data);
-            //localStorage.setItem("ruoloUser",newRole);
 
         } catch (error) {
             console.error('Error:', error);
@@ -171,13 +169,19 @@ function PersonalArea() {
             try {
                 const response = await fetch(`http://localhost:3000/api/orders/getOrdersByUserId/${userId}`);
                 if (!response.ok) {
-                    throw new Error('La risposta della rete non è stata buona');
+                    //throw new Error('La risposta della rete non è stata buona');
+                    setOrders([]); 
                 }
                 const data = await response.json();
-                setOrders(data); 
-                console.log(data,"ordini");
+                if (Array.isArray(data)) {
+                    setOrders(data);
+                } else {
+                    setOrders([]);
+                } 
             } catch (error) {
-                console.error('Si è verificato un problema con l\'operazione di fetch:', error);
+                setOrders([]); 
+
+                //console.error('Si è verificato un problema con l\'operazione di fetch:', error);
             }
         };
 
@@ -204,10 +208,8 @@ function PersonalArea() {
                     return response.json();
                 })
                 .then(async data => {
-                    console.log("Ricevo i data", data);
 
                     const favoriteItems = data.favourites;
-                    console.log("favoriteItems", favoriteItems);
 
                     try {
                         const fetchDetails = favoriteItems.map(item =>
@@ -219,7 +221,6 @@ function PersonalArea() {
                                 })
                         );
                         const detailsArray = await Promise.all(fetchDetails);
-                        console.log("detailsArray", detailsArray);
 
                         const details = detailsArray.reduce((acc, current) => {
                             if (current && current.info) {
@@ -227,7 +228,6 @@ function PersonalArea() {
                             }
                             return acc;
                         }, {});
-                        console.log("FAVOURITE DETAILS", details);
 
                         setFavorite(details);
                     } catch (error) {

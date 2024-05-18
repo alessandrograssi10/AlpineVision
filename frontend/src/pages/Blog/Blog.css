@@ -1,20 +1,19 @@
 .card-blog {
-    /*box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);*/
     max-width: auto !important;
     max-height: 600px!important;
     min-height: auto!important;
 }
 .centered-text-blog {
-    color: white !important; /* Imposta il colore del testo su bianco */
-    font-weight: bold; /* Imposta lo stile del font su grassetto */
+    color: white !important;
+    font-weight: bold;
     text-align: center;
     width: 100%;
     z-index: 2;
 
 }
 .centered-text-blog-edit {
-  color: white !important; /* Imposta il colore del testo su bianco */
-  font-weight: bold; /* Imposta lo stile del font su grassetto */
+  color: white !important;
+  font-weight: bold;
   text-align: center;
   width: 100%;
   z-index: 2;
@@ -52,9 +51,7 @@
 }
 
 .img-car-blog {
-    /* Aggiungi qui eventuali personalizzazioni aggiuntive per la card */
     object-fit: cover !important;
-
   }
   
   .zoom-image {
@@ -68,16 +65,16 @@
   
   .zoom-image img,
 .centered-text-blog {
-    transition: transform 0.3s ease; /* Aggiungi la stessa transizione qui */
+    transition: transform 0.3s ease;
   }
   
   .zoom-image:hover img,
 .zoom-image:hover .centered-text-blog  {
-    transform: scale(1.1); /* Imposta la scala dell'immagine al 110% quando ci si passa sopra */
+    transform: scale(1.1);
   }
   
   .zoom-image img {
-    transform: scale(1); /* Riporta l'immagine alla dimensione originale */
+    transform: scale(1);
   }
 
   

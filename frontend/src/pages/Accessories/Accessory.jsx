@@ -128,71 +128,73 @@ export const Accessory = () => {
     }
 
     return (
-        <Container fluid className="p-0">
+      <Container fluid className="p-0">
           <Row className="d-flex align-items-center pl-3 pt-3 ml-0 mt-4 equal-height">
-            <Col lg={7} className="d-flex  flex-column p-3 pl-0 m-0">
-              <Carousel   indicators={false}  activeIndex={activeIndex} onSelect={(selectedIndex, e) => setActiveIndex(selectedIndex)} className=' m-0 mt-0 mb-0 mr-0'>
-                {imageUrls.map((imageSrc, idx) => (
-                  <Carousel.Item key={idx}>
-                    <img
-                      className="d-block w-100 img-prod align-items-center"
-                      src={imageSrc}
-                    />
-                  </Carousel.Item>
-                ))}
-              </Carousel>
-            </Col>
-            <Col lg={5} className="white-panel  p-0 justify-content-center carosello-prod">
-              <div className="shadow-box mx-0">
-                <Row className="d-flex mt-3 ml-4 align-items-center">
-                  <div className='m-3 mt-1 mb-1'>
-                    <Link to={`/home`} className='text-box-prod'>HOME / </Link> <Link to={`/accessories`} className='text-box-prod'>ACCESSORI / </Link> <Link className='text-box-prod'>{product[0]?.name?.toUpperCase()}</Link>
+              <Col lg={7} className="d-flex flex-column p-3 pl-0 m-0">
+                  <Carousel indicators={false} activeIndex={activeIndex} onSelect={(selectedIndex, e) => setActiveIndex(selectedIndex)} className='m-0 mt-0 mb-0 mr-0'>
+                      {imageUrls.map((imageSrc, idx) => (
+                          <Carousel.Item key={idx}>
+                              <img
+                                  className="d-block w-100 img-prod align-items-center"
+                                  src={imageSrc}
+                                  alt="Product"
+                              />
+                          </Carousel.Item>
+                      ))}
+                  </Carousel>
+              </Col>
+              <Col lg={5} className="white-panel p-0 justify-content-center carosello-prod">
+                  <div className="shadow-box mx-0">
+                      <Row className="d-flex mt-3 ml-4 align-items-center">
+                          <div className='m-3 mt-1 mb-1'>
+                              <Link to={`/home`} className='text-box-prod'>HOME / </Link>
+                              <Link to={`/accessories`} className='text-box-prod'>ACCESSORI / </Link>
+                              <Link className='text-box-prod'>{product[0]?.name?.toUpperCase()}</Link>
+                          </div>
+                      </Row>
+                      <Row className="justify-content-center m-0 mt-3 ml-0 p-0">
+                          <h6 className="text-left text-black mb-2">{productInfo?.categoria?.toUpperCase()}</h6>
+                      </Row>
+                      <Row className="justify-content-center m-0 mt-1 ml-0 p-0">
+                          <h1 className="text-left text-black title-text-prod">{product[0]?.name}</h1>
+                      </Row>
+                      <Row className="justify-content-center m-0 mt-1 ml-0 p-0 mb-3">
+                          <h3 className="text-left text-black text-bold price-text-prod">{product[0]?.prezzo} €</h3>
+                      </Row>
+                      <div className="border-bottom"></div>
+  
+                      {product[0]?.quantita > 0 && (
+                          <Row className="justify-content-center m-0 mt-1 ml-0 p-0 mb-0">
+                              <Col xs={12} className="justify-content-left align-items-center pb-4 m-0 mt-1 ml-0 p-0">
+                                  <Button className={`button-black-prod m-2 mt-5 ${buttonState}`} onClick={addToCart} variant="outline-dark pl-0 ml-0" size="lg">
+                                      {buttonState === 'loading' && <div className="spinner"></div>}
+                                      {buttonState === 'confirmed' && <BsCheck className='icon-confirmed'/>}
+                                      {buttonState === 'default' && <h3 className='p-0 m-0'>AGGIUNGI AL CARRELLO</h3>}
+                                  </Button>
+                                  <div style={{ width: '10px' }}></div>
+                                  <Button className={`button-black-prod-nomon m-2 mt-4 mb-0 ${buttonStateDirect}`} onClick={() => DirectPay()} variant="outline-dark" size="lg">
+                                      {buttonStateDirect === 'loading' && <div className="spinner"></div>}
+                                      {buttonStateDirect === 'default' && <div className='p-0 m-0'><h3 className='p-0 m-0'>COMPRA ORA</h3></div>}
+                                  </Button>
+                              </Col>
+                          </Row>
+                      )}
+                      {product[0]?.quantita <= 0 && (
+                          <Row className="justify-content-center m-3 mt-4 ml-2 p-0 mb-0">
+                              <Col xs={12} className="justify-content-left align-items-center pb-4 m-0 mt-1 ml-2 p-0">
+                                  <h5 className='p-0 ml-5 m-0'>PRODOTTO NON DISPONIBILE</h5>
+                              </Col>
+                          </Row>
+                      )}
+                      <Row className="justify-content-center m-0 mt-1 ml-0 p-0 mb-3">
+                          <h6 className="text-left text-black text-bold">SKU: {product[0]?._id}</h6>
+                      </Row>
                   </div>
-                </Row>
-                <Row className="justify-content-center m-0 mt-3 ml-0 p-0">
-                  <h6 className="text-left text-black mb-2">{productInfo?.categoria?.toUpperCase()}</h6>
-                </Row>
-                <Row className="justify-content-center m-0 mt-1 ml-0 p-0">
-                  <h1 className="text-left text-black title-text-prod">{product[0]?.name}</h1>
-                </Row>
-                <Row className="justify-content-center m-0 mt-1 ml-0 p-0 mb-3">
-                  <h3 className="text-left text-black text-bold price-text-prod">{product[0]?.prezzo} €</h3>
-                </Row>
-                <div className="border-bottom"></div>
-
-                {product[0]?.quantita > 0 && (
-
-                <Row className="justify-content-center m-0 mt-1 ml-0 p-0 mb-0">
-                  <Col xs={12} className="justify-content-left align-items-center pb-4 m-0 mt-1 ml-0 p-0">
-                    <Button className={`button-black-prod m-2 mt-5 ${buttonState}`} onClick={addToCart} variant="outline-dark pl-0 ml-0" size="lg">
-                      {buttonState === 'loading' && <div className="spinner "></div>}
-                      {buttonState === 'confirmed' && <BsCheck className='icon-confirmed'/>}
-                      {buttonState === 'default' && <h3 className='p-0 m-0'>AGGIUNGI AL CARRELLO</h3>}
-                    </Button>
-                    <div style={{ width: '10px' }}></div>
-                    <Button className={`button-black-prod-nomon m-2 mt-4 mb-0 ${buttonStateDirect}`} onClick={() => DirectPay()} variant="outline-dark" size="lg">
-                      {buttonStateDirect === 'loading' && <div className="spinner "></div>}
-                      {buttonStateDirect === 'default' && <div className='p-0 m-0'><h3 className='p-0 m-0'>COMPRA ORA</h3></div>}
-                    </Button>
-                  </Col>
-                </Row>
-                )}
-                 {product[0]?.quantita <= 0 && (
-                        <Row className="justify-content-center m-3 mt-4 ml-2 p-0 mb-0">
-                            <Col xs={12} className="justify-content-left align-items-center pb-4 m-0 mt-1 ml-2 p-0 " >
-                            <h5 className='p-0 ml-5 m-0'>PRODOTTO NON DISPONIBILE</h5>
-                            </Col>
-                        </Row>
-                        )}
-                <Row className="justify-content-center m-0 mt-1 ml-0 p-0 mb-3">
-                  <h6 className="text-left text-black text-bold">SKU: {product[0]?._id}</h6>
-                </Row>
-              </div>
-            </Col>
+              </Col>
           </Row>
           <Row className="justify-content-center m-0 mt-5 ml-0 p-0 mb-3">
-            <h3 className="text-center text-black text-bold">{product[0]?.description}</h3>
+              <h3 className="text-center text-black text-bold">{product[0]?.description}</h3>
           </Row>
-        </Container>
-    );      
+      </Container>
+  );
 };

@@ -33,7 +33,6 @@ function Cart() {
                 const provTotalPrice = result.reduce((somma, cartItem) => somma + cartItem.total, 0);
                 setTotalPrice(provTotalPrice);
                 setToggler(result.length !== 0);
-                console.log("PRese da fetch")
             })
             
             .catch((error) => {
@@ -58,7 +57,6 @@ function Cart() {
     useEffect(() => {
         if (cartItems.length == 0) {
             if(userID) setTotalPrice(0); //se attivo rompe tutto
-            console.log("Zero")
             setToggler(false);
         } else if (cartItems.length > 0) {
             setToggler(true);
@@ -83,15 +81,12 @@ function Cart() {
         if(colore)  newCartItems = cartItems.filter(product => !(product.productId === delProductId && product.color === colore))
         else newCartItems = cartItems.filter(product => product.productId !== delProductId);
         
-       console.log("Nuovo Carrello",newCartItems)
 
         setCartItems(newCartItems);
         const newPrice = totalPrice - priceToDel;
         setTotalPrice(newPrice);
 
         if(userID){
-            console.log("Entrsto ");
-            console.log("Colore ",colore);
 
         const myHeadersrm = new Headers();
         myHeadersrm.append("Content-Type", "application/json");
@@ -109,23 +104,19 @@ function Cart() {
             body: rawrm,
             redirect: "follow"
         };
-        console.log("Prima Fetch ");
 
         fetch("http://localhost:3000/api/carts/remove", requestOptionsrm)
-            .then((response) => console.log("GGGGGGG",rawrm,"",response.text()))
+            //.then((response) => "console.log("GGGGGGG",rawrm,"",response.text())")
             .then((result) => localStorage.setItem('Cart_Trig', "Trigger"))
 
             .catch((error) => console.error(error));
     }
         localStorage.setItem('Cart_Trig', "Trigger");
-        console.log("Nuovo Carrello",newCartItems)
     }
 
     const handleCheckout = () => {
         localStorage.setItem('totalPrice', totalPrice.toFixed(2));
     }
-
-    console.log(cartItems);
 
     return (
         <Container fluid className="mb-5">

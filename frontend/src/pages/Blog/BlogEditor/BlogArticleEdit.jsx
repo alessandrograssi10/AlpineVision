@@ -18,6 +18,7 @@ export const BlogArticleEdit = () => {
 
   // Vai alla home se non sei admin
   useEffect(() => {
+    if(!localStorage.getItem('userId')){ window.location.href = '/home'; }
     (async () => {
       try {
         const fetchedRole = await getUserRole();

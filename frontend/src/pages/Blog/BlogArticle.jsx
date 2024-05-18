@@ -26,7 +26,6 @@ export const BlogArticle = () => {
       .then((data) => {
         // Filtriamo i dati ricevuti per trovare il post con l'ID corretto
         const postFound = data.find((post) => post._id === id);
-        console.log('Post ricevuto:', postFound); // Verifica i dati del post trovato
         setPost(postFound); // Salviamo il post trovato
       })
       .catch((error) => {
@@ -35,7 +34,6 @@ export const BlogArticle = () => {
   }, [id]); // Dipendenza di useEffect
 
   if (!post) {
-    console.log('Caricamento o nessun post trovato');
     return <div>Caricamento...</div>;
   }
 

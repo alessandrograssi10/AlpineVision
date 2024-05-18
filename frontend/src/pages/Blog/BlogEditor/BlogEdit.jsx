@@ -18,6 +18,7 @@ export const BlogEdit = () => {
   let firstOpen = false;
 
   useEffect(() => {
+    if(!localStorage.getItem('userId')){ window.location.href = '/home'; }
     (async () => {
       try {
         const fetchedRole = await getUserRole();
@@ -71,13 +72,10 @@ export const BlogEdit = () => {
         contenutoFile: null,
         id: post._id
       }));
-      console.log(newItems);
       setImages(JSON.parse(JSON.stringify(newItems))); 
       setImagesCopy(JSON.parse(JSON.stringify(newItems))); 
     };
     setImagesFun();
-  
-  
   }
   },[blogPosts, imagesLoaded],[imagesLoaded]);
   
@@ -294,7 +292,6 @@ console.log(updatedBlogPosts);
 
       await Promise.all(imageUploadPromises);
 
-      console.log("Tutti i post sono stati caricati con successo");
       setBlogPosts(updatedBlogPosts);  
       setBlogPostsCopy([...updatedBlogPosts]); 
       setBlogPostsVerify(false);

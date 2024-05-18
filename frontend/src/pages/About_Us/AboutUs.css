@@ -1,64 +1,4 @@
-/* #mainContainer{
-    width:100%;
-}
 
-#hdDIV{
-    margin: 0px 0px 0px 0px;
-}
-
-#knowUsH1{
-    color:#fff;
-    position:absolute;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    z-index:1;
-    margin: 70px 0px 0px 25px ;
-    font-weight: bold;
-}
-
-#mountainPH{
-    width:100%;
-    height:600px;
-    object-fit: cover;
-
-    z-index:0;
-}
-
-#hdH1Container{
-    position:absolute;
-    color:#fff;
-    bottom:100px;
-}
-
-#infoProblemH1{
-    margin-bottom:0px;
-    z-index:1;
-}
-
-#skiGogglesPlus{
-
-    background-color: #DDA72D;
-    border-radius:0px 7px 7px 0px;
-}
-
-.img-resizing{
-    width:100%;
-    height:70%;
-}
-
-#pollutionImg{
-    border-radius:100px;
-    width:200px;
-}
-
-#greenBg{
-    background-color: #C5E7D3;
-}
-
-#mateImg{
-    margin-top:80px;
-    margin-bottom:100px;
-} */
 .MyAwesomeParallax {
     text-align: center;
     padding: 50px 20px;
@@ -66,13 +6,11 @@
 
 
 .motivationalText {
-    position: absolute; /* Position absolutely within the parallax background */
-    width: 100%; /* Full width to align text center */
-    /* text-align: center;  */
-    transform: translateX(300px); /* Start off-screen to the right */
-    opacity: 0; /* Start invisible */
+    position: absolute; 
+    width: 100%; 
+    transform: translateX(300px); 
+    opacity: 0;
 }
-
 
 .teamParallax {
     height: 100vh;
@@ -80,8 +18,8 @@
     background-position: center;
     display: flex;
     justify-content: center;
-    align-items: flex-start; /* Changed to start to avoid vertical centering */
-    padding-top: 10vh; /* Added padding top to lower the header a bit */
+    align-items: flex-start; 
+    padding-top: 10vh; 
     color: black;
 }
 
@@ -94,25 +32,23 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    overflow: hidden; /* Add this to hide any overflowing content */
+    overflow: hidden; 
 }
+
 .backgroundParallax {
     background-size: cover;
     background-position: center;
-    padding: 20px 0; /* Add padding to avoid touching the edges */
+    padding: 20px 0; 
 }
 
-
-
-
 .valueBox {
-    height: 48vh; /* Limits the height of the card */
+    height: 48vh;
     display: flex;
     justify-content: center;
     align-items: center;
     text-align: center;
-    width: 100%; /* Takes full width of its container */
-    background-color: rgba(0, 0, 0, 0.6); /* Semi-transparent black */
+    width: 100%; 
+    background-color: rgba(0, 0, 0, 0.6); 
     color: white;
     padding: 5px;
     border-radius: 8px;
@@ -122,12 +58,12 @@
 .valueBox .card {
     background-color: transparent;
     border: none;
-    width: 100%; /* Ensures the card takes the full width of the .valueBox */
-    height: 100%; /* Ensures the card takes the full height of the .valueBox */
+    width: 100%; 
+    height: 100%;
     display: flex;
-    flex-direction: column; /* Changes the flex direction to column */
-    justify-content: center; /* Centers content vertically in the card */
-    align-items: center; /* Centers content horizontally */
+    flex-direction: column; 
+    justify-content: center;
+    align-items: center;
     box-shadow: 0 8px 16px rgba(0,0,0,0.2);
 }
 
@@ -136,60 +72,59 @@
     padding: 1rem;
     color: white;
     display: flex;
-    flex-direction: column; /* Aligns child elements (title, text) in a column */
-    justify-content: center; /* Ensures vertical centering of the content */
-    align-items: center; /* Ensures horizontal centering */
-    width: 100%; /* Full width of the parent card */
-    height: 100%; /* Full height to use all available space */
-    overflow: hidden; /* Prevents text from overflowing */
-    text-overflow: ellipsis; /* Adds an ellipsis if the text overflows */
+    flex-direction: column; 
+    justify-content: center;
+    align-items: center;
+    width: 100%; 
+    height: 100%;
+    overflow: hidden; 
+    text-overflow: ellipsis;
 }
 
 .valueBox .card-title, .valueBox .card-text {
     
-    overflow: hidden; /* Hides overflow */
-    text-overflow: ellipsis; /* Shows an ellipsis (...) if text overflows */
+    overflow: hidden; 
+    text-overflow: ellipsis;
 }
-
 
 .backgroundParallax {
     background-size: cover;
     background-position: center;
-    padding: 20px 0; /* Adjusts padding for aesthetic spacing */
+    padding: 20px 0;
 }
 
 .teamMember.card {
-    border: none; /* Removes borders from the card */
-    box-shadow: none; /* Removes any shadow to make the card flat */
-    background-color: rgba(0, 0, 0, 0.2); /* Very light semi-transparent black background for slight visibility */
+    border: none;
+    box-shadow: none;
+    background-color: rgba(0, 0, 0, 0.2);
 }
 
 .teamMember .card-body {
-    background-color: transparent; /* Ensures the card body has no distinct background */
+    background-color: transparent; 
 }
 
 .teamMember .card-title,
 .teamMember .card-text {
-    color: black; /* Changes text color to black for readability */
+    color: black; 
 }
 .teamMember img {
-    display: block; /* Changes display to block */
-    margin: 0 auto; /* Automatically centers the image horizontally */
-    width: 100px; /* Fixed width for consistency */
-    height: 100px; /* Fixed height for consistency */
-    border-radius: 50%; /* Keeps the rounded-circle appearance */
+    display: block;
+    margin: 0 auto;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%; 
 }
 .teamMember.card {
     display: flex;
     flex-direction: column;
-    align-items: center; /* Centers all children including img and card-body */
+    align-items: center; 
 }
 
 .map-container iframe {
-    width: 100%; /* Ensures the iframe takes the full width of its container */
-    height: 450px; /* Adjust height as necessary */
-    border: none; /* Removes border around iframe */
+    width: 100%; 
+    height: 450px; 
+    border: none;
 }
 .pageTitle {
-    font-size: 10vh; /* Adjust the size as needed */
+    font-size: 10vh; 
 }

@@ -14,14 +14,12 @@
   }
   
   .image-container img {
-    width: 20vw; /* Regola la larghezza delle immagini come desiderato */
-    height: auto; /* Regola l'altezza delle immagini come desiderato */
-    animation: moveImage 2s infinite alternate; /* Aggiungi l'animazione */
+    width: 20vw;
+    height: auto; 
+    animation: moveImage 2s infinite alternate; 
   }
 
  
-  
-  
   @keyframes moveImage {
     from {
       transform: translateX(-250px);

@@ -4,7 +4,6 @@ export async function getUserRole() {
     const userId = localStorage.getItem('userId');
     const url = `http://localhost:3000/api/users/${userId}/role`;
     const jwtToken = localStorage.getItem('token');
-    console.log("jwtToken", jwtToken)
 
     try {
         const response = await fetch(url, {
@@ -36,7 +35,6 @@ export async function verifyTokenAndUserId() {
     const jwtToken = localStorage.getItem('token');
     
     if (!userId || !jwtToken) {
-        console.log("No user ID or JWT token found in local storage.");
         localStorage.removeItem('token');
         localStorage.removeItem('userId');
         localStorage.removeItem('ruoloUser');
@@ -54,7 +52,6 @@ export async function verifyTokenAndUserId() {
 
         if (response.ok) {
             const data = await response.json();
-            console.log("Verification successful:", data);
             return true;
         } else {
             console.error("Verification failed. Status:", response.status);

@@ -69,11 +69,10 @@
     border-color: #fff;
 }
 
-/* CartCard.css */
 .cartproductimage {
     width: 40px;
-    border-radius: 70%; /* Rende l'immagine del prodotto circolare */
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Aggiunge una leggera ombra */
-    transition: transform 0.3s ease; /* Aggiunge una transizione fluida al passaggio del mouse */
+    border-radius: 70%; 
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease; 
 }
 

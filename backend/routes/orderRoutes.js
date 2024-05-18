@@ -190,7 +190,8 @@ router.get('/getOrdersByUserId/:userId', async (req, res) => {
         const orders = await ordersCollection.find({ userId: new ObjectId(userId) }).toArray();
 
         if (orders.length === 0) {
-            return res.status(404).json({ message: "No orders found for this user" });
+            //return res.status(404).json({ message: "No orders found for this user" });
+            return;
         }
 
         res.status(200).json(orders);

@@ -205,7 +205,7 @@ export const Search = () => {
         </Row>
 
         <Row className="ml-0 mr-0 p-0 mt-3 m-5 ml-0 mb-1">
-  <h7 className="m-4 mb-1 p-0 boldText text-left ms-0">Elementi trovati</h7>
+  <h6 className="m-4 mb-1 p-0 boldText text-left ms-0">Elementi trovati</h6>
 </Row>
        
         <div className="border-bottom"></div>
