@@ -57,7 +57,7 @@ export const Pollution = () => {
       >
         <div className="text-container-video">
           <h1 className="custom-h1">Aiutaci a salvare il mondo</h1>
-          <p className="intro-text-video">Parte dei nostri ricavi aiutano a ridurre le planstiche nell'ambiente</p>
+          <p className="intro-text-video">Parte dei nostri ricavi aiutano a ridurre le plastiche nell'ambiente</p>
          
         </div>
       </Plx>
