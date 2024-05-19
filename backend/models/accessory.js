@@ -1,9 +1,9 @@
 const { getDb } = require('../config/database');
 const { ObjectId } = require('mongodb');
 
-async function createAccessory(name, description, prezzo) {
+async function createAccessory(name, description, prezzo,quantita) {
     const db = getDb();
-    const accessoryData = { name, description, prezzo, createdAt: new Date() };
+    const accessoryData = { name, description, prezzo,quantita, createdAt: new Date() };
     const result = await db.collection('Accessories').insertOne(accessoryData);
     return result.insertedId;
 }

@@ -6,14 +6,14 @@ const path = require('path');
 const { createAccessory, getAllAccessories, deleteAccessory } = require('../models/accessory');
 
 router.post('/', async (req, res) => {
-    const { name, description, prezzo } = req.body;
+    const { name, description, prezzo,quantita } = req.body;
 
     if (isNaN(prezzo)) {
         return res.status(400).json({ error: "Invalid price format" });
     }
 
     try {
-        const accessoryId = await createAccessory(name, description, prezzo);
+        const accessoryId = await createAccessory(name, description, prezzo, quantita);
         const baseDir = path.join(__dirname, '..', 'images', 'accessories', accessoryId.toString());
         fs.mkdirSync(baseDir, { recursive: true });
         fs.mkdirSync(path.join(baseDir, 'image1'), { recursive: true });

@@ -457,6 +457,7 @@ async function addAccessory(accessory) {
             "name": accessory.nome,
             "prezzo": Number(accessory.prezzo),
             "description": accessory.descrizione,
+            "quantita": accessory.quantita,
         };
 
         // Viene aggiunta l'accessorio nel database
