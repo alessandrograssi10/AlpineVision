@@ -272,7 +272,7 @@ export const Product = (addToStorage) => {
                         {product[selectedSetIndex]?.quantita <= 0 && (
                         <Row className="justify-content-center m-3 mt-4 ml-2 p-0 mb-0">
                             <Col xs={12} className="justify-content-left align-items-center pb-4 m-0 mt-1 ml-2 p-0 " >
-                            <h5 className='p-0 ml-5 m-0'>PRODOTTO NON DISPONIBILE</h5>
+                            <h4 className='p-0 ml-5 m-0'>PRODOTTO NON DISPONIBILE</h4>
                             </Col>
                         </Row>
                         )}

@@ -128,8 +128,8 @@ export const Accessory = () => {
     }
 
     return (
-      <Container fluid className="p-0">
-          <Row className="d-flex align-items-center pl-3 pt-3 ml-0 mt-4 equal-height">
+      <Container fluid className="p-0 mb-0">
+          <Row className="d-flex align-items-center pl-3 pt-0 ml-0 mt-0 equal-height">
               <Col lg={7} className="d-flex flex-column p-3 pl-0 m-0">
                   <Carousel indicators={false} activeIndex={activeIndex} onSelect={(selectedIndex, e) => setActiveIndex(selectedIndex)} className='m-0 mt-0 mb-0 mr-0'>
                       {imageUrls.map((imageSrc, idx) => (
@@ -192,8 +192,8 @@ export const Accessory = () => {
                   </div>
               </Col>
           </Row>
-          <Row className="justify-content-center m-0 mt-5 ml-0 p-0 mb-3">
-              <h3 className="text-center text-black text-bold">{product[0]?.description}</h3>
+          <Row className="justify-content-center m-0 mt-3 ml-0 p-0 mb-5 mx-3">
+              <h4 className="text-center text-black text-bold">{product[0]?.description}</h4>
           </Row>
       </Container>
   );
