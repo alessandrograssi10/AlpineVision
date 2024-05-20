@@ -7,7 +7,7 @@ import './AboutUs.css'; // Ensure your styles are set up correctly
 import backgroundImage from '../../assets/AboutUsPhoto/uomoCheSaltaConScii.jpg'; // Ensure this path is correct
 import happyTeam from '../../assets/AboutUsPhoto/team.jpg'; // Correct the image path and extension
 import Matteo from '../../assets/AboutUsPhoto/matteo.jpeg';
-import Alessandro from '../../assets/AboutUsPhoto/Alessandro.avif';
+import Alessandro from '../../assets/AboutUsPhoto/alessandro.png';
 import Gianluca from '../../assets/AboutUsPhoto/Gianluca.jpg';
 import Alessio from '../../assets/AboutUsPhoto/Alessio.webp';
 import chalet from '../../assets/AboutUsPhoto/chalet.jpg';
