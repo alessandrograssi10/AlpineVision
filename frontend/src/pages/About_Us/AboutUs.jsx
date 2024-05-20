@@ -9,7 +9,7 @@ import happyTeam from '../../assets/AboutUsPhoto/team.jpg'; // Correct the image
 import Matteo from '../../assets/AboutUsPhoto/matteo.png';
 import Alessandro from '../../assets/AboutUsPhoto/alessandro.png';
 import Gianluca from '../../assets/AboutUsPhoto/Gianluca.png';
-import Alessio from '../../assets/AboutUsPhoto/Alessio.webp';
+import Alessio from '../../assets/AboutUsPhoto/alessio.png';
 import chalet from '../../assets/AboutUsPhoto/chalet.jpg';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
