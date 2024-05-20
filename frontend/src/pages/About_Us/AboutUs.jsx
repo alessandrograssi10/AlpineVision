@@ -6,7 +6,7 @@ import { Container, Row, Col, Card } from 'react-bootstrap';
 import './AboutUs.css'; // Ensure your styles are set up correctly
 import backgroundImage from '../../assets/AboutUsPhoto/uomoCheSaltaConScii.jpg'; // Ensure this path is correct
 import happyTeam from '../../assets/AboutUsPhoto/team.jpg'; // Correct the image path and extension
-import Matteo from '../../assets/AboutUsPhoto/matteo.jpeg';
+import Matteo from '../../assets/AboutUsPhoto/matteo.png';
 import Alessandro from '../../assets/AboutUsPhoto/alessandro.png';
 import Gianluca from '../../assets/AboutUsPhoto/Gianluca.png';
 import Alessio from '../../assets/AboutUsPhoto/Alessio.webp';
