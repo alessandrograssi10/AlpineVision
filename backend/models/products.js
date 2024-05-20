@@ -7,6 +7,7 @@ const path = require('path');
 const productsCollectionName = 'Products';
 const variantsCollectionName = 'Variants';
 
+<<<<<<< HEAD
 async function createProduct(nome, prezzo, descrizione, categoria, motto, caratteristiche) {
     const db = getDb();
     const productData = { nome, prezzo, descrizione,categoria, motto,caratteristiche };
@@ -37,6 +38,41 @@ async function createVariant(productId, colore, quantita) {
     }
 
     return result.insertedId;
+=======
+async function createProduct( nome, prezzo, descrizione) {
+    try {
+        const db = getDb();
+        const productData = { nome, prezzo, descrizione };
+        const result = await db.collection(productsCollectionName).insertOne(productData);
+
+        // Crea la cartella principale del prodotto
+        const productDirectory = path.join(__dirname, '..', 'images','products', result.insertedId.toString());
+        await fsp.mkdir(productDirectory, { recursive: true });
+
+        return result.insertedId;
+    } catch (error) {
+        console.error("Errore nella creazione del prodotto:", error);
+        throw error;
+    }
+}
+
+async function createVariant(productId, colore, quantita) {
+    try {
+        const db = getDb();
+        const variantData = { productId: new ObjectId(productId), colore, quantita };
+        const result = await db.collection(variantsCollectionName).insertOne(variantData);
+
+        // Crea la sottocartella per la variante specifica del colore
+        const baseDir = path.join(__dirname, '..','images','products', productId);
+        console.log(baseDir);
+        await fsp.mkdir(path.join(baseDir, colore), { recursive: true });
+
+        return result.insertedId;
+    } catch (error) {
+        console.error("Errore nella creazione della variante del prodotto:", error);
+        throw error;
+    }
+>>>>>>> main
 }
 
 
@@ -68,6 +104,7 @@ async function deleteProduct(prodId) {
     }
 }
 
+<<<<<<< HEAD
 // Funzione per eliminare una variante di prodotto e la sua cartella di immagini
 async function deleteVariant(productId, colore) {
     const db = getDb();
@@ -88,6 +125,8 @@ async function deleteVariant(productId, colore) {
     return { success: true, message: "Variante e immagini eliminate con successo" };
 }
 
+=======
+>>>>>>> main
 
 
 async function decrementVariantQuantity(productId, colore, decrement) {
@@ -126,6 +165,11 @@ module.exports = {
     getVariantsByProductId,
     getAllProducts,
     deleteProduct,
+<<<<<<< HEAD
     decrementVariantQuantity,
     deleteVariant
 };
+=======
+    decrementVariantQuantity
+};
+>>>>>>> main

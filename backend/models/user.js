@@ -46,6 +46,7 @@ async function deleteUser(userId) {
     }
 }
 
+<<<<<<< HEAD
 async function updateUserPassword(userId, oldPassword, newPassword) {
     try {
         const db = getDb();
@@ -80,6 +81,19 @@ async function updateUserPassword(userId, oldPassword, newPassword) {
 }
 
 
+=======
+async function updateUserPassword(userId, newPassword) {
+    try {
+        const db = getDb();
+        const usersCollection = db.collection('Users');
+        const result = await usersCollection.updateOne({ _id: new ObjectId(userId) }, { $set: { password: newPassword } });
+        return result;
+    } catch (error) {
+        console.error("Errore nell'aggiornamento della password dell'utente:", error);
+        throw error;
+    }
+}
+>>>>>>> main
 async function setPhone(userId, newPhone) {
     try {
         const db = getDb();
@@ -121,6 +135,7 @@ async function findUserByEmail(email) {
     }
 }
 
+<<<<<<< HEAD
 async function updateUserRole(userId, newRole) {
     try {
         const db = getDb();
@@ -148,6 +163,8 @@ async function getUserRole(userId) {
     }
 }
 
+=======
+>>>>>>> main
 
 module.exports = {
     createUser,
@@ -155,7 +172,11 @@ module.exports = {
     updateUserPassword,
     setAddress,
     setPhone,
+<<<<<<< HEAD
     findUserByEmail,
     updateUserRole,
     getUserRole,   
+=======
+    findUserByEmail
+>>>>>>> main
 };

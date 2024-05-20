@@ -1,6 +1,10 @@
 const express = require('express');
 const router = express.Router();
+<<<<<<< HEAD
 const { createProduct, createVariant, getVariantsByProductId, getAllProducts, deleteProduct, deleteVariant,decrementVariantQuantity } = require('../models/products');
+=======
+const { createProduct, createVariant, getVariantsByProductId, getAllProducts, deleteProduct, decrementVariantQuantity } = require('../models/products');
+>>>>>>> main
 const multer = require('multer');
 const fs = require('fs'); 
 const fsp = fs.promises;
@@ -25,8 +29,11 @@ router.get('/:productId/variants', async (req, res) => {
 });
 
 
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> main
 //ritorna tutti i prodotti
 router.get('/', async (req, res) => { //funziona
     try {
@@ -39,6 +46,7 @@ router.get('/', async (req, res) => { //funziona
 });
 
 
+<<<<<<< HEAD
 
 // Helper function to send the first image found in the specified directory
 const sendFirstImage = async (res, dirPath) => {
@@ -117,6 +125,28 @@ router.get('/:idProd/secondaria', (req, res) => {
 
 
 
+=======
+router.get('/photo-variante', (req, res) => {
+    const {idProd, colore} = req.query;
+    const dirPath = path.join(__dirname, '..', 'images', 'products', idProd, colore);
+
+    fs.readdir(dirPath, (err, files) => {
+        if (err) {
+            console.error("Errore nell'accedere alla directory:", err);
+            return res.status(500).json({ error: 'Errore interno del server' });
+        }
+
+        const images = files.filter(file => /\.(jpg|jpeg|png|gif)$/i.test(file));
+
+        if (images.length === 0) {
+            return res.status(404).json({ error: 'Immagini non trovate' });
+        }
+
+        res.sendFile(path.join(dirPath, images[0])); // Invia solo la prima immagine
+    });
+});
+
+>>>>>>> main
 
 // Elimina prodotto e tutte le sue varianti
 router.delete('/:prodId', async (req, res) => {
@@ -140,6 +170,7 @@ router.delete('/:prodId', async (req, res) => {
 });
 
 
+<<<<<<< HEAD
 router.delete('/:productId/:colore', async (req, res) => {
     const { productId, colore } = req.params;
     try {
@@ -158,6 +189,8 @@ router.delete('/:productId/:colore', async (req, res) => {
 
 
 
+=======
+>>>>>>> main
 
 
 
@@ -189,9 +222,15 @@ router.patch('/:productId/:colore/decrement', async (req, res) => {
 
 // Crea prodotto
 router.post('/', async (req, res) => { //funziona
+<<<<<<< HEAD
     const {nome, prezzo, descrizione,categoria,motto,caratteristiche } = req.body;
     try {
         const productId = await createProduct(nome, prezzo,descrizione,categoria,motto,caratteristiche);
+=======
+    const {nome, prezzo, descrizione } = req.body;
+    try {
+        const productId = await createProduct(nome, prezzo, descrizione);
+>>>>>>> main
         res.status(201).json({ _id: productId });
     } catch (error) {
         console.error("Errore nella creazione del prodotto:", error);
@@ -222,6 +261,7 @@ router.post('/:productId/variants', async (req, res) => { //funziona
 // Configura Multer per il caricamento dei file
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
+<<<<<<< HEAD
         const { idProd, colore } = req.params;
         const subfolderMap = {
             'fileF': 'frontale',
@@ -232,6 +272,11 @@ const storage = multer.diskStorage({
         const subFolder = subfolderMap[file.fieldname] || '';
         const folderPath = path.join(__dirname, '..', 'images', 'products', idProd, colore, subFolder);
         fs.mkdirSync(folderPath, { recursive: true });
+=======
+        const { idProd, colore } = req.params;  // Correggi l'accesso ai parametri
+        const folderPath = path.join(__dirname, '..', 'images', 'products', idProd, colore);
+        ensureDirectoryExists(folderPath);
+>>>>>>> main
         cb(null, folderPath);
     },
     filename: function (req, file, cb) {
@@ -240,6 +285,7 @@ const storage = multer.diskStorage({
     }
 });
 
+<<<<<<< HEAD
 const upload = multer({ storage: storage }).fields([
     { name: 'fileF', maxCount: 1 },
     { name: 'fileS', maxCount: 1 },
@@ -254,6 +300,14 @@ router.post('/upload/:idProd/:colore', upload, (req, res) => {
             filePath: req.files[key][0].path
         }));
         res.status(201).json({ message: 'Files caricati con successo', files: response });
+=======
+const upload = multer({ storage: storage });
+
+// Endpoint per caricare un'immagine per una variante specifica del prodotto
+router.post('/upload/:idProd/:colore', upload.single('file'), (req, res) => {
+    if (req.file) {
+        res.status(201).json({ message: 'File caricato con successo', filePath: req.file.path });
+>>>>>>> main
     } else {
         res.status(400).json({ error: 'Nessun file caricato' });
     }
@@ -269,6 +323,7 @@ const ensureDirectoryExists = folderPath => {
 
 
 
+<<<<<<< HEAD
 const storageP = multer.diskStorage({
     destination: function (req, file, cb) {
         const { idProd } = req.params;
@@ -310,4 +365,6 @@ router.post('/uploadPic/:idProd', uploadP, (req, res) => {
 
 
 
+=======
+>>>>>>> main
 module.exports = router;

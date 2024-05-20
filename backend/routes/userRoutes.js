@@ -1,7 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const { getDb } = require('../config/database');
+<<<<<<< HEAD
 const { createUser, deleteUser, updateUserPassword, setPhone, setAddress, findUserByEmail, updateUserRole,getUserRole } = require('../models/user');
+=======
+const { createUser, deleteUser, updateUserPassword, setPhone, setAddress, findUserByEmail } = require('../models/user');
+>>>>>>> main
 const jwt = require('jsonwebtoken');
 const { ObjectId } = require('mongodb');
 
@@ -123,7 +127,11 @@ router.post('/login', async (req, res) => {
             { expiresIn: '1h' }  // Opzioni: token valido per 1 ora
         );
         // Invia il token al client
+<<<<<<< HEAD
         res.status(200).json({ message: "Login riuscito", token: token, userId: user._id, ruolo: user.ruolo});
+=======
+        res.status(200).json({ message: "Login riuscito", token: token, userId: user._id });
+>>>>>>> main
     } catch (error) {
         console.error("Errore nel login:", error);
         res.status(500).json({ error: "Errore nel processo di login" });
@@ -132,7 +140,11 @@ router.post('/login', async (req, res) => {
 
 
 /*
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> main
 DELETE
 
 */
@@ -165,9 +177,15 @@ PATCH
 // Route per modificare la password di un utente
 router.patch('/:userId/password', async (req, res) => {//funziona
     const userId = req.params.userId;
+<<<<<<< HEAD
     const { newPassword , oldPassword} = req.body;
     try {
         const result = await updateUserPassword(userId,oldPassword, newPassword);
+=======
+    const { newPassword } = req.body;
+    try {
+        const result = await updateUserPassword(userId, newPassword);
+>>>>>>> main
         if (result.matchedCount === 1) {
             res.status(200).json({ message: "Password aggiornata con successo" });
         } else {
@@ -179,6 +197,7 @@ router.patch('/:userId/password', async (req, res) => {//funziona
     }
 });
 
+<<<<<<< HEAD
 // Route per modificare il ruolo di un utente
 router.patch('/:userId/role', async (req, res) => {
     const userId = req.params.userId;
@@ -202,6 +221,8 @@ router.patch('/:userId/role', async (req, res) => {
         res.status(500).json({ error: "Errore nell'aggiornamento del ruolo dell'utente" });
     }
 });
+=======
+>>>>>>> main
 
 /*
 
@@ -244,6 +265,7 @@ router.put('/setAddress/:userId', async (req, res) => { //funziona
 
 
 
+<<<<<<< HEAD
 router.get('/:userId/role', verifyTokenAndUserId, async (req, res) => {
     const userId = req.params.userId;
     
@@ -307,5 +329,10 @@ router.get('/verify/:userId', verifyTokenAndUserId, (req, res) => {
         userInfo: req.user
     });
 });
+=======
+
+
+
+>>>>>>> main
 module.exports = router;
 
