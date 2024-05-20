@@ -761,8 +761,12 @@ export const Editor = () => {
                   <Card.Body>
                     <Card.Title>{prodotto.name}</Card.Title>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <Card.Text>Quantità: {prodotto.quantita}</Card.Text>
+                    </div>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                       <Card.Text>{prodotto.prezzo} €</Card.Text>
                     </div>
+
                     <div className='m-1 mt-3' style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                       <Button onClick={() => handleDelete(prodotto._id)} variant='outline-danger'>ELIMINA</Button>
                     </div>

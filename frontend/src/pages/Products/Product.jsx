@@ -276,7 +276,7 @@ export const Product = (addToStorage) => {
                             </Col>
                         </Row>
                         )}
-                        <Row className="justify-content-center m-0 mt-1 ml-0 p-0 mb-3">
+                        <Row className="justify-content-center m-0 mt-1 ml-0 p-0 mb-0">
                             <h6 className="text-left text-black text-bold">SKU: {productInfo._id}</h6>
                         </Row>
                     </div>
@@ -316,11 +316,11 @@ export const Product = (addToStorage) => {
                 </Tab>
             </Tabs>
             <div className={` fixed-bottom-info ${(showFixedInfo && product[selectedSetIndex]?.quantita > 0) ? 'show' : ''}`}>
-                <div className="info-text">
-                    <h5>{productInfo.nome}</h5>
-                    <p>{productInfo.prezzo} €</p>
+                <div className="info-text p-0">
+                    <h4>{productInfo.nome}</h4>
+                    <p className='m-0 '>{productInfo.prezzo} €</p>
                 </div>
-                <Button className={`button-black-prod-nomon m-2 mt-0 ${buttonState}`} onClick={addToCart} variant="outline-dark pl-0 ml-0" size="lg">
+                <Button className={`button-black-prod m-1 mt-2 ${buttonState}`} onClick={addToCart} variant="outline-dark pl-0 ml-0" size="lg">
                 {buttonState === 'loading' && <div className="spinner "></div>}
                 {buttonState === 'confirmed' && <BsCheck className='icon-confirmed'/>}
                 {buttonState === 'default' && <div className='p-0 m-0'><h4 className='p-0 m-0'>AGGIUNGI AL CARRELLO</h4></div>}

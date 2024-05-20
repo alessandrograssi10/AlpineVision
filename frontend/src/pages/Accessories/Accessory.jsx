@@ -186,7 +186,7 @@ export const Accessory = () => {
                               </Col>
                           </Row>
                       )}
-                      <Row className="justify-content-center m-0 mt-1 ml-0 p-0 mb-3">
+                      <Row className="justify-content-center m-0 mt-1 ml-0 p-0 mb-0">
                           <h6 className="text-left text-black text-bold">SKU: {product[0]?._id}</h6>
                       </Row>
                   </div>
