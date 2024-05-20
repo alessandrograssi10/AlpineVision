@@ -8,7 +8,7 @@ import backgroundImage from '../../assets/AboutUsPhoto/uomoCheSaltaConScii.jpg';
 import happyTeam from '../../assets/AboutUsPhoto/team.jpg'; // Correct the image path and extension
 import Matteo from '../../assets/AboutUsPhoto/matteo.jpeg';
 import Alessandro from '../../assets/AboutUsPhoto/Alessandro.avif';
-import Gianluca from '../../assets/AboutUsPhoto/Gianluca.jpg';
+import Gianluca from '../../assets/AboutUsPhoto/Gianluca.png';
 import Alessio from '../../assets/AboutUsPhoto/Alessio.webp';
 import chalet from '../../assets/AboutUsPhoto/chalet.jpg';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
