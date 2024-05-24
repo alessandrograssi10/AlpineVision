@@ -23,8 +23,6 @@ The frontend folder handles the client-side of the application, with the followi
    
    In addition to these folders, there are the App.css file, which encompasses common aesthetic characteristics for all pages, and App.js, which enables the dynamic visualization of the store by rendering the pages through appropriate routes (inserted via the "react-router-dom" library) within the eponymous function. The entire application is rendered by inserting the App.js component into index.js (which in turn handles the "transfer" of the code into index.html).
 
-You can view the complete project (including images and libraries) in the following GitHub repository: https://github.com/tequilasunrisecoder/AlpineVision
-
 If you want to test the store, follow these steps:
 1) Clone the repository to your local device;
 2) Open the folder of files preferably using an editor like Visual Studio Code;
