@@ -25,9 +25,6 @@ Nella cartella frontend viene gestito il lato client dell'applicazione, con la s
    Oltre alle precedenti cartelle sono presenti i file App.css che racchiude le caratteristiche estetiche comuni a tutte le pagine e App.js che permette la visualizzazione dinamica dello store renderizzando le pagine tramite opportune routes(inserite tramite la libreria "react-router-dom"). Tutta l'applicazione viene renderizzata inserendo il componente App.js all'interno di index.js (il quale a sua volta si occupa del "trasferimento" del codice in index.html)
 
 
-
-È possibile visualizzare il progetto nella sua interezza(comprendente di immagini e librerie) nella seguente repository github: https://github.com/tequilasunrisecoder/AlpineVision
-
 Nel caso si volesse testare lo store, la procedura da seguire e' la seguente:
 1)Clonare la repository nel proprio dispositivo locale;
 2)Aprire, possibilmente, la cartella di file mediante un editor come Visual Studio Code;
