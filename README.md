@@ -48,7 +48,7 @@ Nella cartella frontend viene gestito il lato client dell'applicazione, con la s
 
 
 
-È possibile visualizzare il progetto nella sua interezza(comprendente di immagini e librerie) nella seguente repository github: https://github.com/tequilasunrisecoder/AlpineVision
+
 
 Nel caso si volesse testare lo store, la procedura da seguire e' la seguente:
 1)Clonare la repository nel proprio dispositivo locale;
