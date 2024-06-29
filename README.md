@@ -2,6 +2,8 @@
 
 **AlpineVision** è un progetto per la creazione di un moderno negozio online di maschere da sci intrapreso dal nostro team di quattro appassionati. Il nostro obiettivo era creare un sito web coinvolgente e visivamente sorprendente che si rivolgesse agli appassionati di sci in cerca di maschere da sci di alta qualità. Utilizzando tecnologie frontend e backend, tra cui HTML, CSS, React, Node.js e Bootstrap, abbiamo cercato di offrire un'esperienza di shopping online unica e coinvolgente.
 
+![AlpineVision](frontend/src/assets/Images/example.png)
+
 Di seguito è fornita una descrizione delle cartelle che compongono il codice sorgente:
 
 La cartella **Alpine Vision** è composta da due cartelle principali: **backend** e **frontend**.
@@ -64,3 +66,4 @@ Per testare lo store, la procedura da seguire è la seguente:
 2. Aprire la cartella dei file, preferibilmente utilizzando un editor come Visual Studio Code.
 3. Avviare il backend dalla rispettiva cartella eseguendo il comando "node server.js" nel terminale.
 4. Avviare il frontend dalla rispettiva cartella eseguendo i comandi "npm install react-scripts" e "npm start" nel terminale.
+
