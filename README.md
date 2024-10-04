@@ -1,6 +1,6 @@
 # 🏂❄️AlpineVision-LTW🏂❄️
 
-**AlpineVision** è un progetto nato per la creazione di un moderno negozio online di maschere da sci intrapreso dal nostro team di quattro appassionati. Il nostro obiettivo era creare un sito web coinvolgente e visivamente sorprendente che si rivolgesse agli appassionati di sci in cerca di maschere da sci di alta qualità. Utilizzando tecnologie frontend e backend, tra cui HTML, CSS, React, Node.js e Bootstrap, abbiamo cercato di offrire un'esperienza di shopping online unica e coinvolgente.
+**AlpineVision** è un progetto nato per la creazione di un moderno negozio online di maschere da sci. L'obiettivo era creare un sito web coinvolgente e visivamente sorprendente che si rivolgesse agli appassionati di sci in cerca di maschere da sci di alta qualità. Utilizzando tecnologie frontend e backend, tra cui HTML, CSS, React, Node.js e Bootstrap, abbiamo cercato di offrire un'esperienza di shopping online unica e coinvolgente.
 
 ## Guarda il video dimostrativo
 
