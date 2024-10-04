@@ -4,7 +4,7 @@ AlpineVision is a project for creating a modern online ski goggles store underta
 
 ## Watch the Demo Video
 
-The demo video of the ski goggles is available on Google Drive. [Click here to watch the video](https://drive.google.com/file/d/1JEjMb9JgPB2pSUJDbjSX7HlF3y2PnyeE/view?usp=drive_link).
+The demo video is available on Google Drive. [Click here to watch the video](https://drive.google.com/file/d/1JEjMb9JgPB2pSUJDbjSX7HlF3y2PnyeE/view?usp=drive_link).
 
 
 ![AlpineVision](frontend/src/assets/Images/example.png)
