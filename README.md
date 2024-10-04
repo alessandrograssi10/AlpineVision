@@ -2,7 +2,14 @@
 
 **AlpineVision** è un progetto per la creazione di un moderno negozio online di maschere da sci intrapreso dal nostro team di quattro appassionati. Il nostro obiettivo era creare un sito web coinvolgente e visivamente sorprendente che si rivolgesse agli appassionati di sci in cerca di maschere da sci di alta qualità. Utilizzando tecnologie frontend e backend, tra cui HTML, CSS, React, Node.js e Bootstrap, abbiamo cercato di offrire un'esperienza di shopping online unica e coinvolgente.
 
+## Guarda il video dimostrativo
+
+Il video dimostrativo delle maschere da sci è disponibile su Google Drive. [Clicca qui per guardare il video](https://drive.google.com/file/d/1IDgqs94b1eRHXBYTOf_RpGz3Ybu86sOG/view?usp=sharing).
+
+
 ![AlpineVision](frontend/src/assets/Images/example.png)
+
+
 
 Di seguito è fornita una descrizione delle cartelle che compongono il codice sorgente:
 
