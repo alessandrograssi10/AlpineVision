@@ -4,7 +4,7 @@
 
 ## Guarda il video dimostrativo
 
-Il video dimostrativo delle maschere da sci è disponibile su Google Drive. [Clicca qui per guardare il video](https://drive.google.com/file/d/1JEjMb9JgPB2pSUJDbjSX7HlF3y2PnyeE/view?usp=sharing).
+Il video dimostrativo è disponibile su Google Drive. [Clicca qui per guardare il video](https://drive.google.com/file/d/1JEjMb9JgPB2pSUJDbjSX7HlF3y2PnyeE/view?usp=sharing).
 
 
 ![AlpineVision](frontend/src/assets/Images/example.png)
