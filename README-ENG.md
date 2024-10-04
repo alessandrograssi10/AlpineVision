@@ -2,6 +2,11 @@
 
 AlpineVision is a project for creating a modern online ski goggles store undertaken by our team of four enthusiasts. Our goal was to create an engaging and visually stunning website that caters to skiing enthusiasts looking for high-quality ski goggles. Utilizing frontend and backend technologies including HTML, CSS, React, Node.js, and Bootstrap, we aimed to offer a unique and engaging online shopping experience.
 
+## Watch the Demo Video
+
+The demo video of the ski goggles is available on Google Drive. [Click here to watch the video](https://drive.google.com/file/d/1JEjMb9JgPB2pSUJDbjSX7HlF3y2PnyeE/view?usp=drive_link).
+
+
 ![AlpineVision](frontend/src/assets/Images/example.png)
 
 Below is a description of the folders that make up the source code:
