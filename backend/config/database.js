@@ -1,7 +1,6 @@
 const { MongoClient } = require('mongodb');
 
-/*const uri = "mongodb://localhost:27017";*/
-const uri = 'mongodb+srv://alpinevision:alpinevision@alpinevision.lwa68lx.mongodb.net/?retryWrites=true&w=majority&appName=AlpineVision';
+const uri = process.env.MONGODB_ATLAS_URI;
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
 let _db;
